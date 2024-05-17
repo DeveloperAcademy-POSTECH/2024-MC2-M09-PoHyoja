@@ -33,6 +33,53 @@ enum PathType: Hashable {
     case settingTermsOfUse
 }
 
+extension PathType {
+    @ViewBuilder
+    func NavigatingView() -> some View {
+        switch self {
+        // MARK: - 초기 설정
+        case .login:
+            LoginView()
+        case .selectRole:
+            SelectRoleView()
+        case .connectUser:
+            ConnectUserView()
+            
+        // MARK: - 자식
+        case .childTab:
+            ChildTabView()
+        case .childMain:
+            ChildMainView()
+        case .childCamera:
+            ChildCameraView()
+        case .childSendCamera:
+            ChildSendCameraView()
+        case .childSelectGallery:
+            ChildSelectGalleryView()
+        case .childSendGallery:
+            ChildSendGalleryView()
+        case .childLoading:
+            ChildLoadingView()
+        case .childAlbum:
+            ChildAlbumView()
+        case .childAlbumDetail:
+            ChildAlbumDetailView()
+            
+        // MARK: - 부모
+        case .parentAlbum:
+            ParentAlbumView()
+        case .parentAlbumDetail:
+            ParentAlbumDetailView()
+            
+        // MARK: - Setting
+        case .setting:
+            SettingView()
+        case .settingTermsOfUse:
+            SettingTermsOfUseView()
+        }
+    }
+}
+
 @Observable
 class NavigationManager {
     var path: [PathType]
