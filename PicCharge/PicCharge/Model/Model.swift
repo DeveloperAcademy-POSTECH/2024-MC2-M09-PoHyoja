@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Role {
+enum Role: CaseIterable {
     case parent
     case child
 }

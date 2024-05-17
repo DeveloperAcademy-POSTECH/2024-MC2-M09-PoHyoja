@@ -13,7 +13,7 @@ struct ConnectUserView: View {
     var body: some View {
         Text("유저 연결 화면")
         Button("연결 승인") {
-            navigationManager.path.removeAll()
+            navigationManager.popToRoot()
         }
     }
 }
