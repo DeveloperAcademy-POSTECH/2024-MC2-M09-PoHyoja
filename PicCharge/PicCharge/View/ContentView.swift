@@ -33,22 +33,22 @@ struct ContentView: View {
                 
                 VStack(alignment: .leading) {
                     Button("[로그인X] 로그인 화면으로") {
-                        navigationManager.path.append(.login)
+                        navigationManager.push(to: .login)
                     }
                     .disabled(isAutoLogined)
                     
                     Button("[로그인O] 역할선택화면으로") {
-                        navigationManager.path.append(.selectRole)
+                        navigationManager.push(to: .selectRole)
                     }
                     .disabled(!(isAutoLogined && !isRoleSelected && !isConnected))
                     
                     Button("[로그인O,역할O] 유저연결화면으로") {
-                        navigationManager.path.append(.connectUser)
+                        navigationManager.push(to: .connectUser)
                     }
                     .disabled(!(isAutoLogined && isRoleSelected && !isConnected))
                     
                     Button("[로그인O,역할O,연결O] \(role)메인화면으로") {
-                        navigationManager.path.append(role == .child ? .childTab : .parentAlbum)
+                        navigationManager.push(to: role == .child ? .childTab : .parentAlbum)
                     }
                     .disabled(!(isAutoLogined && isRoleSelected && isConnected))
                 }
