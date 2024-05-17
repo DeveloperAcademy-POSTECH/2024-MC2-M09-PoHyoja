@@ -13,7 +13,7 @@ struct ChildCameraView: View {
     var body: some View {
         Text("카메라 화면")
         Button("사진 촬영") {
-            navigationManager.path.append(.childSendCamera)
+            navigationManager.push(to: .childSendCamera)
         }
     }
 }

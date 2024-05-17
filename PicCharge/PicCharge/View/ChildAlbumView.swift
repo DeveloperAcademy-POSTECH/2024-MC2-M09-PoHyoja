@@ -15,13 +15,13 @@ struct ChildAlbumView: View {
             Text("자식 앨범 화면")
             List {
                 Button("사진 1") {
-                    navigationManager.path.append(.childAlbumDetail)
+                    navigationManager.push(to: .childAlbumDetail)
                 }
                 Button("사진 2") {
-                    navigationManager.path.append(.childAlbumDetail)
+                    navigationManager.push(to: .childAlbumDetail)
                 }
                 Button("사진 3") {
-                    navigationManager.path.append(.childAlbumDetail)
+                    navigationManager.push(to: .childAlbumDetail)
                 }
             }
         }

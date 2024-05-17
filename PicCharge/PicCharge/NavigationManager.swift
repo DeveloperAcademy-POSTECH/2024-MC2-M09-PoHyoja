@@ -42,3 +42,22 @@ class NavigationManager {
     }
 }
 
+extension NavigationManager {
+    func push(to pathType: PathType) {
+        path.append(pathType)
+    }
+    
+    func pop() {
+        path.removeLast()
+    }
+    
+    func popToRoot() {
+        path.removeAll()
+    }
+    
+    func pop(to pathType: PathType) {
+        guard let lastIndex = path.lastIndex(of: pathType) else { return }
+        path.removeLast(path.count - (lastIndex + 1))
+    }
+}
+

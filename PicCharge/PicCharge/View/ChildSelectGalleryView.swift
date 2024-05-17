@@ -13,7 +13,7 @@ struct ChildSelectGalleryView: View {
     var body: some View {
         Text("갤러리 선택 화면")
         Button("사진 선택") {
-            navigationManager.path.append(.childSendGallery)
+            navigationManager.push(to: .childSendGallery)
         }
     }
 }
