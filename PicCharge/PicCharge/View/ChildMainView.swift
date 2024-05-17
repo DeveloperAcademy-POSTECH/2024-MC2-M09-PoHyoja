@@ -14,11 +14,11 @@ struct ChildMainView: View {
         VStack {
             Text("자식 메인 화면")
             Button("사진 올리기") {
-                navigationManager.path.append(.childCamera)
+                navigationManager.push(to: .childCamera)
             }
             
             Button("사진 찍기") {
-                navigationManager.path.append(.childSelectGallery)
+                navigationManager.push(to: .childSelectGallery)
             }
         }
     }
