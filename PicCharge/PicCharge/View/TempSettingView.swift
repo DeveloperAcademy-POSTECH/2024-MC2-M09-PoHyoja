@@ -12,6 +12,8 @@ import SwiftUI
 struct TempSettingView: View {
     
     @State var version = "1.0.0"
+    @State private var showingLogoutActionSheet = false
+    @State private var showingWithdrawActionSheet = false
     
     var body: some View {
         ZStack {
@@ -42,12 +44,18 @@ struct TempSettingView: View {
                             }
                         }
                         Section {
-                                Text("서비스 약관 / 개인정보 방침")
+                            Text("서비스 약관 / 개인정보 방침")
                             
-                                Text("로그아웃")
+                            Text("로그아웃")
+                                .onTapGesture {
+                                    showingLogoutActionSheet = true
+                                }
                             
-                                Text("회원탈퇴")
-                                    .foregroundStyle(.red)
+                            Text("회원탈퇴")
+                                .onTapGesture {
+                                    showingWithdrawActionSheet = true
+                                }
+                                .foregroundStyle(.red)
                             
                         }
                         
@@ -55,6 +63,22 @@ struct TempSettingView: View {
                     .padding(.top, 36)
                     .navigationTitle("설정")
             }
+            .confirmationDialog("로그아웃 하시겠습니까?", isPresented: $showingLogoutActionSheet, titleVisibility: .visible) {
+                VStack {
+                    Button("로그아웃", role: .destructive) {}
+                    Button("Cancel", role: .cancel) {}
+                }
+                
+            }
+            .confirmationDialog("회원을 탈퇴하시겠습니까? \n 탈퇴하면 되돌릴 수 없고, 저희가 슬퍼요.", isPresented: $showingWithdrawActionSheet, titleVisibility: .visible) {
+                VStack {
+                    Button("탈퇴하기", role: .destructive) {}
+                    Button("로그아웃", role: .destructive) {}
+                    Button("Cancel", role: .cancel) {}
+                }
+                
+            }
+            
             Text("version. \(version)")
                 .foregroundStyle(.secondary)
                 .padding(.top, 200)
