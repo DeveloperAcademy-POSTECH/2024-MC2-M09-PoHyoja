@@ -31,75 +31,55 @@ struct ContentView: View {
                 Toggle("역할 선택 완료", isOn: $isRoleSelected)
                 Toggle("부모 자식 연결 완료", isOn: $isConnected)
                 
-                Text("로그인 실패")
-                Button("로그인 화면으로 이동") {
-                    navigationManager.path.append(.login)
+                VStack(alignment: .leading) {
+                    Button("[로그인X] 로그인 화면으로") {
+                        navigationManager.path.append(.login)
+                    }
+                    .disabled(isAutoLogined)
+                    
+                    Button("[로그인O] 역할선택화면으로") {
+                        navigationManager.path.append(.selectRole)
+                    }
+                    .disabled(!(isAutoLogined && !isRoleSelected && !isConnected))
+                    
+                    Button("[로그인O,역할O] 유저연결화면으로") {
+                        navigationManager.path.append(.connectUser)
+                    }
+                    .disabled(!(isAutoLogined && isRoleSelected && !isConnected))
+                    
+                    Button("[로그인O,역할O,연결O] \(role)메인화면으로") {
+                        navigationManager.path.append(role == .child ? .childTab : .parentAlbum)
+                    }
+                    .disabled(!(isAutoLogined && isRoleSelected && isConnected))
                 }
-                .disabled(isAutoLogined)
-                
-                Text("로그인 성공")
-                Button("역할선택화면으로 이동") {
-                    navigationManager.path.append(.selectRole)
-                }
-                .disabled(!(isAutoLogined && !isRoleSelected && !isConnected))
-                
-                Text("로그인 성공 & 역할 선택 완료")
-                Button("유저연결화면으로 이동") {
-                    navigationManager.path.append(.connectUser)
-                }
-                .disabled(!(isAutoLogined && isRoleSelected && !isConnected))
-                
-                Text("로그인 성공 & 역할 선택 완료 & 연결 완료")
-                Button("\(role) 메인화면으로 이동") {
-                    navigationManager.path.append(role == .child ? .childTab : .parentAlbum)
-                }
-                .disabled(!(isAutoLogined && isRoleSelected && isConnected))
             }
             .navigationDestination(for: PathType.self) { path in
-                switch path {
-                    // MARK: - 초기 설정
-                case .login:
-                    LoginView()
-                case .selectRole:
-                    SelectRoleView()
-                case .connectUser:
-                    ConnectUserView()
-                    
-                    // MARK: - 자식
-                case .childTab:
-                    ChildTabView()
-                case .childMain:
-                    ChildMainView()
-                case .childCamera:
-                    ChildCameraView()
-                case .childSendCamera:
-                    ChildSendCameraView()
-                case .childSelectGallery:
-                    ChildSelectGalleryView()
-                case .childSendGallery:
-                    ChildSendGalleryView()
-                case .childLoading:
-                    ChildLoadingView()
-                case .childAlbum:
-                    ChildAlbumView()
-                case .childAlbumDetail:
-                    ChildAlbumDetailView()
-                    
-                    // MARK: - 부모
-                case .parentAlbum:
-                    ParentAlbumView()
-                case .parentAlbumDetail:
-                    ParentAlbumDetailView()
-                    
-                    // MARK: - Setting
-                case .setting:
-                    SettingView()
-                case .settingTermsOfUse:
-                    SettingTermsOfUseView()
-                }
+                path.NavigatingView()
             }
         }
         .environment(navigationManager)
+        .task {
+            await checkAuthenticationStatus()
+            await checkRoleSelectionStatus()
+            await checkUserConnectionStatus()
+        }
+    }
+}
+
+extension ContentView {
+    private func checkAuthenticationStatus() async {
+        // TODO: - 자동 로그인 함수 구현
+        isAutoLogined = false
+    }
+       
+    private func checkRoleSelectionStatus() async {
+        // TODO: - 역할 선택여부 함수 구현
+        isRoleSelected = false
+    }
+       
+    private func checkUserConnectionStatus() async {
+        // TODO: - 유저 연결여부 확인 함수 구현
+        isConnected = false
     }
 }
 
