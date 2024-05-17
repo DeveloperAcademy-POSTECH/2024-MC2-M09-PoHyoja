@@ -8,15 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    enum ViewState {
-        case loginFailed
-        case roleNotSelected
-        case notConnected
-        case connected
-    }
-    
     @State private var navigationManager = NavigationManager()
-    @State private var viewState: ViewState = .loginFailed
     
     @State private var role: Role = .child
     @State private var isAutoLogined: Bool = false
