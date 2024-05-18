@@ -10,24 +10,27 @@ import SwiftUI
 struct ChildTabView: View {
     var body: some View {
         TabView {
-            ChildMainView()
-                .tabItem {
-                    Image(systemName: "1.square.fill")
-                    Text("Main")
-                }
-            
-            ChildAlbumView()
-                .tabItem {
-                    Image(systemName: "2.square.fill")
-                    Text("Album")
-                }
-            
-            SettingView()
-                .tabItem {
-                    Image(systemName: "3.square.fill")
-                    Text("My")
-                }
-            
+            Group {
+                ChildMainView()
+                    .tabItem {
+                        Image(systemName: Icon.heartBolt)
+                        Text("Main")
+                    }
+                
+                ChildAlbumView()
+                    .tabItem {
+                        Image(systemName: Icon.album)
+                        Text("Album")
+                    }
+                
+                SettingView()
+                    .tabItem {
+                        Image(systemName: Icon.setting)
+                        Text("My")
+                    }.background(.bgPrimary)
+            }
+            .toolbarBackground(.bgPrimary, for: .tabBar)
+            .toolbarBackground(.visible, for: .tabBar)
         }
     }
 }
