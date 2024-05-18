@@ -8,38 +8,33 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-enum ServerRole: String, CaseIterable, Codable {
-    case parent
-    case child
-}
-
-struct ServerUser: Identifiable, Codable {
+struct ServerDTO: Identifiable, Codable {
     @DocumentID var id: String?  // Firestore의 문서 ID와 매핑
-    var role: ServerRole?
+    var role: Role?
     var email: String
     var uploadCycle: Int?
 }
 
-enum ServerConnectionRequestStatus: String, Codable {
+enum ConnectionRequestStatus: String, Codable {
     case pending
     case accepted
     case rejected
 }
 
-struct ServerConnectionRequest: Identifiable, Codable {
+struct ConnectionRequestsDTO: Identifiable, Codable {
     @DocumentID var id: String?  // Firestore의 문서 ID와 매핑
     var from: String
     var to: String
-    var status: ServerConnectionRequestStatus
+    var status: ConnectionRequestStatus
     var requestDate: Date
 }
 
-struct ServerConnection: Identifiable, Codable {
+struct ConnectionDTO: Identifiable, Codable {
     @DocumentID var id: String?  // Firestore의 문서 ID와 매핑
     var connectedTo: [String]
 }
 
-struct ServerPhoto: Identifiable, Codable {
+struct PhotoDTO: Identifiable, Codable {
     @DocumentID var id: String?  // Firestore의 문서 ID와 매핑
     var uploadBy: String
     var url: String
