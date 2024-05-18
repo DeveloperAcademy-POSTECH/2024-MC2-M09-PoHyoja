@@ -60,7 +60,6 @@ struct TempSettingView: View {
                         }
                         
                     }
-                    .padding(.top, 36)
                     .navigationTitle("설정")
             }
             .confirmationDialog("로그아웃 하시겠습니까?", isPresented: $showingLogoutActionSheet, titleVisibility: .visible) {
@@ -76,16 +75,17 @@ struct TempSettingView: View {
                     Button("로그아웃", role: .destructive) {}
                     Button("Cancel", role: .cancel) {}
                 }
-                
             }
             
             Text("version. \(version)")
                 .foregroundStyle(.secondary)
                 .padding(.top, 200)
         }
-        
+        .preferredColorScheme(.dark)
     }
+    
 }
+
 
 #Preview {
     TempSettingView()
