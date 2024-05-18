@@ -12,88 +12,84 @@ class FirestoreService {
     private var db = Firestore.firestore()
     
     // ServerUser 데이터를 가져오는 함수
-    func fetchUsers(completion: @escaping ([ServerUser]?, Error?) -> Void) {
+    func fetchUsers(completion: @escaping ([UserDTO]?, Error?) -> Void) {
         db.collection("users").addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return
             }
             
-            let users = querySnapshot?.documents.compactMap { document -> ServerUser? in
-                try? document.data(as: ServerUser.self)
+            let users = querySnapshot?.documents.compactMap { document -> UserDTO? in
+                try? document.data(as: UserDTO.self)
             }
             completion(users, nil)
         }
     }
     
     // ServerConnectionRequest 데이터를 가져오는 함수
-    func fetchConnectionRequests(completion: @escaping ([ServerConnectionRequest]?, Error?) -> Void) {
+    func fetchConnectionRequests(completion: @escaping ([ConnectionRequestsDTO]?, Error?) -> Void) {
         db.collection("connectionRequests").addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return
             }
             
-            let requests = querySnapshot?.documents.compactMap { document -> ServerConnectionRequest? in
-                try? document.data(as: ServerConnectionRequest.self)
+            let requests = querySnapshot?.documents.compactMap { document -> ConnectionRequestsDTO? in
+                try? document.data(as: ConnectionRequestsDTO.self)
             }
             completion(requests, nil)
         }
     }
     
     // ServerConnection 데이터를 가져오는 함수
-    func fetchConnections(completion: @escaping ([ServerConnection]?, Error?) -> Void) {
+    func fetchConnections(completion: @escaping ([ConnectionDTO]?, Error?) -> Void) {
         db.collection("connections").addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return
             }
             
-            let connections = querySnapshot?.documents.compactMap { document -> ServerConnection? in
-                try? document.data(as: ServerConnection.self)
+            let connections = querySnapshot?.documents.compactMap { document -> ConnectionDTO? in
+                try? document.data(as: ConnectionDTO.self)
             }
             completion(connections, nil)
         }
     }
     
     // ServerPhoto 데이터를 가져오는 함수
-    func fetchPhotos(completion: @escaping ([ServerPhoto]?, Error?) -> Void) {
+    func fetchPhotos(completion: @escaping ([PhotoDTO]?, Error?) -> Void) {
         db.collection("photos").addSnapshotListener { (querySnapshot, error) in
             if let error = error {
                 completion(nil, error)
                 return
             }
             
-            let photos = querySnapshot?.documents.compactMap { document -> ServerPhoto? in
-                try? document.data(as: ServerPhoto.self)
+            let photos = querySnapshot?.documents.compactMap { document -> PhotoDTO? in
+                try? document.data(as: PhotoDTO.self)
             }
             completion(photos, nil)
         }
     }
     
     // ServerUser 데이터를 Firestore에 추가하는 함수
-    func addUser(user: ServerUser, completion: @escaping (Result<Void, Error>) -> Void) {
-        var userData = user
-        userData.id = nil  // Firestore에 추가하기 전에 id를 nil로 설정. FireStore 는 문서의 id를 자체적으로 관리한다.
+    func addUser(id: String?,
+                 role: Role,
+                 email: String,
+                 uploadCycle: Int?, completion: @escaping (Result<Void, Error>) -> Void) {
+        let user = UserDTO(id: id, role: role, email: email, uploadCycle: uploadCycle)
         
         do {
-            let documentRef = try db.collection("users").addDocument(from: userData) { error in
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    completion(.success(()))
-                }
-            }
-            userData.id = documentRef.documentID  // Firestore 문서 ID를 할당
+            let _ = try db.collection("users").addDocument(from: user)
+            completion(.success(()))
         } catch let error {
             completion(.failure(error))
         }
     }
     
     // ServerConnectionRequest 데이터를 Firestore에 추가하는 함수
-    func addConnectionRequest(request: ServerConnectionRequest, completion: @escaping (Result<Void, Error>) -> Void) {
+    func addConnectionRequest(request: ConnectionRequestsDTO, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            let _ = try db.collection("connectionRequests").document(request.id ?? UUID().uuidString).setData(from: request)
+            let _ = try db.collection("connectionRequests").addDocument(from: request)
             completion(.success(()))
         } catch let error {
             completion(.failure(error))
@@ -101,9 +97,9 @@ class FirestoreService {
     }
     
     // ServerConnection 데이터를 Firestore에 추가하는 함수
-    func addConnection(connection: ServerConnection, completion: @escaping (Result<Void, Error>) -> Void) {
+    func addConnection(connection: ConnectionDTO, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            let _ = try db.collection("connections").document(connection.id ?? UUID().uuidString).setData(from: connection)
+            let _ = try db.collection("connections").addDocument(from: connection)
             completion(.success(()))
         } catch let error {
             completion(.failure(error))
@@ -111,9 +107,9 @@ class FirestoreService {
     }
     
     // ServerPhoto 데이터를 Firestore에 추가하는 함수
-    func addPhoto(photo: ServerPhoto, completion: @escaping (Result<Void, Error>) -> Void) {
+    func addPhoto(photo: PhotoDTO, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
-            let _ = try db.collection("photos").document(photo.id ?? UUID().uuidString).setData(from: photo)
+            let _ = try db.collection("photos").addDocument(from: photo)
             completion(.success(()))
         } catch let error {
             completion(.failure(error))
