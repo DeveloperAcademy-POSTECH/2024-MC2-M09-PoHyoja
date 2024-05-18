@@ -10,48 +10,44 @@ import PhotosUI
 
 struct GalleryPicker: UIViewControllerRepresentable {
     @Binding var selectedImageData: Data?
+    @Environment(\.presentationMode) var presentationMode
 
-    func makeUIViewController(context: Context) -> PHPickerViewController {
-        let configuration = PHPickerConfiguration()
-                let picker = PHPickerViewController(configuration: configuration)
-                picker.delegate = context.coordinator
-                return picker
+    func makeUIViewController(context: Context) -> UIImagePickerController {
+        let picker = UIImagePickerController()
+        picker.sourceType = .photoLibrary
+        picker.delegate = context.coordinator
+        picker.toolbar.isHidden = true
+        return picker
     }
 
-    func updateUIViewController(_ uiViewController: PHPickerViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
-    class Coordinator: NSObject, PHPickerViewControllerDelegate {
+    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
         var parentGalleryPicker: GalleryPicker
 
         init(_ parent: GalleryPicker) {
             self.parentGalleryPicker = parent
         }
 
-        func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             picker.dismiss(animated: true)
-            guard let provider = results.first?.itemProvider else { return }
-            if provider.canLoadObject(ofClass: UIImage.self) {
-                provider.loadObject(ofClass: UIImage.self) { image, error in
-                    DispatchQueue.main.async {
-                        if let uiImage = image as? UIImage {
-                            self.parentGalleryPicker.selectedImageData = uiImage.jpegData(compressionQuality: 1.0)
-                        }
-                    }
-                }
+            if let image = info[.originalImage] as? UIImage {
+                parentGalleryPicker.selectedImageData = image.jpegData(compressionQuality: 1.0)
             }
+        }
+
+        func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+            picker.dismiss(animated: true)
         }
     }
 }
 
 struct TempChildSelectGalleryView: View {
-    //@State private var selectedItem: PhotosPickerItem? = nil
-    //@State private var selectedImage: Data? = nil
     @State private var selectedImageData: Data? = nil
-    //@State private var isShowingSendGalleryView = false
     
     var body: some View {
         // 일단 Temp파일로서, NavigationStack으로 사용
@@ -72,7 +68,6 @@ struct TempChildSelectGalleryView: View {
                 }
                 
                 NavigationLink(destination: TempChildSendGalleryView(imageData: $selectedImageData)) {
-                    //EmptyView()
                 }
             }
             .navigationTitle("최근 사진")
