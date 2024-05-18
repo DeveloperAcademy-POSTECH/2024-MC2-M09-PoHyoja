@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
 		421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */; };
-		421A8C602BF8BEA3003C7001 /* ModelDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5F2BF8BEA3003C7001 /* ModelDTO.swift */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046702BF5DD840097EB0B /* SelectRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466F2BF5DD840097EB0B /* SelectRoleView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
@@ -138,12 +137,21 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		55722D252BF8D12300A9B786 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				421A8C5F2BF8BEA3003C7001 /* ModelDTO.swift */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		55B5E3572BF5A13E00E413C6 = {
 			isa = PBXGroup;
 			children = (
 				559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */,
 				55B5E3622BF5A13E00E413C6 /* PicCharge */,
 				55B5E3612BF5A13E00E413C6 /* Products */,
+				55722D252BF8D12300A9B786 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -278,7 +286,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				421A8C602BF8BEA3003C7001 /* ModelDTO.swift in Sources */,
 				428046842BF5DFA50097EB0B /* ChildAlbumDetailView.swift in Sources */,
 				428046782BF5DE830097EB0B /* ChildCameraView.swift in Sources */,
 				55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */,
