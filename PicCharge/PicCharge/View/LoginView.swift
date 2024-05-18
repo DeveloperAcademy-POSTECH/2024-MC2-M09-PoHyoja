@@ -11,7 +11,7 @@ struct LoginView: View {
     @Environment(NavigationManager.self) var navigationManager
     
     var body: some View {
-        NavigationView {
+        VStack {
             Text("로그인/회원가입 화면")
             Button("애플 로그인") {
                 navigationManager.push(to: .selectRole)
@@ -19,7 +19,6 @@ struct LoginView: View {
         }
     }
 }
-
 
 #Preview {
     LoginView()
