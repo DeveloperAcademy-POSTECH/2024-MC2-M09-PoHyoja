@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		421A8C592BF87C29003C7001 /* ColorTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C582BF87C29003C7001 /* ColorTestView.swift */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046702BF5DD840097EB0B /* SelectRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466F2BF5DD840097EB0B /* SelectRoleView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
@@ -34,6 +35,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		421A8C582BF87C29003C7001 /* ColorTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorTestView.swift; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4280466F2BF5DD840097EB0B /* SelectRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRoleView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				55EC1FE52BF6393900564952 /* ViewModel */,
 				55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */,
 				4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */,
+				421A8C582BF87C29003C7001 /* ColorTestView.swift */,
 				4280466C2BF5DD5B0097EB0B /* View */,
 				51E239D82BF636700051943D /* Model */,
 				55B5E3672BF5A13F00E413C6 /* Assets.xcassets */,
@@ -242,6 +245,7 @@
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,
+				421A8C592BF87C29003C7001 /* ColorTestView.swift in Sources */,
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
