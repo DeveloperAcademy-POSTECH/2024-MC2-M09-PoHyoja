@@ -32,9 +32,7 @@
 		559AB76E2BF8434300FF216B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76D2BF8434300FF216B /* FirebaseStorageCombine-Community */; };
 		559AB7702BF8478800FF216B /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB76F2BF8478800FF216B /* FirestoreService.swift */; };
 		559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */; };
-		559AB7742BF84F6C00FF216B /* ServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB7732BF84F6C00FF216B /* ServerModel.swift */; };
-		559AB7762BF8561A00FF216B /* UsersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB7752BF8561A00FF216B /* UsersViewModel.swift */; };
-		559AB7782BF85BBE00FF216B /* Model+ToServerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB7772BF85BBE00FF216B /* Model+ToServerModel.swift */; };
+		559AB7742BF84F6C00FF216B /* ModelDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB7732BF84F6C00FF216B /* ModelDTO.swift */; };
 		55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */; };
 		55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3652BF5A13E00E413C6 /* ContentView.swift */; };
 		55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
@@ -64,9 +62,7 @@
 		51E239D92BF636920051943D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		559AB76F2BF8478800FF216B /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		559AB7732BF84F6C00FF216B /* ServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerModel.swift; sourceTree = "<group>"; };
-		559AB7752BF8561A00FF216B /* UsersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersViewModel.swift; sourceTree = "<group>"; };
-		559AB7772BF85BBE00FF216B /* Model+ToServerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Model+ToServerModel.swift"; sourceTree = "<group>"; };
+		559AB7732BF84F6C00FF216B /* ModelDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDTO.swift; sourceTree = "<group>"; };
 		55B5E3602BF5A13E00E413C6 /* PicCharge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicCharge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicChargeApp.swift; sourceTree = "<group>"; };
 		55B5E3652BF5A13E00E413C6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -120,8 +116,7 @@
 			isa = PBXGroup;
 			children = (
 				51E239D92BF636920051943D /* Model.swift */,
-				559AB7772BF85BBE00FF216B /* Model+ToServerModel.swift */,
-				559AB7732BF84F6C00FF216B /* ServerModel.swift */,
+				559AB7732BF84F6C00FF216B /* ModelDTO.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -170,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				55EC1FE92BF6397700564952 /* LoginViewModel.swift */,
-				559AB7752BF8561A00FF216B /* UsersViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -277,15 +271,13 @@
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
 				428046702BF5DD840097EB0B /* SelectRoleView.swift in Sources */,
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
-				559AB7742BF84F6C00FF216B /* ServerModel.swift in Sources */,
+				559AB7742BF84F6C00FF216B /* ModelDTO.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */,
-				559AB7782BF85BBE00FF216B /* Model+ToServerModel.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
-				559AB7762BF8561A00FF216B /* UsersViewModel.swift in Sources */,
 				51E239DA2BF636920051943D /* Model.swift in Sources */,
 				428046802BF5DF520097EB0B /* ChildLoadingView.swift in Sources */,
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
