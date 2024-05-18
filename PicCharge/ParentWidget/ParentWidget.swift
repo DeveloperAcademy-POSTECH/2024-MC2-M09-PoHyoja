@@ -5,49 +5,38 @@
 //  Created by 김도현 on 5/19/24.
 //
 
-import WidgetKit
 import SwiftUI
-
-struct Provider: AppIntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent())
-    }
-
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration)
-    }
-    
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
-
-        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
-        let currentDate = Date()
-        for hourOffset in 0 ..< 5 {
-            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
-            let entry = SimpleEntry(date: entryDate, configuration: configuration)
-            entries.append(entry)
-        }
-
-        return Timeline(entries: entries, policy: .atEnd)
-    }
-}
+import WidgetKit
 
 struct SimpleEntry: TimelineEntry {
     let date: Date
-    let configuration: ConfigurationAppIntent
+    let image: UIImage
 }
 
-struct ParentWidgetEntryView : View {
-    var entry: Provider.Entry
+struct ImageProvider: TimelineProvider {
+    func placeholder(in context: Context) -> SimpleEntry {
+        SimpleEntry(date: Date(), image: UIImage())
+    }
 
-    var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
+    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
+        let entry = SimpleEntry(date: Date(), image: UIImage())
+        completion(entry)
+    }
 
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
+        var entries: [SimpleEntry] = []
+        let url = URL(string: "https://img.movist.com/?img=/x00/00/00/20_p1.jpg")!
+
+        let task = URLSession.shared.dataTask(with: url) { (data, _, _) in
+            if let data = data, let image = UIImage(data: data) {
+                let entry = SimpleEntry(date: Date(), image: image)
+                entries.append(entry)
+                
+                let timeline = Timeline(entries: entries, policy: .atEnd)
+                completion(timeline)
+            }
         }
+        task.resume()
     }
 }
 
@@ -55,31 +44,14 @@ struct ParentWidget: Widget {
     let kind: String = "ParentWidget"
 
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
-            ParentWidgetEntryView(entry: entry)
-                .containerBackground(.fill.tertiary, for: .widget)
+        StaticConfiguration(kind: kind, provider: ImageProvider()) { entry in
+            Image(uiImage: entry.image)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
         }
+        .configurationDisplayName("PicCharge")
+        .description("필요하면 나중에 설명 추가하기")
         .supportedFamilies([.systemLarge])
     }
 }
 
-extension ConfigurationAppIntent {
-    fileprivate static var smiley: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "😀"
-        return intent
-    }
-    
-    fileprivate static var starEyes: ConfigurationAppIntent {
-        let intent = ConfigurationAppIntent()
-        intent.favoriteEmoji = "🤩"
-        return intent
-    }
-}
-
-#Preview(as: .systemSmall) {
-    ParentWidget()
-} timeline: {
-    SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
-}
