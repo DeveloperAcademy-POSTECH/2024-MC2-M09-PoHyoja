@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct ServerDTO: Identifiable, Codable {
+struct UserDTO: Identifiable, Codable {
     @DocumentID var id: String?  // Firestore의 문서 ID와 매핑
     var role: Role?
     var email: String
