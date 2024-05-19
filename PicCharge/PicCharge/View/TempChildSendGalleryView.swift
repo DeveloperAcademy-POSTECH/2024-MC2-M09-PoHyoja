@@ -13,7 +13,6 @@ struct TempChildSendGalleryView: View {
     @Environment(\.dismiss) var dismiss
     
     var body: some View {
-        // 일단 Temp파일로서, NavigationStack으로 사용
         VStack {
             if let imageData = imageData,
                let uiImage = UIImage(data: imageData) {
