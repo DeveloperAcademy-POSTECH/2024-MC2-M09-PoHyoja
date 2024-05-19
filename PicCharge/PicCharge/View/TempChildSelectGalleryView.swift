@@ -38,7 +38,7 @@ struct GalleryPickerView: UIViewControllerRepresentable {
             
             // MARK: 이미지 선택시 jpeg으로 압축
             if let image = info[.originalImage] as? UIImage {
-                parentGalleryPicker.selectedImageData = image.jpegData(compressionQuality: 1.0)
+                parentGalleryPicker.selectedImageData = image.jpegData(compressionQuality: 0.1)
             }
         }
 
