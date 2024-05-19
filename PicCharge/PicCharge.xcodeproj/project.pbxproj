@@ -31,6 +31,7 @@
 		55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */; };
 		55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE72BF6396D00564952 /* LoginService.swift */; };
 		55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE92BF6397700564952 /* LoginViewModel.swift */; };
+		E3FA285C2BF6EA95007291C6 /* TempChildAlbumView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3FA285B2BF6EA95007291C6 /* TempChildAlbumView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		55EC1FE72BF6396D00564952 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		55EC1FE92BF6397700564952 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		E3FA285B2BF6EA95007291C6 /* TempChildAlbumView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildAlbumView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +77,7 @@
 		4280466C2BF5DD5B0097EB0B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E3FA285B2BF6EA95007291C6 /* TempChildAlbumView.swift */,
 				55B5E3652BF5A13E00E413C6 /* ContentView.swift */,
 				4280466D2BF5DD720097EB0B /* LoginView.swift */,
 				4280466F2BF5DD840097EB0B /* SelectRoleView.swift */,
@@ -234,6 +237,7 @@
 				55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */,
 				4280467A2BF5DEBA0097EB0B /* ChildSendCameraView.swift in Sources */,
 				4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */,
+				E3FA285C2BF6EA95007291C6 /* TempChildAlbumView.swift in Sources */,
 				4280467E2BF5DF270097EB0B /* ChildSendGalleryView.swift in Sources */,
 				428046862BF5DFFF0097EB0B /* ParentAlbumView.swift in Sources */,
 				428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */,
