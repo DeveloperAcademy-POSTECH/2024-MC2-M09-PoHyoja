@@ -13,19 +13,19 @@ struct ChildTabView: View {
             Group {
                 ChildMainView()
                     .tabItem {
-                        Image(systemName: Icon.heartBolt)
+                        Icon.heartBolt
                         Text("Main")
                     }
                 
                 ChildAlbumView()
                     .tabItem {
-                        Image(systemName: Icon.album)
+                        Icon.album
                         Text("Album")
                     }
                 
                 SettingView()
                     .tabItem {
-                        Image(systemName: Icon.setting)
+                        Icon.setting
                         Text("My")
                     }.background(.bgPrimary)
             }
