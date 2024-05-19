@@ -48,26 +48,24 @@ struct GalleryPicker: UIViewControllerRepresentable {
 
 struct TempChildSelectGalleryView: View {
     @State private var selectedImageData: Data? = nil
+    @State private var navigateToSendGalleryView = false
     
     var body: some View {
         // 일단 Temp파일로서, NavigationStack으로 사용
-        NavigationStack {
+        NavigationStack { 
             VStack {
                 if let selectedImageData,
-                   let uiImage = UIImage(data: selectedImageData) {
-                    Image(uiImage: uiImage)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 360, height: 360)
-                        .clipShape(RoundedRectangle(cornerRadius: 21))
-                        .clipped()
+                   let uiImage = UIImage(data: selectedImageData) {                    NavigationLink(destination: TempChildSendGalleryView(imageData: $selectedImageData), isActive: $navigateToSendGalleryView) {
+                        EmptyView()
+                    }
+                    .hidden()
+                    .onAppear() {
+                        navigateToSendGalleryView = true
+                    }
                 } else {
                     GalleryPicker(selectedImageData: $selectedImageData)
                         .frame(maxHeight: .infinity)
                     Spacer()
-                }
-                
-                NavigationLink(destination: TempChildSendGalleryView(imageData: $selectedImageData)) {
                 }
             }
             .navigationTitle("최근 사진")
