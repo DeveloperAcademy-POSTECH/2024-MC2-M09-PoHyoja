@@ -58,7 +58,6 @@ struct TempChildSelectGalleryView: View {
                    let uiImage = UIImage(data: selectedImageData) {                    NavigationLink(destination: TempChildSendGalleryView(imageData: $selectedImageData), isActive: $navigateToSendGalleryView) {
                         EmptyView()
                     }
-                    .hidden()
                     .onAppear() {
                         navigateToSendGalleryView = true
                     }
