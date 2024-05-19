@@ -8,7 +8,7 @@
 import SwiftUI
 import PhotosUI
 
-struct GalleryPicker: UIViewControllerRepresentable {
+struct GalleryPickerView: UIViewControllerRepresentable {
     @Binding var selectedImageData: Data?
     @Environment(\.presentationMode) var presentationMode
 
@@ -27,9 +27,9 @@ struct GalleryPicker: UIViewControllerRepresentable {
     }
 
     class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
-        var parentGalleryPicker: GalleryPicker
+        var parentGalleryPicker: GalleryPickerView
 
-        init(_ parent: GalleryPicker) {
+        init(_ parent: GalleryPickerView) {
             self.parentGalleryPicker = parent
         }
 
@@ -51,31 +51,28 @@ struct GalleryPicker: UIViewControllerRepresentable {
 struct TempChildSelectGalleryView: View {
     // MARK: 아래 두 변수는 NavigationPath 적용 전 NavigationStack으로 이미지를 넘겨줄 때 사용되는 변수
     // MARK: 실제 작업 시 삭제 혹은 수정이 필요
-    @State private var selectedImageData: Data? = nil
+    @State private var selectedImageData: Data?
     @State private var navigateToSendGalleryView = false
     
     var body: some View {
-        // MARK: Temp파일로, NavigationStack을 사용,
+        // MARK: Temp파일로, NavigationStack을 사용
         NavigationStack {
             VStack {
-                if let selectedImageData,
-                   let uiImage = UIImage(data: selectedImageData) {                    
-                    NavigationLink(destination: TempChildSendGalleryView(imageData: $selectedImageData), isActive: $navigateToSendGalleryView) {
-                       EmptyView()
-                   }
-                   .onAppear() {
-                       navigateToSendGalleryView = true
-                   }
+                if let imageData = selectedImageData {
+                    NavigationLink(destination: TempChildSendGalleryView(imageData: imageData), isActive: $navigateToSendGalleryView) {
+                        EmptyView()
+                    }
+                    .onAppear {
+                        navigateToSendGalleryView = true
+                    }
                 } else {
-                    GalleryPicker(selectedImageData: $selectedImageData)
-                        .frame(maxHeight: .infinity)
-                    Spacer()
+                    GalleryPickerView(selectedImageData: $selectedImageData)
+                        .ignoresSafeArea()
                 }
             }
             .navigationTitle("최근 사진")
             .navigationBarTitleDisplayMode(.inline)
         }
-        .preferredColorScheme(.dark)
     }
 }
 
