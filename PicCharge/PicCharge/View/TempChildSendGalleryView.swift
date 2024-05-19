@@ -28,7 +28,7 @@ struct TempChildSendGalleryView: View {
                     .padding()
             }
         }
-        //.navigationTitle("")
+        .navigationBarBackButtonHidden(true)
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button("다시 선택하기") {
