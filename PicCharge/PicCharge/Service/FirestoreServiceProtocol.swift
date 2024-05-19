@@ -9,7 +9,7 @@ import Foundation
 
 protocol FirestoreServiceProtocol {
     // 사진 리스트 조회: 자식 유저 정보를 기준으로 업로드된 사진을 불러옵니다.
-    func fetchPhotos(user: User) async throws -> [Photo]
+    func fetchPhotos(user: User) async throws -> [Photo]?
 
     // 사진 추가: 자식 유저 정보를 기준으로 DB에 사진을 업로드합니다.
     func addPhoto(user: User, photo: Photo) async throws
@@ -22,7 +22,7 @@ protocol FirestoreServiceProtocol {
     func deletePhoto(photo: Photo) async throws
     
     // 유저 조회: (자식/부모)유저 아이디를 기준으로 DB에서 유저 정보를 불러옵니다. 입력된 아이디를 포함하는 모든 계정 정보를 리턴합니다.
-    func fetchUsers(userId: String) async throws -> [User]
+    func fetchUsers(searchId: String) async throws -> [User]
     
     // 유저 추가: (자식/부모)유저 정보를 기준으로 DB에 유저를 추가합니다.
     func addUser(user: User) async throws

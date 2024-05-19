@@ -13,6 +13,19 @@ struct UserDTO: Identifiable, Codable {
     var role: Role?
     var email: String
     var uploadCycle: Int?
+    
+    // Child, Parent -> UserDTO 변환 로직
+    init(user: User) {
+        self.id = user.id
+        self.role = user.role
+        self.email = user.email
+        
+        if let child = user as? Child {
+            self.uploadCycle = child.uploadCycle
+        } else {
+            self.uploadCycle = nil
+        }
+    }
 }
 
 enum ConnectionRequestStatus: String, Codable {
