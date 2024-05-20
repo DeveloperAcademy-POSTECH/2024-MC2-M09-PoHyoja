@@ -6,34 +6,31 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
 enum Role: String, CaseIterable, Codable {
     case parent
     case child
 }
 
-protocol User {
-    var id: String? { get }
-    var email: String { get }
-    var role: Role { get }
-    var connectedTo: [User] { get set }
-}
-
-struct Parent: User {
-    var id: String?
+struct User: Identifiable, Codable {
+    @DocumentID var id: String?
     var email: String
     var role: Role
     var connectedTo: [User]
+    var uploadCycle: Int?
 }
 
-struct Child: User {
-    var id: String?
-    var email: String
-    var role: Role
-    var connectedTo: [User]
-    
-    var uploadCycle: Int
-}
+//extension User {
+//    init(from dto: UserDTO) {
+//        self.id = dto.id
+//        self.email = dto.email
+//        self.role = dto.role
+//        self.connectedTo = [] // TODO: 연결된 자식 User 넣기
+//        self.uploadCycle = dto.uploadCycle ?? 3
+//    }
+//}
+
 
 struct Photo: Identifiable {
     // 목업 생성 예시 let photos = Photo.mockup.chunked(into: 3)
@@ -53,4 +50,17 @@ struct Photo: Identifiable {
             Photo(id: UUID(), uploadBy: uploadBy, uploadDate: uploadDate, urlString: urlString, likeCount: $0)
         }
     }()
+}
+
+extension Photo {
+    init(from dto: PhotoDTO) throws {
+        guard let idString = dto.id, let id = UUID(uuidString: idString) else {
+            throw FirestoreServiceError.invalidUUID
+        }
+        self.id = id
+        self.uploadBy = dto.uploadBy
+        self.uploadDate = dto.uploadDate
+        self.urlString = dto.urlString
+        self.likeCount = dto.likeCount
+    }
 }

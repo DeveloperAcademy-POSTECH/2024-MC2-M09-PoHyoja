@@ -22,14 +22,14 @@ protocol FirestoreServiceProtocol {
     ///   - parent: 사용자와 연결된 부모 유저
     ///   - photo: 업로드 할 사진.
     ///   photo 에는 올바른 id, uploadBy, uploadDate, urlString, likeCount 가 모두 저장되어 있어야 한다.
-    func addPhoto(child: Child, parent: Parent, imageData: Data) async throws
+    func addPhoto(child: User, parent: User, imageData: Data) async throws
 
     /// 사진 변경(좋아요 수 추가): 사진 정보를 기준으로 DB의 좋아요를 변경합니다.
     /// - Parameters:
     ///   - user: 유저 본인 (부모)
     ///   - photo: 좋아요 수 변경할 사진
     ///   - plusLikeCount: 추가할 좋아요 개수
-    func updatePhotoLikeCount(user: Parent, of photo: Photo, by plusLikeCount: Int) async throws
+    func updatePhotoLikeCount(user: User, of photo: Photo, by plusLikeCount: Int) async throws
     
     
     /// 사진 삭제: 사진 정보를 기준으로 DB에서 사진을 삭제합니다.
@@ -39,7 +39,7 @@ protocol FirestoreServiceProtocol {
     /// 사용자 본인의 반대 역할이고, 아이디가 searchId로 시작하는 아이디를 모두 찾아서 반환합니다. 찾지 못할경우 userNotFound 예외를 발생합니다.
     func fetchSerchedUsers(searchUserId: String) async throws -> [User]
     
-    /// 유저 추가: (자식/부모)유저 정보를 기준으로 DB에 유저를 추가합니다.
+    /// 유저 추가: (자식/부모)유저 정보를 기준으로 DB에 유저를 추가합니다.   아이디가 중복일 경우 다시 회원가입 해야 합니다.
     /// - Parameters:
     ///   - user: 유저의 정보 (이메일과 아이디는 정확한 정보가 담겨있어야 한다.
     ///
