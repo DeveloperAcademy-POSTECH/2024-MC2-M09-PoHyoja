@@ -11,7 +11,7 @@ import SwiftUI
 struct PicChargeApp: App {
     var body: some Scene {
         WindowGroup {
-            TempChildCameraView()
+            ContentView()
         }
     }
 }
