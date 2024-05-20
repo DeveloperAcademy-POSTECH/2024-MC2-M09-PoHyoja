@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct AsyncImageView: View {
+struct TempAsyncImageView: View {
     @State private var image: UIImage? = nil
     private let urlString: String
     
@@ -47,5 +47,5 @@ struct AsyncImageView: View {
     }
 }
 #Preview {
-    AsyncImageView(urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsNICnidsWi7x-UmXHlkEz-8VUeKwmJSg86Xli4i-26A&s")
+    TempAsyncImageView(urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsNICnidsWi7x-UmXHlkEz-8VUeKwmJSg86Xli4i-26A&s")
 }
