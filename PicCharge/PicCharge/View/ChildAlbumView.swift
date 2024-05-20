@@ -33,7 +33,7 @@ struct ChildAlbumView: View {
                                 .font(.headline)
                                 .foregroundStyle(.txtVibrantSecondary)
                             
-                            TempAsyncImageView(urlString: last.urlString)
+                            AsyncImageView(urlString: last.urlString)
                                 .frame(width: geometry.size.width - 32, height: geometry.size.width - 32)
                                 .clipped()
                                 .cornerRadius(10.0)
@@ -48,7 +48,7 @@ struct ChildAlbumView: View {
                             
                             LazyVGrid(columns: columnLayout, spacing: 3) {
                                 ForEach(photos) { photo in
-                                    TempAsyncImageView(urlString: photo.urlString)
+                                    AsyncImageView(urlString: photo.urlString)
                                         .frame(width: (geometry.size.width - 32) / 3, height: (geometry.size.width - 32) / 3)
                                         .clipped()
                                 }
