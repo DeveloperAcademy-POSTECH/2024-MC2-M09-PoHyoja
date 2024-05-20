@@ -42,6 +42,9 @@ struct ChildMainView: View {
             .ignoresSafeArea()
             
             VStack(spacing: 12) {
+                Divider()
+                    .padding(.bottom, 10)
+                
                 HStack(spacing: 12) {
                     Button {
                         navigationManager.push(to: .childSelectGallery)
@@ -292,7 +295,9 @@ struct ChildMainView: View {
 }
 
 #Preview {
-    ChildMainView()
-        .environment(NavigationManager())
-        .preferredColorScheme(.dark)
+    NavigationStack {
+        ChildMainView()
+            .environment(NavigationManager())
+            .preferredColorScheme(.dark)
+    }
 }
