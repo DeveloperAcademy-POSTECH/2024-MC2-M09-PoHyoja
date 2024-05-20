@@ -19,12 +19,13 @@ struct ChildMainView: View {
     
     @Environment(NavigationManager.self) var navigationManager
     
-    @State private var batteryRrecent: Double = 20
+    @State private var batteryPercent: Double = 20
     @State private var totalLikeCount: Int = 1223
     @State private var totalUploadCount: Int = 320
     @State private var uploadCycle: Int = 3
     @State private var lastUploaded: Date = Calendar.current.date(byAdding: .hour, value: -28, to: Date())!
-    @State private var isAnimating: Bool = false
+    @State private var isGaugeAnimating: Bool = false
+    @State private var infoPage: Int = 1
     
     var body: some View {
         ZStack {
@@ -38,6 +39,7 @@ struct ChildMainView: View {
                 
                 Spacer()
             }
+            .ignoresSafeArea()
             
             VStack(spacing: 12) {
                 HStack(spacing: 12) {
@@ -56,50 +58,45 @@ struct ChildMainView: View {
                     } label: {
                         NavigationButtonLabel(
                             for: "사진 찍기",
-                            Icon: Icon.camera, 
+                            Icon: Icon.camera,
                             bgColor: .accent
                         )
                     }
                 }
+                .padding(.horizontal, 16)
                 
-                BatteryInfoView(percent: batteryRrecent, date: lastUploaded)
-                
-                VStack(spacing: 11) {
-                    InfoView(
-                        Icon: Icon.goal,
-                        label: "목표",
-                        content: "\(uploadCycle)일에 1장 보내기",
-                        tintColor: .grpTeal
-                    )
-                    .frame(height: 112)
-                    
-                    HStack(spacing: 11) {
-                        InfoView(
-                            Icon: Icon.heart,
-                            label: "누적 좋아요 수",
-                            content: "\(totalLikeCount)개",
-                            tintColor: .grpRed
-                        )
-                        InfoView(
-                            Icon: Icon.upload,
-                            label: "누적 업로드 수",
-                            content: "\(totalUploadCount)장",
-                            tintColor: .grpOrange
-                        )
+                TabView(selection: $infoPage) {
+                    Group {
+                        VStack {
+                            BatteryPageView(percent: batteryPercent, date: lastUploaded)
+                            Spacer()
+                        }
+                        .tag(1)
+                        
+                        VStack {
+                            GoalPageView()
+                            Spacer()
+                        }
+                        .tag(2)
                     }
-                    .frame(height: 128)
+                    .padding(.horizontal, 16)
                 }
-                .padding(8)
-                .background(Color.bgPrimaryElevated)
-                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .frame(height: 300)
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+                .tabViewStyle(.page(indexDisplayMode: .always))
+                .onTapGesture {
+                    withAnimation {
+                        infoPage = infoPage == 1 ? 2 : 1
+                    }
+                }
+                
+                Spacer()
             }
-            .padding(.horizontal, 16)
         }
-        .ignoresSafeArea()
     }
     
     @ViewBuilder
-    func BatteryInfoView(percent: Double, date lastUploaded: Date) -> some View {
+    func BatteryPageView(percent: Double, date lastUploaded: Date) -> some View {
         ZStack {
             VStack {
                 HStack {
@@ -139,6 +136,39 @@ struct ChildMainView: View {
     }
     
     @ViewBuilder
+    func GoalPageView() -> some View {
+        VStack(spacing: 11) {
+            InfoView(
+                Icon: Icon.goal,
+                label: "목표",
+                content: "\(uploadCycle)일에 1장 보내기",
+                tintColor: .grpTeal
+            )
+            .frame(height: 112)
+            
+            HStack(spacing: 11) {
+                InfoView(
+                    Icon: Icon.heart,
+                    label: "누적 좋아요 수",
+                    content: "\(totalLikeCount)개",
+                    tintColor: .grpRed
+                )
+                InfoView(
+                    Icon: Icon.upload,
+                    label: "누적 업로드 수",
+                    content: "\(totalUploadCount)장",
+                    tintColor: .grpOrange
+                )
+            }
+            .frame(height: 128)
+        }
+        .padding(8)
+        .frame(height: 267)
+        .background(Color.bgPrimaryElevated)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+    
+    @ViewBuilder
     func BatteryGaugeBarView(percent: Double) -> some View {
         ZStack {
             // 뒤쪽 배경 게이지
@@ -165,7 +195,7 @@ struct ChildMainView: View {
             Circle()
                 .trim(
                     from: CGCircleGaugeFloat.bottom.rawValue,
-                    to: isAnimating
+                    to: isGaugeAnimating
                         ? CGCircleGaugeFloat.bottom.add(for: percent)
                         : CGCircleGaugeFloat.bottom.rawValue
                 )
@@ -193,11 +223,11 @@ struct ChildMainView: View {
                 .offset(y: 52)
                 .onAppear {
                     withAnimation(.easeOut(duration: 0.5)) {
-                        self.isAnimating = true
+                        self.isGaugeAnimating = true
                     }
                 }
                 .onDisappear {
-                    self.isAnimating = false
+                    self.isGaugeAnimating = false
                 }
         }
     }
