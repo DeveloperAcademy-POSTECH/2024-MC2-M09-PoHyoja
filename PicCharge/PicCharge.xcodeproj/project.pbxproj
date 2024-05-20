@@ -31,7 +31,6 @@
 		4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */; };
 		51A289572BF883C90035A0F1 /* TempChildSelectGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A289562BF883C90035A0F1 /* TempChildSelectGalleryView.swift */; };
 		51A289592BF88B100035A0F1 /* TempChildSendGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A289582BF88B100035A0F1 /* TempChildSendGalleryView.swift */; };
-		512F7C7A2BF71D7900D48EDB /* TempSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F7C792BF71D7900D48EDB /* TempSettingView.swift */; };
 		51E239DA2BF636920051943D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E239D92BF636920051943D /* Model.swift */; };
 		559AB7662BF8434300FF216B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7652BF8434300FF216B /* FirebaseAuth */; };
 		559AB7682BF8434300FF216B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7672BF8434300FF216B /* FirebaseFirestore */; };
@@ -76,7 +75,6 @@
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		51A289562BF883C90035A0F1 /* TempChildSelectGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildSelectGalleryView.swift; sourceTree = "<group>"; };
 		51A289582BF88B100035A0F1 /* TempChildSendGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildSendGalleryView.swift; sourceTree = "<group>"; };
-		512F7C792BF71D7900D48EDB /* TempSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempSettingView.swift; sourceTree = "<group>"; };
 		51E239D92BF636920051943D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		559AB76F2BF8478800FF216B /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -141,7 +139,6 @@
 				4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */,
 				51A289562BF883C90035A0F1 /* TempChildSelectGalleryView.swift */,
 				51A289582BF88B100035A0F1 /* TempChildSendGalleryView.swift */,
-				512F7C792BF71D7900D48EDB /* TempSettingView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -311,7 +308,6 @@
 				4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */,
 				E3FA285C2BF6EA95007291C6 /* TempChildAlbumView.swift in Sources */,
 				559AB7702BF8478800FF216B /* FirestoreService.swift in Sources */,
-				512F7C7A2BF71D7900D48EDB /* TempSettingView.swift in Sources */,
 				4280467E2BF5DF270097EB0B /* ChildSendGalleryView.swift in Sources */,
 				428046862BF5DFFF0097EB0B /* ParentAlbumView.swift in Sources */,
 				421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */,
@@ -470,7 +466,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -500,7 +496,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
