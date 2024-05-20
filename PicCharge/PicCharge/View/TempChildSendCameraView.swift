@@ -13,15 +13,16 @@ struct TempChildSendCameraView: View {
     
     var body: some View {
         VStack {
+            Spacer()
             if let image = image {
                 image
                     .resizable()
                     .aspectRatio(1.0, contentMode: .fit)
                     .cornerRadius(21)
                     .padding()
-                // CameraPreview와 같은 선상에 배치하기 위한 값
-                    .offset(y: -72)
             }
+            Spacer(minLength: 220)
+            
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
