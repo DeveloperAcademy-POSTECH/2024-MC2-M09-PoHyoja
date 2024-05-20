@@ -39,6 +39,14 @@ struct ConnectUserView: View {
             .padding()
             .buttonStyle(.borderedProminent)
             
+            Button("서버에서 사용자 정보 가져오기") {
+                Task {
+                    await fetchAndUpdateUserInfo()
+                }
+            }
+            .padding()
+            .buttonStyle(.borderedProminent)
+            
             Button("홈으로") {
                 navigationManager.popToRoot()
             }
@@ -49,7 +57,10 @@ struct ConnectUserView: View {
             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
+}
+
     
+extension ConnectUserView {
     private func sendConnectionRequest() async {
         guard let currentUser = UserManager.shared.user, let userId = currentUser.id else {
             alertMessage = "사용자 ID를 찾을 수 없습니다."
@@ -87,18 +98,40 @@ struct ConnectUserView: View {
             updatedRequest.status = .accepted
             try await FirestoreService.shared.updateConnectionRequest(request: updatedRequest)
             print("Updated request: \(updatedRequest)")
-
+            
             let connectedUserId = try await FirestoreService.shared.fetchUser(by: request.from).id!
             print("Fetched connected user: \(connectedUserId)")
-
+            
             var updatedUser = currentUser
             updatedUser.connectedTo.append(connectedUserId)
             UserManager.shared.user = updatedUser
+            
+            try await FirestoreService.shared.updateUserConnections(user: updatedUser)
             
             alertMessage = "연결 요청이 승인되었습니다."
             showingAlert = true
         } catch {
             alertMessage = "연결 요청을 승인하는데 실패했습니다: \(error.localizedDescription)"
+            showingAlert = true
+        }
+    }
+    
+    private func fetchAndUpdateUserInfo() async {
+        guard let currentUser = UserManager.shared.user, let userId = currentUser.id else {
+            alertMessage = "사용자 ID를 찾을 수 없습니다."
+            showingAlert = true
+            return
+        }
+        
+        do {
+            let fetchedUser = try await FirestoreService.shared.fetchUser(by: userId)
+            DispatchQueue.main.async {
+                UserManager.shared.user = fetchedUser
+            }
+            alertMessage = "사용자 정보가 성공적으로 업데이트되었습니다."
+            showingAlert = true
+        } catch {
+            alertMessage = "사용자 정보를 가져오는데 실패했습니다: \(error.localizedDescription)"
             showingAlert = true
         }
     }

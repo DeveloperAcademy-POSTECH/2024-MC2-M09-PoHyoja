@@ -36,10 +36,10 @@ struct ContentView: View {
                     }
                     .disabled(isAutoLogined)
                     
-//                    Button("[로그인O] 역할선택화면으로") {
-//                        navigationManager.push(to: .selectRole)
-//                    }
-//                    .disabled(!(isAutoLogined && !isRoleSelected && !isConnected))
+                    //                    Button("[로그인O] 역할선택화면으로") {
+                    //                        navigationManager.push(to: .selectRole)
+                    //                    }
+                    //                    .disabled(!(isAutoLogined && !isRoleSelected && !isConnected))
                     
                     Button("[로그인O,역할O] 유저연결화면으로") {
                         navigationManager.push(to: .connectUser)
