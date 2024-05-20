@@ -12,47 +12,37 @@ struct TempChildSendCameraView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        ZStack {
-            Color.black.edgesIgnoringSafeArea(.all)
-            
-            Spacer()
-            
-            VStack {
-                if let image = image {
-                    image
-                        .resizable()
-                        .aspectRatio(1.0, contentMode: .fit)
-                        .cornerRadius(21)
-                        .padding()
-                } else {
-                    Color.black
+        VStack {
+            if let image = image {
+                image
+                    .resizable()
+                    .aspectRatio(1.0, contentMode: .fit)
+                    .cornerRadius(21)
+                    .padding()
+                // CameraPreview와 같은 선상에 배치하기 위한 값
+                    .offset(y: -72)
+            }
+        }
+        .toolbar {
+            ToolbarItemGroup(placement: .bottomBar) {
+                Button {
+                    //MARK: - NavigationPath 사용 전 이전 View로 돌아가긴 위한 dismiss()
+                    presentationMode.wrappedValue.dismiss()
+                } label: {
+                    Text("다시 찍기")
+                        .foregroundColor(.white)
                 }
-                
-                Spacer()
-                
-                HStack {
-                    Button(action: {
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("다시 찍기")
-                            .foregroundColor(.white)
-                            .padding()
-                    }
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        // 사진 보내기
-                    }) {
-                        Text("사진 보내기")
-                            .foregroundColor(.green) // 다크 모드 컬러 지정 필요
-                            .padding()
-                    }
+
+                Button {
+                    //MARK: - NavigationPath 사용 시 사진 전송 후, path에 .childMain 를 추가해야합니다.
+                } label: {
+                    Text("사진 보내기")
+                        .foregroundColor(.green) // 다크 모드 컬러 지정 필요
                 }
-                .padding()
             }
         }
         .navigationBarBackButtonHidden(true)
+        
     }
 }
 

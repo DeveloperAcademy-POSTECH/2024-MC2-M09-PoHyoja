@@ -79,9 +79,9 @@ struct TempChildCameraView: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .topBarLeading) {
-                    Button(action: {
-                        //MARK: - 자식 메인화면으로 이동 시키기
-                    }) {
+                    Button {
+                        //MARK: - NavigationPath 사용 시 path에 .childMain 를 추가해야합니다.
+                    } label: {
                         Image(systemName: "xmark")
                             .font(.system(size: 17))
                             .fontWeight(.semibold)
