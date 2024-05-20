@@ -8,31 +8,56 @@
 import SwiftUI
 
 struct ChildTabView: View {
-    var body: some View {
-        TabView {
-            ChildMainView()
-                .tabItem {
-                    Image(systemName: "1.square.fill")
-                    Text("Main")
-                }
-            
-            ChildAlbumView()
-                .tabItem {
-                    Image(systemName: "2.square.fill")
-                    Text("Album")
-                }
-            
-            SettingView()
-                .tabItem {
-                    Image(systemName: "3.square.fill")
-                    Text("My")
-                }
-            
+    @State private var tab: Int = 1
+    
+    var navigationTitle: String {
+        switch tab {
+        case 1: "픽-챠"
+        case 2: "앨범"
+        case 3: "설정"
+        default: ""
         }
+    }
+    
+    var body: some View {
+        TabView(selection: $tab) {
+            Group {
+                ChildMainView()
+                    .tabItem {
+                        Icon.heartBolt
+                        Text("Main")
+                    }
+                    .tag(1)
+                
+                ChildAlbumView()
+                    .tabItem {
+                        Icon.album
+                        Text("Album")
+                    }
+                    .tag(2)
+                
+                SettingView()
+                    .tabItem {
+                        Icon.setting
+                        Text("My")
+                    }
+                    .background(.bgPrimary)
+                    .tag(3)
+            }
+            .toolbarBackground(.bgPrimary, for: .tabBar)
+            .toolbarBackground(.visible, for: .tabBar)
+        }
+        .navigationBarBackButtonHidden()
+        .navigationBarTitleDisplayMode(.large)
+        .navigationTitle(navigationTitle)
     }
 }
 
 #Preview {
-    ChildTabView()
-        .environment(NavigationManager())
+    NavigationStack {
+        ChildTabView()
+            .navigationTitle("네비게이션 타이틀")
+    }
+    .environment(NavigationManager())
+    .preferredColorScheme(.dark)
 }
