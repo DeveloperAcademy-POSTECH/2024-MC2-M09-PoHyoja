@@ -34,4 +34,5 @@ struct ChildTabView: View {
 
 #Preview {
     ChildTabView()
+        .environment(NavigationManager())
 }

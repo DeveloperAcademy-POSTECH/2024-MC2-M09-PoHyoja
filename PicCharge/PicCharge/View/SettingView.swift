@@ -14,13 +14,13 @@ struct SettingView: View {
         List {
             Text("설정 화면")
             Button("이용약관") {
-                navigationManager.path.append(.settingTermsOfUse)
+                navigationManager.push(to: .settingTermsOfUse)
             }
             Button("로그아웃") {
-                
+                navigationManager.popToRoot()
             }
             Button("회원탈퇴") {
-                
+                navigationManager.popToRoot()
             }
         }
         

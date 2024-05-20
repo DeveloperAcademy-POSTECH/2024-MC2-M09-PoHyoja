@@ -14,7 +14,7 @@ struct LoginView: View {
         VStack {
             Text("로그인/회원가입 화면")
             Button("애플 로그인") {
-                navigationManager.path.append(.selectRole)
+                navigationManager.push(to: .selectRole)
             }
         }
     }
