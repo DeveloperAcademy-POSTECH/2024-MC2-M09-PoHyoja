@@ -15,14 +15,14 @@ struct TempChildCameraView: View {
     @StateObject var camera = CameraModel()
     @State private var isFlashOn = false
     @State private var isFrontCamera = false
-
+    
     var body: some View {
         NavigationStack {
             ZStack {
                 GeometryReader { geo in
                     VStack {
                         CameraPreview(camera: camera)
-                            .frame(width: geo.size.width, height: geo.size.width) // 정방형 프리뷰
+                            .frame(width: geo.size.width, height: geo.size.width)
                             .clipped()
                             .offset(y: 155)
                         Spacer()
@@ -44,9 +44,9 @@ struct TempChildCameraView: View {
                         Spacer()
                     }
                     .padding()
-
+                    
                     Spacer()
-           
+                    
                     HStack {
                         Button(action: {
                             isFlashOn.toggle()
@@ -74,7 +74,7 @@ struct TempChildCameraView: View {
                     }
                     .padding(.horizontal)
                     .padding(.bottom, 20)
-
+                    
                     
                     Button(action: {
                         camera.takePicture()
@@ -102,7 +102,6 @@ struct TempChildCameraView: View {
 }
 
 
-
 // CameraModel
 class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     @Published var isSessionRunning = false
@@ -119,6 +118,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         
         session = AVCaptureSession()
         session.beginConfiguration()
+        session.sessionPreset = .photo
         
         if let videoDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) {
             do {
@@ -209,12 +209,12 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             print("Error capturing photo: \(error)")
             return
         }
-        
+
         guard let imageData = photo.fileDataRepresentation(),
               let uiImage = UIImage(data: imageData),
               let rotatedImage = uiImage.fixedOrientation(),
               let ciImage = CIImage(image: rotatedImage) else { return }
-        
+
         if let croppedCIImage = ciImage.croppedToSquare() {
             let context = CIContext()
             if let cgImage = context.createCGImage(croppedCIImage, from: croppedCIImage.extent) {
@@ -312,7 +312,11 @@ struct CameraPreview: UIViewRepresentable {
         return view
     }
     
-    func updateUIView(_ uiView: UIView, context: Context) {}
+    func updateUIView(_ uiView: UIView, context: Context) {
+        if let previewLayer = uiView.layer.sublayers?.first as? AVCaptureVideoPreviewLayer {
+            previewLayer.frame = uiView.bounds
+        }
+    }
 }
 
 extension AVCaptureSession {
@@ -323,7 +327,6 @@ extension AVCaptureSession {
         view.layer.addSublayer(previewLayer)
     }
 }
-
 
 
 #Preview {
