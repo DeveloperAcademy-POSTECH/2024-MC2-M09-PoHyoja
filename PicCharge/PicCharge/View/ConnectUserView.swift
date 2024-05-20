@@ -88,11 +88,11 @@ struct ConnectUserView: View {
             try await FirestoreService.shared.updateConnectionRequest(request: updatedRequest)
             print("Updated request: \(updatedRequest)")
 
-            let connectedUser = try await FirestoreService.shared.fetchUser(by: request.from)
-            print("Fetched connected user: \(connectedUser)")
+            let connectedUserId = try await FirestoreService.shared.fetchUser(by: request.from).id!
+            print("Fetched connected user: \(connectedUserId)")
 
             var updatedUser = currentUser
-            updatedUser.connectedTo.append(connectedUser)
+            updatedUser.connectedTo.append(connectedUserId)
             UserManager.shared.user = updatedUser
             
             alertMessage = "연결 요청이 승인되었습니다."

@@ -39,8 +39,10 @@ extension SelectRoleView {
             // TODO: email 테스트
             let newUser = User(id: userId, email: "test@test.com", role: role, connectedTo: [], uploadCycle: role == .parent ? nil : 3)
             try await FirestoreService.shared.addUser(user: newUser)
-            UserManager.shared.user = newUser
-            navigationManager.push(to: .connectUser)
+            DispatchQueue.main.async {
+                UserManager.shared.user = newUser
+                navigationManager.push(to: .connectUser)
+            }
         } catch {
             // TODO: 오류 처리 로직 추가
         }

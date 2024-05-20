@@ -139,6 +139,7 @@ class FirestoreService: FirestoreServiceProtocol {
         }
         
         try db.collection("users").document(userId).setData(from: user)
+        print("User added with id: \(userId), data: \(user)")
     }
     
     func checkUserExists(userId: String) async throws -> Bool {

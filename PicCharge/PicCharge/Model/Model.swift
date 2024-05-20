@@ -17,8 +17,8 @@ struct User: Identifiable, Codable {
     @DocumentID var id: String?
     var email: String
     var role: Role
-    var connectedTo: [User]
-    var uploadCycle: Int?
+    var connectedTo: [String] = []
+    var uploadCycle: Int? = nil
 }
 
 //extension User {

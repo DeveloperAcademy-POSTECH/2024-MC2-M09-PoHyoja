@@ -34,9 +34,11 @@ class UserManager: ObservableObject {
     // 현재 사용자의 정보를 로컬에서 가져온다.
     private func loadUserFromDefaults() {
         guard let data = UserDefaults.standard.data(forKey: "currentUser") else { return }
+        print("로컬에서 가져온 데이터: \(data)")
         do {
             let user = try JSONDecoder().decode(User.self, from: data)
             self.user = user
+            print(user.id! + "불러옴")
         } catch {
             print("Failed to load user: \(error)")
         }
@@ -52,4 +54,10 @@ class UserManager: ObservableObject {
     func isLoggedIn() -> Bool {
         return user != nil
     }
+//    
+//    func resetUserDefaults() {
+//        let domain = Bundle.main.bundleIdentifier!
+//        UserDefaults.standard.removePersistentDomain(forName: domain)
+//        UserDefaults.standard.synchronize()
+//    }
 }
