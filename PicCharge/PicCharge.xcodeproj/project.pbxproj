@@ -28,15 +28,14 @@
 		4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */; };
 		512F7C7A2BF71D7900D48EDB /* TempSettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512F7C792BF71D7900D48EDB /* TempSettingView.swift */; };
 		51E239DA2BF636920051943D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E239D92BF636920051943D /* Model.swift */; };
-		552E24E32BF9CB7500E5CF24 /* NewFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E22BF9CB7500E5CF24 /* NewFirestoreService.swift */; };
-		552E24E52BF9D79700E5CF24 /* ServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E42BF9D79700E5CF24 /* ServiceError.swift */; };
+		552E24E32BF9CB7500E5CF24 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */; };
+		552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */; };
 		552E24E72BF9DA9400E5CF24 /* Model+toDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E62BF9DA9400E5CF24 /* Model+toDTO.swift */; };
 		559AB7662BF8434300FF216B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7652BF8434300FF216B /* FirebaseAuth */; };
 		559AB7682BF8434300FF216B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7672BF8434300FF216B /* FirebaseFirestore */; };
 		559AB76A2BF8434300FF216B /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7692BF8434300FF216B /* FirebaseFirestoreSwift */; };
 		559AB76C2BF8434300FF216B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76B2BF8434300FF216B /* FirebaseStorage */; };
 		559AB76E2BF8434300FF216B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76D2BF8434300FF216B /* FirebaseStorageCombine-Community */; };
-		559AB7702BF8478800FF216B /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB76F2BF8478800FF216B /* FirestoreService.swift */; };
 		559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */; };
 		559AB7742BF84F6C00FF216B /* ModelDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB7732BF84F6C00FF216B /* ModelDTO.swift */; };
 		55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */; };
@@ -69,10 +68,9 @@
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		512F7C792BF71D7900D48EDB /* TempSettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempSettingView.swift; sourceTree = "<group>"; };
 		51E239D92BF636920051943D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		552E24E22BF9CB7500E5CF24 /* NewFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFirestoreService.swift; sourceTree = "<group>"; };
-		552E24E42BF9D79700E5CF24 /* ServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceError.swift; sourceTree = "<group>"; };
+		552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceError.swift; sourceTree = "<group>"; };
 		552E24E62BF9DA9400E5CF24 /* Model+toDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Model+toDTO.swift"; sourceTree = "<group>"; };
-		559AB76F2BF8478800FF216B /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		559AB7732BF84F6C00FF216B /* ModelDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDTO.swift; sourceTree = "<group>"; };
 		55B5E3602BF5A13E00E413C6 /* PicCharge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicCharge.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -196,10 +194,9 @@
 			isa = PBXGroup;
 			children = (
 				55EC1FE72BF6396D00564952 /* LoginService.swift */,
-				559AB76F2BF8478800FF216B /* FirestoreService.swift */,
 				421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */,
-				552E24E22BF9CB7500E5CF24 /* NewFirestoreService.swift */,
-				552E24E42BF9D79700E5CF24 /* ServiceError.swift */,
+				552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */,
+				552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -287,16 +284,15 @@
 			files = (
 				428046842BF5DFA50097EB0B /* ChildAlbumDetailView.swift in Sources */,
 				428046782BF5DE830097EB0B /* ChildCameraView.swift in Sources */,
-				552E24E52BF9D79700E5CF24 /* ServiceError.swift in Sources */,
+				552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */,
 				55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */,
 				4280467A2BF5DEBA0097EB0B /* ChildSendCameraView.swift in Sources */,
 				4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */,
-				559AB7702BF8478800FF216B /* FirestoreService.swift in Sources */,
 				512F7C7A2BF71D7900D48EDB /* TempSettingView.swift in Sources */,
 				4280467E2BF5DF270097EB0B /* ChildSendGalleryView.swift in Sources */,
 				428046862BF5DFFF0097EB0B /* ParentAlbumView.swift in Sources */,
 				421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */,
-				552E24E32BF9CB7500E5CF24 /* NewFirestoreService.swift in Sources */,
+				552E24E32BF9CB7500E5CF24 /* FirestoreService.swift in Sources */,
 				552E24E72BF9DA9400E5CF24 /* Model+toDTO.swift in Sources */,
 				428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */,
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
