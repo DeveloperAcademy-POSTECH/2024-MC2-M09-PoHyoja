@@ -45,6 +45,7 @@
 		55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */; };
 		55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE72BF6396D00564952 /* LoginService.swift */; };
 		55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE92BF6397700564952 /* LoginViewModel.swift */; };
+		E323C3192BFB94A100B3875B /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E323C3182BFB94A100B3875B /* AsyncImageView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +84,7 @@
 		55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		55EC1FE72BF6396D00564952 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		55EC1FE92BF6397700564952 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		E323C3182BFB94A100B3875B /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +126,8 @@
 			isa = PBXGroup;
 			children = (
 				421A8CA92BFBBCD0003C7001 /* Components */,
+				E323C3182BFB94A100B3875B /* AsyncImageView.swift */,
+				428046832BF5DFA40097EB0B /* ChildAlbumDetailView.swift */,
 				55B5E3652BF5A13E00E413C6 /* ContentView.swift */,
 				4280466D2BF5DD720097EB0B /* LoginView.swift */,
 				4280466F2BF5DD840097EB0B /* SelectRoleView.swift */,
@@ -136,7 +140,6 @@
 				4280467D2BF5DF270097EB0B /* ChildSendGalleryView.swift */,
 				4280467F2BF5DF520097EB0B /* ChildLoadingView.swift */,
 				428046812BF5DF790097EB0B /* ChildAlbumView.swift */,
-				428046832BF5DFA40097EB0B /* ChildAlbumDetailView.swift */,
 				428046852BF5DFFF0097EB0B /* ParentAlbumView.swift */,
 				428046872BF5E00A0097EB0B /* ParentAlbumDetailView.swift */,
 				428046892BF5E0170097EB0B /* SettingView.swift */,
@@ -314,6 +317,7 @@
 				421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */,
 				421A8C672BFA358A003C7001 /* Color+.swift in Sources */,
 				428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */,
+				E323C3192BFB94A100B3875B /* AsyncImageView.swift in Sources */,
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
 				428046702BF5DD840097EB0B /* SelectRoleView.swift in Sources */,
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
