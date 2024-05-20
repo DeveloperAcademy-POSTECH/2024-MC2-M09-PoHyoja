@@ -24,6 +24,7 @@ struct ChildMainView: View {
     @State private var totalUploadCount: Int = 320
     @State private var uploadCycle: Int = 3
     @State private var lastUploaded: Date = Calendar.current.date(byAdding: .hour, value: -28, to: Date())!
+    @State private var isAnimating: Bool = false
     
     var body: some View {
         ZStack {
@@ -162,7 +163,12 @@ struct ChildMainView: View {
             
             // 실제 배터리 게이지
             Circle()
-                .trim(from: CGCircleGaugeFloat.bottom.rawValue, to: CGCircleGaugeFloat.bottom.add(for: percent))
+                .trim(
+                    from: CGCircleGaugeFloat.bottom.rawValue,
+                    to: isAnimating
+                        ? CGCircleGaugeFloat.bottom.add(for: percent)
+                        : CGCircleGaugeFloat.bottom.rawValue
+                )
                 .stroke(
                     Color.battery(percent: percent).shadow(
                         .inner(
@@ -185,6 +191,14 @@ struct ChildMainView: View {
                 )
                 .frame(width: 210, height: 210)
                 .offset(y: 52)
+                .onAppear {
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        self.isAnimating = true
+                    }
+                }
+                .onDisappear {
+                    self.isAnimating = false
+                }
         }
     }
     
