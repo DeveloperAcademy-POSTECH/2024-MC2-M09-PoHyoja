@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var navigationManager = NavigationManager()
-    @StateObject private var userManager = UserManager.shared
+    @EnvironmentObject private var userManager: UserManager
 
     @State private var role: Role = .child
     @State private var isAutoLogined: Bool = false
@@ -20,13 +20,11 @@ struct ContentView: View {
         NavigationStack(path: $navigationManager.path) {
             VStack {
                 Text("여기는 실제로 보이지 않는 화면입니다.")
-                
-                Picker("부모자식 역할", selection: $role) {
-                    ForEach(Role.allCases, id: \.self) { role in
-                        Text("\(role)")
-                    }
+                if userManager.isLoggedIn() {
+                    Text("현재 \(userManager.user?.id ?? "ERROR")로 로그인 되었습니다.")
+                } else {
+                    Text("로그인 안됨")
                 }
-                .pickerStyle(.segmented)
                 
                 Toggle("자동 로그인 성공", isOn: $isAutoLogined)
                 Toggle("역할 선택 완료", isOn: $isRoleSelected)
@@ -58,6 +56,7 @@ struct ContentView: View {
                 path.NavigatingView()
             }
         }
+        .environmentObject(userManager)
         .environment(navigationManager)
         .task {
             await checkAuthenticationStatus()
@@ -95,4 +94,5 @@ extension ContentView {
 
 #Preview {
     ContentView()
+        .environmentObject(UserManager.shared)
 }
