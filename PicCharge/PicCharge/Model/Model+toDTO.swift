@@ -25,3 +25,16 @@ extension Child {
         self.uploadCycle = dto.uploadCycle ?? 3
     }
 }
+
+extension Photo {
+    init(from dto: PhotoDTO) throws {
+        guard let idString = dto.id, let id = UUID(uuidString: idString) else {
+            throw FirestoreServiceError.invalidUUID
+        }
+        self.id = id
+        self.uploadBy = dto.uploadBy
+        self.uploadDate = dto.uploadDate
+        self.urlString = dto.urlString
+        self.likeCount = dto.likeCount
+    }
+}

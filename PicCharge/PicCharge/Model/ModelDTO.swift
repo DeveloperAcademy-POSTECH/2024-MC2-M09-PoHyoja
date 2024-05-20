@@ -50,8 +50,17 @@ struct ConnectionDTO: Identifiable, Codable {
 struct PhotoDTO: Identifiable, Codable {
     @DocumentID var id: String?  // Firestore의 문서 ID와 매핑
     var uploadBy: String
-    var url: String
+    var urlString: String
     var sharedWith: [String]
     var likeCount: Int
     var uploadDate: Date
+    
+    init(photo: Photo, sharedWith: [String]) {
+        self.id = photo.id.uuidString
+        self.uploadBy = photo.uploadBy
+        self.urlString = photo.urlString
+        self.sharedWith = sharedWith
+        self.likeCount = photo.likeCount
+        self.uploadDate = photo.uploadDate
+    }
 }
