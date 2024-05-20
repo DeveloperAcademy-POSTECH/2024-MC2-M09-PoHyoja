@@ -7,8 +7,6 @@
 
 import SwiftUI
 import AVFoundation
-import CoreImage
-import CoreImage.CIFilterBuiltins
 
 struct TempChildCameraView: View {
     
