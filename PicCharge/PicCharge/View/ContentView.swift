@@ -9,7 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var navigationManager = NavigationManager()
-    
+    @StateObject private var userManager = UserManager.shared
+
     @State private var role: Role = .child
     @State private var isAutoLogined: Bool = false
     @State private var isRoleSelected: Bool = false
@@ -37,10 +38,10 @@ struct ContentView: View {
                     }
                     .disabled(isAutoLogined)
                     
-                    Button("[로그인O] 역할선택화면으로") {
-                        navigationManager.push(to: .selectRole)
-                    }
-                    .disabled(!(isAutoLogined && !isRoleSelected && !isConnected))
+//                    Button("[로그인O] 역할선택화면으로") {
+//                        navigationManager.push(to: .selectRole)
+//                    }
+//                    .disabled(!(isAutoLogined && !isRoleSelected && !isConnected))
                     
                     Button("[로그인O,역할O] 유저연결화면으로") {
                         navigationManager.push(to: .connectUser)
@@ -67,16 +68,25 @@ struct ContentView: View {
 }
 
 extension ContentView {
+    
+    // 로그인 상태 확인
     private func checkAuthenticationStatus() async {
-        // TODO: - 자동 로그인 함수 구현
-        isAutoLogined = false
+        if userManager.isLoggedIn() {
+            isAutoLogined = true
+            role = userManager.user?.role ?? .child
+            // 역할 선택과 연결 상태도 자동으로 설정할 수 있다면 여기서 추가로 처리
+        } else {
+            isAutoLogined = false
+        }
     }
        
+    // 역할 선택여부 함수
     private func checkRoleSelectionStatus() async {
         // TODO: - 역할 선택여부 함수 구현
         isRoleSelected = false
     }
-       
+     
+    // 유저 연결여부 확인 함수
     private func checkUserConnectionStatus() async {
         // TODO: - 유저 연결여부 확인 함수 구현
         isConnected = false

@@ -10,7 +10,7 @@ import SwiftUI
 enum PathType: Hashable {
     // MARK: - 초기 설정
     case login
-    case selectRole
+    case selectRole(userId: String)
     case connectUser
     
     // MARK: - 자식
@@ -40,11 +40,11 @@ extension PathType {
         // MARK: - 초기 설정
         case .login:
             LoginView()
-        case .selectRole:
-            SelectRoleView()
+        case .selectRole(let userId):
+            SelectRoleView(userId: userId)
         case .connectUser:
             ConnectUserView()
-            
+
         // MARK: - 자식
         case .childTab:
             ChildTabView()
