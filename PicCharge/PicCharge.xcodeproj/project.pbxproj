@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
 		421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */; };
+		421A8C642BF8FA69003C7001 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
+		421A8C672BFA358A003C7001 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
+		421A8C692BFA3761003C7001 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C682BFA3761003C7001 /* Date+.swift */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046702BF5DD840097EB0B /* SelectRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466F2BF5DD840097EB0B /* SelectRoleView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
@@ -50,6 +53,9 @@
 		421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryShadowModifier.swift; sourceTree = "<group>"; };
 		421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceProtocol.swift; sourceTree = "<group>"; };
 		421A8C5F2BF8BEA3003C7001 /* ModelDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDTO.swift; sourceTree = "<group>"; };
+		421A8C632BF8FA69003C7001 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
+		421A8C662BFA358A003C7001 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
+		421A8C682BFA3761003C7001 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		4280466F2BF5DD840097EB0B /* SelectRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRoleView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
@@ -103,6 +109,9 @@
 			isa = PBXGroup;
 			children = (
 				421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */,
+				421A8C632BF8FA69003C7001 /* Icon.swift */,
+				421A8C662BFA358A003C7001 /* Color+.swift */,
+				421A8C682BFA3761003C7001 /* Date+.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -302,6 +311,7 @@
 				4280467E2BF5DF270097EB0B /* ChildSendGalleryView.swift in Sources */,
 				428046862BF5DFFF0097EB0B /* ParentAlbumView.swift in Sources */,
 				421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */,
+				421A8C672BFA358A003C7001 /* Color+.swift in Sources */,
 				428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */,
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
 				51A289572BF883C90035A0F1 /* TempChildSelectGalleryView.swift in Sources */,
@@ -319,6 +329,8 @@
 				51E239DA2BF636920051943D /* Model.swift in Sources */,
 				428046802BF5DF520097EB0B /* ChildLoadingView.swift in Sources */,
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
+				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
+				421A8C692BFA3761003C7001 /* Date+.swift in Sources */,
 				428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */,
 				428046882BF5E00A0097EB0B /* ParentAlbumDetailView.swift in Sources */,
 			);

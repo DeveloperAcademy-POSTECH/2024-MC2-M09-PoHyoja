@@ -31,6 +31,7 @@ struct PicChargeApp: App {
       NavigationView {
         ContentView()
       }
+      .preferredColorScheme(.dark)
     }
   }
 }
