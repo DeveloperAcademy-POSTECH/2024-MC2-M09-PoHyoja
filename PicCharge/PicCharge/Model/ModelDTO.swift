@@ -8,22 +8,6 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-//struct UserDTO: Identifiable, Codable {
-//    @DocumentID var id: String?  // Firestore의 문서 ID와 매핑
-//    var role: Role
-//    var email: String
-//    var uploadCycle: Int?
-//}
-
-//extension UserDTO {
-//    // Child, Parent -> UserDTO 변환 로직
-//    init(user: User) {
-//        self.id = user.id
-//        self.role = user.role
-//        self.email = user.email
-//    }
-//}
-
 enum ConnectionRequestStatus: String, Codable {
     case pending
     case accepted

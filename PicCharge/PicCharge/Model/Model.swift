@@ -22,17 +22,6 @@ struct User: Identifiable, Codable {
     var uploadCycle: Int? = nil
 }
 
-//extension User {
-//    init(from dto: UserDTO) {
-//        self.id = dto.id
-//        self.email = dto.email
-//        self.role = dto.role
-//        self.connectedTo = [] // TODO: 연결된 자식 User 넣기
-//        self.uploadCycle = dto.uploadCycle ?? 3
-//    }
-//}
-
-
 struct Photo: Identifiable {
     // 목업 생성 예시 let photos = Photo.mockup.chunked(into: 3)
     
