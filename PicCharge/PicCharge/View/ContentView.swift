@@ -85,10 +85,8 @@ extension ContentView {
 
     // 유저 연결여부 확인 함수
     private func checkUserConnectionStatus() async {
-        // Firestore에서 연결 상태 확인 로직을 추가하세요.
-        // 예를 들어, 사용자의 연결 상태를 확인하는 함수 호출
-        // isConnected = await fetchUserConnectionStatus()
-        isConnected = false // 예시 코드
+        // TODO: 연결 상태 확인 로직을 추가
+        isConnected = false
     }
 }
 
