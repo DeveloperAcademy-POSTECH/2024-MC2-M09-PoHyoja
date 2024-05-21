@@ -43,7 +43,7 @@ struct ChildSendGalleryView: View {
                     isPresented = true
                 }
                 
-                Spacer()
+                Spacer(minLength: 236)
             }
             .padding(.horizontal, 16)
         }
