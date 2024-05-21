@@ -14,10 +14,10 @@ struct ChildSendCameraView: View {
         VStack {
             Text("사진 전송화면 - 카메라")
             Button("다시 찍기") {
-                navigationManager.path.removeLast()
+                navigationManager.pop()
             }
             Button("사진 보내기") {
-                navigationManager.path.append(.childLoading)
+                navigationManager.push(to: .childLoading)
             }
         }
     }
