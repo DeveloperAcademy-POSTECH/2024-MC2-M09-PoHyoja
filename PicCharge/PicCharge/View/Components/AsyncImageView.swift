@@ -2,7 +2,7 @@
 //  AsyncImageView.swift
 //  PicCharge
 //
-//  Created by 김병훈 on 5/20/24.
+//  Created by 남유성 on 5/21/24.
 //
 
 import SwiftUI
@@ -20,7 +20,7 @@ struct AsyncImageView: View {
             if let image = image {
                 Image(uiImage: image)
                     .resizable()
-                    .aspectRatio(contentMode: .fill) // 이미지 modifier는 여기서
+                    .scaledToFill()
             } else {
                 ProgressView()
             }
@@ -32,7 +32,7 @@ struct AsyncImageView: View {
     
     private func loadImage() async {
         guard let url = URL(string: urlString) else {
-            print("Error conver string to URL")
+            print("Error convert string to URL")
             return
         }
         
@@ -46,4 +46,6 @@ struct AsyncImageView: View {
         }
     }
 }
-
+#Preview {
+    AsyncImageView(urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsNICnidsWi7x-UmXHlkEz-8VUeKwmJSg86Xli4i-26A&s")
+}

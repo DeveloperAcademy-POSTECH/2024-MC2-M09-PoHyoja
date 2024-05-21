@@ -56,7 +56,7 @@ struct ChildTabView: View {
 #Preview {
     NavigationStack {
         ChildTabView()
-            .navigationTitle("네비게이션 타이틀")
+
     }
     .environment(NavigationManager())
     .preferredColorScheme(.dark)
