@@ -29,8 +29,8 @@ struct PicChargeApp: App {
   var body: some Scene {
     WindowGroup {
       NavigationView {
-//        ContentView()
-          LoadingView()
+        ContentView()
+
       }
       .preferredColorScheme(.dark)
     }
