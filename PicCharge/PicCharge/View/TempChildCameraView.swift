@@ -8,13 +8,6 @@
 import SwiftUI
 import AVFoundation
 
-enum Icon {
-    //MARK: - main 작업 시 지워주셔도 됩니다.
-    static let flashOn = "bolt.fill"
-    static let flashOff = "bolt.slash.fill"
-    static let switchCam = "arrow.triangle.2.circlepath"
-}
-
 struct TempChildCameraView: View {
     
     @StateObject var camera = CameraModel()
@@ -38,11 +31,13 @@ struct TempChildCameraView: View {
                             isFlashOn.toggle()
                             camera.toggleFlash(isOn: isFlashOn)
                         } label: {
-                            Image(systemName: isFlashOn ? Icon.flashOn : Icon.flashOff)
-                                .font(.system(size: 17))
-                                .fontWeight(.semibold)
-                                .foregroundColor(.white)
-                                .padding()
+                            Group {
+                                isFlashOn ? Icon.flashOn : Icon.flashOff
+                            }
+                            .font(.system(size: 17))
+                            .fontWeight(.semibold)
+                            .foregroundColor(.white)
+                            .padding()
                         }
                         Spacer()
                         
@@ -50,7 +45,7 @@ struct TempChildCameraView: View {
                             isFrontCamera.toggle()
                             camera.switchCamera(isFront: isFrontCamera)
                         } label: {
-                            Image(systemName: Icon.switchCam)
+                            Icon.switchCam
                                 .font(.system(size: 17))
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white)
@@ -74,6 +69,7 @@ struct TempChildCameraView: View {
                     }
                     //MARK: 셔터 버튼이 10픽셀 올라가야하고, padding값도 160은 아님
                     .padding(.bottom, 160)
+                    
                     Spacer()
                 }
                 .toolbar {
@@ -99,7 +95,6 @@ struct TempChildCameraView: View {
             }
         }
     }
-    
 }
 
 
@@ -114,7 +109,6 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     private var previewLayer: AVCaptureVideoPreviewLayer?
     private var videoDeviceInput: AVCaptureDeviceInput!
     private var photoOutput: AVCapturePhotoOutput!
-    
     
     override init() {
         super.init()
@@ -149,7 +143,6 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         previewLayer?.frame = view.bounds
         view.layer.addSublayer(previewLayer!)
     }
-    
     
     func checkPermissions() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -282,10 +275,10 @@ struct CameraPreview: UIViewRepresentable {
     @ObservedObject var camera: CameraModel
     
     func makeUIView(context: Context) -> UIView {
-            let view = UIView(frame: UIScreen.main.bounds)
-            camera.setupPreviewLayer(view: view)
-            return view
-        }
+        let view = UIView(frame: UIScreen.main.bounds)
+        camera.setupPreviewLayer(view: view)
+        return view
+    }
     
     func updateUIView(_ uiView: UIView, context: Context) {
         if let previewLayer = uiView.layer.sublayers?.first as? AVCaptureVideoPreviewLayer {
