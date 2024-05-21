@@ -10,7 +10,7 @@ import Foundation
 class UserManager: ObservableObject {
     static let shared = UserManager()
     
-    @Published var user: (User)? {
+    @Published var user: User? {
         didSet {
             saveUserToDefaults()
         }

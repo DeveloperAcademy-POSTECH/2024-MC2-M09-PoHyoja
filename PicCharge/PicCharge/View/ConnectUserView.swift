@@ -8,6 +8,8 @@ import SwiftUI
 
 struct ConnectUserView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @EnvironmentObject private var userManager: UserManager
+
     @State private var toUserId: String = ""   // 연결을 요청받는 사용자 ID
     @State private var showingAlert = false
     @State private var alertMessage = ""
@@ -17,7 +19,7 @@ struct ConnectUserView: View {
             Text("유저 연결 화면")
                 .font(.largeTitle)
                 .padding()
-            
+            Text("현재 \(userManager.user?.name ?? "ERROR") (\(userManager.user?.email ?? "ERROR"))로 로그인 되었습니다.")
             TextField("연결할 아이디 입력", text: $toUserId)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
