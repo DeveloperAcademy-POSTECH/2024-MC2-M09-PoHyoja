@@ -17,21 +17,22 @@ class FirestoreService: FirestoreServiceProtocol {
     private let db = Firestore.firestore()
     
     func fetchPhotos(user: User) async throws -> [Photo]? {
-        guard let userId = user.id else {
-            throw FirestoreServiceError.invalidUserId
-        }
-        
-        let snapShot: QuerySnapshot
-        
-        switch user.role {
-        case Role.child:
-            snapShot = try await db.collection("photos").whereField("uploadBy", isEqualTo: userId).getDocuments()
-            
-        case Role.parent:
-            snapShot = try await db.collection("photos").whereField("sharedWith", arrayContains: userId).getDocuments()
-        }
-        
-        return try filterPhotos(by: snapShot, userId: userId)
+//        guard let userId = user.id else {
+//            throw FirestoreServiceError.invalidUserId
+//        }
+//        
+//        let snapShot: QuerySnapshot
+//        
+//        switch user.role {
+//        case Role.child:
+//            snapShot = try await db.collection("photos").whereField("uploadBy", isEqualTo: userId).getDocuments()
+//            
+//        case Role.parent:
+//            snapShot = try await db.collection("photos").whereField("sharedWith", arrayContains: userId).getDocuments()
+//        }
+//        
+//        return try filterPhotos(by: snapShot, userId: userId)
+        return []
     }
     
     private func filterPhotos(by snapShot: QuerySnapshot, userId: String) throws -> [Photo]? {
@@ -79,20 +80,19 @@ class FirestoreService: FirestoreServiceProtocol {
     }
     
     func updatePhotoLikeCount(user: User, of photo: Photo, by plusLikeCount: Int) async throws {
-        let photoSnapshot = try await db.collection("photos").document(photo.id.uuidString).getDocument()
-        guard let photoData = photoSnapshot.data() else {
-            throw FirestoreServiceError.documentNotFound
-        }
-        
-        guard let photo = try? photoSnapshot.data(as: PhotoDTO.self) else {
-            return // TODO: 예외 발생으로 변경
-            //throw FirestoreServiceError.decodingError
-        }
-        
+//        let photoSnapshot = try await db.collection("photos").document(photo.id.uuidString).getDocument()
+//        guard let photoData = photoSnapshot.data() else {
+//            throw FirestoreServiceError.documentNotFound
+//        }
+//        
+//        guard let photo = try? photoSnapshot.data(as: PhotoDTO.self) else {
+//            return // TODO: 예외 발생으로 변경
+//            //throw FirestoreServiceError.decodingError
+//        }
     }
     
     func deletePhoto(photo: Photo) async throws {
-        let photoId = photo.id
+//        let photoId = photo.id
         //        try await db.collection("photos").document(photoId.uuidString).delete()
         // TODO: 사진이 공유된 사람들만 삭제 가능
     }
@@ -134,21 +134,24 @@ class FirestoreService: FirestoreServiceProtocol {
             throw FirestoreServiceError.invalidUserId
         }
         
-        if try await checkUserExists(userId: userId) {
-            throw FirestoreServiceError.userAlreadyExists
-        }
+        if try await checkUserExists(userName: user.name) {
+                    throw FirestoreServiceError.userAlreadyExists
+                }
         
         try db.collection("users").document(userId).setData(from: user)
         print("User added with id: \(userId), data: \(user)")
     }
     
-    func checkUserExists(userId: String) async throws -> Bool {
-        guard !userId.isEmpty else {
+    func checkUserExists(userName: String) async throws -> Bool {
+        guard !userName.isEmpty else {
             throw FirestoreServiceError.invalidUserId
         }
         
-        let document = try await db.collection("users").document(userId).getDocument()
-        return document.exists
+        let querySnapshot = try await db.collection("users")
+            .whereField("name", isEqualTo: userName)
+            .getDocuments()
+        
+        return !querySnapshot.documents.isEmpty
     }
     
     func deleteUser(user: User) async throws {
@@ -191,22 +194,23 @@ class FirestoreService: FirestoreServiceProtocol {
         //            try db.collection("connections").document(userBId).setData(from: connectionB)
         //        }
     }
-    
+    ///
     func fetchConnectionStatus(user: User) async throws -> ConnectionRequestStatus {
-        guard let userId = user.id else {
-            throw FirestoreServiceError.invalidUserId
-        }
-        
-        let doc = try await db.collection("connections").document(userId).getDocument()
-        guard let connection = try? doc.data(as: ConnectionDTO.self) else {
-            throw FirestoreServiceError.documentNotFound
-        }
-        
-        if connection.connectedTo.isEmpty {
-            return .rejected
-        } else {
-            return .accepted
-        }
+//        guard let userId = user.id else {
+//            throw FirestoreServiceError.invalidUserId
+//        }
+//        
+//        let doc = try await db.collection("connections").document(userId).getDocument()
+//        guard let connection = try? doc.data(as: ConnectionDTO.self) else {
+//            throw FirestoreServiceError.documentNotFound
+//        }
+//        
+//        if connection.connectedTo.isEmpty {
+//            return .rejected
+//        } else {
+//            return .accepted
+//        }
+        return .accepted
     }
     
     
