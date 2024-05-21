@@ -12,18 +12,26 @@ struct TempChildSendCameraView: View {
     @Environment(\.presentationMode) var presentationMode
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            if let image = image {
-                image
-                    .resizable()
-                    .aspectRatio(1.0, contentMode: .fit)
-                    .cornerRadius(21)
-                    .padding()
+        GeometryReader { gr in
+            VStack {
+                Spacer()
+                
+                Group {
+                    if let image = image {
+                        image
+                            .resizable()
+                            .scaledToFill()
+                    }
+                }
+                .frame(
+                    width: max(0, gr.size.width - 32),
+                    height: max(0, gr.size.width - 32)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 21))
+                
+                Spacer(minLength: 236)
             }
-            
-            Spacer(minLength: 220)
+            .padding(.horizontal, 16)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -34,7 +42,7 @@ struct TempChildSendCameraView: View {
                     Text("다시 찍기")
                         .foregroundColor(.white)
                 }
-
+                
                 Button {
                     //MARK: - NavigationPath 사용 시 사진 전송 후, path에 .childMain 를 추가해야합니다.
                 } label: {
