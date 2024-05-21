@@ -43,7 +43,7 @@ struct ChildAlbumDetailView: View {
                 Spacer()
             }
             //제목에 들어갈 현재 일자입니다.
-            .navigationTitle("\(today, formatter: TempChildAlbumView.dateformat)")
+            .navigationTitle(today.toKR())
             .navigationBarTitleDisplayMode(.inline)
             //툴바에 메뉴버튼을 구현했습니다.
             .toolbar{
