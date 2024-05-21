@@ -9,6 +9,7 @@
 import Lottie
 import SwiftUI
 
+// lottie를 jason파일 명으로 불러오기 위해 LottieView생성했습니다.
 struct LottieView: UIViewRepresentable {
     var jsonName: String
     let loopMode: LottieLoopMode
@@ -23,6 +24,7 @@ struct LottieView: UIViewRepresentable {
         
         view.addSubview(animationView)
         
+        //.frame modifier로 사이즈 수정하기 위한 코드입니다. by GPT
         NSLayoutConstraint.activate([
             animationView.widthAnchor.constraint(equalTo: view.widthAnchor),
             animationView.heightAnchor.constraint(equalTo: view.heightAnchor),
