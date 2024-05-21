@@ -44,6 +44,10 @@
 		55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */; };
 		55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE72BF6396D00564952 /* LoginService.swift */; };
 		55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE92BF6397700564952 /* LoginViewModel.swift */; };
+		FF1196942BFCFBA100BF2213 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C682BFA3761003C7001 /* Date+.swift */; };
+		FF1196952BFCFBA500BF2213 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
+		FF1196962BFCFBA800BF2213 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
+		FF1196972BFCFBAA00BF2213 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
 		FF407A422BFC2F080091C940 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF407A412BFC2F080091C940 /* WidgetKit.framework */; };
 		FF407A442BFC2F080091C940 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF407A432BFC2F080091C940 /* SwiftUI.framework */; };
 		FF407A472BFC2F080091C940 /* ChildWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF407A462BFC2F080091C940 /* ChildWidgetBundle.swift */; };
@@ -443,9 +447,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF1196962BFCFBA800BF2213 /* Icon.swift in Sources */,
 				FF407A492BFC2F080091C940 /* ChildWidget.swift in Sources */,
+				FF1196952BFCFBA500BF2213 /* Color+.swift in Sources */,
 				FF407A472BFC2F080091C940 /* ChildWidgetBundle.swift in Sources */,
 				FF407A4B2BFC2F080091C940 /* AppIntent.swift in Sources */,
+				FF1196942BFCFBA100BF2213 /* Date+.swift in Sources */,
+				FF1196972BFCFBAA00BF2213 /* BatteryShadowModifier.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

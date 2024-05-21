@@ -86,3 +86,4 @@ extension ConfigurationAppIntent {
     SimpleEntry(date: .now, configuration: .smiley)
     SimpleEntry(date: .now, configuration: .starEyes)
 }
+
