@@ -20,14 +20,18 @@ struct TempChildSendCameraView: View {
                     if let image = image {
                         image
                             .resizable()
-                            .aspectRatio(1.0, contentMode: .fit)
-                            .cornerRadius(21)
-                            .padding()
+                            .scaledToFill()
                     }
                 }
+                .frame(
+                    width: max(0, gr.size.width - 32),
+                    height: max(0, gr.size.width - 32)
+                )
+                .clipShape(RoundedRectangle(cornerRadius: 21))
                 
-                Spacer(minLength: 220)
+                Spacer(minLength: 236)
             }
+            .padding(.horizontal, 16)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
