@@ -54,3 +54,13 @@ struct Photo: Identifiable {
         }
     }()
 }
+
+extension Photo: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
