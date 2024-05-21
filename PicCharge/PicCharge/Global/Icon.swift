@@ -20,4 +20,8 @@ public enum Icon {
     static let light = Image(systemName: "bolt.fill")
     static let goal = Image(systemName: "pencil.and.list.clipboard")
     static let upload = Image(systemName: "photo.artframe.circle.fill")
+    
+    static let inquiry = Image(systemName: "info.circle")
+    static let share = Image(systemName: "square.and.arrow.up")
+    static let trash = Image(systemName: "trash")
 }
