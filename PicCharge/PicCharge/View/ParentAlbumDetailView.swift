@@ -10,8 +10,8 @@ import SwiftUI
 struct ParentAlbumDetailView: View {
     @State private var imgData: Data
     @State private var likeCount: Int
-    @State var isShowingDeleteSheet: Bool = false
-    @State var isShowingInquirySheet: Bool = false
+    @State private var isShowingDeleteSheet: Bool = false
+    @State private var isShowingInquirySheet: Bool = false
     
     private let photo: Photo
     

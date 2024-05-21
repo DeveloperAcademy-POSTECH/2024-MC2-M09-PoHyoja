@@ -8,71 +8,111 @@
 import SwiftUI
 
 struct ChildAlbumDetailView: View {
-    //좋아요 개수를 변수로 생성했습니다.
-    var likeCount = 1234
-    //삭제시 액션시트 뜨게 하기위한 변수입니다.
-    @State var showingDeleteSheet = false
-    //Sharelink구현을 위한 임시 url입니다.
-    private let url = URL(string: "https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja")!
+    @State private var imgData: Data
+    @State private var likeCount: Int
+    @State private var isShowingDeleteSheet: Bool = false
+    @State private var isShowingInquirySheet: Bool = false
     
-    var today = Date()
+    private let photo: Photo
+    
+    init(photo: Photo, imgData: Data) {
+        self.photo = photo
+        self.imgData = imgData
+        self.likeCount = photo.likeCount
+    }
     
     var body: some View {
-        NavigationStack{
-            GeometryReader {geometry in
-                VStack{
-                    Spacer()
-                    AsyncImageView(urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsNICnidsWi7x-UmXHlkEz-8VUeKwmJSg86Xli4i-26A&s")
+        GeometryReader { geometry in
+            VStack{
+                Spacer()
+                
+                if let uiImg = UIImage(data: imgData) {
+                    Image(uiImage: uiImg)
+                        .resizable()
+                        .scaledToFill()
                         .frame(width: geometry.size.width, height: geometry.size.width)
                         .clipped()
-                    //좋아요 버튼과 숫자를 VStack으로 묶었습니다.
-                    VStack(spacing: 4){
-                        Button(action: {
-                            print("좋아요 추가")
-                        }, label: {
-                            Image(systemName: "heart.fill")
-                                .font(.system(size: 50))
-                                .foregroundColor(.red)
-                        })
-                        Text("\(likeCount)개")
-                            .font(.body)
-                            .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                    }
-                    .padding(.vertical, 80)
+                } else {
+                    Color.bgGray
+                        .frame(width: geometry.size.width, height: geometry.size.width)
                 }
-                Spacer()
+                
+                VStack(spacing: 8) {
+                    Button { } label: {
+                        Icon.heart
+                            .font(.system(size: 50))
+                            .foregroundColor(.grpRed)
+                    }
+                    .disabled(true)
+                    
+                    Text(likeCount == 0 ? " " : "\(likeCount)개")
+                        .font(.body)
+                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                }
+                .padding(.vertical, 80)
             }
-            //제목에 들어갈 현재 일자입니다.
-            .navigationTitle(today.toKR())
-            .navigationBarTitleDisplayMode(.inline)
-            //툴바에 메뉴버튼을 구현했습니다.
-            .toolbar{
-                Menu{
-                    Button(action: {print("문의하기")}) {
-                        Label("문의하기", systemImage: "info.circle")
-                    }
-                    //공유버튼 ShareLink입니다.
-                    ShareLink(item: url){
-                        Label("공유하기", systemImage: "square.and.arrow.up")
-                    }
-                    //삭제버튼은 메뉴 안에 액션시트 하나 더 넣었습니다.
-                    Button(role: .destructive, action: {self.showingDeleteSheet = true}) {
-                        Label("삭제하기", systemImage: "trash")
-                    }
+            Spacer()
+        }
+        .navigationTitle(photo.uploadDate.toKR())
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            Menu {
+                Button {
+                    
                 } label: {
-                    Image(systemName: "ellipsis.circle")
+                    Icon.inquiry
+                    Text("문의하기")
                 }
-                .confirmationDialog("타이틀", isPresented: $showingDeleteSheet) {
-                      Button("삭제", role: .destructive) {print("삭제완료")}
-                      Button("취소", role: .cancel) {}
-                    }
+                
+                ShareLink(item: imgData, preview: SharePreview(
+                    "공유하기",
+                    image: imgData
+                    )
+                )
+                
+                Button(role: .destructive) {
+                    self.isShowingDeleteSheet = true
+                } label: {
+                    Icon.trash
+                    Text("삭제하기")
+                }
+                
+            } label: {
+                Icon.menu
             }
+        }
+        .confirmationDialog(
+            "사진을 삭제하시겠습니까? \n 삭제하면 되돌릴 수 없고, 저희가 슬퍼요.",
+            isPresented: $isShowingDeleteSheet,
+            titleVisibility: .visible
+        ) {
+            VStack {
+                Button("삭제하기", role: .destructive) {
+                    // TODO: - 로컬 UI 사진 삭제 처리
+                    // TODO: - 서버 사진 삭제 처리
+                }
+                Button("Cancel", role: .cancel) {}
+            }
+        }
+        .confirmationDialog(
+            "이 사진을 문의하시겠습니까?",
+            isPresented: $isShowingInquirySheet,
+            titleVisibility: .visible
+        ) {
+            Button("문의하기") {
+                // TODO: - 로컬 UI 사진 삭제 처리
+                // TODO: - 서버 사진 삭제 처리
+            }
+            Button("Cancel", role: .cancel) {}
         }
     }
 }
 
 
 #Preview {
-    ChildAlbumDetailView()
+    ChildAlbumDetailView(
+        photo: Photo(id: UUID(), uploadBy: "", uploadDate: Date(), urlString: "", likeCount: 0),
+        imgData: Data()
+    )
 }
 
