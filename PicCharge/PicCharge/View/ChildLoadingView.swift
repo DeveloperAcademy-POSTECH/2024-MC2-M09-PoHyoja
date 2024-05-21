@@ -13,8 +13,7 @@ struct ChildLoadingView: View {
     var body: some View {
         Text("로딩 화면")
         Button("전송 후 로딩 끝!") {
-            // TODO: - 하드 코딩 삭제
-            navigationManager.path.removeLast(3)
+            navigationManager.pop(to: .childTab)
         }
     }
 }

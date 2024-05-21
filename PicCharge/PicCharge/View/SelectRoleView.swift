@@ -13,7 +13,7 @@ struct SelectRoleView: View {
     var body: some View {
         Text("자식/부모 역할 선택화면")
         Button("다음 단계로") {
-            navigationManager.path.append(.connectUser)
+            navigationManager.push(to: .connectUser)
         }
     }
 }
