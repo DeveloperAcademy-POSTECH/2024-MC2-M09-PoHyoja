@@ -27,24 +27,22 @@ struct ParentAlbumView: View {
                         Divider()
                             .padding(.bottom, 10)
                         
-                        VStack(alignment: .leading, spacing: 8) {
-                            Group {
+                        VStack(spacing: 8) {
+                            VStack(alignment: .leading, spacing: 8) {
                                 Text("최근 업로드 사진")
                                     .font(.headline)
                                     .foregroundStyle(.txtVibrantSecondary)
                                 
-                                AsyncImageView(urlString: last.urlString)
-                                    .frame(width: max(0, geometry.size.width - 32), height: max(0, geometry.size.width - 32))
-                                    .clipped()
-                                    .cornerRadius(10.0)
-                                    .onTapGesture {
-                                        navigationManager.push(to: .parentAlbumDetail(photo: last))
-                                    }
+                                AsyncImageView(urlString: last.urlString) { imgData in
+                                    navigationManager.push(to: .parentAlbumDetail(photo: last, imgData: imgData))
+                                }
+                                .frame(width: max(0, geometry.size.width - 32), height: max(0, geometry.size.width - 32))
+                                .clipped()
+                                .cornerRadius(10.0)
                                 
                                 Text(last.uploadDate.toKR())
                                     .font(.subheadline)
-                            }
-                            .padding(.horizontal, 16)
+                            
                             
                             Divider()
                                 .padding(.vertical, 8)
@@ -52,16 +50,16 @@ struct ParentAlbumView: View {
                             Text("충전 기록")
                                 .font(.headline)
                                 .foregroundStyle(.txtVibrantSecondary)
-                                .padding(.horizontal, 16)
+                            }
+                            .padding(.horizontal, 16)
                             
                             LazyVGrid(columns: columnLayout, spacing: 3) {
                                 ForEach(photos) { photo in
-                                    AsyncImageView(urlString: photo.urlString)
-                                        .frame(width: max(0, geometry.size.width - 3) / 3, height: max(0, geometry.size.width - 3) / 3 )
-                                        .clipped()
-                                        .onTapGesture {
-                                            navigationManager.push(to: .parentAlbumDetail(photo: photo))
-                                        }
+                                    AsyncImageView(urlString: photo.urlString) { imgData in
+                                        navigationManager.push(to: .parentAlbumDetail(photo: last, imgData: imgData))
+                                    }
+                                    .frame(width: max(0, geometry.size.width - 3) / 3, height: max(0, geometry.size.width - 3) / 3 )
+                                    .clipped()
                                 }
                             }
                         }

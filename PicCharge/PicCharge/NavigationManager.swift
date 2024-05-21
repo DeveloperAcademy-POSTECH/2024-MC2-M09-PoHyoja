@@ -25,7 +25,7 @@ enum PathType: Hashable {
     
     // MARK: - 부모
     case parentAlbum
-    case parentAlbumDetail(photo: Photo)
+    case parentAlbumDetail(photo: Photo, imgData: Data)
     
     // MARK: - Setting
     case setting(role: Role)
@@ -65,8 +65,8 @@ extension PathType {
         // MARK: - 부모
         case .parentAlbum:
             ParentAlbumView()
-        case .parentAlbumDetail(let photo):
-            ParentAlbumDetailView()
+        case .parentAlbumDetail(let photo, let imgData):
+            ParentAlbumDetailView(photo: photo, imgData: imgData)
             
         // MARK: - Setting
         case .setting(let role):
