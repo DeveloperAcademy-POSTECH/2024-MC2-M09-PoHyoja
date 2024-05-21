@@ -49,6 +49,7 @@
 		E33AFF672BFC397700BFB665 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E33AFF662BFC397700BFB665 /* Lottie */; };
 		E33AFF692BFC3A1000BFB665 /* TestAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = E33AFF682BFC3A1000BFB665 /* TestAnimation.json */; };
 		E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */; };
+		E33AFF722BFC4CDE00BFB665 /* BatteryLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = E33AFF712BFC4CDE00BFB665 /* BatteryLoading.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,8 +90,8 @@
 		55EC1FE92BF6397700564952 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		E33AFF632BFC389800BFB665 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		E33AFF682BFC3A1000BFB665 /* TestAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TestAnimation.json; path = ../../../../../Downloads/TestAnimation.json; sourceTree = "<group>"; };
-		E33AFF6A2BFC3A1600BFB665 /* TestAnimation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TestAnimation.json; sourceTree = "<group>"; };
 		E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		E33AFF712BFC4CDE00BFB665 /* BatteryLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = BatteryLoading.json; path = ../../../../../../../../Downloads/BatteryLoading.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +127,7 @@
 			children = (
 				421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */,
 				E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */,
+				E33AFF712BFC4CDE00BFB665 /* BatteryLoading.json */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -134,7 +136,6 @@
 			isa = PBXGroup;
 			children = (
 				421A8CA92BFBBCD0003C7001 /* Components */,
-				E33AFF6A2BFC3A1600BFB665 /* TestAnimation.json */,
 				E33AFF632BFC389800BFB665 /* LoadingView.swift */,
 				428046832BF5DFA40097EB0B /* ChildAlbumDetailView.swift */,
 				55B5E3652BF5A13E00E413C6 /* ContentView.swift */,
@@ -308,6 +309,7 @@
 				55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */,
 				55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */,
 				E33AFF692BFC3A1000BFB665 /* TestAnimation.json in Resources */,
+				E33AFF722BFC4CDE00BFB665 /* BatteryLoading.json in Resources */,
 				559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
