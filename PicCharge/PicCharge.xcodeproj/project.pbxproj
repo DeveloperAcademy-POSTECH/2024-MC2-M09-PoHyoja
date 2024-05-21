@@ -49,6 +49,8 @@
 		E33AFF642BFC389800BFB665 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF632BFC389800BFB665 /* LoadingView.swift */; };
 		E33AFF672BFC397700BFB665 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E33AFF662BFC397700BFB665 /* Lottie */; };
 		E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */; };
+		6C6BF97F2BF6E75D002683FA /* TempChildCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BF97E2BF6E75D002683FA /* TempChildCameraView.swift */; };
+		6C6BF9812BF9E038002683FA /* TempChildSendCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BF9802BF9E038002683FA /* TempChildSendCameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -90,6 +92,8 @@
 		E32B7D402BFC77DC00814489 /* BatteryLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BatteryLoading.json; sourceTree = "<group>"; };
 		E33AFF632BFC389800BFB665 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		6C6BF97E2BF6E75D002683FA /* TempChildCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildCameraView.swift; sourceTree = "<group>"; };
+		6C6BF9802BF9E038002683FA /* TempChildSendCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildSendCameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,10 +152,13 @@
 				4280467D2BF5DF270097EB0B /* ChildSendGalleryView.swift */,
 				4280467F2BF5DF520097EB0B /* ChildLoadingView.swift */,
 				428046812BF5DF790097EB0B /* ChildAlbumView.swift */,
+				428046832BF5DFA40097EB0B /* ChildAlbumDetailView.swift */,
 				428046852BF5DFFF0097EB0B /* ParentAlbumView.swift */,
 				428046872BF5E00A0097EB0B /* ParentAlbumDetailView.swift */,
 				428046892BF5E0170097EB0B /* SettingView.swift */,
 				4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */,
+				6C6BF9802BF9E038002683FA /* TempChildSendCameraView.swift */,
+				6C6BF97E2BF6E75D002683FA /* TempChildCameraView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -338,6 +345,7 @@
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
+				6C6BF9812BF9E038002683FA /* TempChildSendCameraView.swift in Sources */,
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
 				51E239DA2BF636920051943D /* Model.swift in Sources */,
 				428046802BF5DF520097EB0B /* ChildLoadingView.swift in Sources */,
@@ -348,6 +356,7 @@
 				E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */,
 				428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */,
 				E33AFF642BFC389800BFB665 /* LoadingView.swift in Sources */,
+				6C6BF97F2BF6E75D002683FA /* TempChildCameraView.swift in Sources */,
 				428046882BF5E00A0097EB0B /* ParentAlbumDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -485,11 +494,11 @@
 				DEVELOPMENT_TEAM = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -515,11 +524,11 @@
 				DEVELOPMENT_TEAM = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
