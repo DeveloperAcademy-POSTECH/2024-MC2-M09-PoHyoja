@@ -209,9 +209,22 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         }
         
         guard let imageData = photo.fileDataRepresentation(),
-              let uiImage = UIImage(data: imageData),
-              let rotatedImage = uiImage.fixedOrientation(),
-              let croppedUIImage = rotatedImage.croppedToSquare() else {
+              let uiImage = UIImage(data: imageData) else {
+            return
+        }
+        
+        var finalImage = uiImage
+        
+        // 현재 입력 장치가 프론트 카메라인지 확인
+        if let input = videoDeviceInput, input.device.position == .front {
+            // 프론트 카메라의 경우 이미지를 180도 회전
+            if let adjustedImage = uiImage.adjustedForFrontCamera() {
+                finalImage = adjustedImage
+            }
+        }
+        
+        // 이미지를 정방형으로 자르기
+        guard let croppedUIImage = finalImage.croppedToSquare() else {
             return
         }
         
@@ -221,77 +234,16 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
 }
 
 extension UIImage {
-    func fixedOrientation() -> UIImage? {
+    // 프론트 카메라 이미지를 조정
+    func adjustedForFrontCamera() -> UIImage? {
         guard let cgImage = self.cgImage else { return nil }
         
-        // 이미지 방향이 up이면 변경없이 반환
-        if self.imageOrientation == .up {
-            return self
-        }
+        let orientedImage = UIImage(cgImage: cgImage, scale: self.scale, orientation: .leftMirrored)
         
-        var transform = CGAffineTransform.identity
-        
-        // 기기의 기울기에 따라 가로 이미지 or 세로 이미지로 저장
-        switch self.imageOrientation {
-        case .down, .downMirrored:
-            transform = transform.translatedBy(x: self.size.width, y: self.size.height)
-            transform = transform.rotated(by: .pi)
-        case .left, .leftMirrored:
-            transform = transform.translatedBy(x: self.size.width, y: 0)
-            transform = transform.rotated(by: .pi / 2)
-        case .right, .rightMirrored:
-            transform = transform.translatedBy(x: 0, y: self.size.height)
-            transform = transform.rotated(by: -.pi / 2)
-        case .up, .upMirrored:
-            break
-        @unknown default:
-            return self
-        }
-        
-        // 전면 카메라 사용 시 후면 카메라로 찍은 방향으로 반전 시켜줌
-        switch self.imageOrientation {
-        case .upMirrored, .downMirrored:
-            transform = transform.translatedBy(x: self.size.width, y: 0)
-            transform = transform.scaledBy(x: -1, y: 1)
-        case .leftMirrored, .rightMirrored:
-            transform = transform.translatedBy(x: self.size.height, y: 0)
-            transform = transform.scaledBy(x: -1, y: 1)
-        case .up, .down, .left, .right:
-            break
-        @unknown default:
-            return self
-        }
-        
-        // 이미지의 색상 공간, 크기, 비트맵 정보 등을 초기화
-        guard let colorSpace = cgImage.colorSpace,
-              let context = CGContext(
-                data: nil,
-                width: Int(self.size.width),
-                height: Int(self.size.height),
-                bitsPerComponent: cgImage.bitsPerComponent,
-                bytesPerRow: 0,
-                space: colorSpace,
-                bitmapInfo: cgImage.bitmapInfo.rawValue
-              ) else {
-            return nil
-        }
-        
-        // transform을 context에 담은 후
-        context.concatenate(transform)
-        
-        // 위의 변환들을 적용하여 최종적으로 이미지(사진)를 그립니다.
-        switch self.imageOrientation {
-        case .left, .leftMirrored, .right, .rightMirrored:
-            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: self.size.height, height: self.size.width))
-        default:
-            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
-        }
-        
-        guard let newCGImage = context.makeImage() else { return nil }
-        return UIImage(cgImage: newCGImage)
+        return orientedImage
     }
     
-    // 찍은 사진을 정방형으로 잘라줍니다.
+    // 이미지를 정방형으로 자르기
     func croppedToSquare() -> UIImage? {
         guard let cgImage = self.cgImage else { return nil }
         
@@ -311,7 +263,6 @@ extension UIImage {
         return UIImage(cgImage: croppedCGImage, scale: self.scale, orientation: self.imageOrientation)
     }
 }
-
 // 카메라에서 보이는 부분
 struct CameraPreview: UIViewRepresentable {
     @ObservedObject var camera: CameraModel
