@@ -45,6 +45,10 @@
 		55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */; };
 		55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE72BF6396D00564952 /* LoginService.swift */; };
 		55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE92BF6397700564952 /* LoginViewModel.swift */; };
+		E33AFF642BFC389800BFB665 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF632BFC389800BFB665 /* LoadingView.swift */; };
+		E33AFF672BFC397700BFB665 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E33AFF662BFC397700BFB665 /* Lottie */; };
+		E33AFF692BFC3A1000BFB665 /* TestAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = E33AFF682BFC3A1000BFB665 /* TestAnimation.json */; };
+		E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +87,10 @@
 		55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		55EC1FE72BF6396D00564952 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
 		55EC1FE92BF6397700564952 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		E33AFF632BFC389800BFB665 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		E33AFF682BFC3A1000BFB665 /* TestAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TestAnimation.json; path = ../../../../../Downloads/TestAnimation.json; sourceTree = "<group>"; };
+		E33AFF6A2BFC3A1600BFB665 /* TestAnimation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = TestAnimation.json; sourceTree = "<group>"; };
+		E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +103,7 @@
 				559AB76E2BF8434300FF216B /* FirebaseStorageCombine-Community in Frameworks */,
 				559AB7682BF8434300FF216B /* FirebaseFirestore in Frameworks */,
 				559AB76A2BF8434300FF216B /* FirebaseFirestoreSwift in Frameworks */,
+				E33AFF672BFC397700BFB665 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */,
+				E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -124,6 +134,8 @@
 			isa = PBXGroup;
 			children = (
 				421A8CA92BFBBCD0003C7001 /* Components */,
+				E33AFF6A2BFC3A1600BFB665 /* TestAnimation.json */,
+				E33AFF632BFC389800BFB665 /* LoadingView.swift */,
 				428046832BF5DFA40097EB0B /* ChildAlbumDetailView.swift */,
 				55B5E3652BF5A13E00E413C6 /* ContentView.swift */,
 				4280466D2BF5DD720097EB0B /* LoginView.swift */,
@@ -157,6 +169,7 @@
 		55722D252BF8D12300A9B786 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
+				E33AFF682BFC3A1000BFB665 /* TestAnimation.json */,
 				421A8C5F2BF8BEA3003C7001 /* ModelDTO.swift */,
 			);
 			name = "Recovered References";
@@ -244,6 +257,7 @@
 				559AB7692BF8434300FF216B /* FirebaseFirestoreSwift */,
 				559AB76B2BF8434300FF216B /* FirebaseStorage */,
 				559AB76D2BF8434300FF216B /* FirebaseStorageCombine-Community */,
+				E33AFF662BFC397700BFB665 /* Lottie */,
 			);
 			productName = PicCharge;
 			productReference = 55B5E3602BF5A13E00E413C6 /* PicCharge.app */;
@@ -275,6 +289,7 @@
 			mainGroup = 55B5E3572BF5A13E00E413C6;
 			packageReferences = (
 				559AB7642BF8434300FF216B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				E33AFF652BFC397700BFB665 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 55B5E3612BF5A13E00E413C6 /* Products */;
 			projectDirPath = "";
@@ -292,6 +307,7 @@
 			files = (
 				55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */,
 				55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */,
+				E33AFF692BFC3A1000BFB665 /* TestAnimation.json in Resources */,
 				559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,7 +347,9 @@
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
 				421A8C692BFA3761003C7001 /* Date+.swift in Sources */,
 				421A8CAB2BFBBCE9003C7001 /* AsyncImageView.swift in Sources */,
+				E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */,
 				428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */,
+				E33AFF642BFC389800BFB665 /* LoadingView.swift in Sources */,
 				428046882BF5E00A0097EB0B /* ParentAlbumDetailView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -550,6 +568,14 @@
 				minimumVersion = 10.26.0;
 			};
 		};
+		E33AFF652BFC397700BFB665 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.3;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -577,6 +603,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 559AB7642BF8434300FF216B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = "FirebaseStorageCombine-Community";
+		};
+		E33AFF662BFC397700BFB665 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E33AFF652BFC397700BFB665 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
