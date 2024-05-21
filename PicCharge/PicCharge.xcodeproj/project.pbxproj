@@ -56,6 +56,7 @@
 		FF407A4D2BFC2F080091C940 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF407A4C2BFC2F080091C940 /* Assets.xcassets */; };
 		FF407A512BFC2F080091C940 /* ChildWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF407A3F2BFC2F080091C940 /* ChildWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FF407A5E2BFC34970091C940 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
+		FF55863F2BFD269E00EB7506 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -399,6 +400,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FF55863F2BFD269E00EB7506 /* Assets.xcassets in Resources */,
 				FF407A4D2BFC2F080091C940 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
