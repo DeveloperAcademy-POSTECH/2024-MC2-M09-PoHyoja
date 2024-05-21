@@ -36,7 +36,7 @@ struct ChildTabView: View {
                     }
                     .tag(2)
                 
-                SettingView()
+                SettingView(myRole: .child)
                     .tabItem {
                         Icon.setting
                         Text("My")
