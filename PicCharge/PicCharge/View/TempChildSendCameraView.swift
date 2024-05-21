@@ -14,6 +14,7 @@ struct TempChildSendCameraView: View {
     var body: some View {
         VStack {
             Spacer()
+            
             if let image = image {
                 image
                     .resizable()
@@ -21,8 +22,8 @@ struct TempChildSendCameraView: View {
                     .cornerRadius(21)
                     .padding()
             }
-            Spacer(minLength: 220)
             
+            Spacer(minLength: 220)
         }
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -43,7 +44,6 @@ struct TempChildSendCameraView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        
     }
 }
 
