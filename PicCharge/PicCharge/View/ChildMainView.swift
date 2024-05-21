@@ -47,7 +47,7 @@ struct ChildMainView: View {
                 
                 HStack(spacing: 12) {
                     Button {
-                        navigationManager.push(to: .childSelectGallery)
+                        navigationManager.push(to: .childSendGallery)
                     } label: {
                         NavigationButtonLabel(
                             for: "사진 올리기",
