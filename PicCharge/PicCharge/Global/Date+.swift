@@ -30,4 +30,11 @@ extension Date {
         
         return koreanString
     }
+    
+    func toKR() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY년 M월 d일"
+        
+        return formatter.string(from: self)
+    }
 }
