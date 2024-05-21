@@ -8,6 +8,13 @@
 import SwiftUI
 import AVFoundation
 
+enum Icon {
+    //MARK: - main 작업 시 지워주셔도 됩니다.
+    static let flashOn = "bolt.fill"
+    static let flashOff = "bolt.slash.fill"
+    static let switchCam = "arrow.triangle.2.circlepath"
+}
+
 struct TempChildCameraView: View {
     
     @StateObject var camera = CameraModel()
@@ -16,29 +23,22 @@ struct TempChildCameraView: View {
     
     var body: some View {
         // MARK: Temp파일로, NavigationStack을 사용
-        NavigationStack {
-            ZStack {
-                GeometryReader { geo in
+        GeometryReader { geo in
+            NavigationStack {
+                VStack {
                     VStack {
                         CameraPreview(camera: camera)
                             .frame(width: geo.size.width, height: geo.size.width)
-                            .clipped()
-                            .offset(y: 155)
+                        
                     }
-                }
-                // 화면의 가로 끝부분까지 카메라가 보이도록 합니다.
-                .edgesIgnoringSafeArea(.all)
-                
-                // 플래시 버튼, 카메라 전후면 전환 버튼, 카메라 셔터 버튼을 배치합니다.
-                VStack {
-                    Spacer()
+                    .padding(.top, 155)
                     
                     HStack {
                         Button {
                             isFlashOn.toggle()
                             camera.toggleFlash(isOn: isFlashOn)
                         } label: {
-                            Image(systemName: isFlashOn ? "bolt.fill" : "bolt.slash.fill")
+                            Image(systemName: isFlashOn ? Icon.flashOn : Icon.flashOff)
                                 .font(.system(size: 17))
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white)
@@ -50,7 +50,7 @@ struct TempChildCameraView: View {
                             isFrontCamera.toggle()
                             camera.switchCamera(isFront: isFrontCamera)
                         } label: {
-                            Image(systemName: "arrow.triangle.2.circlepath")
+                            Image(systemName: Icon.switchCam)
                                 .font(.system(size: 17))
                                 .fontWeight(.semibold)
                                 .foregroundColor(.white)
@@ -58,7 +58,7 @@ struct TempChildCameraView: View {
                         }
                     }
                     .padding(.horizontal)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 28)
                     
                     Button {
                         camera.takePicture()
@@ -68,35 +68,38 @@ struct TempChildCameraView: View {
                                 .fill(Color.white)
                                 .frame(width: 64, height: 64)
                             Circle()
-                                .stroke(Color.white, lineWidth: 4)
+                                .stroke(Color.white, lineWidth: 5)
                                 .frame(width: 76, height: 76)
                         }
                     }
-                    .padding(.bottom, 95)
+                    //MARK: 셔터 버튼이 10픽셀 올라가야하고, padding값도 160은 아님
+                    .padding(.bottom, 160)
+                    Spacer()
                 }
-            }
-            .toolbar {
-                ToolbarItemGroup(placement: .topBarLeading) {
-                    Button {
-                        //MARK: - NavigationPath 사용 시 path에 .childMain 를 추가해야합니다.
-                    } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 17))
-                            .fontWeight(.semibold)
-                            .foregroundColor(.white)
-                            .padding()
+                .toolbar {
+                    ToolbarItemGroup(placement: .topBarLeading) {
+                        Button {
+                            //MARK: - NavigationPath 사용 시 path에 .childMain 를 추가해야합니다.
+                        } label: {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 17))
+                                .fontWeight(.semibold)
+                                .foregroundColor(.white)
+                                .padding()
+                        }
                     }
                 }
-            }
-            .onAppear {
-                camera.checkPermissions()
-            }
-            .navigationDestination(isPresented: $camera.showPreview) {
-                //MARK: - NavigationPath 사용 시 path에 .childSendCamera 를 추가해야합니다.
-                TempChildSendCameraView(image: $camera.capturedImage)
+                .onAppear {
+                    camera.checkPermissions()
+                }
+                .navigationDestination(isPresented: $camera.showPreview) {
+                    //MARK: - NavigationPath 사용 시 path에 .childSendCamera 를 추가해야합니다.
+                    TempChildSendCameraView(image: $camera.capturedImage)
+                }
             }
         }
     }
+    
 }
 
 
@@ -107,9 +110,11 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     @Published var capturedImage: Image?
     @Published var isFlashOn = false
     
-    var session: AVCaptureSession!
-    private var photoOutput: AVCapturePhotoOutput!
+    private var session: AVCaptureSession!
+    private var previewLayer: AVCaptureVideoPreviewLayer?
     private var videoDeviceInput: AVCaptureDeviceInput!
+    private var photoOutput: AVCapturePhotoOutput!
+    
     
     override init() {
         super.init()
@@ -136,6 +141,15 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             }
         }
     }
+    
+    // PreviewLayer를 따로 초기화하여 session에 접근하도록 해보았습니다.
+    func setupPreviewLayer(view: UIView) {
+        previewLayer = AVCaptureVideoPreviewLayer(session: session)
+        previewLayer?.videoGravity = .resizeAspectFill
+        previewLayer?.frame = view.bounds
+        view.layer.addSublayer(previewLayer!)
+    }
+    
     
     func checkPermissions() {
         switch AVCaptureDevice.authorizationStatus(for: .video) {
@@ -268,10 +282,10 @@ struct CameraPreview: UIViewRepresentable {
     @ObservedObject var camera: CameraModel
     
     func makeUIView(context: Context) -> UIView {
-        let view = UIView(frame: UIScreen.main.bounds)
-        camera.session.addVideoPreviewLayer(to: view)
-        return view
-    }
+            let view = UIView(frame: UIScreen.main.bounds)
+            camera.setupPreviewLayer(view: view)
+            return view
+        }
     
     func updateUIView(_ uiView: UIView, context: Context) {
         if let previewLayer = uiView.layer.sublayers?.first as? AVCaptureVideoPreviewLayer {
