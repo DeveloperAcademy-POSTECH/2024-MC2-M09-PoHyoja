@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ChildSendGalleryView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @Environment(\.modelContext) var modelContext
     
     @State private var selectedImageData: Data?
     @State private var isPresented: Bool = false
@@ -60,7 +61,14 @@ struct ChildSendGalleryView: View {
                     .foregroundStyle(.txtPrimaryDark)
                     
                     Button("사진 보내기") {
-                        // TODO: - 사진 전송 로직 imgData: Data를 서버로 전송
+                        guard let imageData = selectedImageData else { return }
+                        
+                        // MARK: - 로컬에 이미지 저장
+                        // TODO: - 유저 정보 주입
+                        modelContext.insert(PhotoForSwiftData(uploadBy: "", sharedWith: [], imgData: imageData))
+                        
+                        // TODO: - 사진 전송 로직 imageData: Data를 서버로 전송
+                        
                         isChildLoadingView = true
                     }
                 }
