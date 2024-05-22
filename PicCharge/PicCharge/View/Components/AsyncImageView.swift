@@ -8,19 +8,26 @@
 import SwiftUI
 
 struct AsyncImageView: View {
-    @State private var image: UIImage? = nil
+    @State private var imgData: Data? = nil
     private let urlString: String
+    private var didTapImageView: ((Data) -> ())?
     
-    init(urlString: String) {
+    init(urlString: String, didTapImageView: ((Data) -> ())? = nil) {
         self.urlString = urlString
+        self.didTapImageView = didTapImageView
     }
 
     var body: some View {
         Group {
-            if let image = image {
+            if let imgData = imgData,
+               let image = UIImage(data: imgData) {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
+                    .onTapGesture {
+                        didTapImageView?(imgData)
+                    }
+                
             } else {
                 ProgressView()
             }
@@ -38,14 +45,16 @@ struct AsyncImageView: View {
         
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
-            if let loadedImage = UIImage(data: data) {
-                self.image = loadedImage
-            }
+            guard UIImage(data: data) != nil else { return }
+            self.imgData = data
         } catch {
             print("Error loading image: \(error)")
         }
     }
 }
 #Preview {
-    AsyncImageView(urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsNICnidsWi7x-UmXHlkEz-8VUeKwmJSg86Xli4i-26A&s")
+    AsyncImageView(
+        urlString: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsNICnidsWi7x-UmXHlkEz-8VUeKwmJSg86Xli4i-26A&s",
+        didTapImageView: { _ in }
+    )
 }
