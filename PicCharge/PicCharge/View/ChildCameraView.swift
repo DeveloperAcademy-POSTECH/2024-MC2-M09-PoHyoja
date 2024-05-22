@@ -79,7 +79,6 @@ struct ChildCameraView: View {
                             .font(.system(size: 17))
                             .fontWeight(.semibold)
                             .foregroundColor(.white)
-                            .padding()
                     }
                 }
             }
