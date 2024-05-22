@@ -53,11 +53,11 @@ class UserManager: ObservableObject {
     func isLoggedIn() -> Bool {
         return user != nil
     }
-//
+
 //  테스트용 로컬 데이터 삭제 코드
-//    func resetUserDefaults() {
-//        let domain = Bundle.main.bundleIdentifier!
-//        UserDefaults.standard.removePersistentDomain(forName: domain)
-//        UserDefaults.standard.synchronize()
-//    }
+    func resetUserDefaults() {
+        let domain = Bundle.main.bundleIdentifier!
+        UserDefaults.standard.removePersistentDomain(forName: domain)
+        UserDefaults.standard.synchronize()
+    }
 }

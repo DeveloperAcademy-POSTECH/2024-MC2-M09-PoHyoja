@@ -92,7 +92,6 @@ class FirestoreService: FirestoreServiceProtocol {
         return .accepted
     }
     
-    
     /// 연결 요청을 Firestore에 업로드하는 메서드
     func uploadConnectionRequest(from: String, to: String) async throws {
         let request = ConnectionRequestsDTO(
