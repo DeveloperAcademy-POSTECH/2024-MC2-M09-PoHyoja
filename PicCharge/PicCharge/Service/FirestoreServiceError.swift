@@ -37,7 +37,7 @@ extension FirestoreServiceError: LocalizedError {
         case .decodingError:
             return "데이터베이스에서 데이터를 디코딩하는 데 실패했습니다."
         case .userAlreadyExists:
-            return "동일한 ID를 가진 사용자가 이미 존재합니다."
+            return "동일한 이름을 가진 사용자가 이미 존재합니다."
         case .invalidRequestId:
             return "제공된 요청 ID가 일치하지 않습니다."
         case .requestNotFound:

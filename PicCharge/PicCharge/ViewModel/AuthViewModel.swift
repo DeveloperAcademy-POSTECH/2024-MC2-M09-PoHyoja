@@ -8,119 +8,81 @@
 import SwiftUI
 import Firebase
 
-class AuthViewModel: ObservableObject {
-    @Published var isLoggedIn: Bool = false
-    @Published var user: User?
-
-    init() {
-        self.user = self.convertFirebaseUser(user: Auth.auth().currentUser)
-        self.isLoggedIn = self.user != nil
-        
-        Auth.auth().addStateDidChangeListener { auth, firebaseUser in
-            self.user = self.convertFirebaseUser(user: firebaseUser)
-            self.isLoggedIn = firebaseUser != nil
-        }
-    }
-
-    func login(email: String, password: String, completion: @escaping (Error?) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            if let error = error {
-                completion(error)
-                return
-            }
-            guard let firebaseUser = authResult?.user else {
-                completion(FirestoreServiceError.userNotFound)
-                return
-            }
-            print("login 에서 firebaseUser.displayName: \(String(describing: firebaseUser.displayName))")
-            Task {
-                do {
-                    let fetchedUser = try await FirestoreService.shared.fetchUser(by: firebaseUser.email ?? "")
-                    DispatchQueue.main.async {
-                        self.user = fetchedUser
-                        self.isLoggedIn = true
-                    }
-                    print("login 에서 fetchedUser: \(fetchedUser)")
-                    completion(nil)
-                } catch {
-                    completion(error)
-                }
-            }
-        }
-    }
-
-    func signUp(name: String, email: String, password: String, role: Role, completion: @escaping (Error?) -> Void) {
-        Task {
-            do {
-                if try await FirestoreService.shared.checkUserExists(userName: name) {
-                    throw FirestoreServiceError.userAlreadyExists
-                }
-                Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
-                    if let error = error {
-                        completion(error)
-                        return
-                    }
-                    guard let firebaseUser = authResult?.user else {
-                        completion(FirestoreServiceError.userNotFound)
-                        return
-                    }
-                    let newUser = User(id: firebaseUser.uid, name: name, role: role, email: email)
-                    Task {
-                        do {
-                            try await FirestoreService.shared.addUser(user: newUser)
-                            DispatchQueue.main.async {
-                                self.user = newUser
-                                self.isLoggedIn = true
-                            }
-                            completion(nil)
-                        } catch {
-                            completion(error)
-                        }
-                    }
-                }
-            } catch {
-                completion(error)
-            }
-        }
-    }
-
-    func signOut(completion: @escaping (Error?) -> Void) {
-        do {
-            try Auth.auth().signOut()
-            self.isLoggedIn = false
-            self.user = nil
-            completion(nil)
-        } catch let signOutError as NSError {
-            completion(signOutError)
-        }
-    }
-    
-    func deleteUser(completion: @escaping (Error?) -> Void) {
-        guard let user = Auth.auth().currentUser else {
-            completion(FirestoreServiceError.userNotFound)
-            return
-        }
-        
-        Task {
-            do {
-                // Delete the user from Firestore
-                if let userId = self.user?.id {
-                    try await FirestoreService.shared.deleteUser(user: self.user!)
-                }
-                // Delete the Firebase Auth user
-                try await user.delete()
-                self.isLoggedIn = false
-                self.user = nil
-                completion(nil)
-            } catch {
-                completion(error)
-            }
-        }
-    }
-
-
-    private func convertFirebaseUser(user: FirebaseAuth.User?) -> User? {
-        guard let user = user else { return nil }
-        return User(id: user.uid, name: "", role: .child, email: user.email ?? "")
-    }
-}
+//class AuthViewModeldeprecated: ObservableObject {
+//    @Published var user: User?
+//    @Published var isLoggedIn = false
+//    @Published var isConnected = false
+//    
+//    private let firestoreService = FirestoreServicedeprecated.shared
+//    private var db = Firestore.firestore()
+//    
+//    func checkLoginStatus() async {
+//        if let currentUser = Auth.auth().currentUser {
+//            await fetchUserAndSetStatus(email: currentUser.email ?? "")
+//        } else {
+//            DispatchQueue.main.async {
+//                self.isLoggedIn = false
+//            }
+//        }
+//    }
+//    
+//    private func fetchUserAndSetStatus(email: String) async {
+//        let user = await firestoreService.fetchUserData(email: email)
+//        DispatchQueue.main.async {
+//            self.user = user
+//            self.isLoggedIn = user != nil
+//            self.updateConnectionStatus()
+//        }
+//    }
+//    
+//    func updateConnectionStatus() {
+//        guard let currentUser = user else {
+//            self.isConnected = false
+//            return
+//        }
+//        self.isConnected = !currentUser.connectedTo.isEmpty
+//    }
+//    
+//    func signUp(name: String, email: String, password: String, role: Role) async throws {
+//        do {
+//            let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
+//            let user = authResult.user
+//            
+//            let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [])
+//            try await firestoreService.saveUserData(user: newUser)
+//            
+//            DispatchQueue.main.async {
+//                self.user = newUser
+//                self.isLoggedIn = true
+//                self.updateConnectionStatus()
+//            }
+//        } catch {
+//            print("회원 가입 실패")
+//            throw error
+//        }
+//    }
+//    
+//    func signIn(email: String, password: String) async throws {
+//        do {
+//            _ = try await Auth.auth().signIn(withEmail: email, password: password)
+//            await fetchUserAndSetStatus(email: email)
+//        } catch {
+//            print("로그인 실패")
+//            throw error
+//        }
+//    }
+//    
+//    func signOut() throws {
+//        do {
+//            try Auth.auth().signOut()
+//            DispatchQueue.main.async {
+//                self.user = nil
+//                self.isLoggedIn = false
+//                self.isConnected = false
+//            }
+//        } catch {
+//            print("로그아웃 실패")
+//            throw error
+//        }
+//    }
+//}

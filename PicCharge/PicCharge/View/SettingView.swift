@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @EnvironmentObject var authViewModel: AuthViewModel
+//    @EnvironmentObject var authViewModel: AuthViewModel
     @EnvironmentObject var userManager: UserManager
     
     // TODO: - 유저 모델 주입
@@ -74,14 +74,14 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("로그아웃", role: .destructive) {
-                        authViewModel.signOut { error in
-                            if let error = error {
-                                print("Error signing out: \(error.localizedDescription)")
-                            } else {
-                                userManager.user = nil
-                                navigationManager.popToRoot()
-                            }
-                        }
+//                        authViewModel.signOut { error in
+//                            if let error = error {
+//                                print("Error signing out: \(error.localizedDescription)")
+//                            } else {
+//                                userManager.user = nil
+//                                navigationManager.popToRoot()
+//                            }
+//                        }
                     }
                     Button("Cancel", role: .cancel) {}
                 }
@@ -94,14 +94,14 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("탈퇴하기", role: .destructive) {
-                        authViewModel.deleteUser { error in
-                            if let error = error {
-                                print("Error deleting user: \(error.localizedDescription)")
-                            } else {
-                                userManager.user = nil
-                                navigationManager.popToRoot()
-                            }
-                        }
+//                        authViewModel.deleteUser { error in
+//                            if let error = error {
+//                                print("Error deleting user: \(error.localizedDescription)")
+//                            } else {
+//                                userManager.user = nil
+//                                navigationManager.popToRoot()
+//                            }
+//                        }
                     }
                     Button("Cancel", role: .cancel) {}
                 }

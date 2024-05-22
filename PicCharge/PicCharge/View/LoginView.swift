@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import Firebase
 
 struct LoginView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(NavigationManager.self) var navigationManager
     @EnvironmentObject var userManager: UserManager
     @State private var email: String = ""
     @State private var password: String = ""
@@ -26,13 +27,8 @@ struct LoginView: View {
                 .padding()
             
             Button(action: {
-                authViewModel.login(email: email, password: password) { error in
-                    if let error = error {
-                        self.errorMessage = error.localizedDescription
-                    } else {
-                        self.errorMessage = nil
-                        userManager.user = authViewModel.user
-                    }
+                Task {
+                    await signIn()
                 }
             }) {
                 Text("로그인")
@@ -44,10 +40,13 @@ struct LoginView: View {
             }
             .padding()
             
-            NavigationLink(destination: SignUpView()) {
-                Text("아이디가 없다면? 회원가입 하기!")
-            }
-            .padding()
+            Button(
+                action: {
+                    navigationManager.push(to: .signUp)
+                }) {
+                    Text("아이디가 없다면? 회원가입 하기!")
+                }
+                .padding()
             
             if let errorMessage = errorMessage {
                 Text(errorMessage)
@@ -59,8 +58,30 @@ struct LoginView: View {
     }
 }
 
+private extension LoginView {
+    func signIn() async {
+        do {
+            let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
+            let user = authResult.user
+            
+            let fetchedUser = await FirestoreService.shared.fetchUserData(email: email)
+            DispatchQueue.main.async {
+                if let fetchedUser = fetchedUser {
+                    self.userManager.user = fetchedUser
+                    self.errorMessage = nil
+                    navigationManager.pop() // 로그인 성공 후 이전 화면으로 이동
+                } else {
+                    self.errorMessage = "사용자 정보를 가져오는 데 실패했습니다."
+                }
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+}
 #Preview {
     LoginView()
-        .environmentObject(AuthViewModel())
         .environmentObject(UserManager())
 }
