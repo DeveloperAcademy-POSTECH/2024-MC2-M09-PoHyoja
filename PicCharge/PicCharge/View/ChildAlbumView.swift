@@ -34,7 +34,7 @@ struct ChildAlbumView: View {
                                     .foregroundStyle(.txtVibrantSecondary)
                                 
                                 AsyncImageView(urlString: last.urlString) { imgData in
-                                    navigationManager.push(to: .parentAlbumDetail(photo: last, imgData: imgData))
+                                    navigationManager.push(to: .childAlbumDetail(photo: last, imgData: imgData))
                                 }
                                 .frame(width: max(0, geometry.size.width - 32), height: max(0, geometry.size.width - 32))
                                 .clipped()
@@ -56,7 +56,7 @@ struct ChildAlbumView: View {
                             LazyVGrid(columns: columnLayout, spacing: 3) {
                                 ForEach(photos) { photo in
                                     AsyncImageView(urlString: photo.urlString) { imgData in
-                                        navigationManager.push(to: .parentAlbumDetail(photo: last, imgData: imgData))
+                                        navigationManager.push(to: .childAlbumDetail(photo: last, imgData: imgData))
                                     }
                                     .frame(width: max(0, geometry.size.width - 3) / 3, height: max(0, geometry.size.width - 3) / 3 )
                                     .clipped()

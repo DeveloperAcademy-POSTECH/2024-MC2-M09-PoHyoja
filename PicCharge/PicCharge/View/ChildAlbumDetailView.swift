@@ -8,16 +8,18 @@
 import SwiftUI
 
 struct ChildAlbumDetailView: View {
-    @State private var imgData: Data
     @State private var likeCount: Int
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isShowingInquirySheet: Bool = false
     
     private let photo: Photo
+    private let photoForShare: PhotoForShare
+    private let imgData: Data
     
     init(photo: Photo, imgData: Data) {
         self.photo = photo
         self.imgData = imgData
+        self.photoForShare = PhotoForShare(imgData: imgData, uploadDate: photo.uploadDate)
         self.likeCount = photo.likeCount
     }
     
@@ -64,11 +66,13 @@ struct ChildAlbumDetailView: View {
                     Text("문의하기")
                 }
                 
-                ShareLink(item: imgData, preview: SharePreview(
-                    "공유하기",
-                    image: imgData
-                    )
-                )
+                ShareLink(
+                    item: photoForShare,
+                    preview: SharePreview(photoForShare.caption, image: photoForShare.image)
+                ) {
+                    Icon.share
+                    Text("공유하기")
+                }
                 
                 Button(role: .destructive) {
                     self.isShowingDeleteSheet = true
@@ -112,7 +116,7 @@ struct ChildAlbumDetailView: View {
 #Preview {
     ChildAlbumDetailView(
         photo: Photo(id: UUID(), uploadBy: "", uploadDate: Date(), urlString: "", likeCount: 0),
-        imgData: Data()
+        imgData: UIImage(systemName: "camera")!.pngData()!
     )
 }
 
