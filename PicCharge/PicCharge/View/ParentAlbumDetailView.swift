@@ -13,6 +13,7 @@ struct ParentAlbumDetailView: View {
     @State private var likeCount: Int
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isShowingInquirySheet: Bool = false
+    @State private var isZooming: Bool = false
     
     private let photo: Photo
     private let photoForShare: PhotoForShare
@@ -36,6 +37,7 @@ struct ParentAlbumDetailView: View {
                         .scaledToFill()
                         .frame(width: geometry.size.width, height: geometry.size.width)
                         .clipped()
+                        .zoomable(isZooming: $isZooming)
                 } else {
                     Color.bgGray
                         .frame(width: geometry.size.width, height: geometry.size.width)
@@ -56,11 +58,13 @@ struct ParentAlbumDetailView: View {
                         .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 }
                 .padding(.vertical, 80)
+                .opacity(isZooming ? 0 : 1)
             }
             Spacer()
         }
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar(isZooming ? .hidden : .visible, for: .navigationBar)
         .toolbar {
             Menu {
                 Button {
@@ -123,4 +127,5 @@ struct ParentAlbumDetailView: View {
         photo: Photo(id: UUID(), uploadBy: "", uploadDate: Date(), urlString: "", likeCount: 0),
         imgData: UIImage(systemName: "camera")!.pngData()!
     )
+    .environment(NavigationManager())
 }
