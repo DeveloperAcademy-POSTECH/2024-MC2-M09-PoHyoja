@@ -24,14 +24,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct PicChargeApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
-    @StateObject private var authViewModel = AuthViewModel()
     @StateObject private var userManager = UserManager()
-    
+
+
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(authViewModel)
                 .environmentObject(userManager)
                 .preferredColorScheme(.dark)
         }

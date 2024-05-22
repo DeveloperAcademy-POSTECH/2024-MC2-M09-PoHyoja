@@ -6,9 +6,10 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct SignUpView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
+    @Environment(NavigationManager.self) var navigationManager
     @EnvironmentObject var userManager: UserManager
     @State private var name: String = ""
     @State private var email: String = ""
@@ -16,26 +17,26 @@ struct SignUpView: View {
     @State private var confirmPassword: String = ""
     @State private var selectedRole: Role = .child
     @State private var errorMessage: String?
-
+        
     var body: some View {
         VStack {
             TextField("이름", text: $name)
                 .autocapitalization(.none)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
             
             TextField("이메일", text: $email)
                 .autocapitalization(.none)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
 
             SecureField("비밀번호", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
 
             SecureField("비밀번호 확인", text: $confirmPassword)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
             
             Picker("역할 선택", selection: $selectedRole) {
                 ForEach(Role.allCases, id: \.self) { role in
@@ -46,18 +47,8 @@ struct SignUpView: View {
             .padding()
 
             Button(action: {
-                guard password == confirmPassword else {
-                    self.errorMessage = "비밀번호가 일치하지 않습니다."
-                    return
-                }
-
-                authViewModel.signUp(name: name, email: email, password: password, role: selectedRole) { error in
-                    if let error = error {
-                        self.errorMessage = error.localizedDescription
-                    } else {
-                        self.errorMessage = nil
-                        userManager.user = authViewModel.user
-                    }
+                Task {
+                    await signUp()
                 }
             }) {
                 Text("회원 가입")
@@ -79,8 +70,33 @@ struct SignUpView: View {
     }
 }
 
+private extension SignUpView {
+    func signUp() async {
+        do {
+            guard password == confirmPassword else {
+                self.errorMessage = "비밀번호가 일치하지 않습니다."
+                return
+            }
+            let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
+            let user = authResult.user
+            
+            let newUser = User(id: user.uid, name: name, role: selectedRole, email: email, connectedTo: [])
+            try await FirestoreService.shared.saveUserData(user: newUser)
+            
+            DispatchQueue.main.async {
+                self.userManager.user = newUser
+                self.errorMessage = nil
+                navigationManager.pop()
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+}
+
 #Preview {
     SignUpView()
-        .environmentObject(AuthViewModel())
         .environmentObject(UserManager())
 }
