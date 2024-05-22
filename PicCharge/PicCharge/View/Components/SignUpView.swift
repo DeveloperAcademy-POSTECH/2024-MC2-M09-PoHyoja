@@ -82,5 +82,5 @@ struct SignUpView: View {
 #Preview {
     SignUpView()
         .environmentObject(AuthViewModel())
-        .environmentObject(UserManager.shared)
+        .environmentObject(UserManager())
 }

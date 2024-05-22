@@ -24,20 +24,16 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack(path: $navigationManager.path) {
-            determineView()
+            DetermineView()
                 .navigationDestination(for: PathType.self) { path in
                     path.NavigatingView()
                 }
         }
-        .environmentObject(userManager)
-        .environmentObject(authViewModel)
         .environment(navigationManager)
         .task {
             await checkAuthenticationStatus()
             await checkUserConnectionStatus()
             handleAutomaticNavigation()
-        }
-        .onAppear {
             userManager.user = authViewModel.user
             Task {
                 await checkAuthenticationStatus()
@@ -48,7 +44,7 @@ struct ContentView: View {
     }
 
     @ViewBuilder
-    private func determineView() -> some View {
+    private func DetermineView() -> some View {
         if !isAutoLogined {
             LoginView()
         } else if !isConnected {
@@ -92,6 +88,6 @@ extension ContentView {
 
 #Preview {
     ContentView()
-        .environmentObject(UserManager.shared)
+        .environmentObject(UserManager())
         .environmentObject(AuthViewModel())
 }
