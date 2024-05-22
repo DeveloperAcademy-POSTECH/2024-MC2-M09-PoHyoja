@@ -9,6 +9,8 @@ import SwiftUI
 
 struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var userManager: UserManager
     
     // TODO: - 유저 모델 주입
     @State private var myId: String = "imyourson"
@@ -80,8 +82,14 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("로그아웃", role: .destructive) {
-                        // TODO: - 로그아웃 처리
-                        navigationManager.popToRoot()
+                        authViewModel.signOut { error in
+                            if let error = error {
+                                print("Error signing out: \(error.localizedDescription)")
+                            } else {
+                                userManager.user = nil
+                                navigationManager.popToRoot()
+                            }
+                        }
                     }
                     Button("Cancel", role: .cancel) {}
                 }
@@ -93,13 +101,15 @@ struct SettingView: View {
                 titleVisibility: .visible
             ) {
                 VStack {
-                    Button("로그아웃", role: .destructive) {
-                        // TODO: - 로그아웃 처리
-                        navigationManager.popToRoot()
-                    }
                     Button("탈퇴하기", role: .destructive) {
-                        // TODO: - 탈퇴 처리
-                        navigationManager.popToRoot()
+                        authViewModel.deleteUser { error in
+                            if let error = error {
+                                print("Error deleting user: \(error.localizedDescription)")
+                            } else {
+                                userManager.user = nil
+                                navigationManager.popToRoot()
+                            }
+                        }
                     }
                     Button("Cancel", role: .cancel) {}
                 }
