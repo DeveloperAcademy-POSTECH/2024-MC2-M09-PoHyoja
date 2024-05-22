@@ -25,8 +25,8 @@ struct Provider: AppIntentTimelineProvider {
         
         // 근사값이라 totalTime에 어떤 값이 오더라도 0이 될 수 있게 +1을 해줌
         for hourOffset in 0..<(totalTime + 1) {
-            let percentageDropPerHour = 100.0 / Double(totalTime) // 배터리 줄어드는 % 계산
-            let currentPercentage = max(100.0 - (percentageDropPerHour * Double(hourOffset % (totalTime + 1))), 0)
+            let percentageDropPerTime = 100.0 / Double(totalTime) // 배터리 줄어드는 % 계산
+            let currentPercentage = max(100.0 - (percentageDropPerTime * Double(hourOffset % (totalTime + 1))), 0)
             let entryDate = ChildWidgetOption.timeMeasurement(value: hourOffset, to: photoSentDate)
             let entry = SimpleEntry(date: entryDate, configuration: configuration, batteryPercentage: currentPercentage, hourOffset: hourOffset % (totalTime + 1))
             entries.append(entry)
