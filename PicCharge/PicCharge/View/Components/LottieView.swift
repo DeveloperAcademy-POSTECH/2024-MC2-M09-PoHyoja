@@ -1,10 +1,11 @@
 //
-//  File.swift
+//  TestLottie.swift
 //  PicCharge
 //
-//  Created by 남유성 on 5/22/24.
+//  Created by 김병훈 on 5/21/24.
 //
 
+//패키지에 로티 임포트 했습니다.
 import Lottie
 import SwiftUI
 
