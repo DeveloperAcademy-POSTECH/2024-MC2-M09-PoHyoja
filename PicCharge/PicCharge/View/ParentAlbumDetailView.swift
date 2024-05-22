@@ -149,7 +149,7 @@ struct ParentAlbumDetailView: View {
 
 #Preview {
     ParentAlbumDetailView(
-        photo: Photo(id: UUID(), uploadBy: "", uploadDate: Date(), urlString: "", likeCount: 0),
+        photo: Photo(id: "", uploadBy: "", uploadDate: Date(), urlString: "", likeCount: 0, sharedWith: []),
         imgData: UIImage(systemName: "camera")!.pngData()!
     )
     .environment(NavigationManager())
