@@ -28,9 +28,24 @@ class AuthViewModel: ObservableObject {
                 completion(error)
                 return
             }
-            self.user = self.convertFirebaseUser(user: authResult?.user)
-            self.isLoggedIn = true
-            completion(nil)
+            guard let firebaseUser = authResult?.user else {
+                completion(FirestoreServiceError.userNotFound)
+                return
+            }
+            print("login 에서 firebaseUser.displayName: \(String(describing: firebaseUser.displayName))")
+            Task {
+                do {
+                    let fetchedUser = try await FirestoreService.shared.fetchUser(by: firebaseUser.email ?? "")
+                    DispatchQueue.main.async {
+                        self.user = fetchedUser
+                        self.isLoggedIn = true
+                    }
+                    print("login 에서 fetchedUser: \(fetchedUser)")
+                    completion(nil)
+                } catch {
+                    completion(error)
+                }
+            }
         }
     }
 
@@ -53,8 +68,10 @@ class AuthViewModel: ObservableObject {
                     Task {
                         do {
                             try await FirestoreService.shared.addUser(user: newUser)
-                            self.user = newUser
-                            self.isLoggedIn = true
+                            DispatchQueue.main.async {
+                                self.user = newUser
+                                self.isLoggedIn = true
+                            }
                             completion(nil)
                         } catch {
                             completion(error)

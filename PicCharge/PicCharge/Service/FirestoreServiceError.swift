@@ -43,7 +43,7 @@ extension FirestoreServiceError: LocalizedError {
         case .requestNotFound:
             return "연결 요청을 찾지 못했습니다."
         case .invalidRequest:
-            return "잘못된 ㅇ녀결 요청입니다."
+            return "잘못된 연결 요청입니다."
         }
     }
 }
