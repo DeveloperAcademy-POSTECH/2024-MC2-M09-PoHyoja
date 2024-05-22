@@ -32,6 +32,7 @@ struct ContentView: View {
         .task {
             await checkAuthenticationStatus()
             await checkUserConnectionStatus()
+//            await fetchAndUpdateUserInfo()
         }
         .onReceive(authViewModel.$isLoggedIn) { isLoggedIn in
             self.isAutoLogined = isLoggedIn
@@ -69,9 +70,24 @@ extension ContentView {
 
     // 유저 연결여부 확인 함수
     private func checkUserConnectionStatus() async {
-        // TODO: 연결 상태 확인 로직을 추가
-        isConnected = false
+        guard let currentUser = userManager.user else {
+            isConnected = false
+            return
+        }
+        
+        isConnected = !currentUser.connectedTo.isEmpty
     }
+    
+//    private func fetchAndUpdateUserInfo() async {
+//        do {
+//            let fetchedUser = try await FirestoreService.shared.fetchUser(by: userManager.user!.name)
+//            DispatchQueue.main.async {
+//                userManager.user = fetchedUser
+//            }
+//        } catch {
+//            // TODO: 유저 정보 업데이트 실패시 예외처리 추가
+//        }
+//    }
 }
 
 #Preview {

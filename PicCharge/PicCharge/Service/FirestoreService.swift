@@ -8,7 +8,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class FirestoreService: FirestoreServiceProtocol {
+class FirestoreService {
     
     static let shared = FirestoreService()
     
@@ -44,11 +44,17 @@ class FirestoreService: FirestoreServiceProtocol {
     }
     
     // 사용자 정보를 Firestore에서 가져오는 메서드
-    func fetchUser(by userId: String) async throws -> User {
-        let document = try await db.collection("users").document(userId).getDocument()
-        guard let user = try document.data(as: User?.self) else {
+    func fetchUser(by userName: String) async throws -> User {
+        let snapshot = try await db.collection("users").whereField("name", isEqualTo: userName).getDocuments()
+        
+        guard let document = snapshot.documents.first else {
             throw FirestoreServiceError.userNotFound
         }
+        
+        guard let user = try? document.data(as: User.self) else {
+            throw FirestoreServiceError.userNotFound
+        }
+        
         return user
     }
     
@@ -59,8 +65,8 @@ class FirestoreService: FirestoreServiceProtocol {
         }
         
         if try await checkUserExists(userName: user.name) {
-                    throw FirestoreServiceError.userAlreadyExists
-                }
+            throw FirestoreServiceError.userAlreadyExists
+        }
         
         try db.collection("users").document(userId).setData(from: user)
         print("User added with id: \(userId), data: \(user)")
@@ -85,30 +91,35 @@ class FirestoreService: FirestoreServiceProtocol {
         try await db.collection("users").document(userId).delete()
     }
     
-    func connectUser(of userA: User, with userB: User) async throws {
+    /// 연결 요청을 Firestore에 업로드하는 메서드
+    func addConnectRequests(from currentUserName: String, to otherUserName: String) async throws {
+        let connectionRequest = ConnectionRequestsDTO(
+            id: nil,
+            from: currentUserName,
+            to: otherUserName,
+            status: .pending,
+            requestDate: Date()
+        )
+        
+        // Upload connection request
+        try db.collection("connectionRequests").addDocument(from: connectionRequest)
     }
+    
+    
+    private func uploadConnectionRequest(request: ConnectionRequestsDTO) async throws {
+        try db.collection("connectionRequests").addDocument(from: request)
+    }
+    
     ///
     func fetchConnectionStatus(user: User) async throws -> ConnectionRequestStatus {
         return .accepted
     }
     
-    /// 연결 요청을 Firestore에 업로드하는 메서드
-    func uploadConnectionRequest(from: String, to: String) async throws {
-        let request = ConnectionRequestsDTO(
-            id: nil,
-            from: from,
-            to: to,
-            status: .pending,
-            requestDate: Date()
-        )
-        try db.collection("connectionRequests").addDocument(from: request)
-    }
     
     /// 특정 사용자의 연결 요청을 Firestore에서 가져오는 메서드
-    func fetchConnectionRequests(for userId: String) async throws -> [ConnectionRequestsDTO] {
-        print("to 에서" + userId + " 찾는중")
+    func fetchConnectionRequests(for userName: String) async throws -> [ConnectionRequestsDTO] {
         let snapshot = try await db.collection("connectionRequests")
-            .whereField("to", isEqualTo: userId)
+            .whereField("to", isEqualTo: userName)
             .getDocuments()
         
         print("Fetched documents: \(snapshot.documents)") // 디버깅을 위해 출력
