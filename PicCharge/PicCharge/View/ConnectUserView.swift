@@ -10,7 +10,7 @@ struct ConnectUserView: View {
     @Environment(NavigationManager.self) var navigationManager
     @EnvironmentObject private var userManager: UserManager
     @EnvironmentObject private var authViewModel: AuthViewModel
-
+    
     @State private var otherUserName: String = ""   // 연결을 요청받는 사용자 ID
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
@@ -70,6 +70,9 @@ struct ConnectUserView: View {
             .foregroundColor(.red)
         }
         .padding()
+        .onReceive(authViewModel.$user) { user in
+            self.userManager.user = user
+        }
         .alert(isPresented: $isShowingAlert) {
             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
@@ -166,11 +169,13 @@ extension ConnectUserView {
     
     private func fetchAndUpdateUserInfo() async {
         guard let currentUser = userManager.user else {
+            print("로컬에서 유저 찾기 실패")
             alertMessage = "사용자 ID를 찾을 수 없습니다."
             isShowingAlert = true
             return
         }
         
+        print(currentUser)
         let userName = currentUser.name
         print(userName)
         
@@ -187,17 +192,18 @@ extension ConnectUserView {
         }
     }
     
-    private func logout() async {authViewModel.signOut { error in
-        if let error = error {
-            alertMessage = "로그아웃에 실패했습니다: \(error.localizedDescription)"
-            isShowingAlert = true
-        } else {
-            alertMessage = "성공적으로 로그아웃되었습니다."
-            isShowingAlert = true
+    private func logout() async {
+        authViewModel.signOut { error in
+            if let error = error {
+                alertMessage = "로그아웃에 실패했습니다: \(error.localizedDescription)"
+                isShowingAlert = true
+            } else {
+                alertMessage = "성공적으로 로그아웃되었습니다."
+                isShowingAlert = true
+            }
         }
     }
-    }
-       
+    
     private func deleteUser() async {authViewModel.deleteUser { error in
         if let error = error {
             alertMessage = "회원 탈퇴에 실패했습니다: \(error.localizedDescription)"

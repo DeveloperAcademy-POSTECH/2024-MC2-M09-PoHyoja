@@ -46,7 +46,7 @@ class FirestoreService {
     // 사용자 정보를 Firestore에서 가져오는 메서드
     func fetchUser(by userName: String) async throws -> User {
         let snapshot = try await db.collection("users").whereField("name", isEqualTo: userName).getDocuments()
-        
+        print("파베에서 \(userName)를 찾는다.")
         guard let document = snapshot.documents.first else {
             throw FirestoreServiceError.userNotFound
         }

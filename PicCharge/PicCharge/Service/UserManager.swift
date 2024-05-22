@@ -23,7 +23,8 @@ class UserManager: ObservableObject {
     private func saveUserToDefaults() {
         guard let user = user else { return }
         do {
-            let data = try JSONEncoder().encode(user)
+            let userForUserDefaults = UserForUserDefaults(from: user)
+            let data = try JSONEncoder().encode(userForUserDefaults)
             UserDefaults.standard.set(data, forKey: "currentUser")
         } catch {
             print("Failed to save user: \(error)")
@@ -35,9 +36,8 @@ class UserManager: ObservableObject {
         guard let data = UserDefaults.standard.data(forKey: "currentUser") else { return }
         print("로컬에서 가져온 데이터: \(data)")
         do {
-            let user = try JSONDecoder().decode(User.self, from: data)
-            self.user = user
-            print(user.id! + "불러옴")
+            let userForUserDefaults = try JSONDecoder().decode(UserForUserDefaults.self, from: data)
+            self.user = userForUserDefaults.toUser()
         } catch {
             print("Failed to load user: \(error)")
         }
@@ -59,5 +59,34 @@ class UserManager: ObservableObject {
         let domain = Bundle.main.bundleIdentifier!
         UserDefaults.standard.removePersistentDomain(forName: domain)
         UserDefaults.standard.synchronize()
+    }
+}
+
+private struct UserForUserDefaults: Codable {
+    var id: String?
+    var name: String
+    var role: Role
+    var email: String
+    var connectedTo: [String]
+    var uploadCycle: Int?
+    
+    init(from user: User) {
+        self.id = user.id
+        self.name = user.name
+        self.role = user.role
+        self.email = user.email
+        self.connectedTo = user.connectedTo
+        self.uploadCycle = user.uploadCycle
+    }
+    
+    func toUser() -> User {
+        return User(
+            id: self.id,
+            name: self.name,
+            role: self.role,
+            email: self.email,
+            connectedTo: self.connectedTo,
+            uploadCycle: self.uploadCycle
+        )
     }
 }
