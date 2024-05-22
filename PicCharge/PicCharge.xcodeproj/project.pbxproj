@@ -14,7 +14,6 @@
 		421A8C692BFA3761003C7001 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C682BFA3761003C7001 /* Date+.swift */; };
 		421A8CAB2BFBBCE9003C7001 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
-		428046702BF5DD840097EB0B /* SelectRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466F2BF5DD840097EB0B /* SelectRoleView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
 		428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046732BF5DDD30097EB0B /* ChildTabView.swift */; };
 		428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046752BF5DE6A0097EB0B /* ChildMainView.swift */; };
@@ -31,14 +30,18 @@
 		4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */; };
 		4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */; };
 		51E239DA2BF636920051943D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E239D92BF636920051943D /* Model.swift */; };
+		550FDD142BFC3AF6007A6B42 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FDD132BFC3AF6007A6B42 /* AuthViewModel.swift */; };
+		550FDD162BFC3DE6007A6B42 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FDD152BFC3DE6007A6B42 /* SignUpView.swift */; };
+		552E24E32BF9CB7500E5CF24 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */; };
+		552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */; };
 		559AB7662BF8434300FF216B /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7652BF8434300FF216B /* FirebaseAuth */; };
 		559AB7682BF8434300FF216B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7672BF8434300FF216B /* FirebaseFirestore */; };
 		559AB76A2BF8434300FF216B /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7692BF8434300FF216B /* FirebaseFirestoreSwift */; };
 		559AB76C2BF8434300FF216B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76B2BF8434300FF216B /* FirebaseStorage */; };
 		559AB76E2BF8434300FF216B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76D2BF8434300FF216B /* FirebaseStorageCombine-Community */; };
-		559AB7702BF8478800FF216B /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB76F2BF8478800FF216B /* FirestoreService.swift */; };
 		559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */; };
 		559AB7742BF84F6C00FF216B /* ModelDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB7732BF84F6C00FF216B /* ModelDTO.swift */; };
+		55A6E6B62BFB5C8A00C58597 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A6E6B52BFB5C8A00C58597 /* UserManager.swift */; };
 		55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */; };
 		55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3652BF5A13E00E413C6 /* ContentView.swift */; };
 		55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
@@ -56,13 +59,11 @@
 /* Begin PBXFileReference section */
 		421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryShadowModifier.swift; sourceTree = "<group>"; };
 		421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceProtocol.swift; sourceTree = "<group>"; };
-		421A8C5F2BF8BEA3003C7001 /* ModelDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDTO.swift; sourceTree = "<group>"; };
 		421A8C632BF8FA69003C7001 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		421A8C662BFA358A003C7001 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
 		421A8C682BFA3761003C7001 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		4280466F2BF5DD840097EB0B /* SelectRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRoleView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
 		428046732BF5DDD30097EB0B /* ChildTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTabView.swift; sourceTree = "<group>"; };
 		428046752BF5DE6A0097EB0B /* ChildMainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildMainView.swift; sourceTree = "<group>"; };
@@ -79,9 +80,14 @@
 		4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTermsOfUseView.swift; sourceTree = "<group>"; };
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		51E239D92BF636920051943D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		559AB76F2BF8478800FF216B /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		550FDD132BFC3AF6007A6B42 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		550FDD152BFC3DE6007A6B42 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PicCharge.entitlements; sourceTree = "<group>"; };
+		552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
+		552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceError.swift; sourceTree = "<group>"; };
 		559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		559AB7732BF84F6C00FF216B /* ModelDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDTO.swift; sourceTree = "<group>"; };
+		55A6E6B52BFB5C8A00C58597 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		55B5E3602BF5A13E00E413C6 /* PicCharge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicCharge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicChargeApp.swift; sourceTree = "<group>"; };
 		55B5E3652BF5A13E00E413C6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -128,6 +134,7 @@
 			isa = PBXGroup;
 			children = (
 				421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */,
+				550FDD152BFC3DE6007A6B42 /* SignUpView.swift */,
 				E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */,
 				E32B7D402BFC77DC00814489 /* BatteryLoading.json */,
 			);
@@ -142,7 +149,6 @@
 				428046832BF5DFA40097EB0B /* ChildAlbumDetailView.swift */,
 				55B5E3652BF5A13E00E413C6 /* ContentView.swift */,
 				4280466D2BF5DD720097EB0B /* LoginView.swift */,
-				4280466F2BF5DD840097EB0B /* SelectRoleView.swift */,
 				428046712BF5DDA80097EB0B /* ConnectUserView.swift */,
 				428046732BF5DDD30097EB0B /* ChildTabView.swift */,
 				428046752BF5DE6A0097EB0B /* ChildMainView.swift */,
@@ -172,12 +178,12 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		55722D252BF8D12300A9B786 /* Recovered References */ = {
+		550FDD122BFC3AE4007A6B42 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				421A8C5F2BF8BEA3003C7001 /* ModelDTO.swift */,
+				550FDD132BFC3AF6007A6B42 /* AuthViewModel.swift */,
 			);
-			name = "Recovered References";
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		55B5E3572BF5A13E00E413C6 = {
@@ -186,7 +192,6 @@
 				559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */,
 				55B5E3622BF5A13E00E413C6 /* PicCharge */,
 				55B5E3612BF5A13E00E413C6 /* Products */,
-				55722D252BF8D12300A9B786 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -201,8 +206,9 @@
 		55B5E3622BF5A13E00E413C6 /* PicCharge */ = {
 			isa = PBXGroup;
 			children = (
+				550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */,
+				550FDD122BFC3AE4007A6B42 /* ViewModel */,
 				55EC1FE62BF6394200564952 /* Service */,
-				55EC1FE52BF6393900564952 /* ViewModel */,
 				55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */,
 				4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */,
 				421A8C5A2BF885BD003C7001 /* Global */,
@@ -222,20 +228,13 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		55EC1FE52BF6393900564952 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				55EC1FE92BF6397700564952 /* LoginViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		55EC1FE62BF6394200564952 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				55EC1FE72BF6396D00564952 /* LoginService.swift */,
-				559AB76F2BF8478800FF216B /* FirestoreService.swift */,
+				55A6E6B52BFB5C8A00C58597 /* UserManager.swift */,
 				421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */,
+				552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */,
+				552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -326,24 +325,23 @@
 			files = (
 				428046842BF5DFA50097EB0B /* ChildAlbumDetailView.swift in Sources */,
 				428046782BF5DE830097EB0B /* ChildCameraView.swift in Sources */,
-				55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */,
+				552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */,
 				4280467A2BF5DEBA0097EB0B /* ChildSendCameraView.swift in Sources */,
 				4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */,
-				559AB7702BF8478800FF216B /* FirestoreService.swift in Sources */,
 				4280467E2BF5DF270097EB0B /* ChildSendGalleryView.swift in Sources */,
 				428046862BF5DFFF0097EB0B /* ParentAlbumView.swift in Sources */,
 				421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */,
+				552E24E32BF9CB7500E5CF24 /* FirestoreService.swift in Sources */,
 				421A8C672BFA358A003C7001 /* Color+.swift in Sources */,
 				428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */,
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
-				428046702BF5DD840097EB0B /* SelectRoleView.swift in Sources */,
+				55A6E6B62BFB5C8A00C58597 /* UserManager.swift in Sources */,
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
 				559AB7742BF84F6C00FF216B /* ModelDTO.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
 				421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
-				55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
 				6C6BF9812BF9E038002683FA /* TempChildSendCameraView.swift in Sources */,
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
@@ -351,7 +349,9 @@
 				428046802BF5DF520097EB0B /* ChildLoadingView.swift in Sources */,
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
+				550FDD142BFC3AF6007A6B42 /* AuthViewModel.swift in Sources */,
 				421A8C692BFA3761003C7001 /* Date+.swift in Sources */,
+				550FDD162BFC3DE6007A6B42 /* SignUpView.swift in Sources */,
 				421A8CAB2BFBBCE9003C7001 /* AsyncImageView.swift in Sources */,
 				E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */,
 				428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */,
@@ -488,6 +488,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PicCharge/PicCharge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
@@ -518,6 +519,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PicCharge/PicCharge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
