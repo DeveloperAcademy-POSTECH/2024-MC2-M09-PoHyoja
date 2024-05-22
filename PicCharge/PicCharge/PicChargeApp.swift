@@ -26,6 +26,7 @@ struct PicChargeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject private var authViewModel = AuthViewModel()
+    @State private var navigationManager = NavigationManager()
     
     var container: ModelContainer
     
@@ -39,10 +40,16 @@ struct PicChargeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .preferredColorScheme(.dark)
+            NavigationStack(path: $navigationManager.path) {
+                ContentView()
+                    .navigationDestination(for: PathType.self) { path in
+                        path.NavigatingView()
+                    }
+                    .preferredColorScheme(.dark)
+            }
         }
         .modelContainer(container)
+        .environment(navigationManager)
         .environmentObject(authViewModel)
     }
 }

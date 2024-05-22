@@ -15,19 +15,22 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State private var navigationManager = NavigationManager()
+    @Environment(NavigationManager.self) var navigationManager
+    
     @State private var isAutoLogined: Bool = false
     @State private var isRoleSelected: Bool = false
     @State private var isConnected: Bool = false
     
     var body: some View {
-        NavigationStack(path: $navigationManager.path) {
-            EmptyView()
-                .navigationDestination(for: PathType.self) { path in
-                    path.NavigatingView()
-                }
+        VStack {
+            Button("자식 화면으로 이동") {
+                navigationManager.push(to: .childTab)
+            }
+            
+            Button("부모 화면으로 이동") {
+                navigationManager.push(to: .parentAlbum)
+            }
         }
-        .environment(navigationManager)
     }
 
     private func handleAutomaticNavigation() {
