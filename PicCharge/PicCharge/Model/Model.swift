@@ -6,33 +6,20 @@
 //
 
 import Foundation
+import FirebaseFirestoreSwift
 
 enum Role: String, CaseIterable, Codable {
     case parent
     case child
 }
 
-protocol User {
-    var id: String? { get }
-    var email: String { get }
-    var role: Role { get }
-    var connectedTo: [User] { get set }
-}
-
-struct Parent: User {
-    var id: String?
+struct User: Identifiable, Codable {
+    @DocumentID var id: String?
+    var name: String
     var email: String
     var role: Role
-    var connectedTo: [User]
-}
-
-struct Child: User {
-    var id: String?
-    var email: String
-    var role: Role
-    var connectedTo: [User]
-    
-    var uploadCycle: Int
+    var connectedTo: [String] = []
+    var uploadCycle: Int? = nil
 }
 
 struct Photo: Identifiable {
@@ -53,4 +40,17 @@ struct Photo: Identifiable {
             Photo(id: UUID(), uploadBy: uploadBy, uploadDate: uploadDate, urlString: urlString, likeCount: $0)
         }
     }()
+}
+
+extension Photo {
+    init(from dto: PhotoDTO) throws {
+        guard let idString = dto.id, let id = UUID(uuidString: idString) else {
+            throw FirestoreServiceError.invalidUUID
+        }
+        self.id = id
+        self.uploadBy = dto.uploadBy
+        self.uploadDate = dto.uploadDate
+        self.urlString = dto.urlString
+        self.likeCount = dto.likeCount
+    }
 }
