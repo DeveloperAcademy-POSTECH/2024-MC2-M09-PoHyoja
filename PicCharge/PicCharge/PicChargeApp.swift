@@ -30,12 +30,10 @@ struct PicChargeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                ContentView()
-            }
-            .environmentObject(authViewModel)
-            .environmentObject(userManager)
-            .preferredColorScheme(.dark)
+            ContentView()
+                .environmentObject(authViewModel)
+                .environmentObject(userManager)
+                .preferredColorScheme(.dark)
         }
     }
 }
