@@ -26,7 +26,6 @@ struct PicChargeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject private var authViewModel = AuthViewModel()
-    @StateObject private var userManager = UserManager()
     
     var container: ModelContainer
     
@@ -41,10 +40,9 @@ struct PicChargeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(authViewModel)
-                .environmentObject(userManager)
                 .preferredColorScheme(.dark)
         }
         .modelContainer(container)
+        .environmentObject(authViewModel)
     }
 }

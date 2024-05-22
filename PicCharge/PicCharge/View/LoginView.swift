@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var userManager: UserManager
+    
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var errorMessage: String?
@@ -31,7 +31,7 @@ struct LoginView: View {
                         self.errorMessage = error.localizedDescription
                     } else {
                         self.errorMessage = nil
-                        userManager.user = authViewModel.user
+                        // TODO: - 로컬 유저 정보 주입
                     }
                 }
             }) {
@@ -62,5 +62,4 @@ struct LoginView: View {
 #Preview {
     LoginView()
         .environmentObject(AuthViewModel())
-        .environmentObject(UserManager())
 }
