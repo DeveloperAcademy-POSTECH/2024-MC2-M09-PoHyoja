@@ -14,19 +14,20 @@ struct Provider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration, batteryPercentage: 80, hourOffset: 0)
+        SimpleEntry(date: Date(), configuration: configuration, batteryPercentage: 100, hourOffset: 0)
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
         
-        let totalTime = 13
-        let currentDate = Date()
+        let totalTime = ChildWidgetOption.totalTime
+        let photoSentDate = ChildWidgetOption.photoSentDate
         
+        // 근사값이라 totalTime에 어떤 값이 오더라도 0이 될 수 있게 +1을 해줌
         for hourOffset in 0..<(totalTime + 1) {
-            let percentageDropPerHour = 100.0 / Double(totalTime)
+            let percentageDropPerHour = 100.0 / Double(totalTime) // 배터리 줄어드는 % 계산
             let currentPercentage = max(100.0 - (percentageDropPerHour * Double(hourOffset % (totalTime + 1))), 0)
-            let entryDate = Calendar.current.date(byAdding: .second, value: hourOffset, to: currentDate)!
+            let entryDate = ChildWidgetOption.byAdding(value: hourOffset, to: photoSentDate)
             let entry = SimpleEntry(date: entryDate, configuration: configuration, batteryPercentage: currentPercentage, hourOffset: hourOffset % (totalTime + 1))
             entries.append(entry)
         }
@@ -37,9 +38,11 @@ struct Provider: AppIntentTimelineProvider {
 struct SimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
-    let batteryPercentage: Double
-    let hourOffset: Int
+    let batteryPercentage: Double // 근사값이라 정확도 최대한 높이려고 Double 사용
+    let hourOffset: Int // hourOffset 값을 사진 보낸지 얼마나 됐는지로도 사용
 }
+
+
 
 struct ChildWidgetEntryView : View {
     var entry: Provider.Entry
@@ -51,6 +54,7 @@ struct ChildWidgetEntryView : View {
                     HStack {
                         Icon.heartBolt
                         Text("픽-챠! 배터리")
+                        
                         Spacer()
                     }
                     .font(.title3.weight(.bold))
@@ -71,15 +75,40 @@ struct ChildWidgetEntryView : View {
                             Spacer()
                         }
                         HStack {
-                            Text("사진 보낸지 \(entry.hourOffset)시간 됐어요")
+                            Text("사진 보낸 지 \(entry.hourOffset)시간 됐어요")
                                 .font(.body.weight(.bold))
                                 .foregroundStyle(.txtFDF8F8)
+                            
                             Spacer()
                         }
                     }
                 }
-                Color.clear.batteryShadow(color: .battery100)
-                    .frame(width: 59, height: 100)
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(
+                            Color.gray3.shadow(
+                                .inner(
+                                    color: Color.white.opacity(0.25),
+                                    radius: 7.5,
+                                    x: 4,
+                                    y: 4
+                                )
+                            )
+                        )
+                        .stroke(.gray, lineWidth: 1)
+                        .frame(width: 67, height: 120, alignment: .bottom)
+                    
+                    VStack {
+                        
+                        Spacer()
+                        
+                        Color.clear.batteryShadow(color: Color.wgBattery(percent: entry.batteryPercentage * 0.9))
+                            .frame(width: 59, height: (entry.batteryPercentage * 1.15 * 0.8) + 20, alignment: .bottom)
+                    }
+                    .padding(.vertical, 4)
+                    .frame(width: 67, height: 120, alignment: .bottom)
+                }
             }
             .padding()
         } else {
@@ -121,7 +150,7 @@ extension ConfigurationAppIntent {
 #Preview(as: .systemMedium) {
     ChildWidget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley, batteryPercentage: 90, hourOffset: 0)
+    SimpleEntry(date: .now, configuration: .smiley, batteryPercentage: 100, hourOffset: 0)
 }
 
 

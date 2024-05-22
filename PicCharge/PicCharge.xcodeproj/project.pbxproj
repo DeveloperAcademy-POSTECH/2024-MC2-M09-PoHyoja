@@ -48,6 +48,7 @@
 		FF1196952BFCFBA500BF2213 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
 		FF1196962BFCFBA800BF2213 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
 		FF1196972BFCFBAA00BF2213 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
+		FF1A96912BFE565A000D15B0 /* ChildWidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBE72522BFD95C500B11272 /* ChildWidgetOption.swift */; };
 		FF407A422BFC2F080091C940 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF407A412BFC2F080091C940 /* WidgetKit.framework */; };
 		FF407A442BFC2F080091C940 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF407A432BFC2F080091C940 /* SwiftUI.framework */; };
 		FF407A472BFC2F080091C940 /* ChildWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF407A462BFC2F080091C940 /* ChildWidgetBundle.swift */; };
@@ -57,6 +58,7 @@
 		FF407A512BFC2F080091C940 /* ChildWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF407A3F2BFC2F080091C940 /* ChildWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FF407A5E2BFC34970091C940 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
 		FF55863F2BFD269E00EB7506 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
+		FFBE72532BFD95C500B11272 /* ChildWidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFBE72522BFD95C500B11272 /* ChildWidgetOption.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +129,7 @@
 		FF407A4A2BFC2F080091C940 /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
 		FF407A4C2BFC2F080091C940 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF407A4E2BFC2F080091C940 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFBE72522BFD95C500B11272 /* ChildWidgetOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildWidgetOption.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,6 +295,7 @@
 			children = (
 				FF407A462BFC2F080091C940 /* ChildWidgetBundle.swift */,
 				FF407A482BFC2F080091C940 /* ChildWidget.swift */,
+				FFBE72522BFD95C500B11272 /* ChildWidgetOption.swift */,
 				FF407A4A2BFC2F080091C940 /* AppIntent.swift */,
 				FF407A4C2BFC2F080091C940 /* Assets.xcassets */,
 				FF407A4E2BFC2F080091C940 /* Info.plist */,
@@ -424,6 +428,7 @@
 				421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */,
 				428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */,
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
+				FFBE72532BFD95C500B11272 /* ChildWidgetOption.swift in Sources */,
 				428046702BF5DD840097EB0B /* SelectRoleView.swift in Sources */,
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
 				559AB7742BF84F6C00FF216B /* ModelDTO.swift in Sources */,
@@ -452,6 +457,7 @@
 				FF1196962BFCFBA800BF2213 /* Icon.swift in Sources */,
 				FF407A492BFC2F080091C940 /* ChildWidget.swift in Sources */,
 				FF1196952BFCFBA500BF2213 /* Color+.swift in Sources */,
+				FF1A96912BFE565A000D15B0 /* ChildWidgetOption.swift in Sources */,
 				FF407A472BFC2F080091C940 /* ChildWidgetBundle.swift in Sources */,
 				FF407A4B2BFC2F080091C940 /* AppIntent.swift in Sources */,
 				FF1196942BFCFBA100BF2213 /* Date+.swift in Sources */,
@@ -612,7 +618,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dgh06175.PicCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KimDohyun.PicCharge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -643,7 +649,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dgh06175.PicCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KimDohyun.PicCharge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -669,7 +675,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dgh06175.PicCharge.ChildWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KimDohyun.PicCharge.ChildWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -696,7 +702,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dgh06175.PicCharge.ChildWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KimDohyun.PicCharge.ChildWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
