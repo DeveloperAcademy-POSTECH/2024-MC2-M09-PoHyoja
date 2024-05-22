@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SignUpView: View {
     @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var userManager: UserManager
+    
     @State private var name: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
@@ -56,7 +56,7 @@ struct SignUpView: View {
                         self.errorMessage = error.localizedDescription
                     } else {
                         self.errorMessage = nil
-                        userManager.user = authViewModel.user
+                        // TODO: - 로컬에 유저 정보 주입
                     }
                 }
             }) {
@@ -82,5 +82,4 @@ struct SignUpView: View {
 #Preview {
     SignUpView()
         .environmentObject(AuthViewModel())
-        .environmentObject(UserManager())
 }
