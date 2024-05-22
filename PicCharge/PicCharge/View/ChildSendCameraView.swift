@@ -10,14 +10,14 @@ import SwiftUI
 struct ChildSendCameraView: View {
     @Environment(NavigationManager.self) var navigationManager
     private let imageData: Data
-    @State private var isChildLodingView: Bool = false
+    @State private var isChildLoadingView: Bool = false
     
     init(imageData: Data) {
         self.imageData = imageData
     }
     
     var body: some View {
-        if isChildLodingView {
+        if isChildLoadingView {
             ChildLoadingView()
         } else {
             GeometryReader { gr in
@@ -50,7 +50,7 @@ struct ChildSendCameraView: View {
                     
                     Button("사진 보내기") {
                         // TODO: - 사진 전송 로직 imageData: Data를 서버로 전송
-                        isChildLodingView = true
+                        isChildLoadingView = true
                     }
                 }
             }
