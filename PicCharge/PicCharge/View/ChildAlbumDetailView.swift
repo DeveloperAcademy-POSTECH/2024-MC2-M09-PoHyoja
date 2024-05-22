@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ChildAlbumDetailView: View {
+    @Environment(NavigationManager.self) var navigationManager
+    
     @State private var likeCount: Int
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isShowingInquirySheet: Bool = false
@@ -60,7 +62,7 @@ struct ChildAlbumDetailView: View {
         .toolbar {
             Menu {
                 Button {
-                    
+                    self.isShowingInquirySheet = true
                 } label: {
                     Icon.inquiry
                     Text("문의하기")
@@ -94,6 +96,7 @@ struct ChildAlbumDetailView: View {
                 Button("삭제하기", role: .destructive) {
                     // TODO: - 로컬 UI 사진 삭제 처리
                     // TODO: - 서버 사진 삭제 처리
+                    navigationManager.pop()
                 }
                 Button("Cancel", role: .cancel) {}
             }
@@ -106,6 +109,7 @@ struct ChildAlbumDetailView: View {
             Button("문의하기") {
                 // TODO: - 로컬 UI 사진 삭제 처리
                 // TODO: - 서버 사진 삭제 처리
+                navigationManager.pop()
             }
             Button("Cancel", role: .cancel) {}
         }
