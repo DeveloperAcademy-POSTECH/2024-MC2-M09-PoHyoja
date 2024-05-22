@@ -40,7 +40,6 @@ struct ChildSendCameraView: View {
         .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
                 Button {
-                    //MARK: - NavigationPath 사용 전 이전 View로 돌아가긴 위한 dismiss()
                     navigationManager.pop()
                 } label: {
                     Text("다시 찍기")
@@ -48,19 +47,12 @@ struct ChildSendCameraView: View {
                 }
                 
                 Button {
-                    //MARK: - NavigationPath 사용 시 사진 전송 후, path에 .childMain 를 추가해야합니다.
                     navigationManager.push(to: .childLoading)
                 } label: {
                     Text("사진 보내기")
-                        .foregroundColor(.green) // 다크 모드 컬러 지정 필요
                 }
             }
         }
         .navigationBarBackButtonHidden(true)
     }
 }
-
-//#Preview {
-//    ChildSendCameraView()
-//        .environment(NavigationManager())
-//}
