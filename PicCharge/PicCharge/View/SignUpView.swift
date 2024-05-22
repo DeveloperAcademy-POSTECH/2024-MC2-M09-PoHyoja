@@ -60,7 +60,7 @@ struct SignUpView: View {
                     }
                 }
             }) {
-                Text("Sign Up")
+                Text("회원 가입")
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.green)

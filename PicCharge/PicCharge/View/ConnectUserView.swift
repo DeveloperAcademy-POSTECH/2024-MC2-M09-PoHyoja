@@ -48,15 +48,13 @@ struct ConnectUserView: View {
             }
             .padding()
             .buttonStyle(.borderedProminent)
-            
-            Button("홈으로") {
-                navigationManager.popToRoot()
-            }
-            .padding()
         }
         .padding()
         .alert(isPresented: $isShowingAlert) {
             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+        }
+        .task {
+            await fetchAndUpdateUserInfo()
         }
     }
 }

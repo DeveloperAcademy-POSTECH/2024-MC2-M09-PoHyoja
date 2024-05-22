@@ -19,7 +19,6 @@ struct ContentView: View {
     @EnvironmentObject private var userManager: UserManager
     @EnvironmentObject var authViewModel: AuthViewModel
     @State private var isAutoLogined: Bool = false
-    @State private var isRoleSelected: Bool = false
     @State private var isConnected: Bool = false
     
     var body: some View {
@@ -33,13 +32,12 @@ struct ContentView: View {
         .task {
             await checkAuthenticationStatus()
             await checkUserConnectionStatus()
-            handleAutomaticNavigation()
-            userManager.user = authViewModel.user
-            Task {
-                await checkAuthenticationStatus()
-                await checkUserConnectionStatus()
-                handleAutomaticNavigation()
-            }
+        }
+        .onReceive(authViewModel.$isLoggedIn) { isLoggedIn in
+            self.isAutoLogined = isLoggedIn
+        }
+        .onReceive(authViewModel.$user) { user in
+            self.userManager.user = user
         }
     }
 
@@ -60,23 +58,13 @@ struct ContentView: View {
             
         }
     }
-
-    private func handleAutomaticNavigation() {
-        if isAutoLogined && isRoleSelected && !isConnected {
-            navigationManager.push(to: .connectUser)
-        }
-    }
 }
 
 extension ContentView {
     
     // 로그인 상태 확인
     private func checkAuthenticationStatus() async {
-        if userManager.isLoggedIn() {
-            isAutoLogined = true
-        } else {
-            isAutoLogined = false
-        }
+        self.isAutoLogined = authViewModel.isLoggedIn
     }
 
     // 유저 연결여부 확인 함수
