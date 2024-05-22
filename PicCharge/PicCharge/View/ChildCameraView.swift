@@ -22,7 +22,6 @@ struct ChildCameraView: View {
                         .frame(width: gr.size.width, height: gr.size.width)
                     
                 }
-                .padding(.top, 155)
                 
                 HStack {
                     Button {
@@ -51,16 +50,15 @@ struct ChildCameraView: View {
                     }
                 }
                 .padding(.horizontal)
-                .padding(.bottom, 28)
+                .padding(.bottom, 22)
+                .padding(.top, 20)
                 
                 Button {
-                    //camera.takePicture()
-                    // navigationManager.push(to: .childSendCamera)
                     camera.takePicture { imageData in
-                                            if let data = imageData {
-                                                navigationManager.push(to: .childSendCamera(imageData: data))
-                                            }
-                                        }
+                        if let data = imageData {
+                            navigationManager.push(to: .childSendCamera(imageData: data))
+                        }
+                    }
                 } label: {
                     ZStack {
                         Circle()
@@ -92,10 +90,7 @@ struct ChildCameraView: View {
             .onAppear {
                 camera.checkPermissions()
             }
-            .navigationDestination(isPresented: $camera.showPreview) {
-                // navigationManager.push(to: .childSendCamera)
-                //TempChildSendCameraView(image: $camera.capturedImage)
-            }
+            .navigationBarBackButtonHidden(true)
         }
     }
 }
@@ -182,7 +177,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
     }
     
     func takePicture(completion: @escaping (Data?) -> Void) {
-           captureCompletion = completion
+        captureCompletion = completion
         let settings = AVCapturePhotoSettings()
         settings.flashMode = isFlashOn ? .on : .off
         photoOutput.capturePhoto(with: settings, delegate: self)
@@ -241,8 +236,8 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         
         // 이미지를 Data로 변환
         guard let imageData = croppedUIImage.pngData() else {
-               return
-           }
+            return
+        }
         
         //self.capturedImage = Data(uiImage: croppedUIImage)
         //self.showPreview = true
@@ -310,8 +305,3 @@ extension AVCaptureSession {
     }
     
 }
-
-//#Preview {
-//    ChildCameraView()
-//        .environment(NavigationManager())
-//}
