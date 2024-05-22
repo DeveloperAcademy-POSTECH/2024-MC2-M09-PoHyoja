@@ -8,19 +8,18 @@
 import Foundation
 
 class UserManager: ObservableObject {
-    static let shared = UserManager()
-    
     @Published var user: User? {
         didSet {
             saveUserToDefaults()
         }
     }
     
-    private init() {
+    init() {
         loadUserFromDefaults()
     }
     
     // 현재 사용자의 정보를 로컬에 저장한다.
+    // TODO: 추후에 앱과 위젯에서 같이 사용하는 UserDefaults.shared를 이용할 예정
     private func saveUserToDefaults() {
         guard let user = user else { return }
         do {
@@ -54,7 +53,8 @@ class UserManager: ObservableObject {
     func isLoggedIn() -> Bool {
         return user != nil
     }
-//    
+//
+//  테스트용 로컬 데이터 삭제 코드
 //    func resetUserDefaults() {
 //        let domain = Bundle.main.bundleIdentifier!
 //        UserDefaults.standard.removePersistentDomain(forName: domain)

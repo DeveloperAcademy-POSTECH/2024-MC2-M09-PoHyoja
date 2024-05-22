@@ -11,7 +11,7 @@ struct ConnectUserView: View {
     @EnvironmentObject private var userManager: UserManager
 
     @State private var toUserId: String = ""   // 연결을 요청받는 사용자 ID
-    @State private var showingAlert = false
+    @State private var isShowingAlert = false
     @State private var alertMessage = ""
     
     var body: some View {
@@ -55,7 +55,7 @@ struct ConnectUserView: View {
             .padding()
         }
         .padding()
-        .alert(isPresented: $showingAlert) {
+        .alert(isPresented: $isShowingAlert) {
             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
@@ -64,26 +64,26 @@ struct ConnectUserView: View {
     
 extension ConnectUserView {
     private func sendConnectionRequest() async {
-        guard let currentUser = UserManager.shared.user, let userId = currentUser.id else {
+        guard let currentUser = userManager.user, let userId = currentUser.id else {
             alertMessage = "사용자 ID를 찾을 수 없습니다."
-            showingAlert = true
+            isShowingAlert = true
             return
         }
         
         do {
             try await FirestoreService.shared.uploadConnectionRequest(from: userId, to: toUserId)
             alertMessage = "연결 요청이 성공적으로 전송되었습니다."
-            showingAlert = true
+            isShowingAlert = true
         } catch {
             alertMessage = "연결 요청을 전송하는데 실패했습니다: \(error.localizedDescription)"
-            showingAlert = true
+            isShowingAlert = true
         }
     }
     
     private func acceptConnectionRequest() async {
-        guard let currentUser = UserManager.shared.user, let userId = currentUser.id else {
+        guard let currentUser = userManager.user, let userId = currentUser.id else {
             alertMessage = "사용자 ID를 찾을 수 없습니다."
-            showingAlert = true
+            isShowingAlert = true
             return
         }
         
@@ -92,7 +92,7 @@ extension ConnectUserView {
             print("Fetched requests: \(requests)")
             guard let request = requests.first(where: { $0.status == .pending }) else {
                 alertMessage = "연결 요청을 찾을 수 없습니다."
-                showingAlert = true
+                isShowingAlert = true
                 return
             }
             
@@ -106,35 +106,35 @@ extension ConnectUserView {
             
             var updatedUser = currentUser
             updatedUser.connectedTo.append(connectedUserId)
-            UserManager.shared.user = updatedUser
+            userManager.user = updatedUser
             
             try await FirestoreService.shared.updateUserConnections(user: updatedUser)
             
             alertMessage = "연결 요청이 승인되었습니다."
-            showingAlert = true
+            isShowingAlert = true
         } catch {
             alertMessage = "연결 요청을 승인하는데 실패했습니다: \(error.localizedDescription)"
-            showingAlert = true
+            isShowingAlert = true
         }
     }
     
     private func fetchAndUpdateUserInfo() async {
-        guard let currentUser = UserManager.shared.user, let userId = currentUser.id else {
+        guard let currentUser = userManager.user, let userId = currentUser.id else {
             alertMessage = "사용자 ID를 찾을 수 없습니다."
-            showingAlert = true
+            isShowingAlert = true
             return
         }
         
         do {
             let fetchedUser = try await FirestoreService.shared.fetchUser(by: userId)
             DispatchQueue.main.async {
-                UserManager.shared.user = fetchedUser
+                userManager.user = fetchedUser
             }
             alertMessage = "사용자 정보가 성공적으로 업데이트되었습니다."
-            showingAlert = true
+            isShowingAlert = true
         } catch {
             alertMessage = "사용자 정보를 가져오는데 실패했습니다: \(error.localizedDescription)"
-            showingAlert = true
+            isShowingAlert = true
         }
     }
 }

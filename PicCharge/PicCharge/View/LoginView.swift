@@ -62,5 +62,5 @@ struct LoginView: View {
 #Preview {
     LoginView()
         .environmentObject(AuthViewModel())
-        .environmentObject(UserManager.shared)
+        .environmentObject(UserManager())
 }
