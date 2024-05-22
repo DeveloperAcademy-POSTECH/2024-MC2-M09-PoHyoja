@@ -6,24 +6,21 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ChildAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
     
-    @State private var likeCount: Int
+    @Bindable var photo: PhotoForSwiftData
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isShowingInquirySheet: Bool = false
     @State private var isZooming: Bool = false
     
-    private let photo: Photo
     private let photoForShare: PhotoForShare
-    private let imgData: Data
     
-    init(photo: Photo, imgData: Data) {
+    init(photo: PhotoForSwiftData) {
         self.photo = photo
-        self.imgData = imgData
-        self.photoForShare = PhotoForShare(imgData: imgData, uploadDate: photo.uploadDate)
-        self.likeCount = photo.likeCount
+        self.photoForShare = PhotoForShare(imgData: photo.imgData, uploadDate: photo.uploadDate)
     }
     
     var body: some View {
@@ -31,7 +28,7 @@ struct ChildAlbumDetailView: View {
             VStack{
                 Spacer()
                 
-                if let uiImg = UIImage(data: imgData) {
+                if let uiImg = UIImage(data: photo.imgData) {
                     Image(uiImage: uiImg)
                         .resizable()
                         .scaledToFill()
@@ -51,7 +48,7 @@ struct ChildAlbumDetailView: View {
                     }
                     .disabled(true)
                     
-                    Text(likeCount == 0 ? " " : "\(likeCount)개")
+                    Text(photo.likeCount == 0 ? " " : "\(photo.likeCount)개")
                         .font(.body)
                         .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
                 }
@@ -120,12 +117,8 @@ struct ChildAlbumDetailView: View {
     }
 }
 
-
 #Preview {
-    ChildAlbumDetailView(
-        photo: Photo(id: "", uploadBy: "", uploadDate: Date(), urlString: "", likeCount: 0, sharedWith: []),
-        imgData: UIImage(systemName: "camera")!.pngData()!
-    )
-    .environment(NavigationManager())
+    ChildAlbumDetailView(photo: PhotoForSwiftData(uploadBy: "", sharedWith: [], imgData: UIImage(systemName: "camera")!.pngData()!))
+        .environment(NavigationManager())
 }
 

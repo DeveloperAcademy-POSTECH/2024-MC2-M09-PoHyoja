@@ -34,3 +34,13 @@ final class PhotoForSwiftData {
         self.imgData = imgData
     }
 }
+
+extension PhotoForSwiftData: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: PhotoForSwiftData, rhs: PhotoForSwiftData) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
