@@ -21,14 +21,14 @@ enum PathType: Hashable {
     case childSendGallery
     case childLoading
     case childAlbum
-    case childAlbumDetail
+    case childAlbumDetail(photo: Photo, imgData: Data)
     
     // MARK: - 부모
     case parentAlbum
-    case parentAlbumDetail
+    case parentAlbumDetail(photo: Photo, imgData: Data)
     
     // MARK: - Setting
-    case setting
+    case setting(role: Role)
     case settingTermsOfUse
 }
 
@@ -59,18 +59,18 @@ extension PathType {
             ChildLoadingView()
         case .childAlbum:
             ChildAlbumView()
-        case .childAlbumDetail:
-            ChildAlbumDetailView()
+        case .childAlbumDetail(let photo, let imgData):
+            ChildAlbumDetailView(photo: photo, imgData: imgData)
             
         // MARK: - 부모
         case .parentAlbum:
             ParentAlbumView()
-        case .parentAlbumDetail:
-            ParentAlbumDetailView()
+        case .parentAlbumDetail(let photo, let imgData):
+            ParentAlbumDetailView(photo: photo, imgData: imgData)
             
         // MARK: - Setting
-        case .setting:
-            SettingView()
+        case .setting(let role):
+            SettingView(myRole: role)
         case .settingTermsOfUse:
             SettingTermsOfUseView()
         }
