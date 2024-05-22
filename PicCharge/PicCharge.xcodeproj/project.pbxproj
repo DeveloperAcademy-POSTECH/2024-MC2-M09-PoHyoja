@@ -40,20 +40,17 @@
 		559AB76C2BF8434300FF216B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76B2BF8434300FF216B /* FirebaseStorage */; };
 		559AB76E2BF8434300FF216B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76D2BF8434300FF216B /* FirebaseStorageCombine-Community */; };
 		559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */; };
-		559AB7742BF84F6C00FF216B /* ModelDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 559AB7732BF84F6C00FF216B /* ModelDTO.swift */; };
 		55A6E6B62BFB5C8A00C58597 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A6E6B52BFB5C8A00C58597 /* UserManager.swift */; };
 		55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */; };
 		55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3652BF5A13E00E413C6 /* ContentView.swift */; };
 		55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
 		55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */; };
-		55EC1FE82BF6396D00564952 /* LoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE72BF6396D00564952 /* LoginService.swift */; };
-		55EC1FEA2BF6397700564952 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55EC1FE92BF6397700564952 /* LoginViewModel.swift */; };
+		6C6BF97F2BF6E75D002683FA /* TempChildCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BF97E2BF6E75D002683FA /* TempChildCameraView.swift */; };
+		6C6BF9812BF9E038002683FA /* TempChildSendCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BF9802BF9E038002683FA /* TempChildSendCameraView.swift */; };
 		E32B7D412BFC77DC00814489 /* BatteryLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = E32B7D402BFC77DC00814489 /* BatteryLoading.json */; };
 		E33AFF642BFC389800BFB665 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF632BFC389800BFB665 /* LoadingView.swift */; };
 		E33AFF672BFC397700BFB665 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E33AFF662BFC397700BFB665 /* Lottie */; };
 		E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */; };
-		6C6BF97F2BF6E75D002683FA /* TempChildCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BF97E2BF6E75D002683FA /* TempChildCameraView.swift */; };
-		6C6BF9812BF9E038002683FA /* TempChildSendCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C6BF9802BF9E038002683FA /* TempChildSendCameraView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,20 +83,17 @@
 		552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceError.swift; sourceTree = "<group>"; };
 		559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		559AB7732BF84F6C00FF216B /* ModelDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelDTO.swift; sourceTree = "<group>"; };
 		55A6E6B52BFB5C8A00C58597 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		55B5E3602BF5A13E00E413C6 /* PicCharge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicCharge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicChargeApp.swift; sourceTree = "<group>"; };
 		55B5E3652BF5A13E00E413C6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		55B5E3672BF5A13F00E413C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		55EC1FE72BF6396D00564952 /* LoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginService.swift; sourceTree = "<group>"; };
-		55EC1FE92BF6397700564952 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		6C6BF97E2BF6E75D002683FA /* TempChildCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildCameraView.swift; sourceTree = "<group>"; };
+		6C6BF9802BF9E038002683FA /* TempChildSendCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildSendCameraView.swift; sourceTree = "<group>"; };
 		E32B7D402BFC77DC00814489 /* BatteryLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BatteryLoading.json; sourceTree = "<group>"; };
 		E33AFF632BFC389800BFB665 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
-		6C6BF97E2BF6E75D002683FA /* TempChildCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildCameraView.swift; sourceTree = "<group>"; };
-		6C6BF9802BF9E038002683FA /* TempChildSendCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempChildSendCameraView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,7 +140,6 @@
 			children = (
 				421A8CA92BFBBCD0003C7001 /* Components */,
 				E33AFF632BFC389800BFB665 /* LoadingView.swift */,
-				428046832BF5DFA40097EB0B /* ChildAlbumDetailView.swift */,
 				55B5E3652BF5A13E00E413C6 /* ContentView.swift */,
 				4280466D2BF5DD720097EB0B /* LoginView.swift */,
 				428046712BF5DDA80097EB0B /* ConnectUserView.swift */,
@@ -173,7 +166,6 @@
 			isa = PBXGroup;
 			children = (
 				51E239D92BF636920051943D /* Model.swift */,
-				559AB7732BF84F6C00FF216B /* ModelDTO.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -337,7 +329,6 @@
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
 				55A6E6B62BFB5C8A00C58597 /* UserManager.swift in Sources */,
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
-				559AB7742BF84F6C00FF216B /* ModelDTO.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
 				421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,

@@ -49,7 +49,7 @@ class AuthViewModel: ObservableObject {
                         completion(FirestoreServiceError.userNotFound)
                         return
                     }
-                    let newUser = User(id: firebaseUser.uid, name: name, email: email, role: role)
+                    let newUser = User(id: firebaseUser.uid, name: name, role: role, email: email)
                     Task {
                         do {
                             try await FirestoreService.shared.addUser(user: newUser)
@@ -104,6 +104,6 @@ class AuthViewModel: ObservableObject {
 
     private func convertFirebaseUser(user: FirebaseAuth.User?) -> User? {
         guard let user = user else { return nil }
-        return User(id: user.uid, name: "", email: user.email ?? "", role: .child)
+        return User(id: user.uid, name: "", role: .child, email: user.email ?? "")
     }
 }
