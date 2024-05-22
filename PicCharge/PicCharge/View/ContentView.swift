@@ -22,15 +22,7 @@ struct ContentView: View {
     @State private var isConnected: Bool = false
     
     var body: some View {
-        VStack {
-            Button("자식 화면으로 이동") {
-                navigationManager.push(to: .childTab)
-            }
-            
-            Button("부모 화면으로 이동") {
-                navigationManager.push(to: .parentAlbum)
-            }
-        }
+        LoginView()
     }
 
     private func handleAutomaticNavigation() {
@@ -56,4 +48,5 @@ extension ContentView {
 
 #Preview {
     ContentView()
+        .environment(NavigationManager())
 }
