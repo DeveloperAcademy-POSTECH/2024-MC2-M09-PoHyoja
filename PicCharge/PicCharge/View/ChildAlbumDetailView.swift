@@ -10,6 +10,7 @@ import SwiftData
 
 struct ChildAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @Environment(\.modelContext) var modelContext
     
     @Bindable var photo: PhotoForSwiftData
     @State private var isShowingDeleteSheet: Bool = false
@@ -95,7 +96,9 @@ struct ChildAlbumDetailView: View {
         ) {
             VStack {
                 Button("삭제하기", role: .destructive) {
-                    // TODO: - 로컬 UI 사진 삭제 처리
+                    // MARK: - 로컬 사진 삭제 처리
+                    modelContext.delete(photo)
+                    
                     // TODO: - 서버 사진 삭제 처리
                     navigationManager.pop()
                 }
@@ -108,7 +111,9 @@ struct ChildAlbumDetailView: View {
             titleVisibility: .visible
         ) {
             Button("문의하기") {
-                // TODO: - 로컬 UI 사진 삭제 처리
+                // MARK: - 로컬 사진 삭제 처리
+                modelContext.delete(photo)
+                
                 // TODO: - 서버 사진 삭제 처리
                 navigationManager.pop()
             }
