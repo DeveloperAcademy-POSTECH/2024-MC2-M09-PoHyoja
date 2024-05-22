@@ -17,11 +17,8 @@ struct ChildCameraView: View {
     var body: some View {
         GeometryReader { gr in
             VStack {
-                VStack {
-                    CameraPreview(camera: camera)
-                        .frame(width: gr.size.width, height: gr.size.width)
-                    
-                }
+                CameraPreview(camera: camera)
+                    .frame(width: gr.size.width, height: gr.size.width)
                 
                 HStack {
                     Button {
@@ -69,7 +66,6 @@ struct ChildCameraView: View {
                             .frame(width: 76, height: 76)
                     }
                 }
-                //MARK: 셔터 버튼이 10픽셀 올라가야하고, padding값도 160은 아님
                 .padding(.bottom, 160)
                 
                 Spacer()
@@ -239,8 +235,6 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             return
         }
         
-        //self.capturedImage = Data(uiImage: croppedUIImage)
-        //self.showPreview = true
         DispatchQueue.main.async {
             self.capturedImage = imageData
             self.captureCompletion?(imageData)
@@ -252,9 +246,7 @@ extension UIImage {
     // 프론트 카메라 이미지를 조정
     func adjustedForFrontCamera() -> UIImage? {
         guard let cgImage = self.cgImage else { return nil }
-        
         let orientedImage = UIImage(cgImage: cgImage, scale: self.scale, orientation: .leftMirrored)
-        
         return orientedImage
     }
     
@@ -303,5 +295,4 @@ extension AVCaptureSession {
         previewLayer.videoGravity = .resizeAspectFill
         view.layer.addSublayer(previewLayer)
     }
-    
 }
