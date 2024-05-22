@@ -19,7 +19,6 @@ enum PathType: Hashable {
     case childCamera
     case childSendCamera(imageData: Data)
     case childSendGallery
-    case childLoading
     case childAlbum
     case childAlbumDetail
     
@@ -55,8 +54,6 @@ extension PathType {
             ChildSendCameraView(imageData: imageData)
         case .childSendGallery:
             ChildSendGalleryView()
-        case .childLoading:
-            ChildLoadingView()
         case .childAlbum:
             ChildAlbumView()
         case .childAlbumDetail:

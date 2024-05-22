@@ -10,49 +10,52 @@ import SwiftUI
 struct ChildSendCameraView: View {
     @Environment(NavigationManager.self) var navigationManager
     private let imageData: Data
-
+    @State private var isChildLodingView: Bool = false
+    
     init(imageData: Data) {
         self.imageData = imageData
     }
     
     var body: some View {
-        GeometryReader { gr in
-            VStack {
-                Spacer()
-                
-                Group {
-                    if let uiImage = UIImage(data: imageData) {
-                        Image(uiImage: uiImage)
-                            .resizable()
-                            .scaledToFill()
+        if isChildLodingView {
+            ChildLoadingView()
+        } else {
+            GeometryReader { gr in
+                VStack {
+                    Spacer()
+                    
+                    Group {
+                        if let uiImage = UIImage(data: imageData) {
+                            Image(uiImage: uiImage)
+                                .resizable()
+                                .scaledToFill()
+                        }
+                    }
+                    .frame(
+                        width: max(0, gr.size.width - 32),
+                        height: max(0, gr.size.width - 32)
+                    )
+                    .clipShape(RoundedRectangle(cornerRadius: 21))
+                    
+                    Spacer(minLength: 236)
+                }
+                .padding(.horizontal, 16)
+            }
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    Button("다시 찍기") {
+                        navigationManager.pop()
+                    }
+                    .foregroundStyle(.txtPrimaryDark)
+                    
+                    Button("사진 보내기") {
+                        // TODO: - 사진 전송 로직 imageData: Data를 서버로 전송
+                        isChildLodingView = true
                     }
                 }
-                .frame(
-                    width: max(0, gr.size.width - 32),
-                    height: max(0, gr.size.width - 32)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 21))
-                
-                Spacer(minLength: 236)
             }
-            .padding(.horizontal, 16)
+            .navigationBarBackButtonHidden(true)
         }
-        .toolbar {
-            ToolbarItemGroup(placement: .bottomBar) {
-                Button {
-                    navigationManager.pop()
-                } label: {
-                    Text("다시 찍기")
-                        .foregroundColor(.white)
-                }
-                
-                Button {
-                    navigationManager.push(to: .childLoading)
-                } label: {
-                    Text("사진 보내기")
-                }
-            }
-        }
-        .navigationBarBackButtonHidden(true)
+        
     }
 }
