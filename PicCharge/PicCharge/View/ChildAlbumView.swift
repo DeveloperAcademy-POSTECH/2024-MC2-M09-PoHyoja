@@ -62,7 +62,7 @@ struct ChildAlbumView: View {
                                 if let uiImage = UIImage(data: photo.imgData) {
                                     Image(uiImage: uiImage)
                                         .resizable()
-                                        .aspectRatio(1, contentMode: /*@START_MENU_TOKEN@*/.fill/*@END_MENU_TOKEN@*/)
+                                        .aspectRatio(1, contentMode: .fill)
                                         .clipped()
                                         .onTapGesture {
                                             navigationManager.push(to: .childAlbumDetail(photo: photo))
