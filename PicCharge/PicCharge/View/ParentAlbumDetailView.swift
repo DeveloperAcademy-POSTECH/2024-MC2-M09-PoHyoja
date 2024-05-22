@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ParentAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
@@ -14,39 +15,51 @@ struct ParentAlbumDetailView: View {
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isShowingInquirySheet: Bool = false
     @State private var isZooming: Bool = false
+    @State private var isLiked: Bool = false
+    @State private var cancellable: AnyCancellable?
     
+    private let imageView: Image
     private let photo: Photo
     private let photoForShare: PhotoForShare
-    private let imgData: Data
     
     init(photo: Photo, imgData: Data) {
         self.photo = photo
-        self.imgData = imgData
+        self.imageView = Image(uiImage: UIImage(data: imgData)!)
         self.photoForShare = PhotoForShare(imgData: imgData, uploadDate: photo.uploadDate)
         self.likeCount = photo.likeCount
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack{
+        ZStack {
+            Color.clear.ignoresSafeArea()
+            
+            VStack {
                 Spacer()
-                
-                if let uiImg = UIImage(data: imgData) {
-                    Image(uiImage: uiImg)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: geometry.size.width, height: geometry.size.width)
-                        .clipped()
-                        .zoomable(isZooming: $isZooming)
-                } else {
-                    Color.bgGray
-                        .frame(width: geometry.size.width, height: geometry.size.width)
-                }
+                imageView
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fit)
+                    .clipped()
+                    .zoomable(isZooming: $isZooming)
+                    .padding(.bottom, 166)
+                Spacer()
+            }
+            
+            if isLiked {
+                LottieView(jsonName: "LikeAnimation", loopMode: .loop)
+                    .transition(.opacity)
+            }
+            
+            VStack {
+                Spacer()
                 
                 VStack(spacing: 8) {
                     Button {
-                        // MARK: -  좋아요 숫자 누른 경우 통신
                         likeCount += 1
+                        withAnimation {
+                            isLiked = true
+                        }
+                        self.resetTimer()
+                        
                     } label: {
                         Icon.heart
                             .font(.system(size: 50))
@@ -55,12 +68,11 @@ struct ParentAlbumDetailView: View {
                     
                     Text(likeCount == 0 ? " " : "\(likeCount)개")
                         .font(.body)
-                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                        .fontWeight(.bold)
                 }
-                .padding(.vertical, 80)
-                .opacity(isZooming ? 0 : 1)
             }
-            Spacer()
+            .opacity(isZooming ? 0 : 1)
+            .padding(.bottom, 80)
         }
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)
@@ -120,6 +132,19 @@ struct ParentAlbumDetailView: View {
             Button("Cancel", role: .cancel) {}
         }
     }
+    
+    private func resetTimer() {
+        cancellable?.cancel()
+        
+        cancellable = Just(())
+            .delay(for: .seconds(2), scheduler: RunLoop.main)
+            .sink {
+                withAnimation {
+                    self.isLiked = false
+                }
+                // TODO: - 서버 좋아요 API 호출
+            }
+    }
 }
 
 #Preview {
@@ -128,4 +153,5 @@ struct ParentAlbumDetailView: View {
         imgData: UIImage(systemName: "camera")!.pngData()!
     )
     .environment(NavigationManager())
+    .preferredColorScheme(.dark)
 }
