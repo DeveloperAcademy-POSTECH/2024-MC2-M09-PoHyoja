@@ -8,71 +8,59 @@
 import SwiftUI
 import FirebaseAuth
 
-struct ContentView: View {
-    @State private var navigationManager = NavigationManager()
-    @EnvironmentObject var userManager: UserManager
-    @State private var isLoading: Bool = true
+enum UserState {
+    case checkNeeded
+    case notConnected
+    case connectedChild
+    case connectedParent
+    case notExist
+}
 
+struct ContentView: View {
+    @Environment(NavigationManager.self) var navigationManager
+    @EnvironmentObject var userManager: UserManager
+
+    @State private var userState: UserState = .checkNeeded
+    
     var body: some View {
-        NavigationStack(path: $navigationManager.path) {
-            Group {
-                if isLoading {
-                    LoadingView()
-                }
-            }
-            .navigationDestination(for: PathType.self) { path in
-                path.NavigatingView()
-                    .environmentObject(userManager)
+        Group {
+            switch userState {
+            case .notExist:
+                LoginView(userState: $userState)
+            case .notConnected:
+                ConnectUserView()
+            case .connectedChild:
+                ChildTabView()
+            case .connectedParent:
+                ParentAlbumView()
+            default:
+                LoginView(userState: $userState)
             }
         }
         .task {
             await checkLoginStatus()
-            isLoading = false
-            updateNavigation()
         }
     }
 }
 
 private extension ContentView {
     func checkLoginStatus() async {
-        if let currentUser = Auth.auth().currentUser {
-            await fetchUserAndSetStatus(email: currentUser.email ?? "")
-        } else {
-            DispatchQueue.main.async {
-                self.userManager.user = nil
-            }
-        }
-    }
+        if let currentUser = Auth.auth().currentUser,
+           let user = await fetchUserAndSetStatus(email: currentUser.email ?? "") {
     
-    func fetchUserAndSetStatus(email: String) async {
-        let user = await FirestoreService.shared.fetchUserData(email: email)
-        DispatchQueue.main.async {
-            self.userManager.user = user
-            self.updateConnectionStatus()
-            self.updateNavigation()
-        }
-    }
-    
-    func updateConnectionStatus() {
-        guard let currentUser = userManager.user else {
-            self.userManager.isConnected = false
-            return
-        }
-        self.userManager.isConnected = !currentUser.connectedTo.isEmpty
-    }
-    
-    func updateNavigation() {
-        if userManager.user == nil {
-            navigationManager.push(to: .login)
-        } else if !userManager.isConnected {
-            navigationManager.push(to: .connectUser)
-        } else if let currentUser = userManager.user {
-            if currentUser.role == .child {
-                navigationManager.push(to: .childTab)
+            if user.connectedTo.isEmpty {
+                userState = .notConnected
             } else {
-                navigationManager.push(to: .parentAlbum)
+                userState = (user.role == .child) ? .connectedChild : .connectedParent
             }
+            
+        } else {
+            userState = .notExist
         }
+    }
+    
+    func fetchUserAndSetStatus(email: String) async -> User? {
+        await FirestoreService.shared.fetchUserData(email: email)
     }
     
     func signUp(name: String, email: String, password: String, role: Role) async throws {
@@ -83,23 +71,9 @@ private extension ContentView {
             let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [])
             try await FirestoreService.shared.saveUserData(user: newUser)
             
-            DispatchQueue.main.async {
-                self.userManager.user = newUser
-                self.updateConnectionStatus()
-                self.updateNavigation()
-            }
+            userState = .notExist
         } catch {
             print("회원 가입 실패")
-            throw error
-        }
-    }
-    
-    func signIn(email: String, password: String) async throws {
-        do {
-            _ = try await Auth.auth().signIn(withEmail: email, password: password)
-            await fetchUserAndSetStatus(email: email)
-        } catch {
-            print("로그인 실패")
             throw error
         }
     }
@@ -107,11 +81,8 @@ private extension ContentView {
     func signOut() throws {
         do {
             try Auth.auth().signOut()
-            DispatchQueue.main.async {
-                self.userManager.user = nil
-                self.userManager.isConnected = false
-                self.updateNavigation()
-            }
+            // TODO: - 로컬 유저 제거
+            userState = .notExist
         } catch {
             print("로그아웃 실패")
             throw error
@@ -121,6 +92,5 @@ private extension ContentView {
 
 #Preview {
     ContentView()
-        .environmentObject(UserManager())
         .environment(NavigationManager())
 }

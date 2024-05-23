@@ -24,14 +24,20 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct PicChargeApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var navigationManager = NavigationManager()
     @StateObject private var userManager = UserManager()
-
-
+    
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(userManager)
-                .preferredColorScheme(.dark)
+            NavigationStack(path: $navigationManager.path) {
+                ContentView()
+                    .navigationDestination(for: PathType.self) { path in
+                        path.NavigatingView()
+                    }
+                    .preferredColorScheme(.dark)
+            }
         }
+        .environment(navigationManager)
     }
 }

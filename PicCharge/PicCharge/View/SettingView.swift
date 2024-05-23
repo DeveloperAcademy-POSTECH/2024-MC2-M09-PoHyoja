@@ -10,7 +10,7 @@ import SwiftUI
 struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
 //    @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var userManager: UserManager
+//    @EnvironmentObject var userManager: UserManager
     
     // TODO: - 유저 모델 주입
     @State private var myId: String = "imyourson"

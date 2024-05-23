@@ -9,7 +9,6 @@ import Foundation
 
 class UserManager: ObservableObject {
     @Published var user: User?
-    @Published var isConnected: Bool = false
 }
 //
 //class UserManager: ObservableObject {
