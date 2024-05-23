@@ -20,15 +20,15 @@ struct Provider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
         var entries: [SimpleEntry] = []
         
-        let totalTime = ChildWidgetOption.totalTime
-        let photoSentDate = ChildWidgetOption.photoSentDate
+        let targetTime = ChildWidgetOption.targetTime // 목표로 설정한 시간
+        let photoSentDate = ChildWidgetOption.photoSentDate // 사진을 보낸 시간
         
-        // 근사값이라 totalTime에 어떤 값이 오더라도 0이 될 수 있게 +1을 해줌
-        for hourOffset in 0..<(totalTime + 1) {
-            let percentageDropPerTime = 100.0 / Double(totalTime) // 배터리 줄어드는 % 계산
-            let currentPercentage = max(100.0 - (percentageDropPerTime * Double(hourOffset % (totalTime + 1))), 0)
-            let entryDate = ChildWidgetOption.timeMeasurement(value: hourOffset, to: photoSentDate)
-            let entry = SimpleEntry(date: entryDate, configuration: configuration, batteryPercentage: currentPercentage, hourOffset: hourOffset % (totalTime + 1))
+        // 근사값이라 targetTime에 어떤 값이 오더라도 배터리가 0이하가 될 수 있게 +1을 해줌
+        for hourOffset in 0..<(targetTime + 1) {
+            let percentageDropPerTime = 100.0 / Double(targetTime) // 배터리 줄어드는 % 계산
+            let currentPercentage = max(100.0 - (percentageDropPerTime * Double(hourOffset % (targetTime + 1))), 0) // 현재 남은 배터리
+            let elapsedTime = Calendar.current.date(byAdding: ChildWidgetOption.timeUnit, value: hourOffset, to: photoSentDate)! // 사진을 보낸 시간으로부터 경과된 시간
+            let entry = SimpleEntry(date: elapsedTime, configuration: configuration, batteryPercentage: currentPercentage, hourOffset: hourOffset % (targetTime + 1))
             entries.append(entry)
         }
         return Timeline(entries: entries, policy: .atEnd)
@@ -77,7 +77,7 @@ struct ChildWidgetEntryView : View {
                         HStack {
                             Text("사진 보낸 지 \(entry.hourOffset)시간 됐어요")
                                 .font(.body.weight(.bold))
-                                .foregroundStyle(.txtFDF8F8)
+                                .foregroundStyle(.txtFdF8F8)
                             
                             Spacer()
                         }
