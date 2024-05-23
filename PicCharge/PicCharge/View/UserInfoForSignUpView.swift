@@ -20,10 +20,7 @@ struct UserInfoForSignUpView: View {
     var isSignUpAvailable: Bool {
         !name.isEmpty && !email.isEmpty && !password.isEmpty && password == confirmPassword && errorMessage == nil
     }
-    
-    init(errorMessage: String?) {
-        self.errorMessage = errorMessage
-    }
+
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -100,7 +97,7 @@ struct UserInfoForSignUpView: View {
 }
 
 #Preview {
-    UserInfoForSignUpView(errorMessage: nil)
+    UserInfoForSignUpView()
         .environment(NavigationManager())
         .preferredColorScheme(.dark)
 }

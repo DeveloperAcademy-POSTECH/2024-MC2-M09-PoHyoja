@@ -13,6 +13,7 @@ struct SelectRoleForSignUpView: View {
     
     @State var selectedRole: Role = .child
     @State private var isNetworking: Bool = false
+    @State private var isShowingAlert: Bool = false
     
     private let name: String
     private let email: String
@@ -123,6 +124,15 @@ struct SelectRoleForSignUpView: View {
         .padding(.bottom, 16)
         .navigationTitle("역할 선택")
         .navigationBarTitleDisplayMode(.inline)
+        .alert(isPresented: $isShowingAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text("기본 정보 문제로 회원가입 실패!"),
+                dismissButton: Alert.Button.default(Text("OK")) {
+                    navigationManager.pop()
+                }
+            )
+        }
     }
 }
 
@@ -138,7 +148,7 @@ extension SelectRoleForSignUpView {
             navigationManager.popToRoot()
         } catch {
             print("회원 가입 실패")
-            navigationManager.pop(to: .signUp(errorMessage: "회원 가입 실패"))
+            isShowingAlert = true
         }
     }
 }
