@@ -9,12 +9,10 @@ import SwiftUI
 
 enum PathType: Hashable {
     // MARK: - 초기 설정
-    case login
     case signUp
     case connectUser
     
     // MARK: - 자식
-    case childTab
     case childMain
     case childCamera
     case childSendCamera(imageData: Data)
@@ -36,16 +34,12 @@ extension PathType {
     func NavigatingView() -> some View {
         switch self {
         // MARK: - 초기 설정
-        case .login:
-            LoginView()
         case .signUp:
             SignUpView()
         case .connectUser:
             ConnectUserView()
 
         // MARK: - 자식
-        case .childTab:
-            ChildTabView()
         case .childMain:
             ChildMainView()
         case .childCamera:

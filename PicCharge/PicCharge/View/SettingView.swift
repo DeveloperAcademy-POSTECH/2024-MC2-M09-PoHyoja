@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
 struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @EnvironmentObject var authViewModel: AuthViewModel
-//    @EnvironmentObject var userManager: UserManager
     
     // TODO: - 유저 모델 주입
     @State private var myId: String = "imyourson"
@@ -82,18 +81,15 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("로그아웃", role: .destructive) {
-                        authViewModel.signOut { error in
-                            if let error = error {
-                                print("Error signing out: \(error.localizedDescription)")
-                            } else {
-//                                userManager.user = nil
-                                navigationManager.popToRoot()
-                            }
+                        do {
+                            try logout()
+                        } catch {
+                            print("로그아웃 에러: \(error.localizedDescription)")
                         }
+                        navigationManager.popToRoot()
                     }
-                    Button("Cancel", role: .cancel) {}
+                    Button("취소", role: .cancel) {}
                 }
-                
             }
             .confirmationDialog(
                 "회원을 탈퇴하시겠습니까? \n 탈퇴하면 되돌릴 수 없고, 저희가 슬퍼요.",
@@ -102,16 +98,14 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("탈퇴하기", role: .destructive) {
-                        authViewModel.deleteUser { error in
-                            if let error = error {
-                                print("Error deleting user: \(error.localizedDescription)")
-                            } else {
-//                                userManager.user = nil
-                                navigationManager.popToRoot()
-                            }
+                        do {
+                            try deleteUser()
+                        } catch {
+                            print("회원 탈퇴 에러: \(error.localizedDescription)")
                         }
+                        navigationManager.popToRoot()
                     }
-                    Button("Cancel", role: .cancel) {}
+                    Button("취소", role: .cancel) {}
                 }
             }
             
@@ -119,8 +113,24 @@ struct SettingView: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 200)
         }
-        .navigationTitle("설정")
-        .navigationBarTitleDisplayMode(.large)
+    }
+}
+
+extension SettingView {
+    private func logout() throws {
+        try Auth.auth().signOut()
+    }
+    
+    private func deleteUser() throws {
+        guard let user = Auth.auth().currentUser else {
+            throw FirestoreServiceError.userNotFound
+        }
+        return
+        // TODO: 파이어베이스 서버에서 유저 정보 삭제
+        
+        // TODO: try await user.delete()
+        
+        // TODO: alert 로직으로 성공 실패 표시
     }
 }
 

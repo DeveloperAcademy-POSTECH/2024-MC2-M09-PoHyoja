@@ -35,7 +35,6 @@
 		4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */; };
 		5151CB8A2BFEE41300AF792F /* LikeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5151CB892BFEE41300AF792F /* LikeAnimation.json */; };
 		51E239DA2BF636920051943D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E239D92BF636920051943D /* Model.swift */; };
-		550FDD142BFC3AF6007A6B42 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FDD132BFC3AF6007A6B42 /* AuthViewModel.swift */; };
 		550FDD162BFC3DE6007A6B42 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FDD152BFC3DE6007A6B42 /* SignUpView.swift */; };
 		552E24E32BF9CB7500E5CF24 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */; };
 		552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */; };
@@ -83,7 +82,6 @@
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		5151CB892BFEE41300AF792F /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
 		51E239D92BF636920051943D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
-		550FDD132BFC3AF6007A6B42 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		550FDD152BFC3DE6007A6B42 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
 		550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PicCharge.entitlements; sourceTree = "<group>"; };
 		552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
@@ -134,7 +132,6 @@
 			children = (
 				5151CB892BFEE41300AF792F /* LikeAnimation.json */,
 				421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */,
-				550FDD152BFC3DE6007A6B42 /* SignUpView.swift */,
 				E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */,
 				E32B7D402BFC77DC00814489 /* BatteryLoading.json */,
 			);
@@ -148,6 +145,7 @@
 				E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */,
 				55B5E3652BF5A13E00E413C6 /* ContentView.swift */,
 				4280466D2BF5DD720097EB0B /* LoginView.swift */,
+				550FDD152BFC3DE6007A6B42 /* SignUpView.swift */,
 				428046712BF5DDA80097EB0B /* ConnectUserView.swift */,
 				428046732BF5DDD30097EB0B /* ChildTabView.swift */,
 				428046752BF5DE6A0097EB0B /* ChildMainView.swift */,
@@ -176,14 +174,6 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		550FDD122BFC3AE4007A6B42 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				550FDD132BFC3AF6007A6B42 /* AuthViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		55B5E3572BF5A13E00E413C6 = {
 			isa = PBXGroup;
 			children = (
@@ -205,7 +195,6 @@
 			isa = PBXGroup;
 			children = (
 				550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */,
-				550FDD122BFC3AE4007A6B42 /* ViewModel */,
 				55EC1FE62BF6394200564952 /* Service */,
 				55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */,
 				4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */,
@@ -346,7 +335,6 @@
 				421A8CB12BFDC9E7003C7001 /* ZoomableModifier.swift in Sources */,
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
-				550FDD142BFC3AF6007A6B42 /* AuthViewModel.swift in Sources */,
 				421A8CBE2BFE5114003C7001 /* UserForSwiftData.swift in Sources */,
 				421A8C692BFA3761003C7001 /* Date+.swift in Sources */,
 				550FDD162BFC3DE6007A6B42 /* SignUpView.swift in Sources */,

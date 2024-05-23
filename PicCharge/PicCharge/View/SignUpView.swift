@@ -6,34 +6,37 @@
 //
 
 import SwiftUI
+import FirebaseAuth
 
-struct SignUpView: View {    
+struct SignUpView: View {
+    @Environment(NavigationManager.self) var navigationManager
+
     @State private var name: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var selectedRole: Role = .child
     @State private var errorMessage: String?
-
+        
     var body: some View {
         VStack {
             TextField("이름", text: $name)
                 .autocapitalization(.none)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
             
             TextField("이메일", text: $email)
                 .autocapitalization(.none)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
 
             SecureField("비밀번호", text: $password)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
 
             SecureField("비밀번호 확인", text: $confirmPassword)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
+                .padding(.horizontal)
             
             Picker("역할 선택", selection: $selectedRole) {
                 ForEach(Role.allCases, id: \.self) { role in
@@ -43,14 +46,13 @@ struct SignUpView: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding()
 
-            Button {
-                guard password == confirmPassword else {
-                    self.errorMessage = "비밀번호가 일치하지 않습니다."
-                    return
+            Button(action: {
+                Task {
+                    await signUp(name: name, email: email, password: password, role: selectedRole)
+                    navigationManager.popToRoot()
                 }
-                
-            } label: {
-                Text("Sign Up")
+            }) {
+                Text("회원 가입")
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.green)
@@ -69,7 +71,20 @@ struct SignUpView: View {
     }
 }
 
+private extension SignUpView {
+    func signUp(name: String, email: String, password: String, role: Role) async {
+        do {
+            let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
+            let user = authResult.user
+            
+            let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [])
+            try await FirestoreService.shared.addUser(user: newUser)
+        } catch {
+            print("회원 가입 실패")
+        }
+    }
+}
+
 #Preview {
     SignUpView()
-        .environmentObject(AuthViewModel())
 }

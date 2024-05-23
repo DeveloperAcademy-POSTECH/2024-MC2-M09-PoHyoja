@@ -17,6 +17,8 @@ enum FirestoreServiceError: Error {
     case decodingError
     case userAlreadyExists // 유저 회원가입시 아이디 중복일경우 발생하는 예외
     case invalidRequestId // 연결 요청시 아이디가 일치하지 않을 경우
+    case requestNotFound
+    case invalidRequest
 }
 
 extension FirestoreServiceError: LocalizedError {
@@ -35,9 +37,13 @@ extension FirestoreServiceError: LocalizedError {
         case .decodingError:
             return "데이터베이스에서 데이터를 디코딩하는 데 실패했습니다."
         case .userAlreadyExists:
-            return "동일한 ID를 가진 사용자가 이미 존재합니다."
+            return "동일한 이름을 가진 사용자가 이미 존재합니다."
         case .invalidRequestId:
             return "제공된 요청 ID가 일치하지 않습니다."
+        case .requestNotFound:
+            return "연결 요청을 찾지 못했습니다."
+        case .invalidRequest:
+            return "잘못된 연결 요청입니다."
         }
     }
 }
