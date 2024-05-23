@@ -52,8 +52,18 @@ struct ChildSendGalleryView: View {
                 }
                 .padding(.horizontal, 16)
             }
-            .toolbar(.hidden, for: .navigationBar)
+            .navigationBarBackButtonHidden(true)
             .toolbar {
+                ToolbarItemGroup(placement: .topBarLeading) {
+                    Button {
+                        navigationManager.pop()
+                    } label: {
+                        Icon.close
+                            .font(.system(size: 17))
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.txtPrimaryDark)}
+                    }
+                    
                 ToolbarItemGroup(placement: .bottomBar) {
                     Button("다시 선택하기") {
                         isPresented = true
