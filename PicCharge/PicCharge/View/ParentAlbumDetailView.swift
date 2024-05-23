@@ -17,6 +17,7 @@ struct ParentAlbumDetailView: View {
     @State private var isZooming: Bool = false
     @State private var isLiked: Bool = false
     @State private var cancellable: AnyCancellable?
+    @State private var likeAnimationIDs: [UUID] = []
     
     private let imageView: Image
     private let photo: Photo
@@ -44,22 +45,32 @@ struct ParentAlbumDetailView: View {
                 Spacer()
             }
             
-            if isLiked {
+            ForEach(likeAnimationIDs, id: \.self) { id in
                 LottieView(jsonName: "TempLikeAnimation", loopMode: .playOnce)
                     .transition(.opacity)
-                    .frame(width: 400, height: 600)
+                    .frame(width: 160, height: 240)
+                    .offset(y: 150)
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            likeAnimationIDs.removeAll { $0 == id }
+                        }
+                    }
             }
             
             VStack {
                 Spacer()
                 
                 VStack(spacing: 8) {
+                    Spacer()
+                    
                     Button {
                         likeCount += 1
-                        withAnimation {
-                            isLiked = true
-                        }
+                        let likeID = UUID()
+                        likeAnimationIDs.append(likeID)
                         self.resetTimer()
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            isLiked = false
+                        }
                         
                     } label: {
                         Icon.heart
@@ -74,6 +85,7 @@ struct ParentAlbumDetailView: View {
             }
             .opacity(isZooming ? 0 : 1)
             .padding(.bottom, 80)
+            
         }
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)
