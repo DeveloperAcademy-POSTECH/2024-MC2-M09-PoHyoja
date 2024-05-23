@@ -5,44 +5,71 @@
 //  Created by 이상현 on 5/16/24.
 //
 
-//
-//  ContentView.swift
-//  PicCharge
-//
-//  Created by 이상현 on 5/16/24.
-//
-
 import SwiftUI
+import FirebaseAuth
+
+enum UserState {
+    case checkNeeded
+    case notConnected
+    case connectedChild
+    case connectedParent
+    case notExist
+}
 
 struct ContentView: View {
     @Environment(NavigationManager.self) var navigationManager
-    
-    @State private var isAutoLogined: Bool = false
-    @State private var isRoleSelected: Bool = false
-    @State private var isConnected: Bool = false
+    @State private var userState: UserState = .checkNeeded
     
     var body: some View {
-        LoginView()
-    }
-
-    private func handleAutomaticNavigation() {
-        if isAutoLogined && isRoleSelected && !isConnected {
-            navigationManager.push(to: .connectUser)
+        Group {
+            switch userState {
+            case .notExist:
+                LoginView(userState: $userState)
+            case .notConnected:
+                ConnectUserView()
+            case .connectedChild:
+                ChildTabView()
+            case .connectedParent:
+                ParentAlbumView()
+            default:
+                LoginView(userState: $userState)
+            }
+        }
+        .task {
+            await checkLoginStatus()
         }
     }
 }
 
-extension ContentView {
+private extension ContentView {
+    func checkLoginStatus() async {
+        if let currentUser = Auth.auth().currentUser,
+           let user = await fetchUserAndSetStatus(email: currentUser.email ?? "") {
     
-    // 로그인 상태 확인
-    private func checkAuthenticationStatus() async {
-        isAutoLogined = false
+            if user.connectedTo.isEmpty {
+                userState = .notConnected
+            } else {
+                userState = (user.role == .child) ? .connectedChild : .connectedParent
+            }
+            
+        } else {
+            userState = .notExist
+        }
     }
-
-    // 유저 연결여부 확인 함수
-    private func checkUserConnectionStatus() async {
-        // TODO: 연결 상태 확인 로직을 추가
-        isConnected = false
+    
+    func fetchUserAndSetStatus(email: String) async -> User? {
+        await FirestoreService.shared.fetchUserByEmail(email: email)
+    }
+    
+    func signOut() throws {
+        do {
+            try Auth.auth().signOut()
+            // TODO: - 로컬 유저 제거
+            userState = .notExist
+        } catch {
+            print("로그아웃 실패")
+            throw error
+        }
     }
 }
 

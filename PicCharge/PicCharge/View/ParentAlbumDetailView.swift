@@ -65,7 +65,7 @@ struct ParentAlbumDetailView: View {
                     Spacer()
                     
                     Button {
-                        likeCount += 1
+                        photo.likeCount += 1
                         let likeID = UUID()
                         likeAnimationIDs.append(likeID)
                         self.resetTimer()

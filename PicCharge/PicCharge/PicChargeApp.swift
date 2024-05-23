@@ -24,8 +24,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct PicChargeApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
-    @StateObject private var authViewModel = AuthViewModel()
     @State private var navigationManager = NavigationManager()
     
     var container: ModelContainer
@@ -50,6 +48,5 @@ struct PicChargeApp: App {
         }
         .modelContainer(container)
         .environment(navigationManager)
-        .environmentObject(authViewModel)
     }
 }
