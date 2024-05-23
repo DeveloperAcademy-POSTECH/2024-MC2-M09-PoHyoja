@@ -45,8 +45,9 @@ struct ParentAlbumDetailView: View {
             }
             
             if isLiked {
-                LottieView(jsonName: "LikeAnimation", loopMode: .loop)
+                LottieView(jsonName: "TempLikeAnimation", loopMode: .playOnce)
                     .transition(.opacity)
+                    .frame(width: 400, height: 600)
             }
             
             VStack {
