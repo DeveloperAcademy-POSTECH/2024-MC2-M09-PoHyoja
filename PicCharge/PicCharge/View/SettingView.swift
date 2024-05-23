@@ -6,14 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 import FirebaseAuth
 
 struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
-    
+    @Environment(\.modelContext) var modelContext
+    @Query var userForSwiftDatas: [UserForSwiftData]
+
     // TODO: - 유저 모델 주입
-    @State private var myId: String = "imyourson"
-    @State private var connectedId: String = "iamdaddy"
     @State private var myRole: Role
     
     @State private var isShowingLogoutActionSheet = false
@@ -35,7 +36,7 @@ struct SettingView: View {
                         HStack{
                             VStack(alignment: .leading) {
                                 Text("내 계정")
-                                Text(myId)
+                                Text(userForSwiftDatas.first!.name)
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }
@@ -47,7 +48,7 @@ struct SettingView: View {
                         HStack {
                             VStack(alignment: .leading) {
                                 Text("연결된 계정")
-                                Text(connectedId)
+                                Text(userForSwiftDatas.first!.connectedTo[0])
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }
@@ -119,11 +120,17 @@ struct SettingView: View {
 extension SettingView {
     private func logout() throws {
         try Auth.auth().signOut()
+        for userForSwiftData in self.userForSwiftDatas {
+            modelContext.delete(userForSwiftData)
+        }
     }
     
     private func deleteUser() throws {
         guard let user = Auth.auth().currentUser else {
             throw FirestoreServiceError.userNotFound
+        }
+        for userForSwiftData in self.userForSwiftDatas {
+            modelContext.delete(userForSwiftData)
         }
         return
         // TODO: 파이어베이스 서버에서 유저 정보 삭제
