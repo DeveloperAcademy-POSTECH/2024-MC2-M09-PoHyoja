@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 import Combine
 
 struct ParentAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @Environment(\.modelContext) var modelContext
     
-    @State private var likeCount: Int
+    @Bindable var photo: PhotoForSwiftData
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isShowingInquirySheet: Bool = false
     @State private var isZooming: Bool = false
@@ -20,14 +22,12 @@ struct ParentAlbumDetailView: View {
     @State private var likeAnimationIDs: [UUID] = []
     
     private let imageView: Image
-    private let photo: Photo
     private let photoForShare: PhotoForShare
     
-    init(photo: Photo, imgData: Data) {
+    init(photo: PhotoForSwiftData) {
         self.photo = photo
-        self.imageView = Image(uiImage: UIImage(data: imgData)!)
-        self.photoForShare = PhotoForShare(imgData: imgData, uploadDate: photo.uploadDate)
-        self.likeCount = photo.likeCount
+        self.photoForShare = PhotoForShare(imgData: photo.imgData, uploadDate: photo.uploadDate)
+        self.imageView = Image(uiImage: UIImage(data: photo.imgData)!)
     }
     
     var body: some View {
@@ -79,7 +79,7 @@ struct ParentAlbumDetailView: View {
                             .foregroundColor(.grpRed)
                     }
                     
-                    Text(likeCount == 0 ? " " : "\(likeCount)개")
+                    Text(photo.likeCount == 0 ? " " : "\(photo.likeCount)개")
                         .font(.body)
                         .fontWeight(.bold)
                 }
@@ -126,7 +126,9 @@ struct ParentAlbumDetailView: View {
         ) {
             VStack {
                 Button("삭제하기", role: .destructive) {
-                    // TODO: - 로컬 UI 사진 삭제 처리
+                    // MARK: - 로컬 사진 삭제 처리
+                    modelContext.delete(photo)
+                    
                     // TODO: - 서버 사진 삭제 처리
                     navigationManager.pop()
                 }
@@ -139,7 +141,9 @@ struct ParentAlbumDetailView: View {
             titleVisibility: .visible
         ) {
             Button("문의하기") {
-                // TODO: - 로컬 UI 사진 삭제 처리
+                // MARK: - 로컬 사진 삭제 처리
+                modelContext.delete(photo)
+                
                 // TODO: - 서버 사진 삭제 처리
                 navigationManager.pop()
             }
@@ -163,8 +167,7 @@ struct ParentAlbumDetailView: View {
 
 #Preview {
     ParentAlbumDetailView(
-        photo: Photo(id: "", uploadBy: "", uploadDate: Date(), urlString: "", likeCount: 0, sharedWith: []),
-        imgData: UIImage(systemName: "camera")!.pngData()!
+        photo: PhotoForSwiftData(uploadBy: "", sharedWith: [], imgData: UIImage(systemName: "camera")!.pngData()!)
     )
     .environment(NavigationManager())
     .preferredColorScheme(.dark)

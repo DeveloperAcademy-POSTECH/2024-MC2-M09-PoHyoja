@@ -16,6 +16,8 @@
 		421A8CAF2BFDC2DE003C7001 /* PhotoForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CAE2BFDC2DE003C7001 /* PhotoForShare.swift */; };
 		421A8CB12BFDC9E7003C7001 /* ZoomableModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CB02BFDC9E7003C7001 /* ZoomableModifier.swift */; };
 		421A8CB62BFDD20B003C7001 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 421A8CB52BFDD20B003C7001 /* Lottie */; };
+		421A8CBE2BFE5114003C7001 /* UserForSwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CBD2BFE5114003C7001 /* UserForSwiftData.swift */; };
+		421A8CC02BFE516C003C7001 /* PhotoForSwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CBF2BFE516C003C7001 /* PhotoForSwiftData.swift */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
 		428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046732BF5DDD30097EB0B /* ChildTabView.swift */; };
@@ -43,7 +45,6 @@
 		559AB76C2BF8434300FF216B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76B2BF8434300FF216B /* FirebaseStorage */; };
 		559AB76E2BF8434300FF216B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76D2BF8434300FF216B /* FirebaseStorageCombine-Community */; };
 		559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */; };
-		55A6E6B62BFB5C8A00C58597 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55A6E6B52BFB5C8A00C58597 /* UserManager.swift */; };
 		55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */; };
 		55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3652BF5A13E00E413C6 /* ContentView.swift */; };
 		55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
@@ -63,6 +64,8 @@
 		421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		421A8CAE2BFDC2DE003C7001 /* PhotoForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoForShare.swift; sourceTree = "<group>"; };
 		421A8CB02BFDC9E7003C7001 /* ZoomableModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableModifier.swift; sourceTree = "<group>"; };
+		421A8CBD2BFE5114003C7001 /* UserForSwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserForSwiftData.swift; sourceTree = "<group>"; };
+		421A8CBF2BFE516C003C7001 /* PhotoForSwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoForSwiftData.swift; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
 		428046732BF5DDD30097EB0B /* ChildTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTabView.swift; sourceTree = "<group>"; };
@@ -86,7 +89,6 @@
 		552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceError.swift; sourceTree = "<group>"; };
 		559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		55A6E6B52BFB5C8A00C58597 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 		55B5E3602BF5A13E00E413C6 /* PicCharge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicCharge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicChargeApp.swift; sourceTree = "<group>"; };
 		55B5E3652BF5A13E00E413C6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -167,6 +169,8 @@
 			isa = PBXGroup;
 			children = (
 				51E239D92BF636920051943D /* Model.swift */,
+				421A8CBD2BFE5114003C7001 /* UserForSwiftData.swift */,
+				421A8CBF2BFE516C003C7001 /* PhotoForSwiftData.swift */,
 				421A8CAE2BFDC2DE003C7001 /* PhotoForShare.swift */,
 			);
 			path = Model;
@@ -225,7 +229,6 @@
 		55EC1FE62BF6394200564952 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				55A6E6B52BFB5C8A00C58597 /* UserManager.swift */,
 				421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */,
 				552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */,
 				552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */,
@@ -330,11 +333,11 @@
 				421A8C672BFA358A003C7001 /* Color+.swift in Sources */,
 				428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */,
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
-				55A6E6B62BFB5C8A00C58597 /* UserManager.swift in Sources */,
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
 				421A8CAF2BFDC2DE003C7001 /* PhotoForShare.swift in Sources */,
 				421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */,
+				421A8CC02BFE516C003C7001 /* PhotoForSwiftData.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
@@ -344,6 +347,7 @@
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
 				550FDD142BFC3AF6007A6B42 /* AuthViewModel.swift in Sources */,
+				421A8CBE2BFE5114003C7001 /* UserForSwiftData.swift in Sources */,
 				421A8C692BFA3761003C7001 /* Date+.swift in Sources */,
 				550FDD162BFC3DE6007A6B42 /* SignUpView.swift in Sources */,
 				421A8CAB2BFBBCE9003C7001 /* AsyncImageView.swift in Sources */,
@@ -485,7 +489,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = 2U3B7G3F2A;
+				DEVELOPMENT_TEAM = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
@@ -516,7 +520,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = 2U3B7G3F2A;
+				DEVELOPMENT_TEAM = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";

@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct LoginView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var userManager: UserManager
+    @Environment(NavigationManager.self) var navigationManager
+    
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var errorMessage: String?
@@ -25,16 +25,9 @@ struct LoginView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
-            Button(action: {
-                authViewModel.login(email: email, password: password) { error in
-                    if let error = error {
-                        self.errorMessage = error.localizedDescription
-                    } else {
-                        self.errorMessage = nil
-                        userManager.user = authViewModel.user
-                    }
-                }
-            }) {
+            Button {
+                
+            } label: {
                 Text("로그인")
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -44,8 +37,8 @@ struct LoginView: View {
             }
             .padding()
             
-            NavigationLink(destination: SignUpView()) {
-                Text("아이디가 없다면? 회원가입 하기!")
+            Button("아이디가 없다면? 회원가입 하기!") {
+                navigationManager.push(to: .signUp)
             }
             .padding()
             
@@ -61,6 +54,5 @@ struct LoginView: View {
 
 #Preview {
     LoginView()
-        .environmentObject(AuthViewModel())
-        .environmentObject(UserManager())
+        .environment(NavigationManager())
 }
