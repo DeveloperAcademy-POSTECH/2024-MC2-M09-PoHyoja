@@ -78,7 +78,7 @@ private extension SignUpView {
             let user = authResult.user
             
             let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [])
-            try await FirestoreService.shared.saveUserData(user: newUser)
+            try await FirestoreService.shared.addUser(user: newUser)
         } catch {
             print("회원 가입 실패")
         }
@@ -87,5 +87,4 @@ private extension SignUpView {
 
 #Preview {
     SignUpView()
-        .environmentObject(UserManager())
 }

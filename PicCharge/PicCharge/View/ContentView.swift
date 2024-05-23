@@ -18,8 +18,6 @@ enum UserState {
 
 struct ContentView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @EnvironmentObject var userManager: UserManager
-
     @State private var userState: UserState = .checkNeeded
     
     var body: some View {
@@ -60,7 +58,7 @@ private extension ContentView {
     }
     
     func fetchUserAndSetStatus(email: String) async -> User? {
-        await FirestoreService.shared.fetchUserData(email: email)
+        await FirestoreService.shared.fetchUserByEmail(email: email)
     }
     
     func signOut() throws {

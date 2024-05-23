@@ -16,7 +16,7 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var errorMessage: String?
-
+    
     var body: some View {
         VStack {
             TextField("이메일", text: $email)
@@ -64,7 +64,8 @@ private extension LoginView {
     func signIn(email: String, password: String) async {
         do {
             _ = try await Auth.auth().signIn(withEmail: email, password: password)
-            guard let user = await FirestoreService.shared.fetchUserData(email: email) else { throw FirestoreServiceError.userNotFound }
+            guard let user = await FirestoreService.shared.fetchUserByEmail(email: email) else { throw FirestoreServiceError.userNotFound
+            }
             
             // TODO: - 로컬 유저 저장
             if user.connectedTo.isEmpty {
@@ -78,8 +79,8 @@ private extension LoginView {
         }
     }
 }
+
 #Preview {
     LoginView(userState: .constant(.notExist))
         .environment(NavigationManager())
-//        .environmentObject(UserManager())
 }
