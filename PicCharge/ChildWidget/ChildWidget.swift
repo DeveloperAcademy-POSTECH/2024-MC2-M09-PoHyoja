@@ -77,7 +77,7 @@ struct ChildWidgetEntryView : View {
                         HStack {
                             Text("사진 보낸 지 \(entry.hourOffset)시간 됐어요")
                                 .font(.body.weight(.bold))
-                                .foregroundStyle(.txtFdF8F8)
+                                .foregroundStyle(.txtAAA8A9)
                             
                             Spacer()
                         }
