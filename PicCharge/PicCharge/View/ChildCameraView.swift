@@ -78,7 +78,7 @@ struct ChildCameraView: View {
                         Image(systemName: "xmark")
                             .font(.system(size: 17))
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.txtPrimaryDark)
                     }
                 }
             }
