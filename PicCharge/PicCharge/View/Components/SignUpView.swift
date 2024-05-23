@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-struct SignUpView: View {
-    @EnvironmentObject var authViewModel: AuthViewModel
-    @EnvironmentObject var userManager: UserManager
+struct SignUpView: View {    
     @State private var name: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
@@ -45,21 +43,13 @@ struct SignUpView: View {
             .pickerStyle(SegmentedPickerStyle())
             .padding()
 
-            Button(action: {
+            Button {
                 guard password == confirmPassword else {
                     self.errorMessage = "비밀번호가 일치하지 않습니다."
                     return
                 }
-
-                authViewModel.signUp(name: name, email: email, password: password, role: selectedRole) { error in
-                    if let error = error {
-                        self.errorMessage = error.localizedDescription
-                    } else {
-                        self.errorMessage = nil
-                        userManager.user = authViewModel.user
-                    }
-                }
-            }) {
+                
+            } label: {
                 Text("Sign Up")
                     .frame(maxWidth: .infinity)
                     .padding()
@@ -82,5 +72,4 @@ struct SignUpView: View {
 #Preview {
     SignUpView()
         .environmentObject(AuthViewModel())
-        .environmentObject(UserManager())
 }

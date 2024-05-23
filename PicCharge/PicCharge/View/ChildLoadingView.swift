@@ -31,7 +31,7 @@ struct ChildLoadingView: View {
         .navigationBarBackButtonHidden(true)
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                navigationManager.pop(to: .childTab)
+                navigationManager.popToRoot()
             }
         }
     }

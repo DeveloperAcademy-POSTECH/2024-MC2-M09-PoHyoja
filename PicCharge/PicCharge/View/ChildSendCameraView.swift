@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ChildSendCameraView: View {
     @Environment(NavigationManager.self) var navigationManager
-    private let imageData: Data
+    @Environment(\.modelContext) var modelContext
+    
     @State private var isChildLoadingView: Bool = false
+    private let imageData: Data
     
     init(imageData: Data) {
         self.imageData = imageData
@@ -49,13 +52,17 @@ struct ChildSendCameraView: View {
                     .foregroundStyle(.txtPrimaryDark)
                     
                     Button("사진 보내기") {
+                        // MARK: - 로컬에 이미지 저장
+                        // TODO: - 유저 정보 주입
+                        modelContext.insert(PhotoForSwiftData(uploadBy: "", sharedWith: [], imgData: imageData))
+                        
                         // TODO: - 사진 전송 로직 imageData: Data를 서버로 전송
+                        
                         isChildLoadingView = true
                     }
                 }
             }
             .navigationBarBackButtonHidden(true)
         }
-        
     }
 }

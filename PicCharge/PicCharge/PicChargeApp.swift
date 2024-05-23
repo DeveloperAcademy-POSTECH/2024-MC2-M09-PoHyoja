@@ -9,7 +9,7 @@ import SwiftUI
 import FirebaseCore
 import FirebaseFirestore
 import FirebaseAuth
-
+import SwiftData
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,
@@ -26,14 +26,30 @@ struct PicChargeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     
     @StateObject private var authViewModel = AuthViewModel()
-    @StateObject private var userManager = UserManager()
+    @State private var navigationManager = NavigationManager()
+    
+    var container: ModelContainer
+    
+    init() {
+        do {
+            container = try ModelContainer(for: UserForSwiftData.self, PhotoForSwiftData.self)
+        } catch {
+            fatalError("Failed to configure SwiftData container.")
+        }
+    }
     
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environmentObject(authViewModel)
-                .environmentObject(userManager)
-                .preferredColorScheme(.dark)
+            NavigationStack(path: $navigationManager.path) {
+                ContentView()
+                    .navigationDestination(for: PathType.self) { path in
+                        path.NavigatingView()
+                    }
+                    .preferredColorScheme(.dark)
+            }
         }
+        .modelContainer(container)
+        .environment(navigationManager)
+        .environmentObject(authViewModel)
     }
 }
