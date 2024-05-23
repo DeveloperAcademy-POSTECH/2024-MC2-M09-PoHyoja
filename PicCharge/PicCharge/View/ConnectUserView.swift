@@ -60,7 +60,7 @@ struct ConnectUserView: View {
             
             // TODO: 연결 거절 버튼
             
-            Button("새로고침") {
+            Button("새로고침 (연결 요청 있는지 확인)") {
                 Task {
                     await refreshConnectionRequest()
                 }
@@ -71,23 +71,21 @@ struct ConnectUserView: View {
             Spacer()
             
             // TODO: 개발 완료 시 아래 버튼들 모두 지워야 함
-            Button("로그아웃") {
+            Button("[TEST]로그아웃") {
                 logout()
                 navigationManager.popToRoot()
             }
             .padding()
             .buttonStyle(.bordered)
             
-            Button("자식 메인 뷰 이동") {
-                logout()
+            Button("[TEST]자식 메인 뷰 이동") {
                 navigationManager.push(to: .childMain)
             }
             .padding()
             .buttonStyle(.bordered)
             
-            Button("부모 앨범 상세 뷰 이동") {
-                logout()
-                navigationManager.push(to: .parentAlbumDetail)
+            Button("[TEST]부모 앨범 뷰 이동") {
+                navigationManager.push(to: .parentAlbum)
             }
             .padding()
             .buttonStyle(.bordered)

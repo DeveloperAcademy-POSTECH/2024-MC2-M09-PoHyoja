@@ -97,6 +97,16 @@ struct Photo: Identifiable, Codable {
     }()
 }
 
+extension Photo: Hashable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
 enum Role: String, CaseIterable, Codable {
     case parent
     case child
