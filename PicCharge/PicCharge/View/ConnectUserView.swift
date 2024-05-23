@@ -70,10 +70,24 @@ struct ConnectUserView: View {
             
             Spacer()
             
-            // TODO: 개발 완료 시 로그아웃 버튼 지워야 함
+            // TODO: 개발 완료 시 아래 버튼들 모두 지워야 함
             Button("로그아웃") {
                 logout()
                 navigationManager.popToRoot()
+            }
+            .padding()
+            .buttonStyle(.bordered)
+            
+            Button("자식 메인 뷰 이동") {
+                logout()
+                navigationManager.push(to: .childMain)
+            }
+            .padding()
+            .buttonStyle(.bordered)
+            
+            Button("부모 앨범 상세 뷰 이동") {
+                logout()
+                navigationManager.push(to: .parentAlbumDetail)
             }
             .padding()
             .buttonStyle(.bordered)
