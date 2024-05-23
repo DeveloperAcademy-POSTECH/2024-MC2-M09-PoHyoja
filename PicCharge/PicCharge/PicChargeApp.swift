@@ -25,7 +25,6 @@ struct PicChargeApp: App {
     // register app delegate for Firebase setup
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @State private var navigationManager = NavigationManager()
-    @StateObject private var userManager = UserManager()
     
     
     var body: some Scene {
