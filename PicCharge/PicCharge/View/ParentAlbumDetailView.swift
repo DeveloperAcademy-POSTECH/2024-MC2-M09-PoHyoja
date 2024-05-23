@@ -46,7 +46,7 @@ struct ParentAlbumDetailView: View {
             }
             
             ForEach(likeAnimationIDs, id: \.self) { id in
-                LottieView(jsonName: "TempLikeAnimation", loopMode: .playOnce)
+                LottieView(jsonName: "LikeAnimation", loopMode: .playOnce)
                     .transition(.opacity)
                     .frame(width: 160, height: 240)
                     .offset(y: 150)
