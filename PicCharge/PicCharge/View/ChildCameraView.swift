@@ -75,10 +75,10 @@ struct ChildCameraView: View {
                     Button {
                         navigationManager.pop()
                     } label: {
-                        Image(systemName: "xmark")
+                        Icon.close
                             .font(.system(size: 17))
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.txtPrimaryDark)
                     }
                 }
             }
