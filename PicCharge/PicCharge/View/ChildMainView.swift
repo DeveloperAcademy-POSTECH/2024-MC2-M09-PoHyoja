@@ -166,7 +166,7 @@ struct ChildMainView: View {
             .frame(height: 128)
         }
         .padding(8)
-        .frame(height: 267)
+        .frame(height: 272)
         .background(Color.bgPrimaryElevated)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
@@ -257,7 +257,7 @@ struct ChildMainView: View {
         .foregroundStyle(.txtPrimaryDark)
         .padding(11)
         .background(Color.bgSecondaryElevated)
-        .clipShape(RoundedRectangle(cornerRadius: 8))
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
     
     @ViewBuilder
