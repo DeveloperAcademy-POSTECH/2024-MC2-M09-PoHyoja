@@ -15,7 +15,6 @@
 		421A8CAB2BFBBCE9003C7001 /* AsyncImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */; };
 		421A8CAF2BFDC2DE003C7001 /* PhotoForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CAE2BFDC2DE003C7001 /* PhotoForShare.swift */; };
 		421A8CB12BFDC9E7003C7001 /* ZoomableModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CB02BFDC9E7003C7001 /* ZoomableModifier.swift */; };
-		421A8CB32BFDD1E3003C7001 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CB22BFDD1E3003C7001 /* LottieView.swift */; };
 		421A8CB62BFDD20B003C7001 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 421A8CB52BFDD20B003C7001 /* Lottie */; };
 		421A8CBA2BFDD4FA003C7001 /* LikeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 421A8CB92BFDD4FA003C7001 /* LikeAnimation.json */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
@@ -33,6 +32,7 @@
 		4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046892BF5E0170097EB0B /* SettingView.swift */; };
 		4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */; };
 		4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */; };
+		5151CB8A2BFEE41300AF792F /* TempLikeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5151CB892BFEE41300AF792F /* TempLikeAnimation.json */; };
 		51E239DA2BF636920051943D /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E239D92BF636920051943D /* Model.swift */; };
 		550FDD142BFC3AF6007A6B42 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FDD132BFC3AF6007A6B42 /* AuthViewModel.swift */; };
 		550FDD162BFC3DE6007A6B42 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FDD152BFC3DE6007A6B42 /* SignUpView.swift */; };
@@ -64,7 +64,6 @@
 		421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncImageView.swift; sourceTree = "<group>"; };
 		421A8CAE2BFDC2DE003C7001 /* PhotoForShare.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoForShare.swift; sourceTree = "<group>"; };
 		421A8CB02BFDC9E7003C7001 /* ZoomableModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableModifier.swift; sourceTree = "<group>"; };
-		421A8CB22BFDD1E3003C7001 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		421A8CB92BFDD4FA003C7001 /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
@@ -81,6 +80,7 @@
 		428046892BF5E0170097EB0B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTermsOfUseView.swift; sourceTree = "<group>"; };
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
+		5151CB892BFEE41300AF792F /* TempLikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = TempLikeAnimation.json; sourceTree = "<group>"; };
 		51E239D92BF636920051943D /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		550FDD132BFC3AF6007A6B42 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		550FDD152BFC3DE6007A6B42 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -132,6 +132,7 @@
 		421A8CA92BFBBCD0003C7001 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5151CB892BFEE41300AF792F /* TempLikeAnimation.json */,
 				421A8CAA2BFBBCE9003C7001 /* AsyncImageView.swift */,
 				421A8CB92BFDD4FA003C7001 /* LikeAnimation.json */,
 				550FDD152BFC3DE6007A6B42 /* SignUpView.swift */,
@@ -308,6 +309,7 @@
 				E32B7D412BFC77DC00814489 /* BatteryLoading.json in Resources */,
 				55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */,
 				55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */,
+				5151CB8A2BFEE41300AF792F /* TempLikeAnimation.json in Resources */,
 				559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */,
 				421A8CBA2BFDD4FA003C7001 /* LikeAnimation.json in Resources */,
 			);
