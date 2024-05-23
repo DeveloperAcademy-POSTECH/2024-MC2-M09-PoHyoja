@@ -9,7 +9,8 @@ import SwiftUI
 
 enum PathType: Hashable {
     // MARK: - 초기 설정
-    case signUp
+    case signUp(errorMessage: String?)
+    case selectRole(name: String, email: String, password: String)
     case connectUser
     
     // MARK: - 자식
@@ -34,8 +35,10 @@ extension PathType {
     func NavigatingView() -> some View {
         switch self {
         // MARK: - 초기 설정
-        case .signUp:
-            SignUpView()
+        case .signUp(let errorMessage):
+            UserInfoForSignUpView(errorMessage: errorMessage)
+        case .selectRole(let name, let email, let password):
+            SelectRoleForSignUpView(name: name, email: email, password: password)
         case .connectUser:
             ConnectUserView()
 
