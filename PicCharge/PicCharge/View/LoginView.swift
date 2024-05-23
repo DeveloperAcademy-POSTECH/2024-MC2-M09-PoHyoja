@@ -9,8 +9,12 @@ import SwiftUI
 import Firebase
 
 struct LoginView: View {
-    @Environment(NavigationManager.self) var navigationManager
+    enum Field: Hashable {
+        case email
+        case password
+    }
     
+    @Environment(NavigationManager.self) var navigationManager
     
     @Binding var userState: UserState
     @State private var email: String = ""
@@ -19,25 +23,38 @@ struct LoginView: View {
     @State private var isNetworking: Bool = false
     @State private var errorMessage: String? = nil
     
+    @FocusState var focusField: Field?
+    
     var isLoginAvailable: Bool {
         !email.isEmpty && !password.isEmpty && errorMessage == nil
     }
     
     var body: some View {
         ZStack {
+            Color.bgPrimary.ignoresSafeArea()
+            
             VStack {
+                if focusField == nil {
+                    Spacer()
+                    
+                    Text(errorMessage ?? "반갑습니다")
+                        .font(.largeTitle.bold())
+                        .foregroundStyle(.txtPrimaryDark)
+                }
+                
                 Spacer()
                 
-                Text(errorMessage ?? "반갑습니다")
-                    .font(.largeTitle.bold())
-                    .foregroundStyle(.txtPrimaryDark)
-                    
-                Spacer()
+                Image("LogoSmall")
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fit)
+                    .frame(width: 188)
+                
                 Spacer()
                 
                 VStack(spacing: 16) {
                     VStack(spacing: 8) {
                         TextField("이메일", text: $email)
+                            .focused($focusField, equals: .email)
                             .autocapitalization(.none)
                             .foregroundStyle(.txtPrimaryDark)
                             .padding(.horizontal, 16)
@@ -49,6 +66,7 @@ struct LoginView: View {
                             }
                         
                         SecureField("비밀번호", text: $password)
+                            .focused($focusField, equals: .password)
                             .foregroundStyle(.txtPrimaryDark)
                             .padding(.horizontal, 16)
                             .padding(.vertical, 11)
@@ -92,14 +110,13 @@ struct LoginView: View {
                 .padding(.vertical, 11)
             }
             .padding(.horizontal, 16)
-            
-            Image("LogoSmall")
-                .resizable()
-                .aspectRatio(1, contentMode: .fit)
-                .frame(width: 188)
         }
         .onAppear {
             errorMessage = nil
+            focusField = nil
+        }
+        .onTapGesture {
+            focusField = nil
         }
     }
 }
