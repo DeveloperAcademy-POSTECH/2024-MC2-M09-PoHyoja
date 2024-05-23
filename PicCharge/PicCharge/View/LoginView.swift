@@ -85,7 +85,7 @@ struct LoginView: View {
                 }
     
                 Button {
-                    navigationManager.push(to: .signUp(errorMessage: "회원 가입 실패"))
+                    navigationManager.push(to: .signUp)
                 } label: {
                     Text("아이디가 없다면? 회원가입 하기!")
                 }
