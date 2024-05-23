@@ -10,7 +10,9 @@ import Firebase
 
 struct LoginView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @EnvironmentObject var userManager: UserManager
+    
+    
+    @Binding var userState: UserState
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var errorMessage: String?
@@ -28,7 +30,7 @@ struct LoginView: View {
             
             Button(action: {
                 Task {
-                    await signIn()
+                    await signIn(email: email, password: password)
                 }
             }) {
                 Text("로그인")
@@ -59,29 +61,25 @@ struct LoginView: View {
 }
 
 private extension LoginView {
-    func signIn() async {
+    func signIn(email: String, password: String) async {
         do {
-            let authResult = try await Auth.auth().signIn(withEmail: email, password: password)
-            let user = authResult.user
+            _ = try await Auth.auth().signIn(withEmail: email, password: password)
+            guard let user = await FirestoreService.shared.fetchUserData(email: email) else { throw FirestoreServiceError.userNotFound }
             
-            let fetchedUser = await FirestoreService.shared.fetchUserData(email: email)
-            DispatchQueue.main.async {
-                if let fetchedUser = fetchedUser {
-                    self.userManager.user = fetchedUser
-                    self.errorMessage = nil
-                    navigationManager.pop() // 로그인 성공 후 이전 화면으로 이동
-                } else {
-                    self.errorMessage = "사용자 정보를 가져오는 데 실패했습니다."
-                }
+            // TODO: - 로컬 유저 저장
+            if user.connectedTo.isEmpty {
+                userState = .notConnected
+            } else {
+                userState = (user.role == .child) ? .connectedChild : .connectedParent
             }
+            
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = error.localizedDescription
-            }
+            print("로그인 실패")
         }
     }
 }
 #Preview {
-    LoginView()
-        .environmentObject(UserManager())
+    LoginView(userState: .constant(.notExist))
+        .environment(NavigationManager())
+//        .environmentObject(UserManager())
 }
