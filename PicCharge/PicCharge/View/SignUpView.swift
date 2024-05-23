@@ -10,7 +10,7 @@ import FirebaseAuth
 
 struct SignUpView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @EnvironmentObject var userManager: UserManager
+
     @State private var name: String = ""
     @State private var email: String = ""
     @State private var password: String = ""
@@ -48,7 +48,8 @@ struct SignUpView: View {
 
             Button(action: {
                 Task {
-                    await signUp()
+                    await signUp(name: name, email: email, password: password, role: selectedRole)
+                    navigationManager.popToRoot()
                 }
             }) {
                 Text("회원 가입")
@@ -71,27 +72,15 @@ struct SignUpView: View {
 }
 
 private extension SignUpView {
-    func signUp() async {
+    func signUp(name: String, email: String, password: String, role: Role) async {
         do {
-            guard password == confirmPassword else {
-                self.errorMessage = "비밀번호가 일치하지 않습니다."
-                return
-            }
             let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
             let user = authResult.user
             
-            let newUser = User(id: user.uid, name: name, role: selectedRole, email: email, connectedTo: [])
+            let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [])
             try await FirestoreService.shared.saveUserData(user: newUser)
-            
-            DispatchQueue.main.async {
-                self.userManager.user = newUser
-                self.errorMessage = nil
-                navigationManager.pop()
-            }
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = error.localizedDescription
-            }
+            print("회원 가입 실패")
         }
     }
 }

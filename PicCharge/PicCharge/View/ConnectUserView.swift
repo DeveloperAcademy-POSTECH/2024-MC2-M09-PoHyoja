@@ -5,9 +5,10 @@
 //  Created by 남유성 on 5/16/24.
 //
 import SwiftUI
+import FirebaseAuth
 
 struct ConnectUserView: View {
-//    @Environment(NavigationManager.self) var navigationManager
+    @Environment(NavigationManager.self) var navigationManager
 //    @EnvironmentObject private var userManager: UserManager
 //    @EnvironmentObject private var authViewModel: AuthViewModel
 //    
@@ -53,11 +54,10 @@ struct ConnectUserView: View {
 //            
 //            Spacer()
 //            
-//            Button("로그아웃") {
-//                Task {
-//                    await logout()
-//                }
-//            }
+            Button("로그아웃") {
+                signOut()
+                navigationManager.popToRoot()
+            }
 //            .padding()
 //            .buttonStyle(.bordered)
 //            
@@ -81,7 +81,7 @@ struct ConnectUserView: View {
 }
 
 
-//extension ConnectUserView {
+extension ConnectUserView {
 //    private func sendConnectionRequest() async {
 //        guard let currentUser = userManager.user else {
 //            alertMessage = "사용자 ID를 찾을 수 없습니다."
@@ -192,19 +192,16 @@ struct ConnectUserView: View {
 //            isShowingAlert = true
 //        }
 //    }
-//    
-//    private func logout() async {
-//        authViewModel.signOut { error in
-//            if let error = error {
-//                alertMessage = "로그아웃에 실패했습니다: \(error.localizedDescription)"
-//                isShowingAlert = true
-//            } else {
-//                alertMessage = "성공적으로 로그아웃되었습니다."
-//                isShowingAlert = true
-//            }
-//        }
-//    }
-//    
+//
+    
+    func signOut() {
+        do {
+            try Auth.auth().signOut()
+        } catch {
+            print("로그아웃 실패")
+        }
+    }
+//
 //    private func deleteUser() async {authViewModel.deleteUser { error in
 //        if let error = error {
 //            alertMessage = "회원 탈퇴에 실패했습니다: \(error.localizedDescription)"
@@ -215,4 +212,4 @@ struct ConnectUserView: View {
 //        }
 //    }
 //    }
-//}
+}

@@ -63,21 +63,6 @@ private extension ContentView {
         await FirestoreService.shared.fetchUserData(email: email)
     }
     
-    func signUp(name: String, email: String, password: String, role: Role) async throws {
-        do {
-            let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
-            let user = authResult.user
-            
-            let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [])
-            try await FirestoreService.shared.saveUserData(user: newUser)
-            
-            userState = .notExist
-        } catch {
-            print("회원 가입 실패")
-            throw error
-        }
-    }
-    
     func signOut() throws {
         do {
             try Auth.auth().signOut()
