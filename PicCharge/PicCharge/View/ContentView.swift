@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import FirebaseAuth
 
 enum UserState {
@@ -18,7 +19,9 @@ enum UserState {
 
 struct ContentView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @Environment(\.modelContext) var modelContext
     @State private var userState: UserState = .checkNeeded
+    @Query var userForSwiftDatas: [UserForSwiftData]
     
     var body: some View {
         Group {
@@ -26,7 +29,7 @@ struct ContentView: View {
             case .notExist:
                 LoginView(userState: $userState)
             case .notConnected:
-                ConnectUserView()
+                ConnectUserView(user: userForSwiftDatas.first!)
             case .connectedChild:
                 ChildTabView()
             case .connectedParent:
@@ -39,41 +42,47 @@ struct ContentView: View {
             await checkLoginStatus()
         }
     }
-}
-
-private extension ContentView {
-    func checkLoginStatus() async {
-        if let currentUser = Auth.auth().currentUser,
-           let user = await fetchUserAndSetStatus(email: currentUser.email ?? "") {
     
-            if user.connectedTo.isEmpty {
-                userState = .notConnected
-            } else {
-                userState = (user.role == .child) ? .connectedChild : .connectedParent
+    private func checkLoginStatus() async {
+        guard let authUser = Auth.auth().currentUser else {
+            print("authUser 없음")
+            userState = .notExist
+            for userForSwiftData in self.userForSwiftDatas {
+                modelContext.delete(userForSwiftData)
             }
-            
-        } else {
-            userState = .notExist
+            return
         }
-    }
-    
-    func fetchUserAndSetStatus(email: String) async -> User? {
-        await FirestoreService.shared.fetchUserByEmail(email: email)
-    }
-    
-    func signOut() throws {
-        do {
-            try Auth.auth().signOut()
-            // TODO: - 로컬 유저 제거
+        
+        guard let swiftDataUser = userForSwiftDatas.first else {
+            print("authUser 있고 swiftDataUser 없음")
             userState = .notExist
-        } catch {
-            print("로그아웃 실패")
-            throw error
+            return
         }
+        print("--swiftDataUser 정보--")
+        print("name: \(swiftDataUser.name)")
+        print("role: \(swiftDataUser.role)")
+        print("email: \(swiftDataUser.email)")
+        print("connectedTo: \(swiftDataUser.connectedTo)")
+        print("uploadCycle: \(swiftDataUser.uploadCycle ?? 0)")
+
+
+        
+        if swiftDataUser.connectedTo.isEmpty {
+            print("authUser 있고 swiftDataUser 있고 연결안됨")
+            userState = .notConnected
+            return
+        }
+
+        if swiftDataUser.role == .child {
+            print("유저정보 확인: child 역할")
+            userState = .connectedChild
+        }
+        
+        if swiftDataUser.role == .parent {
+            print("유저정보 확인: parent 역할")
+            userState = .connectedParent
+        }
+// let user = await await FirestoreService.shared.fetchUserByEmail(email: currentUser.email ?? "")
     }
 }
 
-#Preview {
-    ContentView()
-        .environment(NavigationManager())
-}

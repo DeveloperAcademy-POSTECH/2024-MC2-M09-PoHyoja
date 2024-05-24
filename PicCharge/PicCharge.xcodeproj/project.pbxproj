@@ -49,11 +49,45 @@
 		55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3652BF5A13E00E413C6 /* ContentView.swift */; };
 		55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
 		55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */; };
+		FF73156D2BF907690074D7AA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73156C2BF907690074D7AA /* WidgetKit.framework */; };
+		FF73156F2BF907690074D7AA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73156E2BF907690074D7AA /* SwiftUI.framework */; };
+		FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315712BF907690074D7AA /* ParentWidgetBundle.swift */; };
+		FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315732BF907690074D7AA /* ParentWidget.swift */; };
+		FF7315762BF907690074D7AA /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315752BF907690074D7AA /* AppIntent.swift */; };
+		FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF7315772BF9076A0074D7AA /* Assets.xcassets */; };
+		FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FFD221AE2BFB840E009735E4 /* TempWidgetButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AD2BFB840E009735E4 /* TempWidgetButtonView.swift */; };
+		FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AF2BFB8433009735E4 /* UserDefault+.swift */; };
+		FFD221B22BFB8483009735E4 /* UserDefault+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AF2BFB8433009735E4 /* UserDefault+.swift */; };
 		E32B7D412BFC77DC00814489 /* BatteryLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = E32B7D402BFC77DC00814489 /* BatteryLoading.json */; };
 		E33AFF642BFC389800BFB665 /* ChildLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */; };
 		E33AFF672BFC397700BFB665 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E33AFF662BFC397700BFB665 /* Lottie */; };
 		E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FF73157A2BF9076A0074D7AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 55B5E3582BF5A13E00E413C6 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF7315692BF907690074D7AA;
+			remoteInfo = ParentWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FF73157D2BF9076A0074D7AA /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryShadowModifier.swift; sourceTree = "<group>"; };
@@ -94,6 +128,18 @@
 		55B5E3652BF5A13E00E413C6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		55B5E3672BF5A13F00E413C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF73156C2BF907690074D7AA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		FF73156E2BF907690074D7AA /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		FF7315712BF907690074D7AA /* ParentWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentWidgetBundle.swift; sourceTree = "<group>"; };
+		FF7315732BF907690074D7AA /* ParentWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentWidget.swift; sourceTree = "<group>"; };
+		FF7315752BF907690074D7AA /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
+		FF7315772BF9076A0074D7AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FF7315792BF9076A0074D7AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFD221AD2BFB840E009735E4 /* TempWidgetButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempWidgetButtonView.swift; sourceTree = "<group>"; };
+		FFD221AF2BFB8433009735E4 /* UserDefault+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefault+.swift"; sourceTree = "<group>"; };
+		FFD221B32BFB84C1009735E4 /* ParentWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentWidgetExtension.entitlements; sourceTree = "<group>"; };
+		FFD221B42BFB84DB009735E4 /* PicCharge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PicCharge.entitlements; sourceTree = "<group>"; };
 		E32B7D402BFC77DC00814489 /* BatteryLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BatteryLoading.json; sourceTree = "<group>"; };
 		E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildLoadingView.swift; sourceTree = "<group>"; };
 		E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
@@ -111,6 +157,15 @@
 				559AB76A2BF8434300FF216B /* FirebaseFirestoreSwift in Frameworks */,
 				421A8CB62BFDD20B003C7001 /* Lottie in Frameworks */,
 				E33AFF672BFC397700BFB665 /* Lottie in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FF7315672BF907690074D7AA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF73156F2BF907690074D7AA /* SwiftUI.framework in Frameworks */,
+				FF73156D2BF907690074D7AA /* WidgetKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +198,7 @@
 		4280466C2BF5DD5B0097EB0B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FFD221B42BFB84DB009735E4 /* PicCharge.entitlements */,
 				421A8CA92BFBBCD0003C7001 /* Components */,
 				E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */,
 				55B5E3652BF5A13E00E413C6 /* ContentView.swift */,
@@ -162,6 +218,8 @@
 				428046872BF5E00A0097EB0B /* ParentAlbumDetailView.swift */,
 				428046892BF5E0170097EB0B /* SettingView.swift */,
 				4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */,
+				FFD221AD2BFB840E009735E4 /* TempWidgetButtonView.swift */,
+				FFD221AF2BFB8433009735E4 /* UserDefault+.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -182,6 +240,8 @@
 			children = (
 				559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */,
 				55B5E3622BF5A13E00E413C6 /* PicCharge */,
+				FF7315702BF907690074D7AA /* ParentWidget */,
+				FF73156B2BF907690074D7AA /* Frameworks */,
 				55B5E3612BF5A13E00E413C6 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -190,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				55B5E3602BF5A13E00E413C6 /* PicCharge.app */,
+				FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -228,6 +289,28 @@
 			path = Service;
 			sourceTree = "<group>";
 		};
+		FF73156B2BF907690074D7AA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				FF73156C2BF907690074D7AA /* WidgetKit.framework */,
+				FF73156E2BF907690074D7AA /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FF7315702BF907690074D7AA /* ParentWidget */ = {
+			isa = PBXGroup;
+			children = (
+				FFD221B32BFB84C1009735E4 /* ParentWidgetExtension.entitlements */,
+				FF7315712BF907690074D7AA /* ParentWidgetBundle.swift */,
+				FF7315732BF907690074D7AA /* ParentWidget.swift */,
+				FF7315752BF907690074D7AA /* AppIntent.swift */,
+				FF7315772BF9076A0074D7AA /* Assets.xcassets */,
+				FF7315792BF9076A0074D7AA /* Info.plist */,
+			);
+			path = ParentWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -238,10 +321,12 @@
 				55B5E35C2BF5A13E00E413C6 /* Sources */,
 				55B5E35D2BF5A13E00E413C6 /* Frameworks */,
 				55B5E35E2BF5A13E00E413C6 /* Resources */,
+				FF73157D2BF9076A0074D7AA /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				FF73157B2BF9076A0074D7AA /* PBXTargetDependency */,
 			);
 			name = PicCharge;
 			packageProductDependencies = (
@@ -256,6 +341,23 @@
 			productReference = 55B5E3602BF5A13E00E413C6 /* PicCharge.app */;
 			productType = "com.apple.product-type.application";
 		};
+		FF7315692BF907690074D7AA /* ParentWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF7315802BF9076A0074D7AA /* Build configuration list for PBXNativeTarget "ParentWidgetExtension" */;
+			buildPhases = (
+				FF7315662BF907690074D7AA /* Sources */,
+				FF7315672BF907690074D7AA /* Frameworks */,
+				FF7315682BF907690074D7AA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ParentWidgetExtension;
+			productName = ParentWidgetExtension;
+			productReference = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -267,6 +369,9 @@
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					55B5E35F2BF5A13E00E413C6 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					FF7315692BF907690074D7AA = {
 						CreatedOnToolsVersion = 15.4;
 					};
 				};
@@ -289,6 +394,7 @@
 			projectRoot = "";
 			targets = (
 				55B5E35F2BF5A13E00E413C6 /* PicCharge */,
+				FF7315692BF907690074D7AA /* ParentWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -306,6 +412,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FF7315682BF907690074D7AA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -315,6 +429,7 @@
 			files = (
 				421A8CC42BFF63A5003C7001 /* SelectRoleForSignUpView.swift in Sources */,
 				428046842BF5DFA50097EB0B /* ChildAlbumDetailView.swift in Sources */,
+				FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */,
 				428046782BF5DE830097EB0B /* ChildCameraView.swift in Sources */,
 				552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */,
 				4280467A2BF5DEBA0097EB0B /* ChildSendCameraView.swift in Sources */,
@@ -332,6 +447,7 @@
 				421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */,
 				421A8CC02BFE516C003C7001 /* PhotoForSwiftData.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,
+				FFD221AE2BFB840E009735E4 /* TempWidgetButtonView.swift in Sources */,
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
@@ -350,7 +466,26 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		FF7315662BF907690074D7AA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				FFD221B22BFB8483009735E4 /* UserDefault+.swift in Sources */,
+				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
+				FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */,
+				FF7315762BF907690074D7AA /* AppIntent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FF73157B2BF9076A0074D7AA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF7315692BF907690074D7AA /* ParentWidgetExtension */;
+			targetProxy = FF73157A2BF9076A0074D7AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		55B5E36C2BF5A13F00E413C6 /* Debug */ = {
@@ -405,7 +540,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -462,7 +597,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -475,13 +610,14 @@
 		55B5E36F2BF5A13F00E413C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PicCharge/PicCharge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = 7V4779Q2XR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
@@ -495,7 +631,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dgh06175.PicCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KimDohyun.PicCharge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -506,13 +642,14 @@
 		55B5E3702BF5A13F00E413C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = PicCharge/PicCharge.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = 7V4779Q2XR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
@@ -526,8 +663,66 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = dgh06175.PicCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KimDohyun.PicCharge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		FF73157E2BF9076A0074D7AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z58B4NL6K9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ParentWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KimDohyun.PicCharge.ParentWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FF73157F2BF9076A0074D7AA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Z58B4NL6K9;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ParentWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.KimDohyun.PicCharge.ParentWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -551,6 +746,15 @@
 			buildConfigurations = (
 				55B5E36F2BF5A13F00E413C6 /* Debug */,
 				55B5E3702BF5A13F00E413C6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FF7315802BF9076A0074D7AA /* Build configuration list for PBXNativeTarget "ParentWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF73157E2BF9076A0074D7AA /* Debug */,
+				FF73157F2BF9076A0074D7AA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
