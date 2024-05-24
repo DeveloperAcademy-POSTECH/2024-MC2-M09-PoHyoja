@@ -14,7 +14,6 @@ struct SettingView: View {
     @Environment(\.modelContext) var modelContext
     @Query var userForSwiftDatas: [UserForSwiftData]
 
-    // TODO: - 유저 모델 주입
     @State private var myRole: Role
     
     @State private var isShowingLogoutActionSheet = false
@@ -36,7 +35,7 @@ struct SettingView: View {
                         HStack{
                             VStack(alignment: .leading) {
                                 Text("내 계정")
-                                Text(userForSwiftDatas.first!.name)
+                                Text(userForSwiftDatas.first?.name ?? "없음")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }
@@ -48,7 +47,7 @@ struct SettingView: View {
                         HStack {
                             VStack(alignment: .leading) {
                                 Text("연결된 계정")
-                                Text(userForSwiftDatas.first!.connectedTo[0])
+                                Text(userForSwiftDatas.first?.connectedTo[0] ?? "없음")
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)
                             }

@@ -82,6 +82,11 @@ private extension LoginView {
             }
             
         } catch {
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                print("Auth 로그아웃 실패: \(error)")
+            }
             print("로그인 실패")
         }
     }
