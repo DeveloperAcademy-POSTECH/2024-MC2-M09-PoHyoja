@@ -6,11 +6,12 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct ChildSendGalleryView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
-    
+    @Query var userForSwiftDatas: [UserForSwiftData]
+
     @State private var selectedImageData: Data?
     @State private var isPresented: Bool = false
     @State private var isChildLoadingView: Bool = false
@@ -72,13 +73,19 @@ struct ChildSendGalleryView: View {
                     
                     Button("사진 보내기") {
                         guard let imageData = selectedImageData else { return }
+                        guard let user = userForSwiftDatas.first else {
+                            print("UserForSwiftData 에서 정보 불러오기 실패")
+                            return
+                        }
+                        let photoForSwiftData = PhotoForSwiftData(uploadBy: user.name, sharedWith: user.connectedTo, imgData: imageData)
                         
                         // MARK: - 로컬에 이미지 저장
-                        // TODO: - 유저 정보 주입
-                        modelContext.insert(PhotoForSwiftData(uploadBy: "", sharedWith: [], imgData: imageData))
+                        modelContext.insert(photoForSwiftData)
                         
-                        // TODO: - 사진 전송 로직 imageData: Data를 서버로 전송
-                        
+                        // MARK: - 사진 전송 로직 imageData: Data를 서버로 전송
+                        Task {
+                            await FirestoreService.shared.uploadPhoto(userName: user.name, photoForSwiftData: photoForSwiftData)
+                        }
                         isChildLoadingView = true
                     }
                 }
