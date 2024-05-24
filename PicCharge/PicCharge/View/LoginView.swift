@@ -15,47 +15,57 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var errorMessage: String?
+    @State private var isLoading: Bool = false
     
     var body: some View {
-        VStack {
-            TextField("이메일", text: $email)
-                .autocapitalization(.none)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            SecureField("비밀번호", text: $password)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button(action: {
-                Task {
-                    await signIn(email: email, password: password)
-                }
-            }) {
-                Text("로그인")
-                    .frame(maxWidth: .infinity)
+        ZStack {
+            VStack {
+                TextField("이메일", text: $email)
+                    .autocapitalization(.none)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                
+                SecureField("비밀번호", text: $password)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                Button(action: {
+                    Task {
+                        isLoading = true
+                        await signIn(email: email, password: password)
+                    }
+                }) {
+                    Text("로그인")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding()
+                
+                Button(
+                    action: {
+                        navigationManager.push(to: .signUp)
+                    }) {
+                        Text("아이디가 없다면? 회원가입 하기!")
+                    }
+                    .padding()
+                
+                if let errorMessage = errorMessage {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
+                }
             }
             .padding()
             
-            Button(
-                action: {
-                    navigationManager.push(to: .signUp)
-                }) {
-                    Text("아이디가 없다면? 회원가입 하기!")
-                }
-                .padding()
-            
-            if let errorMessage = errorMessage {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
+            if isLoading {
+                BuggungLoadingView()
+                    .transition(.opacity.animation(.easeInOut(duration: 1)))
+                    .background(Color.black.opacity(1).edgesIgnoringSafeArea(.all))
             }
         }
-        .padding()
     }
 }
 
@@ -75,6 +85,11 @@ private extension LoginView {
                 uploadCycle: user.uploadCycle
             )
             modelContext.insert(localUser)
+            
+            withAnimation {
+                isLoading = false
+            }
+            
             if user.connectedTo.isEmpty {
                 userState = .notConnected
             } else {
