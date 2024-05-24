@@ -9,27 +9,23 @@ import SwiftUI
 
 enum PathType: Hashable {
     // MARK: - 초기 설정
-    case login
-    case selectRole
+    case signUp
     case connectUser
     
     // MARK: - 자식
-    case childTab
     case childMain
     case childCamera
-    case childSendCamera
-    case childSelectGallery
+    case childSendCamera(imageData: Data)
     case childSendGallery
-    case childLoading
     case childAlbum
-    case childAlbumDetail
+    case childAlbumDetail(photo: PhotoForSwiftData)
     
     // MARK: - 부모
     case parentAlbum
-    case parentAlbumDetail
+    case parentAlbumDetail(photo: PhotoForSwiftData)
     
     // MARK: - Setting
-    case setting
+    case setting(role: Role)
     case settingTermsOfUse
 }
 
@@ -38,42 +34,34 @@ extension PathType {
     func NavigatingView() -> some View {
         switch self {
         // MARK: - 초기 설정
-        case .login:
-            LoginView()
-        case .selectRole:
-            SelectRoleView()
+        case .signUp:
+            SignUpView()
         case .connectUser:
             ConnectUserView()
-            
+
         // MARK: - 자식
-        case .childTab:
-            ChildTabView()
         case .childMain:
             ChildMainView()
         case .childCamera:
             ChildCameraView()
-        case .childSendCamera:
-            ChildSendCameraView()
-        case .childSelectGallery:
-            ChildSelectGalleryView()
+        case .childSendCamera(let imageData):
+            ChildSendCameraView(imageData: imageData)
         case .childSendGallery:
             ChildSendGalleryView()
-        case .childLoading:
-            ChildLoadingView()
         case .childAlbum:
             ChildAlbumView()
-        case .childAlbumDetail:
-            ChildAlbumDetailView()
+        case .childAlbumDetail(let photo):
+            ChildAlbumDetailView(photo: photo)
             
         // MARK: - 부모
         case .parentAlbum:
             ParentAlbumView()
-        case .parentAlbumDetail:
-            ParentAlbumDetailView()
+        case .parentAlbumDetail(let photo):
+            ParentAlbumDetailView(photo: photo)
             
         // MARK: - Setting
-        case .setting:
-            SettingView()
+        case .setting(let role):
+            SettingView(myRole: role)
         case .settingTermsOfUse:
             SettingTermsOfUseView()
         }
