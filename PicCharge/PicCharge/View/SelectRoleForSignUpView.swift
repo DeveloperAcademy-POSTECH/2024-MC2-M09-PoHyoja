@@ -45,7 +45,7 @@ struct SelectRoleForSignUpView: View {
             HStack(spacing: 60) {
                 VStack(spacing: 10) {
                     ZStack {
-                        Image("자식")
+                        Image("Child")
                             .resizable()
                             .aspectRatio(1, contentMode: .fit)
                             .clipShape(Circle())
@@ -69,7 +69,7 @@ struct SelectRoleForSignUpView: View {
                 
                 VStack(spacing: 10) {
                     ZStack {
-                        Image("부모")
+                        Image("Parent")
                             .resizable()
                             .aspectRatio(1, contentMode: .fit)
                             .clipShape(Circle())
