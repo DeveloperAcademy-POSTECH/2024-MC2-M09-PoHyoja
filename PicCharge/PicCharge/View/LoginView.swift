@@ -10,8 +10,7 @@ import Firebase
 
 struct LoginView: View {
     @Environment(NavigationManager.self) var navigationManager
-    
-    
+    @Environment(\.modelContext) var modelContext
     @Binding var userState: UserState
     @State private var email: String = ""
     @State private var password: String = ""
@@ -67,7 +66,15 @@ private extension LoginView {
             guard let user = await FirestoreService.shared.fetchUserByEmail(email: email) else { throw FirestoreServiceError.userNotFound
             }
             
-            // TODO: - 로컬 유저 저장
+            // 로컬 유저 저장
+            var localUser = UserForSwiftData(
+                name: user.name,
+                role: user.role,
+                email: user.email,
+                connectedTo: user.connectedTo,
+                uploadCycle: user.uploadCycle
+            )
+            modelContext.insert(localUser)
             if user.connectedTo.isEmpty {
                 userState = .notConnected
             } else {
@@ -75,12 +82,12 @@ private extension LoginView {
             }
             
         } catch {
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                print("Auth 로그아웃 실패: \(error)")
+            }
             print("로그인 실패")
         }
     }
-}
-
-#Preview {
-    LoginView(userState: .constant(.notExist))
-        .environment(NavigationManager())
 }

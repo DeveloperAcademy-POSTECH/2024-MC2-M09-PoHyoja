@@ -77,10 +77,17 @@ private extension SignUpView {
             let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
             let user = authResult.user
             
-            let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [])
+            let uploadCycleByRole = role == .child ? 3 : nil
+            
+            let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [], uploadCycle: uploadCycleByRole)
             try await FirestoreService.shared.addUser(user: newUser)
         } catch {
-            print("회원 가입 실패")
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                print("Auth 로그아웃 실패: \(error)")
+            }
+            print("회원 가입 실패: \(error)")
         }
     }
 }
