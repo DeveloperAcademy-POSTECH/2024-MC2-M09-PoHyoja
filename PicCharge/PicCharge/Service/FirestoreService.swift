@@ -9,110 +9,140 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 
 class FirestoreService {
-    private var db = Firestore.firestore()
     
-    // ServerUser 데이터를 가져오는 함수
-    func fetchUsers(completion: @escaping ([UserDTO]?, Error?) -> Void) {
-        db.collection("users").addSnapshotListener { (querySnapshot, error) in
-            if let error = error {
-                completion(nil, error)
-                return
+    static let shared = FirestoreService()
+    private let db = Firestore.firestore()
+    
+    private init(){}
+    
+    /// 이메일로 Firestore에서 유저 정보 가져오기
+    func fetchUserByEmail(email: String) async -> User? {
+        do {
+            let snapshot = try await db.collection("users")
+                .whereField("email", isEqualTo: email)
+                .getDocuments()
+            
+            print("서버에서 \(email) 유저 정보를 찾는다.")
+            
+            guard let document = snapshot.documents.first else {
+                return nil
             }
             
-            let users = querySnapshot?.documents.compactMap { document -> UserDTO? in
-                try? document.data(as: UserDTO.self)
-            }
-            completion(users, nil)
+            return try document.data(as: User.self)
+        } catch {
+            print("유저 데이터 페치 에러: \(error)")
+            return nil
         }
     }
     
-    // ServerConnectionRequest 데이터를 가져오는 함수
-    func fetchConnectionRequests(completion: @escaping ([ConnectionRequestsDTO]?, Error?) -> Void) {
-        db.collection("connectionRequests").addSnapshotListener { (querySnapshot, error) in
-            if let error = error {
-                completion(nil, error)
-                return
+    /// 이름으로 Firestore에서 유저 정보 가져오기
+    func fetchUserByName(name: String) async -> User? {
+        do {
+            let snapshot = try await db.collection("users")
+                .whereField("name", isEqualTo: name)
+                .getDocuments()
+            
+            print("서버에서 \(name) 유저 정보를 찾는다.")
+            
+            guard let document = snapshot.documents.first else {
+                return nil
             }
             
-            let requests = querySnapshot?.documents.compactMap { document -> ConnectionRequestsDTO? in
-                try? document.data(as: ConnectionRequestsDTO.self)
-            }
-            completion(requests, nil)
+            return try document.data(as: User.self)
+        } catch {
+            print("유저 데이터 페치 에러: \(error)")
+            return nil
         }
     }
     
-    // ServerConnection 데이터를 가져오는 함수
-    func fetchConnections(completion: @escaping ([ConnectionDTO]?, Error?) -> Void) {
-        db.collection("connections").addSnapshotListener { (querySnapshot, error) in
-            if let error = error {
-                completion(nil, error)
-                return
-            }
-            
-            let connections = querySnapshot?.documents.compactMap { document -> ConnectionDTO? in
-                try? document.data(as: ConnectionDTO.self)
-            }
-            completion(connections, nil)
+    /// 서버에 유저 추가
+    func addUser(user: User) async throws {
+        guard let userId = user.id else {
+            throw FirestoreServiceError.invalidUserId
         }
-    }
-    
-    // ServerPhoto 데이터를 가져오는 함수
-    func fetchPhotos(completion: @escaping ([PhotoDTO]?, Error?) -> Void) {
-        db.collection("photos").addSnapshotListener { (querySnapshot, error) in
-            if let error = error {
-                completion(nil, error)
-                return
-            }
-            
-            let photos = querySnapshot?.documents.compactMap { document -> PhotoDTO? in
-                try? document.data(as: PhotoDTO.self)
-            }
-            completion(photos, nil)
+        
+        if try await checkUserExists(userName: user.name) {
+            throw FirestoreServiceError.userAlreadyExists
         }
-    }
-    
-    // ServerUser 데이터를 Firestore에 추가하는 함수
-    func addUser(id: String?,
-                 role: Role,
-                 email: String,
-                 uploadCycle: Int?, completion: @escaping (Result<Void, Error>) -> Void) {
-        let user = UserDTO(id: id, role: role, email: email, uploadCycle: uploadCycle)
         
         do {
-            let _ = try db.collection("users").addDocument(from: user)
-            completion(.success(()))
-        } catch let error {
-            completion(.failure(error))
+            try db.collection("users").document(userId).setData(from: user)
+            print("서버에 유저 추가됨 id: \(userId), data: \(user)")
+        } catch {
+            throw error
         }
     }
     
-    // ServerConnectionRequest 데이터를 Firestore에 추가하는 함수
-    func addConnectionRequest(request: ConnectionRequestsDTO, completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            let _ = try db.collection("connectionRequests").addDocument(from: request)
-            completion(.success(()))
-        } catch let error {
-            completion(.failure(error))
+    /// 서버에 유저가 존재하는지 이름으로 확인
+    func checkUserExists(userName: String) async throws -> Bool {
+        guard !userName.isEmpty else {
+            throw FirestoreServiceError.invalidUserId
+        }
+        
+        let querySnapshot = try await db.collection("users")
+            .whereField("name", isEqualTo: userName)
+            .getDocuments()
+        
+        return !querySnapshot.documents.isEmpty
+    }
+    
+    /// 서버에서 유저 살제
+    func deleteUser(user: User) async throws {
+        guard let userId = user.id else {
+            throw FirestoreServiceError.invalidUserId
+        }
+        try await db.collection("users").document(userId).delete()
+    }
+    
+    /// 연결 요청을 Firestore에 추가
+    func addConnectRequests(currentUserName: String, otherUserName: String) async throws {
+        let connectionRequest = ConnectionRequestsDTO(
+            id: nil,
+            from: currentUserName,
+            to: otherUserName,
+            status: .pending,
+            requestDate: Date()
+        )
+        
+        // Upload connection request
+        try db.collection("connectionRequests").addDocument(from: connectionRequest)
+    }
+    
+    
+    /// 특정 사용자에게 온 연결 요청을 Firestore에서 가져오는 메서드
+    func fetchConnectionRequests(userName: String) async throws -> [ConnectionRequestsDTO] {
+        let snapshot = try await db.collection("connectionRequests")
+            .whereField("to", isEqualTo: userName)
+            .whereField("status", isEqualTo: "pending")
+            .getDocuments()
+        
+        print("페치된 문서: \(snapshot.documents)") // 디버깅을 위해 출력
+        
+        return snapshot.documents.compactMap { document in
+            do {
+                return try document.data(as: ConnectionRequestsDTO.self)
+            } catch {
+                print("문서 디코딩 실패: \(document.data()), error: \(error)")
+                return nil
+            }
         }
     }
     
-    // ServerConnection 데이터를 Firestore에 추가하는 함수
-    func addConnection(connection: ConnectionDTO, completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            let _ = try db.collection("connections").addDocument(from: connection)
-            completion(.success(()))
-        } catch let error {
-            completion(.failure(error))
+    /// 연결 요청을 넘겨준 ConnectionRequestsDTO 로 업데이트하는 메서드
+    func updateConnectionRequest(request: ConnectionRequestsDTO) async throws {
+        guard let requestId = request.id else {
+            throw FirestoreServiceError.invalidRequestId
         }
+        
+        try db.collection("connectionRequests").document(requestId).setData(from: request)
     }
     
-    // ServerPhoto 데이터를 Firestore에 추가하는 함수
-    func addPhoto(photo: PhotoDTO, completion: @escaping (Result<Void, Error>) -> Void) {
-        do {
-            let _ = try db.collection("photos").addDocument(from: photo)
-            completion(.success(()))
-        } catch let error {
-            completion(.failure(error))
+    /// 사용자 연결 정보를 넘겨준 User 로 업데이트하는 메서드
+    func updateUserConnections(user: User) async throws {
+        guard let userId = user.id else {
+            throw FirestoreServiceError.invalidUserId
         }
+        
+        try db.collection("users").document(userId).setData(from: user, merge: true)
     }
 }
