@@ -23,7 +23,6 @@ struct ContentView: View {
     @State private var userState: UserState = .checkNeeded
     @Query var userForSwiftDatas: [UserForSwiftData]
     
-    
     @State private var isAppearing: Bool = true
     
     var body: some View {
@@ -38,7 +37,7 @@ struct ContentView: View {
                     .transition(.opacity.animation(.easeInOut(duration: 1)))
                     .onAppear {
                         withAnimation {
-                            isAppearing = false 
+                            isAppearing = false
                         }
                     }
             case .connectedParent:
