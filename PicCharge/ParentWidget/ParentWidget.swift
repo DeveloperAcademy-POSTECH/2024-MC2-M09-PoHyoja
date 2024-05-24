@@ -81,11 +81,85 @@ struct ParentWidget: Widget {
     ParentSimpleEntry(date: .now, image: UIImage())
 }
 
-#Preview(as: .systemMedium) {
-    ParentWidget()
-} timeline: {
-    ParentSimpleEntry(date: .now, image: UIImage())
+// MARK: - 자식 위젯
 
+struct ChildProvider: AppIntentTimelineProvider {
+    func placeholder(in context: Context) -> ChildSimpleEntry {
+        ChildSimpleEntry(date: Date(), configuration: ChildConfigurationAppIntent())
+    }
+
+    func snapshot(for configuration: ChildConfigurationAppIntent, in context: Context) async -> ChildSimpleEntry {
+        ChildSimpleEntry(date: Date(), configuration: configuration)
+    }
+
+    func timeline(for configuration: ChildConfigurationAppIntent, in context: Context) async -> Timeline<ChildSimpleEntry> {
+        var entries: [ChildSimpleEntry] = []
+
+        // Generate a timeline consisting of five entries an hour apart, starting from the current date.
+        let currentDate = Date()
+        for hourOffset in 0 ..< 5 {
+            let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+            let entry = ChildSimpleEntry(date: entryDate, configuration: configuration)
+            entries.append(entry)
+        }
+
+        return Timeline(entries: entries, policy: .atEnd)
+    }
+}
+
+struct ChildSimpleEntry: TimelineEntry {
+    let date: Date
+    let configuration: ChildConfigurationAppIntent
+}
+
+struct ChildWidgetEntryView : View {
+    var entry: ChildProvider.Entry
+
+    var body: some View {
+        VStack {
+            Text("Time:")
+            Text(entry.date, style: .time)
+
+            Text("Favorite Emoji:")
+            Text(entry.configuration.favoriteEmoji)
+        }
+    }
+}
+
+struct ChildWidget: Widget {
+    let kind: String = "ChildWidget"
+
+    var body: some WidgetConfiguration {
+        AppIntentConfiguration(kind: kind, intent: ChildConfigurationAppIntent.self, provider: ChildProvider()) { entry in
+            ChildWidgetEntryView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
+        }
+        .configurationDisplayName("PicCharge")
+        .description("필요하면 나중에 설명 추가하기")
+        .supportedFamilies([.systemMedium])
+        .contentMarginsDisabled()
+    }
+}
+
+extension ChildConfigurationAppIntent {
+    fileprivate static var smiley: ChildConfigurationAppIntent {
+        let intent = ChildConfigurationAppIntent()
+        intent.favoriteEmoji = "😀"
+        return intent
+    }
+
+    fileprivate static var starEyes: ChildConfigurationAppIntent {
+        let intent = ChildConfigurationAppIntent()
+        intent.favoriteEmoji = "🤩"
+        return intent
+    }
+}
+
+#Preview(as: .systemMedium) {
+    ChildWidget()
+} timeline: {
+    ChildSimpleEntry(date: .now, configuration: .smiley)
+    ChildSimpleEntry(date: .now, configuration: .starEyes)
 }
 
 
