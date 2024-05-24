@@ -613,7 +613,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = 7V4779Q2XR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
@@ -645,7 +645,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = 7V4779Q2XR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
