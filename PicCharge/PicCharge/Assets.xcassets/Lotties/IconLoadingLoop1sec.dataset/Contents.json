@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "IconLoadingLoop1sec.json",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
