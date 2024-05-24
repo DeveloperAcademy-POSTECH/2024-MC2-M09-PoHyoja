@@ -9,13 +9,13 @@ import SwiftUI
 import WidgetKit
 
 
-struct SimpleEntry: TimelineEntry {
+struct ParentSimpleEntry: TimelineEntry {
     let date: Date
     let image: UIImage
 }
 
 struct ParentWidgetView : View {
-    var entry: Provider.Entry
+    var entry: ParentProvider.Entry
 
     var body: some View {
         Image(uiImage: entry.image)
@@ -25,18 +25,18 @@ struct ParentWidgetView : View {
     }
 }
 
-class Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), image: UIImage())
+class ParentProvider: TimelineProvider {
+    func placeholder(in context: Context) -> ParentSimpleEntry {
+        ParentSimpleEntry(date: Date(), image: UIImage())
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), image: UIImage())
+    func getSnapshot(in context: Context, completion: @escaping (ParentSimpleEntry) -> ()) {
+        let entry = ParentSimpleEntry(date: Date(), image: UIImage())
         completion(entry)
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
-        var entries: [SimpleEntry] = []
+    func getTimeline(in context: Context, completion: @escaping (Timeline<ParentSimpleEntry>) -> ()) {
+        var entries: [ParentSimpleEntry] = []
         var timeline = Timeline(entries: entries, policy: .atEnd)
         
         guard let urlString = UserDefaults.shared.string(forKey: "urlString"),
@@ -48,7 +48,7 @@ class Provider: TimelineProvider {
 
         let task = URLSession.shared.dataTask(with: url) { (data, _, _) in
             if let data = data, let image = UIImage(data: data) {
-                let entry = SimpleEntry(date: Date(), image: image)
+                let entry = ParentSimpleEntry(date: Date(), image: image)
                 entries.append(entry)
                 
                 timeline = Timeline(entries: entries, policy: .atEnd)
@@ -64,7 +64,7 @@ struct ParentWidget: Widget {
     let kind: String = "ParentWidget"
     
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        StaticConfiguration(kind: kind, provider: ParentProvider()) { entry in
             ParentWidgetView(entry: entry)
         }
         .configurationDisplayName("PicCharge")
@@ -75,14 +75,18 @@ struct ParentWidget: Widget {
 }
 
 
-#Preview(as: .systemSmall) {
+#Preview(as: .systemLarge) {
     ParentWidget()
 } timeline: {
-    SimpleEntry(date: .now, image: UIImage())
-    SimpleEntry(date: .now, image: UIImage())
+    ParentSimpleEntry(date: .now, image: UIImage())
 }
 
+#Preview(as: .systemMedium) {
+    ParentWidget()
+} timeline: {
+    ParentSimpleEntry(date: .now, image: UIImage())
 
+}
 
 
 
