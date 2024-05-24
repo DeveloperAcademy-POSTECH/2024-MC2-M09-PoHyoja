@@ -7,12 +7,14 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 class FirestoreService {
     
     static let shared = FirestoreService()
     private let db = Firestore.firestore()
-    
+    private let storage = Storage.storage()
+
     private init(){}
     
     /// 이메일로 Firestore에서 유저 정보 가져오기
@@ -144,5 +146,27 @@ class FirestoreService {
         }
         
         try db.collection("users").document(userId).setData(from: user, merge: true)
+    }
+    
+    /// 사진을 Firebase Storage에 업로드하고 메타데이터를 Firestore에 저장합니다.
+    func uploadPhoto(userName: String, photoForSwiftData: PhotoForSwiftData) async {
+        let photoID = photoForSwiftData.id.uuidString
+        let storageRef = storage.reference().child("photos/\(userName)/\(photoID).jpg")
+        
+        do {
+            // Firebase Storage에 이미지 데이터 업로드
+            let _ = try await storageRef.putDataAsync(photoForSwiftData.imgData, metadata: nil)
+            
+            // 업로드된 이미지의 다운로드 URL 가져오기
+            let downloadURL = try await storageRef.downloadURL()
+            
+            // Firestore에 저장할 메타데이터 생성
+            let photo = Photo(from: photoForSwiftData, urlString: downloadURL.absoluteString)
+
+            // Firestore에 메타데이터 저장
+            try db.collection("photos").document(photoID).setData(from: photo)
+        } catch {
+            print("Firebase Storage에 이미지 데이터 업로드 실패: \(error.localizedDescription)")
+        }
     }
 }
