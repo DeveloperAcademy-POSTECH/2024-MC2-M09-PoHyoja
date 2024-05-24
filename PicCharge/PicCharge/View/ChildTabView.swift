@@ -10,6 +10,7 @@ import SwiftUI
 struct ChildTabView: View {
     @State private var tab: Int = 1
     
+    
     var navigationTitle: String {
         switch tab {
         case 1: "픽-챠"
@@ -50,6 +51,7 @@ struct ChildTabView: View {
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle(navigationTitle)
+        
     }
 }
 
