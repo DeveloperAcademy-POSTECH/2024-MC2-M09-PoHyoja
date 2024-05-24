@@ -13,6 +13,7 @@ struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
     @Query var userForSwiftDatas: [UserForSwiftData]
+    @Query var photoForSwiftDatas: [PhotoForSwiftData]
 
     @State private var myRole: Role
     
@@ -122,6 +123,9 @@ extension SettingView {
         for userForSwiftData in self.userForSwiftDatas {
             modelContext.delete(userForSwiftData)
         }
+        for photoForSwiftData in self.photoForSwiftDatas {
+            modelContext.delete(photoForSwiftData)
+        }
     }
     
     private func deleteUser() throws {
@@ -130,6 +134,9 @@ extension SettingView {
         }
         for userForSwiftData in self.userForSwiftDatas {
             modelContext.delete(userForSwiftData)
+        }
+        for photoForSwiftData in self.photoForSwiftDatas {
+            modelContext.delete(photoForSwiftData)
         }
         return
         // TODO: 파이어베이스 서버에서 유저 정보 삭제

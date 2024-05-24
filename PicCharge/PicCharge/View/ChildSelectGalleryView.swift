@@ -42,9 +42,11 @@ struct ChildSelectGalleryView: UIViewControllerRepresentable {
             picker.dismiss(animated: true)
             
             // MARK: 이미지 선택시 정방형으로 크롭 후 jpeg으로 압축
-            if let image = info[.originalImage] as? UIImage, let croppedImage = image.croppedToSquare() {
-                parentGalleryPicker.selectedImageData = croppedImage.jpegData(compressionQuality: 0.1)
+            guard let image = info[.originalImage] as? UIImage, let croppedImage = image.croppedToSquare() else {
+                print("이미지 크롭, 압축 실패")
+                return
             }
+            parentGalleryPicker.selectedImageData = croppedImage.jpegData(compressionQuality: 0.1)
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {            
