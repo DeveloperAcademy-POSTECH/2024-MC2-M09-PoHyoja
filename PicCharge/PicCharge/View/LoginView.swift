@@ -154,12 +154,10 @@ private extension LoginView {
         }
     }
 }
-<<<<<<< HEAD
 
 #Preview {
     LoginView(userState: .constant(.notExist))
         .environment(NavigationManager())
         .preferredColorScheme(.dark)
 }
-=======
->>>>>>> Develop
+
