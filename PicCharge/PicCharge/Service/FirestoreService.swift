@@ -170,31 +170,27 @@ class FirestoreService {
         }
     }
     
-    func fetchPhotos(for userName: String) async throws -> [PhotoForSwiftData] {
+    func fetchPhotos(userName: String) async throws -> [Photo] {
         let snapshot = try await db.collection("photos")
             .whereField("sharedWith", arrayContains: userName)
             .getDocuments()
         
-        let photos = try snapshot.documents.compactMap { document in
+        return try snapshot.documents.compactMap { document in
             try document.data(as: Photo.self)
         }
+    }
+    
+    // Photo의 정보로 Firebase Storage에서 이미지 데이터를 받아와서 PhotoForSwiftData 로 변경
+    func fetchPhotoForSwiftDataByPhoto(photo: Photo) async throws -> PhotoForSwiftData {
+        let imgData = try await fetchPhotoData(urlString: photo.urlString)
         
-        var photoForSwiftDatas: [PhotoForSwiftData] = []
-        print("-- 서버에서 가져온 사진 데이타 --")
-        for photo in photos {
-            // MARK: URL로 이미지의 Data 가져오기, 최대 5MB
-            print("ID: \(String(describing: photo.id))")
-            print("URL: \(photo.urlString)\n")
-            
-            do {
-                let storageRef = storage.reference(forURL: photo.urlString)
-                let imgData = try await storageRef.data(maxSize: 5 * 1024 * 1024)
-                photoForSwiftDatas.append(PhotoForSwiftData(from: photo, imgData: imgData))
-            } catch {
-                print("imgData 변환 실패")
-            }
-        }
-        return photoForSwiftDatas
+        return PhotoForSwiftData(from: photo, imgData: imgData)
+    }
+    
+    // Firebase Storage 에서 이미지 데이타 받아오기
+    private func fetchPhotoData(urlString: String) async throws -> Data {
+        let storageRef = storage.reference(forURL: urlString)
+        return try await storageRef.data(maxSize: 5 * 1024 * 1024)
     }
     
     /// Firestore의 photo 정보를 업데이트하는 메소드
@@ -203,5 +199,27 @@ class FirestoreService {
         try await db.collection("photos").document(photoId).updateData([
             "likeCount": photoForSwiftData.likeCount,
         ])
+    }
+    
+    /// Firestore 및 Firebase Storage에서 사진 삭제
+    func deletePhoto(photoId: String) async {
+        let photoRef = db.collection("photos").document(photoId)
+        
+        // Firestore에서 사진 데이터 가져오기
+        do {
+            let documentSnapshot = try await photoRef.getDocument()
+            let photo = try documentSnapshot.data(as: Photo.self)
+            
+            
+            // Firebase Storage에서 이미지 삭제
+            let storageRef = storage.reference(forURL: photo.urlString)
+            
+            try await storageRef.delete()
+            
+            // Firestore에서 사진 문서 삭제
+            try await photoRef.delete()
+        } catch {
+            print("Firestore 및 Firebase Storage에서 사진 삭제 실패: \(error)")
+        }
     }
 }

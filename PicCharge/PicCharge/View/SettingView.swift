@@ -132,7 +132,8 @@ extension SettingView {
         return
         // TODO: 파이어베이스 서버에서 유저 정보 삭제
         
-        // TODO: try await user.delete()
+        // TODO: 로컬에서 유저 정보 삭제
+        // try await user.delete()
         
         // TODO: alert 로직으로 성공 실패 표시
     }
