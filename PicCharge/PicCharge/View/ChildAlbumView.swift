@@ -12,7 +12,7 @@ struct ChildAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
 
-    @Query var photos: [PhotoForSwiftData]
+    @Query var photoForSwiftDatas: [PhotoForSwiftData]
     @Query var userForSwiftDatas: [UserForSwiftData]
 
     @State private var isLoading = true
@@ -29,7 +29,7 @@ struct ChildAlbumView: View {
             if isLoading {
                 ProgressView("로딩중...")
             } else {
-                if let last = photos.last {
+                if let last = photoForSwiftDatas.last {
                     ScrollView {
                         Divider()
                             .padding(.bottom, 10)
@@ -65,7 +65,7 @@ struct ChildAlbumView: View {
                             .padding(.horizontal, 16)
                             
                             LazyVGrid(columns: columnLayout, spacing: 3) {
-                                ForEach(photos) { photo in
+                                ForEach(photoForSwiftDatas) { photo in
                                     if let uiImage = UIImage(data: photo.imgData) {
                                         Image(uiImage: uiImage)
                                             .resizable()
@@ -98,23 +98,59 @@ struct ChildAlbumView: View {
 
 extension ChildAlbumView {
     private func syncPhotoData() async {
+        var updateCount = 0
+        var addCount = 0
+        var deleteCount = 0
+        guard let swiftDataUser = userForSwiftDatas.first else {
+            print("로컬에 유저 데이터 없음")
+            return
+        }
+        
         do {
-            guard let swiftDataUser = userForSwiftDatas.first else {
-                print("로컬에 유저 데이터 없음")
-                return
-            }
+            let photos = try await FirestoreService.shared.fetchPhotos(userName: swiftDataUser.name)
+            var photoIds = Set<UUID>()
             
-            let photos = try await FirestoreService.shared.fetchPhotos(for: swiftDataUser.name)
-            print("-- 가져온 photos 데이터 --")
-            // 로컬 데이터 업데이트
             for photo in photos {
                 print(photo)
-                modelContext.insert(photo)
+                guard let photoIdString = photo.id, let photoId = UUID(uuidString: photoIdString) else {
+                    print("유효하지 않은 ID: \(String(describing: photo.id))")
+                    continue
+                }
+                photoIds.insert(photoId)
+                
+                // photoForSwiftDatas에서 같은 id를 가진 객체를 찾음
+                if let existingPhoto = fetchExistingPhoto(with: photoId) {
+                    updateExistingPhotosLikeCount(existingPhoto, with: photo)
+                    updateCount += 1
+                } else {
+                    addCount += 1
+                    let newPhotoForSwiftData = try await FirestoreService.shared.fetchPhotoForSwiftDataByPhoto(photo: photo)
+                    modelContext.insert(newPhotoForSwiftData)
+                }
             }
+            for photoForSwiftData in photoForSwiftDatas {
+                if !photoIds.contains(photoForSwiftData.id) {
+                    modelContext.delete(photoForSwiftData)
+                    deleteCount += 1
+                }
+            }
+            
+            try modelContext.save()
             print("\(photos.count) 개의 이미지 동기화함")
+            print("\(updateCount) 개의 사진 업데이트됨")
+            print("\(addCount) 개의 사진 추가됨")
+            print("\(deleteCount) 개의 사진 삭제됨")
         } catch {
             print("사진 데이터 동기화 실패: \(error)")
         }
+    }
+    
+    private func fetchExistingPhoto(with id: UUID) -> PhotoForSwiftData? {
+        return photoForSwiftDatas.first(where: { $0.id == id })
+    }
+    
+    private func updateExistingPhotosLikeCount(_ existingPhoto: PhotoForSwiftData, with newPhoto: Photo) {
+        existingPhoto.likeCount = newPhoto.likeCount
     }
 }
 
