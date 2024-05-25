@@ -120,30 +120,33 @@ struct SettingView: View {
 extension SettingView {
     private func logout() throws {
         try Auth.auth().signOut()
-        for userForSwiftData in self.userForSwiftDatas {
-            modelContext.delete(userForSwiftData)
-        }
-        for photoForSwiftData in self.photoForSwiftDatas {
-            modelContext.delete(photoForSwiftData)
-        }
+        print("-- 로컬 데이터 삭제 --")
+        deleteLocalData()
     }
     
     private func deleteUser() throws {
-        guard let user = Auth.auth().currentUser else {
+        guard Auth.auth().currentUser != nil else {
             throw FirestoreServiceError.userNotFound
         }
-        for userForSwiftData in self.userForSwiftDatas {
-            modelContext.delete(userForSwiftData)
-        }
-        for photoForSwiftData in self.photoForSwiftDatas {
-            modelContext.delete(photoForSwiftData)
-        }
+        deleteLocalData()
         return
         // TODO: 파이어베이스 서버에서 유저 정보 삭제
         
         // TODO: try await user.delete()
         
         // TODO: alert 로직으로 성공 실패 표시
+    }
+    
+    private func deleteLocalData() {
+        print("-- 로컬 데이터 삭제 --")
+        for userForSwiftData in self.userForSwiftDatas {
+            modelContext.delete(userForSwiftData)
+            print("\(userForSwiftData.name) 유저 삭제")
+        }
+        for photoForSwiftData in self.photoForSwiftDatas {
+            modelContext.delete(photoForSwiftData)
+            print("\(photoForSwiftData.id) 사진 삭제")
+        }
     }
 }
 
