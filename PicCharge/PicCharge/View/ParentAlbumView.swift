@@ -28,7 +28,9 @@ struct ParentAlbumView: View {
             if isLoading {
                 ProgressView("로딩중...")
             } else {
-                if let last = photoForSwiftDatas.last {
+                let sortedPhotos = photoForSwiftDatas.sorted { $0.uploadDate > $1.uploadDate }
+                
+                if let first = sortedPhotos.first {
                     ScrollView {
                         Divider()
                             .padding(.bottom, 10)
@@ -39,18 +41,18 @@ struct ParentAlbumView: View {
                                     .font(.headline)
                                     .foregroundStyle(.txtVibrantSecondary)
                                 
-                                if let uiImage = UIImage(data: last.imgData) {
+                                if let uiImage = UIImage(data: first.imgData) {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .aspectRatio(1, contentMode: .fill)
                                         .clipped()
                                         .cornerRadius(10.0)
                                         .onTapGesture {
-                                            navigationManager.push(to: .parentAlbumDetail(photo: last))
+                                            navigationManager.push(to: .parentAlbumDetail(photo: first))
                                         }
                                 }
                                 
-                                Text(last.uploadDate.toKR())
+                                Text(first.uploadDate.toKR())
                                     .font(.subheadline)
                                 
                                 
@@ -64,7 +66,7 @@ struct ParentAlbumView: View {
                             .padding(.horizontal, 16)
                             
                             LazyVGrid(columns: columnLayout, spacing: 3) {
-                                ForEach(photoForSwiftDatas) { photo in
+                                ForEach(sortedPhotos.dropFirst()) { photo in
                                     if let uiImage = UIImage(data: photo.imgData) {
                                         Image(uiImage: uiImage)
                                             .resizable()
