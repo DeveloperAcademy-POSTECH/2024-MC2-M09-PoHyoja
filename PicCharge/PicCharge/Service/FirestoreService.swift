@@ -14,7 +14,7 @@ class FirestoreService {
     static let shared = FirestoreService()
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
-
+    
     private init(){}
     
     /// 이메일로 Firestore에서 유저 정보 가져오기
@@ -162,7 +162,7 @@ class FirestoreService {
             
             // Firestore에 저장할 메타데이터 생성
             let photo = Photo(from: photoForSwiftData, urlString: downloadURL.absoluteString)
-
+            
             // Firestore에 메타데이터 저장
             try db.collection("photos").document(photoID).setData(from: photo)
         } catch {
@@ -194,7 +194,14 @@ class FirestoreService {
                 print("imgData 변환 실패")
             }
         }
-        
         return photoForSwiftDatas
+    }
+    
+    /// Firestore의 photo 정보를 업데이트하는 메소드
+    func updatePhoto(photoForSwiftData: PhotoForSwiftData) async throws {
+        let photoId = photoForSwiftData.id.uuidString
+        try await db.collection("photos").document(photoId).updateData([
+            "likeCount": photoForSwiftData.likeCount,
+        ])
     }
 }

@@ -160,7 +160,9 @@ struct ParentAlbumDetailView: View {
                 withAnimation {
                     self.isLiked = false
                 }
-                // TODO: - 서버 좋아요 API 호출
+                Task {
+                    try await FirestoreService.shared.updatePhoto(photoForSwiftData: photo)
+                }
             }
     }
 }
