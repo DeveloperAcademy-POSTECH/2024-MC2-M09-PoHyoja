@@ -16,6 +16,7 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var errorMessage: String?
     @State private var isLoading: Bool = false
+    @State private var showEndView: Bool = false
     
     var body: some View {
         ZStack {
@@ -64,6 +65,17 @@ struct LoginView: View {
                 BuggungLoadingView()
                     .transition(.opacity.animation(.easeInOut(duration: 1)))
                     .background(Color.black.opacity(1).edgesIgnoringSafeArea(.all))
+            } else if showEndView {
+                BuggungEndView()
+                    .transition(.opacity.animation(.easeInOut(duration: 1)))
+                    .background(Color.black.opacity(1).edgesIgnoringSafeArea(.all))
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                            withAnimation {
+                                showEndView = false
+                            }
+                        }
+                    }
             }
         }
     }
@@ -88,6 +100,7 @@ private extension LoginView {
             
             withAnimation {
                 isLoading = false
+                showEndView = true
             }
             
             if user.connectedTo.isEmpty {

@@ -1,13 +1,13 @@
 //
-//  BuggungLoadingView.swift
+//  BuggungEndView.swift
 //  PicCharge
 //
-//  Created by Woowon Kang on 5/24/24.
+//  Created by Woowon Kang on 5/25/24.
 //
 
 import SwiftUI
 
-struct BuggungLoadingView: View {
+struct BuggungEndView: View {
     @Environment(NavigationManager.self) var navigationManager
     var body: some View {
         ZStack {
@@ -23,8 +23,7 @@ struct BuggungLoadingView: View {
             }
             .ignoresSafeArea()
             VStack {
-                LottieView(jsonName: "BuggungLoading", loopMode: .loop)
-                    .frame(width: 200, height: 200)
+                LottieView(jsonName: "BuggungEnd", loopMode: .playOnce)
             }
         }
         .ignoresSafeArea()
@@ -38,5 +37,5 @@ struct BuggungLoadingView: View {
 }
 
 #Preview {
-    BuggungLoadingView()
+    BuggungEndView()
 }
