@@ -17,9 +17,10 @@ struct ParentProvider: TimelineProvider {
     }
     
     func getSnapshot(in context: Context, completion: @escaping (ParentSimpleEntry) -> ()) {
-        let entry = ParentSimpleEntry(date: Date(), image: UIImage())
+        let entry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
         completion(entry)
     }
+
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<ParentSimpleEntry>) -> ()) {
         var entries: [ParentSimpleEntry] = []
