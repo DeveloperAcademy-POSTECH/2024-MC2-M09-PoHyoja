@@ -22,10 +22,10 @@ extension Date {
         }
         
         let koreanString = formattedString
-            .replacingOccurrences(of: "days", with: "일")
-            .replacingOccurrences(of: "day", with: "일")
-            .replacingOccurrences(of: "hours", with: "시간")
-            .replacingOccurrences(of: "hour", with: "시간")
+            .replacingOccurrences(of: " days", with: "일")
+            .replacingOccurrences(of: " day", with: "일")
+            .replacingOccurrences(of: " hours", with: "시간")
+            .replacingOccurrences(of: " hour", with: "시간")
             .replacingOccurrences(of: ",", with: "")
         
         return koreanString

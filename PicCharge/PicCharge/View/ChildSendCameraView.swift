@@ -11,6 +11,7 @@ import SwiftData
 struct ChildSendCameraView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
+    @Query var userForSwiftDatas: [UserForSwiftData]
     
     @State private var isChildLoadingView: Bool = false
     private let imageData: Data
@@ -52,12 +53,21 @@ struct ChildSendCameraView: View {
                     .foregroundStyle(.txtPrimaryDark)
                     
                     Button("사진 보내기") {
+                        guard let user = userForSwiftDatas.first else {
+                            print("UserForSwiftData 에서 정보 불러오기 실패")
+                            return
+                        }
+                        var newConnectedTo = user.connectedTo
+                        newConnectedTo.append(user.name)
+                        let photoForSwiftData = PhotoForSwiftData(uploadBy: user.name, sharedWith: newConnectedTo, imgData: imageData)
+
                         // MARK: - 로컬에 이미지 저장
-                        // TODO: - 유저 정보 주입
-                        modelContext.insert(PhotoForSwiftData(uploadBy: "", sharedWith: [], imgData: imageData))
+                        modelContext.insert(photoForSwiftData)
                         
-                        // TODO: - 사진 전송 로직 imageData: Data를 서버로 전송
-                        
+                        // MARK: - 사진 전송 로직 imageData: Data를 서버로 전송
+                        Task {
+                            await FirestoreService.shared.uploadPhoto(userName: user.name, photoForSwiftData: photoForSwiftData)
+                        }
                         isChildLoadingView = true
                     }
                 }

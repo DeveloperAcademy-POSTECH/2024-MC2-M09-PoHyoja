@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.dgh06175.PicCharge</string>
+		<string>group.com.pohyoja.PicCharge</string>
 	</array>
 </dict>
 </plist>
