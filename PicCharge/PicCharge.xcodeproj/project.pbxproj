@@ -613,7 +613,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = 2U3B7G3F2A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
@@ -627,7 +627,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.won.pohyoja.PicCharge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -645,7 +645,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = 2U3B7G3F2A;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
@@ -659,7 +659,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.won.pohyoja.PicCharge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -675,7 +675,7 @@
 				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = 2U3B7G3F2A;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParentWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
@@ -687,7 +687,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge.ParentWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.won.pohyoja.PicCharge.ParentWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -704,7 +704,7 @@
 				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = 2U3B7G3F2A;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParentWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
@@ -716,7 +716,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge.ParentWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.won.pohyoja.PicCharge.ParentWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
