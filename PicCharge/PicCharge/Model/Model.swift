@@ -86,6 +86,24 @@ struct Photo: Identifiable, Codable {
     var likeCount: Int
     var sharedWith: [String]
     
+    init(id: String? = nil, uploadBy: String, uploadDate: Date, urlString: String, likeCount: Int, sharedWith: [String]) {
+        self.id = id
+        self.uploadBy = uploadBy
+        self.uploadDate = uploadDate
+        self.urlString = urlString
+        self.likeCount = likeCount
+        self.sharedWith = sharedWith
+    }
+    
+    init(from photoForSwiftData: PhotoForSwiftData, urlString: String) {
+        self.id = photoForSwiftData.id.uuidString
+        self.uploadBy = photoForSwiftData.uploadBy
+        self.uploadDate = photoForSwiftData.uploadDate
+        self.urlString = urlString
+        self.likeCount = photoForSwiftData.likeCount
+        self.sharedWith = photoForSwiftData.sharedWith
+    }
+    
     static let mockup: [Photo] = {
         let uploadBy = "TestID"
         let uploadDate = Date()

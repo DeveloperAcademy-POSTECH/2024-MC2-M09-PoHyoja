@@ -19,6 +19,7 @@ enum FirestoreServiceError: Error {
     case invalidRequestId // 연결 요청시 아이디가 일치하지 않을 경우
     case requestNotFound
     case invalidRequest
+    case invalidPhotoId
 }
 
 extension FirestoreServiceError: LocalizedError {
@@ -44,6 +45,8 @@ extension FirestoreServiceError: LocalizedError {
             return "연결 요청을 찾지 못했습니다."
         case .invalidRequest:
             return "잘못된 연결 요청입니다."
+        case .invalidPhotoId:
+            return "잘못된 사진 ID 입니다."
         }
     }
 }
