@@ -25,6 +25,7 @@ struct ConnectUserView: View {
     var body: some View {
         Group {
             if isConnected {
+                // TODO: - 연결 완료 시 로티가 있는 뷰로 수정
                 Text("연결됐다니까")
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
