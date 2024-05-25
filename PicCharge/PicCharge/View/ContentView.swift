@@ -29,7 +29,7 @@ struct ContentView: View {
             case .notExist:
                 LoginView(userState: $userState)
             case .notConnected:
-                ConnectUserView(user: userForSwiftDatas.first!)
+                ConnectUserView(user: userForSwiftDatas.first!, userState: $userState)
             case .connectedChild:
                 ChildTabView()
             case .connectedParent:
@@ -82,7 +82,6 @@ struct ContentView: View {
             print("유저정보 확인: parent 역할")
             userState = .connectedParent
         }
-// let user = await await FirestoreService.shared.fetchUserByEmail(email: currentUser.email ?? "")
     }
 }
 
