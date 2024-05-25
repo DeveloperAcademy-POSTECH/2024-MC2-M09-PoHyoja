@@ -631,7 +631,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yuseongNam.picCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -663,7 +663,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yuseongNam.picCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -679,7 +679,7 @@
 				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = 7V4779Q2XR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParentWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
@@ -691,7 +691,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yuseongNam.picCharge.parentWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge.ParentWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -708,7 +708,7 @@
 				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = 7V4779Q2XR;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParentWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
@@ -720,7 +720,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.yuseongNam.picCharge.parentWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge.ParentWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

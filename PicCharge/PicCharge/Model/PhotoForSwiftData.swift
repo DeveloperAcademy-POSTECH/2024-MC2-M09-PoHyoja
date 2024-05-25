@@ -33,6 +33,15 @@ final class PhotoForSwiftData {
         self.sharedWith = sharedWith
         self.imgData = imgData
     }
+    
+    init(from photo: Photo, imgData: Data) {
+        self.id = UUID(uuidString: photo.id ?? UUID().uuidString) ?? UUID()
+        self.uploadBy = photo.uploadBy
+        self.uploadDate = photo.uploadDate
+        self.likeCount = photo.likeCount
+        self.sharedWith = photo.sharedWith
+        self.imgData = imgData
+    }
 }
 
 extension PhotoForSwiftData: Hashable {
