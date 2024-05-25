@@ -11,33 +11,16 @@ import WidgetKit
 
 // MARK: - 부모 위젯
 
-
-struct ParentSimpleEntry: TimelineEntry {
-    let date: Date
-    let image: UIImage
-}
-
-struct ParentWidgetView : View {
-    var entry: ParentProvider.Entry
-
-    var body: some View {
-        Image(uiImage: entry.image)
-            .resizable()
-            .aspectRatio(contentMode: .fill)
-            .containerBackground(Color.clear, for: .widget)
-    }
-}
-
-class ParentProvider: TimelineProvider {
+struct ParentProvider: TimelineProvider {
     func placeholder(in context: Context) -> ParentSimpleEntry {
         ParentSimpleEntry(date: Date(), image: UIImage())
     }
-
+    
     func getSnapshot(in context: Context, completion: @escaping (ParentSimpleEntry) -> ()) {
         let entry = ParentSimpleEntry(date: Date(), image: UIImage())
         completion(entry)
     }
-
+    
     func getTimeline(in context: Context, completion: @escaping (Timeline<ParentSimpleEntry>) -> ()) {
         var entries: [ParentSimpleEntry] = []
         var timeline = Timeline(entries: entries, policy: .atEnd)
@@ -48,7 +31,7 @@ class ParentProvider: TimelineProvider {
             completion(timeline)
             return
         }
-
+        
         let task = URLSession.shared.dataTask(with: url) { (data, _, _) in
             if let data = data, let image = UIImage(data: data) {
                 let entry = ParentSimpleEntry(date: Date(), image: image)
@@ -61,6 +44,41 @@ class ParentProvider: TimelineProvider {
         task.resume()
     }
 }
+
+
+
+struct ParentSimpleEntry: TimelineEntry {
+    let date: Date
+    let image: UIImage
+}
+
+
+
+struct ParentWidgetView : View {
+    var entry: ParentProvider.Entry
+    
+    var body: some View {
+        RoundedRectangle(cornerRadius: 21)
+            .fill(Color.clear)
+            .overlay(
+                Image(uiImage: entry.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .cornerRadius(21)
+                    .clipped()
+            )
+            .overlay(
+                RoundedRectangle(cornerRadius: 21)
+                    .stroke(Color.black, lineWidth: 10)
+            )
+            .containerBackground(Color.clear, for: .widget)
+    }
+}
+
+
+
+
+
 
 
 struct ParentWidget: Widget {
@@ -78,26 +96,30 @@ struct ParentWidget: Widget {
 }
 
 
+
+
 #Preview(as: .systemLarge) {
     ParentWidget()
 } timeline: {
     ParentSimpleEntry(date: .now, image: UIImage())
 }
 
+
+
 // MARK: - 자식 위젯
 
 
-struct Provider: AppIntentTimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), batteryPercentage: 90, hourOffset: 0)
+struct ChildProvider: AppIntentTimelineProvider {
+    func placeholder(in context: Context) -> ChildSimpleEntry {
+        ChildSimpleEntry(date: Date(), configuration: ConfigurationAppIntent(), batteryPercentage: 90, hourOffset: 0)
     }
     
-    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> SimpleEntry {
-        SimpleEntry(date: Date(), configuration: configuration, batteryPercentage: 100, hourOffset: 0)
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ChildSimpleEntry {
+        ChildSimpleEntry(date: Date(), configuration: configuration, batteryPercentage: 100, hourOffset: 0)
     }
     
-    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<SimpleEntry> {
-        var entries: [SimpleEntry] = []
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ChildSimpleEntry> {
+        var entries: [ChildSimpleEntry] = []
         
         let targetTime = ChildWidgetOption.targetTime // 목표로 설정한 시간
         let photoSentDate = ChildWidgetOption.photoSentDate // 사진을 보낸 시간
@@ -107,14 +129,16 @@ struct Provider: AppIntentTimelineProvider {
             let percentageDropPerTime = 100.0 / Double(targetTime) // 배터리 줄어드는 % 계산
             let currentPercentage = max(100.0 - (percentageDropPerTime * Double(hourOffset % (targetTime + 1))), 0) // 현재 남은 배터리
             let elapsedTime = Calendar.current.date(byAdding: ChildWidgetOption.timeUnit, value: hourOffset, to: photoSentDate)! // 사진을 보낸 시간으로부터 경과된 시간
-            let entry = SimpleEntry(date: elapsedTime, configuration: configuration, batteryPercentage: currentPercentage, hourOffset: hourOffset % (targetTime + 1))
+            let entry = ChildSimpleEntry(date: elapsedTime, configuration: configuration, batteryPercentage: currentPercentage, hourOffset: hourOffset % (targetTime + 1))
             entries.append(entry)
         }
         return Timeline(entries: entries, policy: .atEnd)
     }
 }
 
-struct SimpleEntry: TimelineEntry {
+
+
+struct ChildSimpleEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
     let batteryPercentage: Double // 근사값이라 정확도 최대한 높이려고 Double 사용
@@ -124,7 +148,7 @@ struct SimpleEntry: TimelineEntry {
 
 
 struct ChildWidgetEntryView : View {
-    var entry: Provider.Entry
+    var entry: ChildProvider.Entry
     
     var body: some View {
         if entry.batteryPercentage > 0 {
@@ -166,7 +190,7 @@ struct ChildWidgetEntryView : View {
                 ZStack {
                     RoundedRectangle(cornerRadius: 16)
                         .fill(
-                            Color.gray3.shadow(
+                            Color.bgGray3.shadow(
                                 .inner(
                                     color: Color.white.opacity(0.25),
                                     radius: 7.5,
@@ -203,11 +227,14 @@ struct ChildWidgetEntryView : View {
     }
 }
 
+
+
+
 struct ChildWidget: Widget {
     let kind: String = "ChildWidget"
     
     var body: some WidgetConfiguration {
-        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: Provider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: ChildProvider()) { entry in
             ChildWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
@@ -217,6 +244,9 @@ struct ChildWidget: Widget {
         .contentMarginsDisabled()
     }
 }
+
+
+
 extension ConfigurationAppIntent {
     fileprivate static var smiley: ConfigurationAppIntent {
         let intent = ConfigurationAppIntent()
@@ -226,11 +256,12 @@ extension ConfigurationAppIntent {
     
 }
 
+
+
 #Preview(as: .systemMedium) {
     ChildWidget()
 } timeline: {
-    SimpleEntry(date: .now, configuration: .smiley, batteryPercentage: 100, hourOffset: 0)
+    ChildSimpleEntry(date: .now, configuration: .smiley, batteryPercentage: 100, hourOffset: 0)
 }
-
 
 

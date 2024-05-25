@@ -7,7 +7,6 @@
 
 import Foundation
 
-import Foundation
 
 struct ChildWidgetOption {
     // 시간 측정 단위 설정 (초, 분, 시간 등)
@@ -23,3 +22,4 @@ struct ChildWidgetOption {
     // 사진을 전송한 시간 설정
     static let photoSentDate = Date()
 }
+
