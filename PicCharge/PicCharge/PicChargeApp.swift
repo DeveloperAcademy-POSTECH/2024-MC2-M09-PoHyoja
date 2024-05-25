@@ -39,7 +39,7 @@ struct PicChargeApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $navigationManager.path) {
-                TempWidgetButtonView()
+                ContentView()
                     .navigationDestination(for: PathType.self) { path in
                         path.NavigatingView()
                     }
