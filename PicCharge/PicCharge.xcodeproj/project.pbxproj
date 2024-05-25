@@ -63,6 +63,8 @@
 		FF7315762BF907690074D7AA /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315752BF907690074D7AA /* AppIntent.swift */; };
 		FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF7315772BF9076A0074D7AA /* Assets.xcassets */; };
 		FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FFA8CC2D2C01AB3C007428F8 /* WidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */; };
+		FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */; };
 		FFD221AE2BFB840E009735E4 /* TempWidgetButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AD2BFB840E009735E4 /* TempWidgetButtonView.swift */; };
 		FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AF2BFB8433009735E4 /* UserDefault+.swift */; };
 		FFD221B22BFB8483009735E4 /* UserDefault+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AF2BFB8433009735E4 /* UserDefault+.swift */; };
@@ -141,6 +143,7 @@
 		FF7315752BF907690074D7AA /* AppIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIntent.swift; sourceTree = "<group>"; };
 		FF7315772BF9076A0074D7AA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FF7315792BF9076A0074D7AA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetOption.swift; sourceTree = "<group>"; };
 		FFD221AD2BFB840E009735E4 /* TempWidgetButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempWidgetButtonView.swift; sourceTree = "<group>"; };
 		FFD221AF2BFB8433009735E4 /* UserDefault+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefault+.swift"; sourceTree = "<group>"; };
 		FFD221B32BFB84C1009735E4 /* ParentWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentWidgetExtension.entitlements; sourceTree = "<group>"; };
@@ -305,6 +308,7 @@
 				FFD221B32BFB84C1009735E4 /* ParentWidgetExtension.entitlements */,
 				FF7315712BF907690074D7AA /* ParentWidgetBundle.swift */,
 				FF7315732BF907690074D7AA /* ParentWidget.swift */,
+				FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */,
 				FF7315752BF907690074D7AA /* AppIntent.swift */,
 				FF7315772BF9076A0074D7AA /* Assets.xcassets */,
 				FF7315792BF9076A0074D7AA /* Info.plist */,
@@ -447,6 +451,7 @@
 				421A8CAF2BFDC2DE003C7001 /* PhotoForShare.swift in Sources */,
 				421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */,
 				421A8CC02BFE516C003C7001 /* PhotoForSwiftData.swift in Sources */,
+				FFA8CC2D2C01AB3C007428F8 /* WidgetOption.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,
 				FFD221AE2BFB840E009735E4 /* TempWidgetButtonView.swift in Sources */,
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
@@ -473,6 +478,7 @@
 			files = (
 				FFD221B22BFB8483009735E4 /* UserDefault+.swift in Sources */,
 				FF3ECB762C003F0300E65D83 /* Color+.swift in Sources */,
+				FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */,
 				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
 				FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */,
 				FF3ECB752C003F0000E65D83 /* Icon.swift in Sources */,
