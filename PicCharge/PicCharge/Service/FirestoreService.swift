@@ -13,6 +13,7 @@ class FirestoreService {
     
     static let shared = FirestoreService()
     private let db = Firestore.firestore()
+    private var documentListener: ListenerRegistration?
     private let storage = Storage.storage()
     
     private init(){}
@@ -111,10 +112,10 @@ class FirestoreService {
     }
     
     
-    /// 특정 사용자에게 온 연결 요청을 Firestore에서 가져오는 메서드
+    /// 본인이 한 연결 요청을 Firestore에서 가져오는 메서드
     func fetchConnectionRequests(userName: String) async throws -> [ConnectionRequestsDTO] {
         let snapshot = try await db.collection("connectionRequests")
-            .whereField("to", isEqualTo: userName)
+            .whereField("from", isEqualTo: userName)
             .whereField("status", isEqualTo: "pending")
             .getDocuments()
         
@@ -128,6 +129,93 @@ class FirestoreService {
                 return nil
             }
         }
+    }
+    
+    func listenRequest(from userName: String, completion: @escaping (Result<[ConnectionRequestsDTO], FirestoreServiceError>) -> Void) {
+        removeListener()
+        
+        documentListener = db.collection("connectionRequests")
+            .whereField("from", isEqualTo: userName)
+            // 1. status -> pending은 삭제가 된다
+            .whereField("status", in: ["pending", "rejected", "accepted"])
+            .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("문서 찾을 수 없음: \(error!)")
+                    completion(.failure(FirestoreServiceError.documentNotFound))
+                    return
+                }
+                
+                var connections: [ConnectionRequestsDTO] = []
+                
+                document.documentChanges.forEach { change in
+                    switch change.type {
+                    case .added:
+                        print("added")
+                        do {
+                            let connection = try change.document.data(as: ConnectionRequestsDTO.self)
+                            guard connection.status == .pending else { return }
+                            connections.append(connection)
+                            print(connection.status)
+                            
+                        } catch {
+                            print("문서 디코딩 실패: \(change.document.data()), error: \(error)")
+                            completion(.failure(.decodingError))
+                        }
+                    case .modified:
+                        print("modified")
+                        do {
+                            let connection = try change.document.data(as: ConnectionRequestsDTO.self)
+                            guard connection.status == .accepted || connection.status == .rejected else { return }
+                            connections.append(connection)
+                            print(connection.status)
+                            
+                        } catch {
+                            print("문서 디코딩 실패: \(change.document.data()), error: \(error)")
+                            completion(.failure(.decodingError))
+                        }
+                    default:
+                        break
+                    }
+                    completion(.success(connections))
+                }
+            }
+    }
+
+    func listenRequest(to userName: String, completion: @escaping (Result<[ConnectionRequestsDTO], FirestoreServiceError>) -> Void) {
+        removeListener()
+        
+        documentListener = db.collection("connectionRequests")
+            .whereField("to", isEqualTo: userName)
+            .whereField("status", isEqualTo: "pending")
+            .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("문서 찾을 수 없음: \(error!)")
+                    completion(.failure(FirestoreServiceError.documentNotFound))
+                    return
+                }
+                
+                var connections: [ConnectionRequestsDTO] = []
+                
+                document.documentChanges.forEach { change in
+                    switch change.type {
+                    case .added:
+                        do {
+                            let connection = try change.document.data(as: ConnectionRequestsDTO.self)
+                            connections.append(connection)
+                        } catch {
+                            print("문서 디코딩 실패: \(change.document.data()), error: \(error)")
+                            completion(.failure(.decodingError))
+                        }
+                    default:
+                        break
+                    }
+                    completion(.success(connections))
+                }
+            }
+    }
+    
+    func removeListener() {
+        documentListener?.remove()
     }
     
     /// 연결 요청을 넘겨준 ConnectionRequestsDTO 로 업데이트하는 메서드
