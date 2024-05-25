@@ -169,4 +169,32 @@ class FirestoreService {
             print("Firebase Storage에 이미지 데이터 업로드 실패: \(error.localizedDescription)")
         }
     }
+    
+    func fetchPhotos(for userName: String) async throws -> [PhotoForSwiftData] {
+        let snapshot = try await db.collection("photos")
+            .whereField("sharedWith", arrayContains: userName)
+            .getDocuments()
+        
+        let photos = try snapshot.documents.compactMap { document in
+            try document.data(as: Photo.self)
+        }
+        
+        var photoForSwiftDatas: [PhotoForSwiftData] = []
+        print("-- 서버에서 가져온 사진 데이타 --")
+        for photo in photos {
+            // MARK: URL로 이미지의 Data 가져오기, 최대 5MB
+            print("ID: \(String(describing: photo.id))")
+            print("URL: \(photo.urlString)\n")
+            
+            do {
+                let storageRef = storage.reference(forURL: photo.urlString)
+                let imgData = try await storageRef.data(maxSize: 5 * 1024 * 1024)
+                photoForSwiftDatas.append(PhotoForSwiftData(from: photo, imgData: imgData))
+            } catch {
+                print("imgData 변환 실패")
+            }
+        }
+        
+        return photoForSwiftDatas
+    }
 }

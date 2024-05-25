@@ -57,7 +57,9 @@ struct ChildSendCameraView: View {
                             print("UserForSwiftData 에서 정보 불러오기 실패")
                             return
                         }
-                        let photoForSwiftData = PhotoForSwiftData(uploadBy: user.name, sharedWith: user.connectedTo, imgData: imageData)
+                        var newConnectedTo = user.connectedTo
+                        newConnectedTo.append(user.name)
+                        let photoForSwiftData = PhotoForSwiftData(uploadBy: user.name, sharedWith: newConnectedTo, imgData: imageData)
 
                         // MARK: - 로컬에 이미지 저장
                         modelContext.insert(photoForSwiftData)
