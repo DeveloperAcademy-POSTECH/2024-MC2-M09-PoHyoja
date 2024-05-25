@@ -55,7 +55,6 @@
 		FF3ECB752C003F0000E65D83 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
 		FF3ECB762C003F0300E65D83 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
 		FF3ECB772C003F0800E65D83 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
-		FF3ECB782C003F7D00E65D83 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
 		FF73156D2BF907690074D7AA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73156C2BF907690074D7AA /* WidgetKit.framework */; };
 		FF73156F2BF907690074D7AA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF73156E2BF907690074D7AA /* SwiftUI.framework */; };
 		FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315712BF907690074D7AA /* ParentWidgetBundle.swift */; };
@@ -65,6 +64,7 @@
 		FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FFA8CC2D2C01AB3C007428F8 /* WidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */; };
 		FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */; };
+		FFA8CC2F2C01AFCF007428F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
 		FFD221AE2BFB840E009735E4 /* TempWidgetButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AD2BFB840E009735E4 /* TempWidgetButtonView.swift */; };
 		FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AF2BFB8433009735E4 /* UserDefault+.swift */; };
 		FFD221B22BFB8483009735E4 /* UserDefault+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFD221AF2BFB8433009735E4 /* UserDefault+.swift */; };
@@ -421,7 +421,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF3ECB782C003F7D00E65D83 /* Assets.xcassets in Resources */,
+				FFA8CC2F2C01AFCF007428F8 /* Assets.xcassets in Resources */,
 				FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -1,7 +1,6 @@
 {
-  "data" : [
+  "colors" : [
     {
-      "filename" : "BatteryLoading.json",
       "idiom" : "universal"
     }
   ],
