@@ -29,7 +29,7 @@ struct ContentView: View {
             case .notExist:
                 LoginView(userState: $userState)
             case .notConnected:
-                ConnectUserView(user: userForSwiftDatas.first!)
+                ConnectUserView(user: userForSwiftDatas.first!, userState: $userState)
             case .connectedChild:
                 ChildTabView()
             case .connectedParent:
