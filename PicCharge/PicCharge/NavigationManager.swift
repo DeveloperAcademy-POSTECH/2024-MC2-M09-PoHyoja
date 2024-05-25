@@ -11,7 +11,6 @@ enum PathType: Hashable {
     // MARK: - 초기 설정
     case signUp
     case selectRole(name: String, email: String, password: String)
-    case connectUser(user: UserForSwiftData)
     
     // MARK: - 자식
     case childMain
@@ -39,9 +38,7 @@ extension PathType {
             UserInfoForSignUpView()
         case .selectRole(let name, let email, let password):
             SelectRoleForSignUpView(name: name, email: email, password: password)
-        case .connectUser(let user):
-            ConnectUserView(user: user)
-
+            
         // MARK: - 자식
         case .childMain:
             ChildMainView()

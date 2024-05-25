@@ -160,4 +160,3 @@ private extension LoginView {
         .environment(NavigationManager())
         .preferredColorScheme(.dark)
 }
-
