@@ -19,16 +19,25 @@ struct ChildMainView: View {
     }
     
     @Environment(NavigationManager.self) var navigationManager
-    
     @Query var photos: [PhotoForSwiftData]
+    @Query var users: [UserForSwiftData]
     
     @State private var batteryPercent: Double = 50
-    @State private var totalLikeCount: Int = 1223
-    @State private var totalUploadCount: Int = 320
-    @State private var uploadCycle: Int = 6 // 6초
     @State private var isGaugeAnimating: Bool = false
     @State private var infoPage: Int = 1
     @State private var timer: Timer?
+    
+    var uploadCycle: Int {
+        users.first?.uploadCycle ?? 3
+    }
+    
+    var totalLikeCount: Int {
+        return photos.reduce(0) { $0 + $1.likeCount }
+    }
+    
+    var totalUploadCount: Int {
+        return photos.count
+    }
     
     var body: some View {
         ZStack {
@@ -88,10 +97,8 @@ struct ChildMainView: View {
                         
                         VStack {
                             GoalPageView()
-                                .onAppear {
-                                    calculateTotalCounts()
-                                }
                             Spacer()
+                            
                         }
                         .tag(2)
                     }
@@ -339,11 +346,11 @@ struct ChildMainView: View {
     }
     
     
-    /// 총 사진 업로드 개수, 총 좋아요 수를 불러옵니다.
-    func calculateTotalCounts() {
-        totalUploadCount = photos.count
-        totalLikeCount = photos.reduce(0) { $0 + $1.likeCount }
-    }
+//    /// 총 사진 업로드 개수, 총 좋아요 수를 불러옵니다.
+//    func calculateTotalCounts() {
+//        totalUploadCount = photos.count
+//        totalLikeCount = photos.reduce(0) { $0 + $1.likeCount }
+//    }
 }
 
 #Preview {
