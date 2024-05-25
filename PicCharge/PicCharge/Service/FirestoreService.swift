@@ -7,11 +7,13 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 class FirestoreService {
     
     static let shared = FirestoreService()
     private let db = Firestore.firestore()
+    private let storage = Storage.storage()
     
     private init(){}
     
@@ -144,5 +146,80 @@ class FirestoreService {
         }
         
         try db.collection("users").document(userId).setData(from: user, merge: true)
+    }
+    
+    /// 사진을 Firebase Storage에 업로드하고 메타데이터를 Firestore에 저장합니다.
+    func uploadPhoto(userName: String, photoForSwiftData: PhotoForSwiftData) async {
+        let photoID = photoForSwiftData.id.uuidString
+        let storageRef = storage.reference().child("photos/\(userName)/\(photoID).jpg")
+        
+        do {
+            // Firebase Storage에 이미지 데이터 업로드
+            let _ = try await storageRef.putDataAsync(photoForSwiftData.imgData, metadata: nil)
+            
+            // 업로드된 이미지의 다운로드 URL 가져오기
+            let downloadURL = try await storageRef.downloadURL()
+            
+            // Firestore에 저장할 메타데이터 생성
+            let photo = Photo(from: photoForSwiftData, urlString: downloadURL.absoluteString)
+            
+            // Firestore에 메타데이터 저장
+            try db.collection("photos").document(photoID).setData(from: photo)
+        } catch {
+            print("Firebase Storage에 이미지 데이터 업로드 실패: \(error.localizedDescription)")
+        }
+    }
+    
+    func fetchPhotos(userName: String) async throws -> [Photo] {
+        let snapshot = try await db.collection("photos")
+            .whereField("sharedWith", arrayContains: userName)
+            .getDocuments()
+        
+        return try snapshot.documents.compactMap { document in
+            try document.data(as: Photo.self)
+        }
+    }
+    
+    // Photo의 정보로 Firebase Storage에서 이미지 데이터를 받아와서 PhotoForSwiftData 로 변경
+    func fetchPhotoForSwiftDataByPhoto(photo: Photo) async throws -> PhotoForSwiftData {
+        let imgData = try await fetchPhotoData(urlString: photo.urlString)
+        
+        return PhotoForSwiftData(from: photo, imgData: imgData)
+    }
+    
+    // Firebase Storage 에서 이미지 데이타 받아오기
+    private func fetchPhotoData(urlString: String) async throws -> Data {
+        let storageRef = storage.reference(forURL: urlString)
+        return try await storageRef.data(maxSize: 5 * 1024 * 1024)
+    }
+    
+    /// Firestore의 photo 정보를 업데이트하는 메소드
+    func updatePhoto(photoForSwiftData: PhotoForSwiftData) async throws {
+        let photoId = photoForSwiftData.id.uuidString
+        try await db.collection("photos").document(photoId).updateData([
+            "likeCount": photoForSwiftData.likeCount,
+        ])
+    }
+    
+    /// Firestore 및 Firebase Storage에서 사진 삭제
+    func deletePhoto(photoId: String) async {
+        let photoRef = db.collection("photos").document(photoId)
+        
+        // Firestore에서 사진 데이터 가져오기
+        do {
+            let documentSnapshot = try await photoRef.getDocument()
+            let photo = try documentSnapshot.data(as: Photo.self)
+            
+            
+            // Firebase Storage에서 이미지 삭제
+            let storageRef = storage.reference(forURL: photo.urlString)
+            
+            try await storageRef.delete()
+            
+            // Firestore에서 사진 문서 삭제
+            try await photoRef.delete()
+        } catch {
+            print("Firestore 및 Firebase Storage에서 사진 삭제 실패: \(error)")
+        }
     }
 }

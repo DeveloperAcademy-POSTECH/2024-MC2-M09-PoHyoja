@@ -6,11 +6,12 @@
 //
 import SwiftUI
 import FirebaseAuth
+import SwiftData
 
 struct ConnectUserView: View {
     @Environment(NavigationManager.self) var navigationManager
-//    
-    @State private var userName: String = "이상현" // TODO: 유저 이름 받아오기
+    @Bindable var user: UserForSwiftData
+    
     @State private var otherUserName: String = ""   // 연결을 요청받는 사용자 ID
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
@@ -21,14 +22,14 @@ struct ConnectUserView: View {
             Text("유저 연결 화면")
                 .font(.largeTitle)
                 .padding()
-            Text("현재 \(userName)로 로그인 되었습니다.")
+            Text("현재 \(user.name)로 로그인 되었습니다.")
             TextField("연결할 아이디 입력", text: $otherUserName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
             Button("연결 요청 보내기") {
                 Task {
-                    await sendConnectionRequest(currentUserName: userName, otherUserName: otherUserName)
+                    await sendConnectionRequest(currentUserName: user.name, otherUserName: otherUserName)
                 }
             }
             .padding()
@@ -41,7 +42,7 @@ struct ConnectUserView: View {
                 HStack {
                     Button("연결 승인") {
                         Task {
-                            await acceptConnectionRequest(currentUserName: userName, request: request)
+                            await acceptConnectionRequest(currentUserName: user.name, request: request)
                             navigationManager.popToRoot()
                         }
                     }
@@ -114,7 +115,7 @@ extension ConnectUserView {
         }
         
         do {
-            try await FirestoreService.shared.addConnectRequests(currentUserName: userName, otherUserName: otherUserName)
+            try await FirestoreService.shared.addConnectRequests(currentUserName: user.name, otherUserName: otherUserName)
             alertMessage = "연결 요청이 성공적으로 전송되었습니다."
             isShowingAlert = true
         } catch {
@@ -129,7 +130,7 @@ extension ConnectUserView {
             var updatedRequest = request
             updatedRequest.status = .accepted // 수락 상태로 변경
             
-            // 연결 요청 수락하고 3. 파이어베이스의 ConnectionRequests 업데이트
+            // 연결 요청 수락하고 파이어베이스의 ConnectionRequests 업데이트
             try await FirestoreService.shared.updateConnectionRequest(request: updatedRequest)
             print("업데이트한 request: \(updatedRequest)")
             
@@ -142,18 +143,20 @@ extension ConnectUserView {
             print("연결된 유저: \(String(describing: otherUser.name))")
             
             // 파이어베이스의 상대방 (요청 보낸) User 정보도 업데이트
-            otherUser.connectedTo.append(userName)
+            otherUser.connectedTo.append(user.name)
             try await FirestoreService.shared.updateUserConnections(user: otherUser)
             
-            // TODO: 본인의 로컬의 User의 connectedTo 업데이트
-            //            var updatedUser = currentUser
-            //            updatedUser.connectedTo.append(otherUser.name)
-            //            var updatedOtherUser = otherUser
-            //            updatedOtherUser.connectedTo.append(currentUser.name)
-            //            userManager.user = updatedUser
+            // 본인의 로컬의 User의 connectedTo 업데이트
             
-            // TODO: 파이어베이스의 본인 User 정보 업데이트
-            // try await FirestoreService.shared.updateUserConnections(user: updatedUser)
+            user.connectedTo.append(otherUser.name)
+            
+            // 파이어베이스의 본인 User 정보 업데이트
+            guard var firebaseUser = await FirestoreService.shared.fetchUserByName(name: user.name) else {
+                print("서버에서 \(user.name): \(user.email)의 정보를 가져오지 못했습니다.")
+                return
+            }
+            firebaseUser.connectedTo.append(otherUser.name)
+            try await FirestoreService.shared.updateUserConnections(user: firebaseUser)
             
             alertMessage = "연결 요청이 승인되었습니다."
             isShowingAlert = true
@@ -183,7 +186,7 @@ extension ConnectUserView {
     private func refreshConnectionRequest() async {
         do {
             // 연결 요청 찾기
-            let requests = try await FirestoreService.shared.fetchConnectionRequests(userName: userName)
+            let requests = try await FirestoreService.shared.fetchConnectionRequests(userName: user.name)
             
             // 가장 최신 연결 요청 찾기, 없으면 반환
             guard let recentRequest = requests.max(by: { $0.requestDate < $1.requestDate }) else {
@@ -211,17 +214,5 @@ extension ConnectUserView {
         }
         alertMessage = "성공적으로 로그아웃되었습니다."
         isShowingAlert = true
-    }
-    
-    private func deleteUser() async throws {
-        guard let user = Auth.auth().currentUser else {
-            throw FirestoreServiceError.userNotFound
-        }
-        return
-        // TODO: 파이어베이스 서버에서 유저 정보 삭제
-        
-        // TODO: try await user.delete()
-        
-        // TODO: alert 로직으로 성공 실패 표시
     }
 }

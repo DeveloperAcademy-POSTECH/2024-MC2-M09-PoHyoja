@@ -229,14 +229,14 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             return
         }
         
-        // 이미지를 Data로 변환
-        guard let imageData = croppedUIImage.pngData() else {
+        // 이미지를 JPEG 형식으로 압축하고 Data 형식으로 변환
+        guard let compressedImageData = croppedUIImage.jpegData(compressionQuality: 0.1) else {
             return
         }
         
         DispatchQueue.main.async {
-            self.capturedImage = imageData
-            self.captureCompletion?(imageData)
+            self.capturedImage = compressedImageData
+            self.captureCompletion?(compressedImageData)
         }
     }
 }
