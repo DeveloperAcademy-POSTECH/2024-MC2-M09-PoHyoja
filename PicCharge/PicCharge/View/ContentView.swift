@@ -51,26 +51,33 @@ struct ContentView: View {
             case .connectedParent:
                 ParentAlbumView(user: user)
             default:
-                if buggungEnd {
-                    BuggungEndView()
-                        .transition(.opacity.animation(.easeInOut(duration: 1)))
-                } else {
-                    BuggungLoadingView()
-                        .transition(.opacity.animation(.easeInOut(duration: 1)))
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                withAnimation {
-                                    buggungEnd = true
-                                }
-                            }
-                        }
-                }
+                // MARK: - 선택지 1. 최소 2.5초 딜레이와 애니메이션
+//                if buggungEnd {
+//                    BuggungEndView()
+//                        .transition(.opacity.animation(.easeInOut(duration: 1)))
+//                } else {
+//                    BuggungLoadingView()
+//                        .transition(.opacity.animation(.easeInOut(duration: 1)))
+//                        .onAppear {
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+//                                withAnimation {
+//                                    buggungEnd = true
+//                                }
+//                            }
+//                        }
+//                }
+                // MARK: - 선택지 2. 통신 외 딜레이 없음
+                Color.bgPrimary.ignoresSafeArea()
             }
         }
         .transition(.opacity)
         .task {
             if isFirstLoad {
-                await startProcess()
+                // MARK: - 선택지 1. 최소 2.5초 딜레이
+//                await startProcess()
+                
+                // MARK: - 선택지 2. 통신 외 딜레이 없음
+                await startProcessWithoutDelay()
                 isFirstLoad = false
             }
         }
@@ -99,6 +106,24 @@ extension ContentView {
                 withAnimation {
                     navigationManager.userState = state
                 }
+            }
+        }
+    }
+    
+    private func startProcessWithoutDelay() async {
+        Task {
+            let state = checkLoginStatus()
+            
+            switch state {
+            case .connectedChild, .connectedParent:
+                await syncPhotoData()
+                WidgetCenter.shared.reloadAllTimelines()
+            default:
+                break
+            }
+            
+            withAnimation {
+                navigationManager.userState = state
             }
         }
     }
