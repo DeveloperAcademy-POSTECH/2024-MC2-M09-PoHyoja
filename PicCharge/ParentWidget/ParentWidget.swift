@@ -24,7 +24,27 @@ struct ParentProvider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ParentEntry {
-        ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
+        var entry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
+        
+        do {
+            guard let user = await getUserForSwiftData() else {
+                return entry
+            }
+            
+            var photos: [Photo] = []
+            photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
+            photos.sort { $0.uploadDate < $1.uploadDate }
+            
+            if let lastPhoto = photos.last {
+                let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
+                
+                return ParentEntry(date: Date(), image: (UIImage(data: imgData)?.resized(toWidth: 512) ?? UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512)!)!)
+            }
+        } catch {
+            return entry
+        }
+        
+        return entry
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ParentEntry> {
