@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4214D9E82C030C2B0096D48B /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 4214D9E72C030C2B0096D48B /* FirebaseMessaging */; };
+		4214D9EA2C030D560096D48B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214D9E92C030D560096D48B /* AppDelegate.swift */; };
+		4214D9EC2C030F6E0096D48B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4214D9EB2C030F6E0096D48B /* GoogleService-Info.plist */; };
 		421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
 		421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */; };
 		421A8C642BF8FA69003C7001 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
@@ -44,7 +47,6 @@
 		559AB76A2BF8434300FF216B /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB7692BF8434300FF216B /* FirebaseFirestoreSwift */; };
 		559AB76C2BF8434300FF216B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76B2BF8434300FF216B /* FirebaseStorage */; };
 		559AB76E2BF8434300FF216B /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 559AB76D2BF8434300FF216B /* FirebaseStorageCombine-Community */; };
-		559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */; };
 		55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */; };
 		55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55B5E3652BF5A13E00E413C6 /* ContentView.swift */; };
 		55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
@@ -90,6 +92,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		4214D9E92C030D560096D48B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		4214D9EB2C030F6E0096D48B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryShadowModifier.swift; sourceTree = "<group>"; };
 		421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceProtocol.swift; sourceTree = "<group>"; };
 		421A8C632BF8FA69003C7001 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
@@ -122,7 +126,6 @@
 		550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PicCharge.entitlements; sourceTree = "<group>"; };
 		552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceError.swift; sourceTree = "<group>"; };
-		559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		55B5E3602BF5A13E00E413C6 /* PicCharge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicCharge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicChargeApp.swift; sourceTree = "<group>"; };
 		55B5E3652BF5A13E00E413C6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -150,6 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4214D9E82C030C2B0096D48B /* FirebaseMessaging in Frameworks */,
 				559AB7662BF8434300FF216B /* FirebaseAuth in Frameworks */,
 				559AB76C2BF8434300FF216B /* FirebaseStorage in Frameworks */,
 				559AB76E2BF8434300FF216B /* FirebaseStorageCombine-Community in Frameworks */,
@@ -238,7 +242,7 @@
 		55B5E3572BF5A13E00E413C6 = {
 			isa = PBXGroup;
 			children = (
-				559AB7712BF84E3F00FF216B /* GoogleService-Info.plist */,
+				4214D9EB2C030F6E0096D48B /* GoogleService-Info.plist */,
 				55B5E3622BF5A13E00E413C6 /* PicCharge */,
 				FF7315702BF907690074D7AA /* ParentWidget */,
 				FF73156B2BF907690074D7AA /* Frameworks */,
@@ -261,6 +265,7 @@
 				550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */,
 				55EC1FE62BF6394200564952 /* Service */,
 				55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */,
+				4214D9E92C030D560096D48B /* AppDelegate.swift */,
 				4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */,
 				421A8C5A2BF885BD003C7001 /* Global */,
 				4280466C2BF5DD5B0097EB0B /* View */,
@@ -336,6 +341,7 @@
 				559AB76B2BF8434300FF216B /* FirebaseStorage */,
 				559AB76D2BF8434300FF216B /* FirebaseStorageCombine-Community */,
 				E33AFF662BFC397700BFB665 /* Lottie */,
+				4214D9E72C030C2B0096D48B /* FirebaseMessaging */,
 			);
 			productName = PicCharge;
 			productReference = 55B5E3602BF5A13E00E413C6 /* PicCharge.app */;
@@ -404,11 +410,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4214D9EC2C030F6E0096D48B /* GoogleService-Info.plist in Resources */,
 				E32B7D412BFC77DC00814489 /* BatteryLoading.json in Resources */,
 				55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */,
 				55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */,
 				5151CB8A2BFEE41300AF792F /* LikeAnimation.json in Resources */,
-				559AB7722BF84E3F00FF216B /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +446,7 @@
 				552E24E32BF9CB7500E5CF24 /* FirestoreService.swift in Sources */,
 				421A8C672BFA358A003C7001 /* Color+.swift in Sources */,
 				428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */,
+				4214D9EA2C030D560096D48B /* AppDelegate.swift in Sources */,
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
@@ -805,6 +812,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4214D9E72C030C2B0096D48B /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 559AB7642BF8434300FF216B /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		421A8CB52BFDD20B003C7001 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 421A8CB42BFDD20B003C7001 /* XCRemoteSwiftPackageReference "lottie-ios" */;
