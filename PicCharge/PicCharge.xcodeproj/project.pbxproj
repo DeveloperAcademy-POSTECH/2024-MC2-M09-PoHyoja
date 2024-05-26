@@ -18,6 +18,9 @@
 		4214D9F92C0333260096D48B /* FirestoreServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */; };
 		4214D9FB2C03337B0096D48B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4214D9FA2C03337B0096D48B /* GoogleService-Info.plist */; };
 		4214D9FC2C03337B0096D48B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4214D9FA2C03337B0096D48B /* GoogleService-Info.plist */; };
+		4214DA002C0387F20096D48B /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214D9FF2C0387F20096D48B /* UIImage+.swift */; };
+		4214DA012C0388020096D48B /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214D9FF2C0387F20096D48B /* UIImage+.swift */; };
+		4214DA022C0388800096D48B /* ChildWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214D9FD2C0387D40096D48B /* ChildWidget.swift */; };
 		421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
 		421A8C5E2BF89ABF003C7001 /* FirestoreServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */; };
 		421A8C642BF8FA69003C7001 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
@@ -111,6 +114,8 @@
 
 /* Begin PBXFileReference section */
 		4214D9FA2C03337B0096D48B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4214D9FD2C0387D40096D48B /* ChildWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildWidget.swift; sourceTree = "<group>"; };
+		4214D9FF2C0387F20096D48B /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryShadowModifier.swift; sourceTree = "<group>"; };
 		421A8C5D2BF89ABF003C7001 /* FirestoreServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceProtocol.swift; sourceTree = "<group>"; };
 		421A8C632BF8FA69003C7001 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
@@ -209,6 +214,7 @@
 				421A8C632BF8FA69003C7001 /* Icon.swift */,
 				421A8C662BFA358A003C7001 /* Color+.swift */,
 				421A8C682BFA3761003C7001 /* Date+.swift */,
+				4214D9FF2C0387F20096D48B /* UIImage+.swift */,
 			);
 			path = Global;
 			sourceTree = "<group>";
@@ -337,8 +343,9 @@
 				FFD221B32BFB84C1009735E4 /* ParentWidgetExtension.entitlements */,
 				FF7315712BF907690074D7AA /* ParentWidgetBundle.swift */,
 				FF7315732BF907690074D7AA /* ParentWidget.swift */,
-				FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */,
+				4214D9FD2C0387D40096D48B /* ChildWidget.swift */,
 				FF7315752BF907690074D7AA /* AppIntent.swift */,
+				FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */,
 				FF7315772BF9076A0074D7AA /* Assets.xcassets */,
 				FF7315792BF9076A0074D7AA /* Info.plist */,
 			);
@@ -499,6 +506,7 @@
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
 				51E239DA2BF636920051943D /* Model.swift in Sources */,
 				421A8CB12BFDC9E7003C7001 /* ZoomableModifier.swift in Sources */,
+				4214DA002C0387F20096D48B /* UIImage+.swift in Sources */,
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
 				421A8CBE2BFE5114003C7001 /* UserForSwiftData.swift in Sources */,
@@ -518,6 +526,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFD221B22BFB8483009735E4 /* UserDefault+.swift in Sources */,
+				4214DA012C0388020096D48B /* UIImage+.swift in Sources */,
 				FF3ECB762C003F0300E65D83 /* Color+.swift in Sources */,
 				FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */,
 				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
@@ -528,6 +537,7 @@
 				4214D9F72C0333140096D48B /* UserForSwiftData.swift in Sources */,
 				FF7315762BF907690074D7AA /* AppIntent.swift in Sources */,
 				4214D9F52C0332F10096D48B /* FirestoreService.swift in Sources */,
+				4214DA022C0388800096D48B /* ChildWidget.swift in Sources */,
 				4214D9F82C0333160096D48B /* PhotoForSwiftData.swift in Sources */,
 				FF3ECB772C003F0800E65D83 /* BatteryShadowModifier.swift in Sources */,
 			);
