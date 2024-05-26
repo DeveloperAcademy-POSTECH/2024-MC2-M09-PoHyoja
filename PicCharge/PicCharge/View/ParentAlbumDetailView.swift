@@ -129,7 +129,10 @@ struct ParentAlbumDetailView: View {
                     // MARK: - 로컬 사진 삭제 처리
                     modelContext.delete(photo)
                     
-                    // TODO: - 서버 사진 삭제 처리
+                    // MARK: - 서버 사진 삭제 처리
+                    Task {
+                        await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
+                    }
                     navigationManager.pop()
                 }
                 Button("Cancel", role: .cancel) {}
@@ -144,7 +147,9 @@ struct ParentAlbumDetailView: View {
                 // MARK: - 로컬 사진 삭제 처리
                 modelContext.delete(photo)
                 
-                // TODO: - 서버 사진 삭제 처리
+                Task {
+                    await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
+                }
                 navigationManager.pop()
             }
             Button("Cancel", role: .cancel) {}
@@ -160,7 +165,9 @@ struct ParentAlbumDetailView: View {
                 withAnimation {
                     self.isLiked = false
                 }
-                // TODO: - 서버 좋아요 API 호출
+                Task {
+                    try await FirestoreService.shared.updatePhoto(photoForSwiftData: photo)
+                }
             }
     }
 }
