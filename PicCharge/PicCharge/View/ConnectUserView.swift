@@ -10,92 +10,205 @@ import SwiftData
 
 struct ConnectUserView: View {
     @Environment(NavigationManager.self) var navigationManager
+
     @Bindable var user: UserForSwiftData
+    @Binding var userState: UserState
     
-    @State private var otherUserName: String = ""   // 연결을 요청받는 사용자 ID
+    @State private var requestToMe: ConnectionRequestsDTO? = nil
+    @State private var requestFromMe: ConnectionRequestsDTO? = nil
+    @State private var nameInput: String = ""
+    @State private var isNetworking: Bool = false
+    @State private var isConnected: Bool = false
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
-    @State private var connectionRequest: ConnectionRequestsDTO?
-
+    
     var body: some View {
-        VStack {
-            Text("유저 연결 화면")
-                .font(.largeTitle)
-                .padding()
-            Text("현재 \(user.name)로 로그인 되었습니다.")
-            TextField("연결할 아이디 입력", text: $otherUserName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-            
-            Button("연결 요청 보내기") {
-                Task {
-                    await sendConnectionRequest(currentUserName: user.name, otherUserName: otherUserName)
-                }
-            }
-            .padding()
-            .buttonStyle(.borderedProminent)
-            .disabled(otherUserName.isEmpty)
-            
-            if let request = connectionRequest {
-                Text("연결 요청: \(request.from)")
-                
-                HStack {
-                    Button("연결 승인") {
-                        Task {
-                            await acceptConnectionRequest(currentUserName: user.name, request: request)
-                            navigationManager.popToRoot()
+        Group {
+            if isConnected {
+                // TODO: - 연결 완료 시 로티가 있는 뷰로 수정
+                Text("연결됐다니까")
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                            userState = (user.role == .child) ? .connectedChild : .connectedParent
                         }
                     }
-                    .padding()
-                    .buttonStyle(.borderedProminent)
-                    
-                    Button("연결 거절") {
-                        Task {
-                            await rejectConnectionRequest(request: request)
-                        }
+            } else {
+                if let requestFromMe = requestFromMe {
+                    WaitingView(request: requestFromMe)
+                } else {
+                    if let requestToMe = requestToMe {
+                        AcceptView(request: requestToMe)
+                    } else {
+                        SearchNameView()
                     }
-                    .padding()
-                    .buttonStyle(.borderedProminent)
                 }
             }
-            
-            // TODO: 연결 거절 버튼
-            
-            Button("새로고침 (연결 요청 있는지 확인)") {
-                Task {
-                    await refreshConnectionRequest()
-                }
-            }
-            .padding()
-            .buttonStyle(.borderedProminent)
-            
-            Spacer()
-            
-            // TODO: 개발 완료 시 아래 버튼들 모두 지워야 함
-            Button("[TEST]로그아웃") {
-                logout()
-                navigationManager.popToRoot()
-            }
-            .padding()
-            .buttonStyle(.bordered)
-            
-            Button("[TEST]자식 메인 뷰 이동") {
-                navigationManager.push(to: .childMain)
-            }
-            .padding()
-            .buttonStyle(.bordered)
-            
-            Button("[TEST]부모 앨범 뷰 이동") {
-                navigationManager.push(to: .parentAlbum)
-            }
-            .padding()
-            .buttonStyle(.bordered)
         }
-        .padding()
+        .task {
+            if let request = await fetchWaitingRequest() {
+                listenRequest(from: user.name)
+            } else {
+                listenRequest(to: user.name)
+            }
+        }
+        .onDisappear {
+            FirestoreService.shared.removeListener()
+        }
         .alert(isPresented: $isShowingAlert) {
             Alert(title: Text("Error"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
         }
     }
+    
+    @ViewBuilder
+    func AcceptView(request: ConnectionRequestsDTO) -> some View {
+        ZStack {
+            VStack(spacing: 8) {
+                Spacer()
+                
+                Button {
+                    isNetworking = true
+                    listenRequest(to: user.name)
+                    Task {
+                        await rejectConnectionRequest(request: request)
+                    }
+                    isNetworking = false
+                } label: {
+                    ZStack {
+                        Color.gray
+                        
+                        if isNetworking {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        } else {
+                            Text("거절")
+                                .bold()
+                                .font(.title3)
+                                .foregroundStyle(.txtPrimaryDark)
+                        }
+                    }
+                }
+                .frame(height: 54)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .disabled(isNetworking)
+                
+                Button {
+                    isNetworking = true
+                    Task {
+                        await acceptConnectionRequest(currentUserName: user.name, request: request)
+                    }
+                    isConnected = true
+                    isNetworking = false
+                } label: {
+                    ZStack {
+                        Color.green
+                        
+                        if isNetworking {
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        } else {
+                            Text("수락")
+                                .bold()
+                                .font(.title3)
+                                .foregroundStyle(.txtPrimaryDark)
+                        }
+                    }
+                }
+                .frame(height: 54)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
+                .padding(.bottom, 16)
+                .disabled(isNetworking)
+            }
+            .padding(.horizontal, 16)
+            
+            VStack(spacing: 0) {
+                Icon.person
+                    .font(.system(size: 64))
+                    .foregroundStyle(.gray)
+                    .padding(.bottom, 8)
+                
+                VStack {
+                    Text("\(user.name)님!")
+                    Text("\(request.from)님에게서")
+                    Text("연결 요청이 왔습니다")
+                }
+                .foregroundStyle(.txtPrimaryDark)
+                .font(.title2.bold())
+                .padding(.bottom, 32)
+                
+                Text(" ").font(.headline)
+            }
+        }
+    }
+    
+    @ViewBuilder
+    func WaitingView(request: ConnectionRequestsDTO) -> some View {
+        VStack(spacing: 0) {
+            Icon.waitingPerson
+                .font(.system(size: 64))
+                .foregroundStyle(.gray)
+                .padding(.bottom, 8)
+            
+            VStack {
+                Text("\(user.name)님!")
+                Text("\(request.to)님에게")
+                Text("연결 요청 되었습니다")
+            }
+            .foregroundStyle(.txtPrimaryDark)
+            .font(.title2.bold())
+            .padding(.bottom, 32)
+            
+            Text("상대방이 수락할 때까지 잠시만 기다려주세요")
+                .foregroundStyle(.txtPrimaryDark)
+                .font(.headline)
+        }
+    }
+    
+    @ViewBuilder
+    func SearchNameView() -> some View {
+        VStack(alignment: .leading) {
+            Text("\(user.name)님, 가족의 이름을 알려주세요")
+                .font(.title2.bold())
+                .foregroundStyle(.txtPrimaryDark)
+                .padding(.top, 40)
+            
+            VStack(spacing: 8) {
+                TextField("가족 이름을 알려주세요", text: $nameInput)
+                    .autocapitalization(.none)
+                    .foregroundStyle(.txtPrimaryDark)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 11)
+                    .background(.bgPrimaryElevated)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+            }
+            
+            Spacer()
+            
+            Button {
+                isNetworking = true
+                listenRequest(from: user.name)
+                Task {
+                    await sendConnectionRequest(currentUserName: user.name, otherUserName: nameInput)
+                }
+                isNetworking = false
+            } label: {
+                ZStack {
+                    nameInput.isEmpty ? Color.gray : Color.green
+                    
+                    Text("연결하기")
+                        .bold()
+                        .font(.title3)
+                        .foregroundStyle(.txtPrimaryDark)
+                }
+            }
+            .frame(height: 54)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .padding(.bottom, 16)
+            .disabled(nameInput.isEmpty)
+        }
+        .padding(.horizontal, 16)
+    }
+    
+    
 }
 
 
@@ -103,24 +216,20 @@ extension ConnectUserView {
     private func sendConnectionRequest(currentUserName: String, otherUserName: String) async {
         do {
             let userExists = try await FirestoreService.shared.checkUserExists(userName: otherUserName)
-            if !userExists {
+            
+            guard userExists else {
                 alertMessage = "해당 사용자를 찾을 수 없습니다."
                 isShowingAlert = true
+                requestFromMe = nil
                 return
             }
-        } catch { // from 이 nil일 경우
-            alertMessage = "사용자 아이디가 비어있습니다."
-            isShowingAlert = true
-            return
-        }
-        
-        do {
+            
             try await FirestoreService.shared.addConnectRequests(currentUserName: user.name, otherUserName: otherUserName)
-            alertMessage = "연결 요청이 성공적으로 전송되었습니다."
-            isShowingAlert = true
+            
         } catch {
-            alertMessage = "연결 요청을 전송하는데 실패했습니다: \(error.localizedDescription)"
-            isShowingAlert = true
+            print("연결 요청을 전송하는데 실패했습니다: \(error.localizedDescription)")
+            requestFromMe = nil
+            return
         }
     }
     
@@ -129,6 +238,7 @@ extension ConnectUserView {
         do {
             var updatedRequest = request
             updatedRequest.status = .accepted // 수락 상태로 변경
+            
             
             // 연결 요청 수락하고 파이어베이스의 ConnectionRequests 업데이트
             try await FirestoreService.shared.updateConnectionRequest(request: updatedRequest)
@@ -140,6 +250,7 @@ extension ConnectUserView {
                 isShowingAlert = true
                 return
             }
+            
             print("연결된 유저: \(String(describing: otherUser.name))")
             
             // 파이어베이스의 상대방 (요청 보낸) User 정보도 업데이트
@@ -158,8 +269,7 @@ extension ConnectUserView {
             firebaseUser.connectedTo.append(otherUser.name)
             try await FirestoreService.shared.updateUserConnections(user: firebaseUser)
             
-            alertMessage = "연결 요청이 승인되었습니다."
-            isShowingAlert = true
+            print("연결 요청이 승인되었습니다.")
         } catch {
             alertMessage = "연결 요청을 승인하는데 실패했습니다: \(error.localizedDescription)"
             isShowingAlert = true
@@ -171,48 +281,73 @@ extension ConnectUserView {
             var updatedRequest = request
             updatedRequest.status = .rejected // 거절 상태로 변경
             
+            print(updatedRequest)
             // 연결 요청 거절하고 파이어베이스의 ConnectionRequests 업데이트
             try await FirestoreService.shared.updateConnectionRequest(request: updatedRequest)
             
-            alertMessage = "연결 요청이 거절되었습니다."
-            isShowingAlert = true
-            connectionRequest = nil
+            print("연결 요청이 거절되었습니다.")
+            requestToMe = nil
+            
         } catch {
             alertMessage = "연결 요청을 거절하는데 실패했습니다: \(error.localizedDescription)"
             isShowingAlert = true
         }
     }
     
-    private func refreshConnectionRequest() async {
+    
+    private func fetchWaitingRequest() async -> ConnectionRequestsDTO? {
         do {
-            // 연결 요청 찾기
-            let requests = try await FirestoreService.shared.fetchConnectionRequests(userName: user.name)
-            
+            // 기다리는 요청 찾기
+            let waitingRequests = try await FirestoreService.shared.fetchConnectionRequests(userName: user.name)
+        
             // 가장 최신 연결 요청 찾기, 없으면 반환
-            guard let recentRequest = requests.max(by: { $0.requestDate < $1.requestDate }) else {
-                alertMessage = "연결 요청을 찾을 수 없습니다."
-                isShowingAlert = true
-                connectionRequest = nil
-                return
+            guard let recentRequest = waitingRequests.max(by: { $0.requestDate < $1.requestDate }) else {
+                return nil
             }
             
-            // 최신 연결 요청 저장
-            connectionRequest = recentRequest
+            return recentRequest
         } catch {
-            alertMessage = "연결 요청을 새로고침하는데 실패했습니다: \(error.localizedDescription)"
-            isShowingAlert = true
+            return nil
         }
     }
     
-    private func logout() {
-        do {
-            try Auth.auth().signOut()
-        } catch {
-            alertMessage = "로그아웃에 실패했습니다: \(error.localizedDescription)"
-            isShowingAlert = true
-            return
+    private func listenRequest(to user: String) {
+        FirestoreService.shared.listenRequest(to: user) { result in
+            switch result {
+            case .success(let connections):
+                guard let recentRequest = connections.max(by: { $0.requestDate < $1.requestDate }) else {
+                    return
+                }
+                
+                requestToMe = recentRequest
+            case .failure:
+                print("FireStore 실시간 데이터 오류")
+            }
         }
-        alertMessage = "성공적으로 로그아웃되었습니다."
-        isShowingAlert = true
+    }
+    
+    private func listenRequest(from user: String) {
+        FirestoreService.shared.listenRequest(from: user) { result in
+            switch result {
+            case .success(let connections):
+                guard let recentRequest = connections.max(by: { $0.requestDate < $1.requestDate }) else {
+                    return
+                }
+                
+                switch recentRequest.status {
+                case .pending:
+                    requestFromMe = recentRequest
+                case .accepted:
+                    self.user.connectedTo.append(recentRequest.to)
+                    isConnected = true
+                case .rejected:
+                    requestFromMe = nil
+                    listenRequest(to: user)
+                }
+                
+            case .failure:
+                print("FireStore 실시간 데이터 오류")
+            }
+        }
     }
 }
