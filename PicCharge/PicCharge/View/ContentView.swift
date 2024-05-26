@@ -44,6 +44,7 @@ struct ContentView: View {
                 ParentAlbumView()
             default:
                 LoginView(userState: $userState)
+                //
             }
         }
         .task {

@@ -19,19 +19,32 @@ struct ConnectUserView: View {
     @State private var nameInput: String = ""
     @State private var isNetworking: Bool = false
     @State private var isConnected: Bool = false
+    @State private var buggungEnd: Bool = false
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     
     var body: some View {
         Group {
             if isConnected {
-                // TODO: - 연결 완료 시 로티가 있는 뷰로 수정
-                Text("연결됐다니까")
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                            userState = (user.role == .child) ? .connectedChild : .connectedParent
+                if buggungEnd {
+                    BuggungEndView()
+                        .transition(.opacity.animation(.easeInOut(duration: 1)))
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                userState = (user.role == .child) ? .connectedChild : .connectedParent
+                            }
                         }
-                    }
+                } else {
+                    BuggungLoadingView()
+                        .transition(.opacity.animation(.easeInOut(duration: 1)))
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                withAnimation {
+                                    buggungEnd = true
+                                }
+                            }
+                        }
+                }
             } else {
                 if let requestFromMe = requestFromMe {
                     WaitingView(request: requestFromMe)
