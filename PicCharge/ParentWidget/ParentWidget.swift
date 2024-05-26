@@ -20,19 +20,19 @@ struct ParentProvider: AppIntentTimelineProvider {
     let container: ModelContainer
     
     func placeholder(in context: Context) -> ParentEntry {
-        ParentEntry(date: Date(), image: UIImage())
+        ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ParentEntry {
-        ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+        ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ParentEntry> {
-        var entry: ParentEntry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+        var entry: ParentEntry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
         
         do {
             guard let user = await getUserForSwiftData() else {
-                throw SwiftDataError.notExist
+                return Timeline(entries: [entry], policy: .atEnd)
             }
             
             var photos: [Photo] = []
@@ -42,11 +42,12 @@ struct ParentProvider: AppIntentTimelineProvider {
             if let lastPhoto = photos.last {
                 let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
                 
-                entry = ParentEntry(date: Date(), image: UIImage(data: imgData) ?? UIImage(named: "ParentWidgetPreview")!)
+                entry = ParentEntry(date: Date(), image: (UIImage(data: imgData)?.resized(toWidth: 512) ?? UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512)!)!)
             }
             
         } catch {
             print("위젯 에러!")
+            return Timeline(entries: [entry], policy: .atEnd)
         }
         
         return Timeline(entries: [entry], policy: .atEnd)
@@ -74,7 +75,7 @@ struct ParentWidgetView : View {
         RoundedRectangle(cornerRadius: 21)
             .fill(Color.clear)
             .overlay(
-                Image(uiImage: entry.image.resized(toWidth: 1024, isOpaque: true)!)
+                Image(uiImage: entry.image.resized(toWidth: 512, isOpaque: true)!)
                     .resizable()
                     .aspectRatio(1, contentMode: .fit)
                     .cornerRadius(21)
