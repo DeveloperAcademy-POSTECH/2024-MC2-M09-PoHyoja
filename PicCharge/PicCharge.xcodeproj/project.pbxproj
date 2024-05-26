@@ -127,6 +127,7 @@
 		4214DA162C0392310096D48B /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		4214DA192C0392610096D48B /* ConnectionRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionRequests.swift; sourceTree = "<group>"; };
 		4214DA202C0393830096D48B /* AppDelgate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelgate.swift; sourceTree = "<group>"; };
+		4214DA242C03CAF20096D48B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryShadowModifier.swift; sourceTree = "<group>"; };
 		421A8C632BF8FA69003C7001 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		421A8C662BFA358A003C7001 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
@@ -216,9 +217,10 @@
 		4214DA082C0390920096D48B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				4214DA092C0390CD0096D48B /* Lotties */,
-				55B5E3672BF5A13F00E413C6 /* Assets.xcassets */,
+				4214DA242C03CAF20096D48B /* Info.plist */,
 				550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */,
+				55B5E3672BF5A13F00E413C6 /* Assets.xcassets */,
+				4214DA092C0390CD0096D48B /* Lotties */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -796,10 +798,10 @@
 				DEVELOPMENT_TEAM = 7V4779Q2XR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PicCharge/Resources/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -828,10 +830,10 @@
 				DEVELOPMENT_TEAM = 7V4779Q2XR;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PicCharge/Resources/Info.plist;
 				INFOPLIST_KEY_NSCameraUsageDescription = "카메라를 사용하여 사진을 찍기 위해 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
 				LD_RUNPATH_SEARCH_PATHS = (
