@@ -7,45 +7,117 @@
 
 import SwiftUI
 import WidgetKit
+import UIKit
 
 
 // MARK: - 부모 위젯
 
-struct ParentProvider: TimelineProvider {
+//struct ParentProvider: TimelineProvider {
+//    enum SwiftDataError: Error {
+//        case notExist
+//    }
+//    
+//    let container: ModelContainer
+//    
+//    func placeholder(in context: Context) -> ParentSimpleEntry {
+//        ParentSimpleEntry(date: Date(), image: UIImage())
+//    }
+//    
+//    func getSnapshot(in context: Context, completion: @escaping (ParentSimpleEntry) -> ()) {
+//        let entry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+//        completion(entry)
+//    }
+//
+//    
+//    func getTimeline(in context: Context, completion: @escaping (Timeline<ParentSimpleEntry>) -> ()) {
+//        Task {
+//            var entry: ParentSimpleEntry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+//            let currentDate = Date()
+//            
+//            do {
+//                guard let user = await getUserForSwiftData() else {
+//                    throw SwiftDataError.notExist
+//                }
+//                
+//                var photos: [Photo] = []
+//                photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
+//                photos.sort { $0.uploadDate < $1.uploadDate }
+//                print(photos.map { $0.uploadDate })
+//                
+//                if let lastPhoto = photos.last {
+//                    let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
+//                    
+//                    entry = ParentSimpleEntry(date: currentDate, image: UIImage(data: imgData) ?? UIImage(named: "ParentWidgetPreview")!)
+//                }
+//                
+//            } catch {
+//                print("위젯 에러!")
+//            }
+//            
+//            let nextRefresh = Calendar.current.date(byAdding: .second, value: 10, to: currentDate)!
+//            let timeline = Timeline(entries: [entry], policy: .after(nextRefresh))
+//            completion(timeline)
+//        }
+//    }
+//    
+//    @MainActor func getUserForSwiftData() -> UserForSwiftData? {
+//        let descriptor = FetchDescriptor<UserForSwiftData>()
+//        
+//        let user = (try? container.mainContext.fetch(descriptor))?.first ?? nil
+//        
+//        return user
+//    }
+//}
+
+struct ParentProvider: AppIntentTimelineProvider {
+    enum SwiftDataError: Error {
+        case notExist
+    }
+    
+    let container: ModelContainer
+    
     func placeholder(in context: Context) -> ParentSimpleEntry {
         ParentSimpleEntry(date: Date(), image: UIImage())
     }
     
-    func getSnapshot(in context: Context, completion: @escaping (ParentSimpleEntry) -> ()) {
-        let entry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
-        completion(entry)
+    func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ParentSimpleEntry {
+        ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
     }
-
     
-    func getTimeline(in context: Context, completion: @escaping (Timeline<ParentSimpleEntry>) -> ()) {
-        var entries: [ParentSimpleEntry] = []
-        var timeline = Timeline(entries: entries, policy: .atEnd)
+    func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ParentSimpleEntry> {
+        var entry: ParentSimpleEntry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+        let currentDate = Date()
         
-        guard let urlString = UserDefaults.shared.string(forKey: "urlString"),
-              let url = URL(string: urlString)
-        else {
-            let entry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
-            entries.append(entry)
-            timeline = Timeline(entries: entries, policy: .atEnd)
-            completion(timeline)
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: url) { (data, _, _) in
-            if let data = data, let image = UIImage(data: data) {
-                let entry = ParentSimpleEntry(date: Date(), image: image)
-                entries.append(entry)
-                
-                timeline = Timeline(entries: entries, policy: .atEnd)
-                completion(timeline)
+        do {
+            guard let user = await getUserForSwiftData() else {
+                throw SwiftDataError.notExist
             }
+            
+            var photos: [Photo] = []
+            photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
+            photos.sort { $0.uploadDate < $1.uploadDate }
+            print(photos.map { $0.uploadDate })
+            
+            if let lastPhoto = photos.last {
+                let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
+                
+                entry = ParentSimpleEntry(date: currentDate, image: UIImage(data: imgData) ?? UIImage(named: "ParentWidgetPreview")!)
+            }
+            
+        } catch {
+            print("위젯 에러!")
         }
-        task.resume()
+        
+        let nextRefresh = Calendar.current.date(byAdding: .minute, value: 15, to:  Date())!
+        return Timeline(entries: [entry], policy: .after(nextRefresh))
+    }
+    
+    @MainActor func getUserForSwiftData() -> UserForSwiftData? {
+        let descriptor = FetchDescriptor<UserForSwiftData>()
+        
+        let user = (try? container.mainContext.fetch(descriptor))?.first ?? nil
+        
+        return user
     }
 }
 
@@ -56,8 +128,6 @@ struct ParentSimpleEntry: TimelineEntry {
     let image: UIImage
 }
 
-
-
 struct ParentWidgetView : View {
     var entry: ParentProvider.Entry
     
@@ -65,9 +135,9 @@ struct ParentWidgetView : View {
         RoundedRectangle(cornerRadius: 21)
             .fill(Color.clear)
             .overlay(
-                Image(uiImage: entry.image)
+                Image(uiImage: entry.image.resized(toWidth: 1024, isOpaque: true)!)
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
+                    .aspectRatio(1, contentMode: .fit)
                     .cornerRadius(21)
                     .clipped()
             )
@@ -84,12 +154,24 @@ struct ParentWidgetView : View {
 
 
 
+import FirebaseCore
+import SwiftData
 
 struct ParentWidget: Widget {
     let kind: String = "ParentWidget"
+    var container: ModelContainer
+    
+    init() {
+        FirebaseApp.configure()
+        do {
+            container = try ModelContainer(for: UserForSwiftData.self, PhotoForSwiftData.self)
+        } catch {
+            fatalError("Failed to configure SwiftData container.")
+        }
+    }
     
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: ParentProvider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: ConfigurationAppIntent.self, provider: ParentProvider(container: container)) { entry in
             ParentWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
@@ -278,3 +360,16 @@ extension ConfigurationAppIntent {
 }
 
 
+
+
+
+extension UIImage {
+  func resized(toWidth width: CGFloat, isOpaque: Bool = true) -> UIImage? {
+    let canvas = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
+    let format = imageRendererFormat
+    format.opaque = isOpaque
+    return UIGraphicsImageRenderer(size: canvas, format: format).image {
+      _ in draw(in: CGRect(origin: .zero, size: canvas))
+    }
+  }
+}
