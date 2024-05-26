@@ -11,6 +11,7 @@ import SwiftUI
 @main
 struct ParentWidgetBundle: WidgetBundle {
     var body: some Widget {
+        ChildWidget()
         ParentWidget()
     }
 }

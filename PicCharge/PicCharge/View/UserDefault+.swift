@@ -9,7 +9,7 @@ import Foundation
 
 extension UserDefaults {
     static var shared: UserDefaults {
-        let appGroupId = "group.com.kimdohyun.com.ParentWidget"
+        let appGroupId = "group.com.pohyoja.PicCharge"
         return UserDefaults(suiteName: appGroupId)!
     }
 }
