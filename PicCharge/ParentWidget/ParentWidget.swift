@@ -93,8 +93,8 @@ struct ParentWidget: Widget {
             ParentWidgetView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
-        .configurationDisplayName("PicCharge")
-        .description("필요하면 나중에 설명 추가하기")
+        .configurationDisplayName("자식 앨범")
+        .description("자식이 올린 사진을 보아요.")
         .supportedFamilies([.systemLarge])
         .contentMarginsDisabled()
     }
@@ -251,8 +251,8 @@ struct ChildWidget: Widget {
             ChildWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
-        .configurationDisplayName("PicCharge")
-        .description("필요하면 나중에 설명 추가하기")
+        .configurationDisplayName("자식 배터리")
+        .description("배터리를 보며 사진을 보내보아요.")
         .supportedFamilies([.systemMedium])
         .contentMarginsDisabled()
     }
