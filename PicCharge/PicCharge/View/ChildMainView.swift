@@ -19,7 +19,7 @@ struct ChildMainView: View {
     }
     
     @Environment(NavigationManager.self) var navigationManager
-    @Query var photos: [PhotoForSwiftData]
+    @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photos: [PhotoForSwiftData]
     @Query var users: [UserForSwiftData]
     
     @State private var batteryPercent: Double = 50
@@ -83,7 +83,7 @@ struct ChildMainView: View {
                 TabView(selection: $infoPage) {
                     Group {
                         VStack {
-                            BatteryPageView(percent: batteryPercent, date: photos.last?.uploadDate ?? Date())
+                            BatteryPageView(percent: batteryPercent, date: photos.first?.uploadDate ?? Date())
                                 .onAppear {
                                     startTimer()
                                 }
@@ -132,19 +132,19 @@ struct ChildMainView: View {
     /// 배터리 상태를 계산하는 함수 입니다.
     /// let uploadCycleSeconds = Double(uploadCycle * 숫자) 를 활용해 시간 단위를 계산할 수 있습니다.
     func updateBatteryStatus() {
-        guard let lastUploadDate = photos.last?.uploadDate else {
+        guard let lastUploadDate = photos.first?.uploadDate else {
             batteryPercent = 100
             return
         }
         
         let currentTime = Date()
         let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
-        let uploadCycleSeconds = Double(uploadCycle) // uploadCycle을 초 단위로
+        let uploadCycleSeconds = Double(uploadCycle * 24 * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
         
-        // 배터리 백분율 계산
-        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 0.0)
+        // 배터리 백분율 계산, 1프로 이하는 1로 고정
+        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
         
-        batteryPercent = floor(currentPercentage)
+        batteryPercent = round(currentPercentage)
         if currentPercentage <= 0 {
             stopTimer()
         }
@@ -187,6 +187,9 @@ struct ChildMainView: View {
             .clipShape(RoundedRectangle(cornerRadius: 16))
             
             BatteryGaugeBarView(percent: percent)
+                .onAppear {
+                    print("퍼센트: \(percent)")
+                }
         }
     }
     
