@@ -39,18 +39,18 @@ struct ParentAlbumView: View {
                                     .font(.headline)
                                     .foregroundStyle(.txtVibrantSecondary)
                                 
-                                if let uiImage = UIImage(data: last.imgData) {
+                                if let uiImage = UIImage(data: first.imgData) {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .aspectRatio(1, contentMode: .fill)
                                         .clipped()
                                         .cornerRadius(10.0)
                                         .onTapGesture {
-                                            navigationManager.push(to: .parentAlbumDetail(photo: last))
+                                            navigationManager.push(to: .parentAlbumDetail(photo: first))
                                         }
                                 }
                                 
-                                Text(last.uploadDate.toKR())
+                                Text(first.uploadDate.toKR())
                                     .font(.subheadline)
                                 
                                 
