@@ -21,7 +21,7 @@ struct ChildMainView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photos: [PhotoForSwiftData]
     @Bindable var user: UserForSwiftData
-    @State private var batteryPercent: Double = 50
+    @State private var batteryPercent: Double = 0
     @State private var isGaugeAnimating: Bool = false
     @State private var infoPage: Int = 1
     @State private var timer: Timer?
@@ -87,12 +87,6 @@ struct ChildMainView: View {
                     Group {
                         VStack {
                             BatteryPageView(percent: batteryPercent, date: photos.first?.uploadDate ?? Date())
-                                .onAppear {
-                                    startTimer()
-                                }
-                                .onDisappear {
-                                    stopTimer()
-                                }
 
                             Spacer()
                         }
@@ -119,9 +113,13 @@ struct ChildMainView: View {
                 Spacer()
             }
         }
+        .onAppear {
+            startTimer()
+        }
     }
     
     func startTimer() {
+        updateBatteryStatus()
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             updateBatteryStatus()
         }
@@ -136,7 +134,9 @@ struct ChildMainView: View {
     /// let uploadCycleSeconds = Double(uploadCycle * 숫자) 를 활용해 시간 단위를 계산할 수 있습니다.
     func updateBatteryStatus() {
         guard let lastUploadDate = photos.first?.uploadDate else {
-            batteryPercent = 100
+            withAnimation {
+                batteryPercent = 100
+            }
             return
         }
         
@@ -147,7 +147,10 @@ struct ChildMainView: View {
         // 배터리 백분율 계산, 1프로 이하는 1로 고정
         let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
         
-        batteryPercent = round(currentPercentage)
+        withAnimation {
+            batteryPercent = round(currentPercentage)
+        }
+    
         if currentPercentage <= 0 {
             stopTimer()
         }
