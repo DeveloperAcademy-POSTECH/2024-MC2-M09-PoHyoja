@@ -7,11 +7,14 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
 
 class FirestoreService {
     
     static let shared = FirestoreService()
     private let db = Firestore.firestore()
+    private var documentListener: ListenerRegistration?
+    private let storage = Storage.storage()
     
     private init(){}
     
@@ -109,10 +112,10 @@ class FirestoreService {
     }
     
     
-    /// 특정 사용자에게 온 연결 요청을 Firestore에서 가져오는 메서드
+    /// 본인이 한 연결 요청을 Firestore에서 가져오는 메서드
     func fetchConnectionRequests(userName: String) async throws -> [ConnectionRequestsDTO] {
         let snapshot = try await db.collection("connectionRequests")
-            .whereField("to", isEqualTo: userName)
+            .whereField("from", isEqualTo: userName)
             .whereField("status", isEqualTo: "pending")
             .getDocuments()
         
@@ -126,6 +129,93 @@ class FirestoreService {
                 return nil
             }
         }
+    }
+    
+    func listenRequest(from userName: String, completion: @escaping (Result<[ConnectionRequestsDTO], FirestoreServiceError>) -> Void) {
+        removeListener()
+        
+        documentListener = db.collection("connectionRequests")
+            .whereField("from", isEqualTo: userName)
+            // 1. status -> pending은 삭제가 된다
+            .whereField("status", in: ["pending", "rejected", "accepted"])
+            .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("문서 찾을 수 없음: \(error!)")
+                    completion(.failure(FirestoreServiceError.documentNotFound))
+                    return
+                }
+                
+                var connections: [ConnectionRequestsDTO] = []
+                
+                document.documentChanges.forEach { change in
+                    switch change.type {
+                    case .added:
+                        print("added")
+                        do {
+                            let connection = try change.document.data(as: ConnectionRequestsDTO.self)
+                            guard connection.status == .pending else { return }
+                            connections.append(connection)
+                            print(connection.status)
+                            
+                        } catch {
+                            print("문서 디코딩 실패: \(change.document.data()), error: \(error)")
+                            completion(.failure(.decodingError))
+                        }
+                    case .modified:
+                        print("modified")
+                        do {
+                            let connection = try change.document.data(as: ConnectionRequestsDTO.self)
+                            guard connection.status == .accepted || connection.status == .rejected else { return }
+                            connections.append(connection)
+                            print(connection.status)
+                            
+                        } catch {
+                            print("문서 디코딩 실패: \(change.document.data()), error: \(error)")
+                            completion(.failure(.decodingError))
+                        }
+                    default:
+                        break
+                    }
+                    completion(.success(connections))
+                }
+            }
+    }
+
+    func listenRequest(to userName: String, completion: @escaping (Result<[ConnectionRequestsDTO], FirestoreServiceError>) -> Void) {
+        removeListener()
+        
+        documentListener = db.collection("connectionRequests")
+            .whereField("to", isEqualTo: userName)
+            .whereField("status", isEqualTo: "pending")
+            .addSnapshotListener { documentSnapshot, error in
+                guard let document = documentSnapshot else {
+                    print("문서 찾을 수 없음: \(error!)")
+                    completion(.failure(FirestoreServiceError.documentNotFound))
+                    return
+                }
+                
+                var connections: [ConnectionRequestsDTO] = []
+                
+                document.documentChanges.forEach { change in
+                    switch change.type {
+                    case .added:
+                        do {
+                            let connection = try change.document.data(as: ConnectionRequestsDTO.self)
+                            connections.append(connection)
+                        } catch {
+                            print("문서 디코딩 실패: \(change.document.data()), error: \(error)")
+                            completion(.failure(.decodingError))
+                        }
+                    default:
+                        break
+                    }
+                    completion(.success(connections))
+                }
+            }
+    }
+    
+    func removeListener() {
+        documentListener?.remove()
     }
     
     /// 연결 요청을 넘겨준 ConnectionRequestsDTO 로 업데이트하는 메서드
@@ -144,5 +234,80 @@ class FirestoreService {
         }
         
         try db.collection("users").document(userId).setData(from: user, merge: true)
+    }
+    
+    /// 사진을 Firebase Storage에 업로드하고 메타데이터를 Firestore에 저장합니다.
+    func uploadPhoto(userName: String, photoForSwiftData: PhotoForSwiftData) async {
+        let photoID = photoForSwiftData.id.uuidString
+        let storageRef = storage.reference().child("photos/\(userName)/\(photoID).jpg")
+        
+        do {
+            // Firebase Storage에 이미지 데이터 업로드
+            let _ = try await storageRef.putDataAsync(photoForSwiftData.imgData, metadata: nil)
+            
+            // 업로드된 이미지의 다운로드 URL 가져오기
+            let downloadURL = try await storageRef.downloadURL()
+            
+            // Firestore에 저장할 메타데이터 생성
+            let photo = Photo(from: photoForSwiftData, urlString: downloadURL.absoluteString)
+            
+            // Firestore에 메타데이터 저장
+            try db.collection("photos").document(photoID).setData(from: photo)
+        } catch {
+            print("Firebase Storage에 이미지 데이터 업로드 실패: \(error.localizedDescription)")
+        }
+    }
+    
+    func fetchPhotos(userName: String) async throws -> [Photo] {
+        let snapshot = try await db.collection("photos")
+            .whereField("sharedWith", arrayContains: userName)
+            .getDocuments()
+        
+        return try snapshot.documents.compactMap { document in
+            try document.data(as: Photo.self)
+        }
+    }
+    
+    // Photo의 정보로 Firebase Storage에서 이미지 데이터를 받아와서 PhotoForSwiftData 로 변경
+    func fetchPhotoForSwiftDataByPhoto(photo: Photo) async throws -> PhotoForSwiftData {
+        let imgData = try await fetchPhotoData(urlString: photo.urlString)
+        
+        return PhotoForSwiftData(from: photo, imgData: imgData)
+    }
+    
+    // Firebase Storage 에서 이미지 데이타 받아오기
+    private func fetchPhotoData(urlString: String) async throws -> Data {
+        let storageRef = storage.reference(forURL: urlString)
+        return try await storageRef.data(maxSize: 5 * 1024 * 1024)
+    }
+    
+    /// Firestore의 photo 정보를 업데이트하는 메소드
+    func updatePhoto(photoForSwiftData: PhotoForSwiftData) async throws {
+        let photoId = photoForSwiftData.id.uuidString
+        try await db.collection("photos").document(photoId).updateData([
+            "likeCount": photoForSwiftData.likeCount,
+        ])
+    }
+    
+    /// Firestore 및 Firebase Storage에서 사진 삭제
+    func deletePhoto(photoId: String) async {
+        let photoRef = db.collection("photos").document(photoId)
+        
+        // Firestore에서 사진 데이터 가져오기
+        do {
+            let documentSnapshot = try await photoRef.getDocument()
+            let photo = try documentSnapshot.data(as: Photo.self)
+            
+            
+            // Firebase Storage에서 이미지 삭제
+            let storageRef = storage.reference(forURL: photo.urlString)
+            
+            try await storageRef.delete()
+            
+            // Firestore에서 사진 문서 삭제
+            try await photoRef.delete()
+        } catch {
+            print("Firestore 및 Firebase Storage에서 사진 삭제 실패: \(error)")
+        }
     }
 }

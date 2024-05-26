@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ChildMainView: View {
     enum CGCircleGaugeFloat: CGFloat {
@@ -13,19 +14,30 @@ struct ChildMainView: View {
         case top = 0.975 // 배터리 100 퍼센트
         
         func add(for percent: Double) -> CGFloat {
-            self.rawValue + (CGCircleGaugeFloat.top.rawValue - CGCircleGaugeFloat.bottom.rawValue) / 100 * percent
+            self.rawValue + ((CGCircleGaugeFloat.top.rawValue - CGCircleGaugeFloat.bottom.rawValue) / 100.0) * percent
         }
     }
     
     @Environment(NavigationManager.self) var navigationManager
+    @Query var photos: [PhotoForSwiftData]
+    @Query var users: [UserForSwiftData]
     
-    @State private var batteryPercent: Double = 20
-    @State private var totalLikeCount: Int = 1223
-    @State private var totalUploadCount: Int = 320
-    @State private var uploadCycle: Int = 3
-    @State private var lastUploaded: Date = Calendar.current.date(byAdding: .hour, value: -28, to: Date())!
+    @State private var batteryPercent: Double = 50
     @State private var isGaugeAnimating: Bool = false
     @State private var infoPage: Int = 1
+    @State private var timer: Timer?
+    
+    var uploadCycle: Int {
+        users.first?.uploadCycle ?? 3
+    }
+    
+    var totalLikeCount: Int {
+        return photos.reduce(0) { $0 + $1.likeCount }
+    }
+    
+    var totalUploadCount: Int {
+        return photos.count
+    }
     
     var body: some View {
         ZStack {
@@ -71,7 +83,14 @@ struct ChildMainView: View {
                 TabView(selection: $infoPage) {
                     Group {
                         VStack {
-                            BatteryPageView(percent: batteryPercent, date: lastUploaded)
+                            BatteryPageView(percent: batteryPercent, date: photos.last?.uploadDate ?? Date())
+                                .onAppear {
+                                    startTimer()
+                                }
+                                .onDisappear {
+                                    stopTimer()
+                                }
+
                             Spacer()
                         }
                         .tag(1)
@@ -79,6 +98,7 @@ struct ChildMainView: View {
                         VStack {
                             GoalPageView()
                             Spacer()
+                            
                         }
                         .tag(2)
                     }
@@ -98,6 +118,38 @@ struct ChildMainView: View {
         }
     }
     
+    func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            updateBatteryStatus()
+        }
+    }
+
+    func stopTimer() {
+        timer?.invalidate()
+        timer = nil
+    }
+    
+    /// 배터리 상태를 계산하는 함수 입니다.
+    /// let uploadCycleSeconds = Double(uploadCycle * 숫자) 를 활용해 시간 단위를 계산할 수 있습니다.
+    func updateBatteryStatus() {
+        guard let lastUploadDate = photos.last?.uploadDate else {
+            batteryPercent = 100
+            return
+        }
+        
+        let currentTime = Date()
+        let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
+        let uploadCycleSeconds = Double(uploadCycle) // uploadCycle을 초 단위로
+        
+        // 배터리 백분율 계산
+        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 0.0)
+        
+        batteryPercent = floor(currentPercentage)
+        if currentPercentage <= 0 {
+            stopTimer()
+        }
+    }
+
     @ViewBuilder
     func BatteryPageView(percent: Double, date lastUploaded: Date) -> some View {
         ZStack {
@@ -292,6 +344,13 @@ struct ChildMainView: View {
         .background(bgColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
+    
+    
+//    /// 총 사진 업로드 개수, 총 좋아요 수를 불러옵니다.
+//    func calculateTotalCounts() {
+//        totalUploadCount = photos.count
+//        totalLikeCount = photos.reduce(0) { $0 + $1.likeCount }
+//    }
 }
 
 #Preview {
