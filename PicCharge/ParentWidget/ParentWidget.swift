@@ -86,7 +86,6 @@ struct ParentProvider: AppIntentTimelineProvider {
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ParentSimpleEntry> {
         var entry: ParentSimpleEntry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
-        let currentDate = Date()
         
         do {
             guard let user = await getUserForSwiftData() else {
@@ -96,20 +95,18 @@ struct ParentProvider: AppIntentTimelineProvider {
             var photos: [Photo] = []
             photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
             photos.sort { $0.uploadDate < $1.uploadDate }
-            print(photos.map { $0.uploadDate })
             
             if let lastPhoto = photos.last {
                 let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
                 
-                entry = ParentSimpleEntry(date: currentDate, image: UIImage(data: imgData) ?? UIImage(named: "ParentWidgetPreview")!)
+                entry = ParentSimpleEntry(date: Date(), image: UIImage(data: imgData) ?? UIImage(named: "ParentWidgetPreview")!)
             }
             
         } catch {
             print("위젯 에러!")
         }
         
-        let nextRefresh = Calendar.current.date(byAdding: .minute, value: 15, to:  Date())!
-        return Timeline(entries: [entry], policy: .after(nextRefresh))
+        return Timeline(entries: [entry], policy: .atEnd)
     }
     
     @MainActor func getUserForSwiftData() -> UserForSwiftData? {
@@ -120,7 +117,6 @@ struct ParentProvider: AppIntentTimelineProvider {
         return user
     }
 }
-
 
 
 struct ParentSimpleEntry: TimelineEntry {
