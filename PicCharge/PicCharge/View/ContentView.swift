@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import FirebaseAuth
+import WidgetKit
 
 enum UserState {
     case checkNeeded
@@ -53,11 +54,6 @@ struct ContentView: View {
                 if buggungEnd {
                     BuggungEndView()
                         .transition(.opacity.animation(.easeInOut(duration: 1)))
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                navigationManager.userState = (user.role == .child) ? .connectedChild : .connectedParent
-                            }
-                        }
                 } else {
                     BuggungLoadingView()
                         .transition(.opacity.animation(.easeInOut(duration: 1)))
@@ -87,9 +83,11 @@ extension ContentView {
         
         Task {
             let state = checkLoginStatus()
+            
             switch state {
             case .connectedChild, .connectedParent:
                 await syncPhotoData()
+                WidgetCenter.shared.reloadAllTimelines()
             default:
                 break
             }
