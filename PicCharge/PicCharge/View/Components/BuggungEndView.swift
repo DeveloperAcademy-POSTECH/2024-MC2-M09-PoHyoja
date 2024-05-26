@@ -29,7 +29,7 @@ struct BuggungEndView: View {
         .ignoresSafeArea()
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 navigationManager.popToRoot()
             }
         }
@@ -38,4 +38,6 @@ struct BuggungEndView: View {
 
 #Preview {
     BuggungEndView()
+        .environment(NavigationManager())
+        .preferredColorScheme(.dark)
 }
