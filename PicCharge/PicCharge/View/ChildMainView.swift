@@ -164,7 +164,7 @@ struct ChildMainView: View {
                 Spacer()
                 
                 VStack(spacing: 0) {
-                    Text("\(Int(percent))%")
+                    Text("\(Int(percent <= 1 ? 0 : percent))%")
                         .font(.largeTitle.weight(.bold))
                         .foregroundStyle(.txtPrimaryDark)
                         .padding(.bottom, 8)
