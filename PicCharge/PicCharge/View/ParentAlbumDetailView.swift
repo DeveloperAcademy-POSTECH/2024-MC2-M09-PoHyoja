@@ -80,7 +80,7 @@ struct ParentAlbumDetailView: View {
                             .foregroundColor(.grpRed)
                     }
                     
-                    Text(photo.likeCount == 0 ? " " : "\(photo.likeCount)개")
+                    Text(" ")
                         .font(.body)
                         .fontWeight(.bold)
                 }
