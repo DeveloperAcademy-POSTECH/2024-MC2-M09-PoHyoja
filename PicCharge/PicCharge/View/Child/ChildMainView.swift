@@ -353,13 +353,6 @@ struct ChildMainView: View {
         .background(bgColor)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
-    
-    
-//    /// 총 사진 업로드 개수, 총 좋아요 수를 불러옵니다.
-//    func calculateTotalCounts() {
-//        totalUploadCount = photos.count
-//        totalLikeCount = photos.reduce(0) { $0 + $1.likeCount }
-//    }
 }
 
 #Preview {

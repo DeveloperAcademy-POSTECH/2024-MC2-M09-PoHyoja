@@ -13,25 +13,35 @@ struct ChildProvider: AppIntentTimelineProvider {
     let container: ModelContainer
     
     func placeholder(in context: Context) -> ChildEntry {
-        ChildEntry(date: Date(), configuration: ConfigurationAppIntent(), batteryPercentage: 90, hourOffset: 0)
+        ChildEntry(date: Date(), configuration: ConfigurationAppIntent(), batteryPercentage: 90, lastUploadedDate: Date())
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ChildEntry {
-        ChildEntry(date: Date(), configuration: configuration, batteryPercentage: 100, hourOffset: 0)
+        let currentTime = Date()
+        let uploadCycle = (await getUploadCycle() ?? 3) * 24 // 목표로 설정한 시간
+        let lastUploadDate = await getLastUploadedDate() ?? Date() // 사진을 보낸 시간
+        let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
+        let uploadCycleSeconds = Double(uploadCycle * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
+        
+        // 배터리 백분율 계산, 1프로 이하는 1로 고정
+        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
+        
+        return ChildEntry(date: currentTime, configuration: configuration, batteryPercentage: currentPercentage, lastUploadedDate: lastUploadDate)
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ChildEntry> {
         var entries: [ChildEntry] = []
         
-        let targetTime = ChildWidgetOption.targetTime // 목표로 설정한 시간
-        let photoSentDate = await getLastUploadedDate() ?? Date() // 사진을 보낸 시간
+        let uploadCycle = (await getUploadCycle() ?? 3) * 24 // 목표로 설정한 시간
+        let lastUploadDate = await getLastUploadedDate() ?? Date() // 사진을 보낸 시간
         
         // 근사값이라 targetTime에 어떤 값이 오더라도 배터리가 0이하가 될 수 있게 +1을 해줌
-        for hourOffset in 0..<(targetTime + 1) {
-            let percentageDropPerTime = 100.0 / Double(targetTime) // 배터리 줄어드는 % 계산
-            let currentPercentage = max(100.0 - (percentageDropPerTime * Double(hourOffset % (targetTime + 1))), 0) // 현재 남은 배터리
-            let elapsedTime = Calendar.current.date(byAdding: ChildWidgetOption.timeUnit, value: hourOffset, to: photoSentDate)! // 사진을 보낸 시간으로부터 경과된 시간
-            let entry = ChildEntry(date: elapsedTime, configuration: configuration, batteryPercentage: currentPercentage, hourOffset: hourOffset % (targetTime + 1))
+        for hourOffset in 0..<(uploadCycle + 1) {
+            let percentageDropPerTime = 100.0 / Double(uploadCycle) // 배터리 줄어드는 % 계산
+            let currentPercentage = max(100.0 - (percentageDropPerTime * Double(hourOffset % (uploadCycle + 1))), 0) // 현재 남은 배터리
+            let elapsedTime = Calendar.current.date(byAdding: ChildWidgetOption.timeUnit, value: hourOffset, to: lastUploadDate)! // 사진을 보낸 시간으로부터 경과된 시간
+            
+            let entry = ChildEntry(date: elapsedTime, configuration: configuration, batteryPercentage: currentPercentage, lastUploadedDate: lastUploadDate)
             entries.append(entry)
         }
         return Timeline(entries: entries, policy: .atEnd)
@@ -42,13 +52,19 @@ struct ChildProvider: AppIntentTimelineProvider {
         let date = (try? container.mainContext.fetch(descriptor))?.last?.uploadDate ?? nil
         return date
     }
+    
+    @MainActor func getUploadCycle() -> Int? {
+        let descriptor = FetchDescriptor<UserForSwiftData>()
+        let uploadCycle = (try? container.mainContext.fetch(descriptor))?.last?.uploadCycle ?? nil
+        return uploadCycle
+    }
 }
 
 struct ChildEntry: TimelineEntry {
     let date: Date
     let configuration: ConfigurationAppIntent
     let batteryPercentage: Double // 근사값이라 정확도 최대한 높이려고 Double 사용
-    let hourOffset: Int // hourOffset 값을 사진 보낸지 얼마나 됐는지로도 사용
+    let lastUploadedDate: Date
 }
 
 struct ChildWidgetEntryView : View {
@@ -84,7 +100,7 @@ struct ChildWidgetEntryView : View {
                             Spacer()
                         }
                         HStack {
-                            Text("사진 보낸 지 \(entry.hourOffset)시간 됐어요")
+                            Text("사진 보낸 지 \(entry.lastUploadedDate.timeIntervalKRString()) 됐어요")
                                 .font(.body.weight(.bold))
                                 .foregroundStyle(.txtAAA8A9)
                             
@@ -170,5 +186,5 @@ struct ChildWidget: Widget {
 #Preview(as: .systemMedium) {
     ChildWidget()
 } timeline: {
-    ChildEntry(date: .now, configuration: .init(), batteryPercentage: 100, hourOffset: 0)
+    ChildEntry(date: .now, configuration: .init(), batteryPercentage: 100, lastUploadedDate: Date())
 }
