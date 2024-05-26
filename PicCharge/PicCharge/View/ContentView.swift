@@ -24,35 +24,46 @@ struct ContentView: View {
     @Query var userForSwiftDatas: [UserForSwiftData]
     
     @State private var isAppearing: Bool = true
+    @State private var isLoading = true
     
     var body: some View {
         Group {
-            switch userState {
-            case .notExist:
-                LoginView(userState: $userState)
-            case .notConnected:
-                ConnectUserView(user: userForSwiftDatas.first!, userState: $userState)
-            case .connectedChild:
-                ChildTabView()
-                    .transition(.opacity.animation(.easeInOut(duration: 1)))
-                    .onAppear {
-                        withAnimation {
-                            isAppearing = false
+            if isLoading {
+                ProgressView("로딩중...")
+            } else {
+                switch userState {
+                case .notExist:
+                    LoginView(userState: $userState)
+                case .notConnected:
+                    ConnectUserView(user: userForSwiftDatas.first!, userState: $userState)
+                case .connectedChild:
+                    ChildTabView()
+                        .transition(.opacity.animation(.easeInOut(duration: 1)))
+                        .onAppear {
+                            withAnimation {
+                                isAppearing = false
+                            }
                         }
-                    }
-            case .connectedParent:
-                ParentAlbumView()
-            default:
-                LoginView(userState: $userState)
-                //
+                case .connectedParent:
+                    ParentAlbumView()
+                default:
+                    LoginView(userState: $userState)
+                    //
+                }
             }
         }
-        .task {
-            await checkLoginStatus()
+        .onAppear {
+            if isLoading {
+                checkLoginStatus()
+                isLoading = false
+            }
         }
     }
-    
-    private func checkLoginStatus() async {
+    // let user = await await FirestoreService.shared.fetchUserByEmail(email: currentUser.email ?? "") // 유저 정보 서버와 동기화
+}
+
+extension ContentView {
+    private func checkLoginStatus() {
         // 자동로그인 확인
         guard let _ = Auth.auth().currentUser else {
             print("자동로그인 불가능")
@@ -69,6 +80,7 @@ struct ContentView: View {
             userState = .notExist
             return
         }
+        
         print("--swiftDataUser 정보--")
         print("name: \(swiftDataUser.name)")
         print("role: \(swiftDataUser.role)")
@@ -92,7 +104,4 @@ struct ContentView: View {
             userState = .connectedParent
         }
     }
-    
-    // let user = await await FirestoreService.shared.fetchUserByEmail(email: currentUser.email ?? "") // 유저 정보 서버와 동기화
 }
-

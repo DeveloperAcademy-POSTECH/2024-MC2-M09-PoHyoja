@@ -35,9 +35,19 @@ struct ParentAlbumView: View {
                         
                         VStack(spacing: 8) {
                             VStack(alignment: .leading, spacing: 8) {
-                                Text("최근 업로드 사진")
-                                    .font(.headline)
-                                    .foregroundStyle(.txtVibrantSecondary)
+                                HStack {
+                                    Text("최근 업로드 사진")
+                                        .font(.headline)
+                                        .foregroundStyle(.txtVibrantSecondary)
+                                    Spacer()
+                                    Button(action: {
+                                        Task {
+                                            await syncPhotoData()
+                                        }
+                                    }){
+                                        Image(systemName: "arrow.clockwise")
+                                    }
+                                }
                                 
                                 if let uiImage = UIImage(data: first.imgData) {
                                     Image(uiImage: uiImage)
