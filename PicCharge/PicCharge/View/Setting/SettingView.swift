@@ -84,10 +84,10 @@ struct SettingView: View {
                     Button("로그아웃", role: .destructive) {
                         do {
                             try logout()
+                            navigationManager.userState = .notExist
                         } catch {
                             print("로그아웃 에러: \(error.localizedDescription)")
                         }
-                        navigationManager.popToRoot()
                     }
                     Button("취소", role: .cancel) {}
                 }
@@ -101,10 +101,10 @@ struct SettingView: View {
                     Button("탈퇴하기", role: .destructive) {
                         do {
                             try deleteUser()
+                            navigationManager.userState = .notExist
                         } catch {
                             print("회원 탈퇴 에러: \(error.localizedDescription)")
                         }
-                        navigationManager.popToRoot()
                     }
                     Button("취소", role: .cancel) {}
                 }
