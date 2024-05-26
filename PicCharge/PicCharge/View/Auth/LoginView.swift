@@ -30,6 +30,10 @@ struct LoginView: View {
         !email.isEmpty && !password.isEmpty && errorMessage == nil
     }
     
+    init(userState: Binding<UserState>) {
+        self._userState = userState
+    }
+    
     var body: some View {
         ZStack {
             Color.bgPrimary.ignoresSafeArea()

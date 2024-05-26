@@ -39,4 +39,6 @@ struct BuggungLoadingView: View {
 
 #Preview {
     BuggungLoadingView()
+        .environment(NavigationManager())
+        .preferredColorScheme(.dark)
 }

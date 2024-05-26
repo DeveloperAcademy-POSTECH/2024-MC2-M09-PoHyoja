@@ -20,15 +20,14 @@ struct ChildMainView: View {
     
     @Environment(NavigationManager.self) var navigationManager
     @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photos: [PhotoForSwiftData]
-    @Query var users: [UserForSwiftData]
-    
+    @Bindable var user: UserForSwiftData
     @State private var batteryPercent: Double = 50
     @State private var isGaugeAnimating: Bool = false
     @State private var infoPage: Int = 1
     @State private var timer: Timer?
     
     var uploadCycle: Int {
-        users.first?.uploadCycle ?? 3
+        user.uploadCycle ?? 3
     }
     
     var totalLikeCount: Int {
@@ -37,6 +36,10 @@ struct ChildMainView: View {
     
     var totalUploadCount: Int {
         return photos.count
+    }
+    
+    init(user: UserForSwiftData) {
+        self.user = user
     }
     
     var body: some View {
@@ -358,7 +361,7 @@ struct ChildMainView: View {
 
 #Preview {
     NavigationStack {
-        ChildMainView()
+        ChildMainView(user: UserForSwiftData(name: "", role: .child, email: ""))
             .environment(NavigationManager())
             .preferredColorScheme(.dark)
     }
