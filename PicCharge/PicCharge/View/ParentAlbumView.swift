@@ -28,7 +28,7 @@ struct ParentAlbumView: View {
             if isLoading {
                 ProgressView("로딩중...")
             } else {
-                if let last = photoForSwiftDatas.first {
+                if let first = photoForSwiftDatas.first {
                     ScrollView {
                         Divider()
                             .padding(.bottom, 10)
