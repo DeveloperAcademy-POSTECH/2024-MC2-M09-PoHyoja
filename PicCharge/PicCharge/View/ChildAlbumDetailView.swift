@@ -99,7 +99,10 @@ struct ChildAlbumDetailView: View {
                     // MARK: - 로컬 사진 삭제 처리
                     modelContext.delete(photo)
                     
-                    // TODO: - 서버 사진 삭제 처리
+                    // MARK: - 서버 사진 삭제 처리
+                    Task {
+                        await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
+                    }
                     navigationManager.pop()
                 }
                 Button("Cancel", role: .cancel) {}
@@ -114,7 +117,10 @@ struct ChildAlbumDetailView: View {
                 // MARK: - 로컬 사진 삭제 처리
                 modelContext.delete(photo)
                 
-                // TODO: - 서버 사진 삭제 처리
+                // MARK: - 서버 사진 삭제 처리
+                Task {
+                    await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
+                }
                 navigationManager.pop()
             }
             Button("Cancel", role: .cancel) {}
