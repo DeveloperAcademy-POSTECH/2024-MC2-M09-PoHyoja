@@ -11,12 +11,11 @@ import SwiftData
 struct ChildAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
-
+    
     @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
     @Query var userForSwiftDatas: [UserForSwiftData]
+    @State private var hasLoadedData = false
 
-    @State private var isLoading = true
-    
     //geometryReader로 3등분
     let columnLayout = [
         GridItem(.flexible(), spacing: 3),
@@ -26,70 +25,76 @@ struct ChildAlbumView: View {
     
     var body: some View {
         Group {
-            if isLoading {
-                ProgressView("로딩중...")
-            } else {
-                if let first = photoForSwiftDatas.first {
-                    ScrollView {
-                        Divider()
-                            .padding(.bottom, 10)
-                        
-                        VStack(spacing: 8) {
-                            VStack(alignment: .leading, spacing: 8) {
+            if let first = photoForSwiftDatas.first {
+                ScrollView {
+                    Divider()
+                        .padding(.bottom, 10)
+                    
+                    VStack(spacing: 8) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
                                 Text("최근 업로드 사진")
                                     .font(.headline)
                                     .foregroundStyle(.txtVibrantSecondary)
-                                
-                                if let uiImage = UIImage(data: first.imgData) {
+                                Spacer()
+                                Button(action: {
+                                    Task {
+                                        await syncPhotoData()
+                                    }
+                                }){
+                                    Image(systemName: "arrow.clockwise")
+                                }
+                            }
+                            
+                            if let uiImage = UIImage(data: first.imgData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(1, contentMode: .fill)
+                                    .clipped()
+                                    .cornerRadius(10.0)
+                                    .onTapGesture {
+                                        navigationManager.push(to: .childAlbumDetail(photo: first))
+                                    }
+                            }
+                            
+                            Text(first.uploadDate.toKR())
+                                .font(.subheadline)
+                            
+                            
+                            Divider()
+                                .padding(.vertical, 8)
+                            
+                            Text("충전 기록")
+                                .font(.headline)
+                                .foregroundStyle(.txtVibrantSecondary)
+                        }
+                        .padding(.horizontal, 16)
+                        
+                        LazyVGrid(columns: columnLayout, spacing: 3) {
+                            ForEach(photoForSwiftDatas.dropFirst()) { photo in
+                                if let uiImage = UIImage(data: photo.imgData) {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .aspectRatio(1, contentMode: .fill)
                                         .clipped()
-                                        .cornerRadius(10.0)
                                         .onTapGesture {
-                                            navigationManager.push(to: .childAlbumDetail(photo: first))
+                                            navigationManager.push(to: .childAlbumDetail(photo: photo))
                                         }
-                                }
-                                
-                                Text(first.uploadDate.toKR())
-                                    .font(.subheadline)
-                                
-                                
-                                Divider()
-                                    .padding(.vertical, 8)
-                                
-                                Text("충전 기록")
-                                    .font(.headline)
-                                    .foregroundStyle(.txtVibrantSecondary)
-                            }
-                            .padding(.horizontal, 16)
-                            
-                            LazyVGrid(columns: columnLayout, spacing: 3) {
-                                ForEach(photoForSwiftDatas.dropFirst()) { photo in
-                                    if let uiImage = UIImage(data: photo.imgData) {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .aspectRatio(1, contentMode: .fill)
-                                            .clipped()
-                                            .onTapGesture {
-                                                navigationManager.push(to: .childAlbumDetail(photo: photo))
-                                            }
-                                    }
                                 }
                             }
                         }
-                        
                     }
-                } else {
-                    Text("아직 업로드된 사진이 없어요.")
+                    
                 }
+            } else {
+                Text("아직 업로드된 사진이 없어요.")
             }
         }
         .onAppear {
-            if isLoading {
-                Task {
-                    await syncPhotoData() // 사진 정보 불러오기
-                    isLoading = false
+            Task {
+                if !hasLoadedData {
+                    await syncPhotoData()
+                    hasLoadedData = true
                 }
             }
         }
@@ -109,17 +114,15 @@ extension ChildAlbumView {
         do {
             let photos = try await FirestoreService.shared.fetchPhotos(userName: swiftDataUser.name)
             var photoIds = Set<UUID>()
-            
             for photo in photos {
-                print(photo)
                 guard let photoIdString = photo.id, let photoId = UUID(uuidString: photoIdString) else {
                     print("유효하지 않은 ID: \(String(describing: photo.id))")
                     continue
                 }
                 photoIds.insert(photoId)
-                
                 // photoForSwiftDatas에서 같은 id를 가진 객체를 찾음
                 if let existingPhoto = fetchExistingPhoto(with: photoId) {
+                    print("2.1 photo id:\(existingPhoto.id)")
                     updateExistingPhotosLikeCount(existingPhoto, with: photo)
                     updateCount += 1
                 } else {

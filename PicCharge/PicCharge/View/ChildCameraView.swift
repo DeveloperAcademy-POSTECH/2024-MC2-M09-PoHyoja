@@ -230,7 +230,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         }
         
         // 이미지를 JPEG 형식으로 압축하고 Data 형식으로 변환
-        guard let compressedImageData = croppedUIImage.jpegData(compressionQuality: 0.1) else {
+        guard let compressedImageData = croppedUIImage.jpegData(compressionQuality: 0.5) else {
             return
         }
         
@@ -249,7 +249,7 @@ extension UIImage {
         return orientedImage
     }
     
-    // 이미지를 정방형으로 자르기
+    /// 이미지를 정방형으로 자르고 해상도 1020*1020으로 줄임
     func croppedToSquare() -> UIImage? {
         guard let cgImage = self.cgImage else { return nil }
         
@@ -266,7 +266,27 @@ extension UIImage {
         }
         
         guard let croppedCGImage = cgImage.cropping(to: rect) else { return nil }
-        return UIImage(cgImage: croppedCGImage, scale: self.scale, orientation: self.imageOrientation)
+        let croppedUIImage = UIImage(cgImage: croppedCGImage, scale: self.scale, orientation: self.imageOrientation)
+        return croppedUIImage.resize(targetSize: .init(width: 1020, height: 1020))
+    }
+    
+    private func resize(targetSize: CGSize, opaque: Bool = false) -> UIImage? {
+        // 1. context를 획득 (사이즈, 투명도, scale 입력)
+        // scale의 값이 0이면 현재 화면 기준으로 scale을 잡고, sclae의 값이 1이면 self(이미지) 크기 기준으로 설정
+        UIGraphicsBeginImageContextWithOptions(targetSize, opaque, 0)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        context.interpolationQuality = .high
+        
+        // 2. 그리기
+        let newRect = CGRect(x: 0, y: 0, width: targetSize.width, height: targetSize.height)
+        draw(in: newRect)
+        
+        // 3. 그려진 이미지 가져오기
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        
+        // 4. context 종료
+        UIGraphicsEndImageContext()
+        return newImage
     }
 }
 
