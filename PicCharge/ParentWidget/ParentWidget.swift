@@ -29,6 +29,9 @@ struct ParentProvider: TimelineProvider {
         guard let urlString = UserDefaults.shared.string(forKey: "urlString"),
               let url = URL(string: urlString)
         else {
+            let entry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+            entries.append(entry)
+            timeline = Timeline(entries: entries, policy: .atEnd)
             completion(timeline)
             return
         }
@@ -70,7 +73,7 @@ struct ParentWidgetView : View {
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 21)
-                    .stroke(Color.black, lineWidth: 10)
+                    .stroke(Color.bgSecondaryElevated, lineWidth: 20)
             )
             .containerBackground(Color.clear, for: .widget)
     }
@@ -88,6 +91,7 @@ struct ParentWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: ParentProvider()) { entry in
             ParentWidgetView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
         }
         .configurationDisplayName("PicCharge")
         .description("필요하면 나중에 설명 추가하기")
@@ -170,6 +174,8 @@ struct ChildWidgetEntryView : View {
                         HStack {
                             Text("\(entry.batteryPercentage, specifier: "%.0f")%")
                                 .font(.system(size: 36, weight: .bold))
+                                .foregroundStyle(Color.txtPrimaryDark)
+                            
                             Text("남았어요")
                                 .font(.system(size: 20, weight: .bold))
                                 .foregroundStyle(.txtVibrantSecondary)
@@ -215,15 +221,21 @@ struct ChildWidgetEntryView : View {
                 }
             }
             .padding()
+            .background(Color.bgSecondaryElevated)
         } else {
-            VStack(alignment: .leading){
-                HStack(alignment: .center) {
-                    Text("아들아")
+            ZStack {
+                Color.bgSecondaryElevated.ignoresSafeArea()
+                
+                VStack(alignment: .leading){
+                    HStack(alignment: .center) {
+                        Text("아들아")
+                    }
+                    .padding(.bottom, 1)
+                    Text("잘 지내니? 보고 싶다.")
                 }
-                .padding(.bottom, 1)
-                Text("잘 지내니? 보고 싶다.")
+                .font(.system(size: 32, weight: .bold))
+                .foregroundStyle(.txtPrimaryDark)
             }
-            .font(.system(size: 32, weight: .bold))
         }
     }
 }
