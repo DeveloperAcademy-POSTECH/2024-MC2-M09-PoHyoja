@@ -16,21 +16,21 @@ final class UserForSwiftData {
     var connectedTo: [String]
     var uploadCycle: Int?
     
-    @Relationship(deleteRule: .cascade) var photos: [PhotoForSwiftData]
+//    @Relationship(deleteRule: .cascade) var photos: [PhotoForSwiftData]
     
     init(
         name: String,
         role: Role,
         email: String,
         connectedTo: [String] = [],
-        uploadCycle: Int? = nil,
-        photos: [PhotoForSwiftData] = []
+        uploadCycle: Int? = nil
+//        photos: [PhotoForSwiftData] = []
     ) {
         self.name = name
         self.role = role
         self.email = email
         self.connectedTo = connectedTo
         self.uploadCycle = uploadCycle
-        self.photos = photos
+//        self.photos = photos
     }
 }
