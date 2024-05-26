@@ -13,7 +13,7 @@ struct BatteryShadowModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .overlay(
-                RoundedRectangle(cornerRadius: 16)
+                RoundedRectangle(cornerRadius: 12)
                     .fill(
                         color.gradient.shadow(
                             .inner(
