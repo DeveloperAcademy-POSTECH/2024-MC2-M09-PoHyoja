@@ -12,7 +12,6 @@ struct ConnectUserView: View {
     @Environment(NavigationManager.self) var navigationManager
 
     @Bindable var user: UserForSwiftData
-    @Binding var userState: UserState
     
     @State private var requestToMe: ConnectionRequestsDTO? = nil
     @State private var requestFromMe: ConnectionRequestsDTO? = nil
@@ -23,9 +22,8 @@ struct ConnectUserView: View {
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     
-    init(user: UserForSwiftData, userState: Binding<UserState>) {
+    init(user: UserForSwiftData) {
         self.user = user
-        self._userState = userState
     }
     
     var body: some View {
@@ -36,7 +34,7 @@ struct ConnectUserView: View {
                         .transition(.opacity.animation(.easeInOut(duration: 1)))
                         .onAppear {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                userState = (user.role == .child) ? .connectedChild : .connectedParent
+                                navigationManager.userState = (user.role == .child) ? .connectedChild : .connectedParent
                             }
                         }
                 } else {
