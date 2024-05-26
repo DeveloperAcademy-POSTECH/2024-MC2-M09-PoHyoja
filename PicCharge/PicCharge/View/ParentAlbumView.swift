@@ -12,7 +12,7 @@ struct ParentAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
 
-    @Query var photoForSwiftDatas: [PhotoForSwiftData]
+    @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
     @Query var userForSwiftDatas: [UserForSwiftData]
     @State private var isLoading = true
 
@@ -28,7 +28,7 @@ struct ParentAlbumView: View {
             if isLoading {
                 ProgressView("로딩중...")
             } else {
-                if let last = photoForSwiftDatas.last {
+                if let last = photoForSwiftDatas.first {
                     ScrollView {
                         Divider()
                             .padding(.bottom, 10)
@@ -64,7 +64,7 @@ struct ParentAlbumView: View {
                             .padding(.horizontal, 16)
                             
                             LazyVGrid(columns: columnLayout, spacing: 3) {
-                                ForEach(photoForSwiftDatas) { photo in
+                                ForEach(photoForSwiftDatas.dropFirst()) { photo in
                                     if let uiImage = UIImage(data: photo.imgData) {
                                         Image(uiImage: uiImage)
                                             .resizable()
