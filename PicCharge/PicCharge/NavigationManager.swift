@@ -71,9 +71,11 @@ extension PathType {
 @Observable
 class NavigationManager {
     var path: [PathType]
+    var userState: UserState
     
-    init(path: [PathType] = []) {
+    init(path: [PathType] = [], userState: UserState = .checkNeeded) {
         self.path = path
+        self.userState = userState
     }
 }
 

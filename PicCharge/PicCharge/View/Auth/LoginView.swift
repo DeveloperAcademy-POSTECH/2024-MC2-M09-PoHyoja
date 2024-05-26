@@ -17,7 +17,6 @@ struct LoginView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
 
-    @Binding var userState: UserState
     @State private var email: String = ""
     @State private var password: String = ""
 
@@ -28,10 +27,6 @@ struct LoginView: View {
     
     var isLoginAvailable: Bool {
         !email.isEmpty && !password.isEmpty && errorMessage == nil
-    }
-    
-    init(userState: Binding<UserState>) {
-        self._userState = userState
     }
     
     var body: some View {
@@ -143,9 +138,9 @@ private extension LoginView {
             )
             modelContext.insert(localUser)
             if user.connectedTo.isEmpty {
-                userState = .notConnected
+                navigationManager.userState = .notConnected
             } else {
-                userState = (user.role == .child) ? .connectedChild : .connectedParent
+                navigationManager.userState = (user.role == .child) ? .connectedChild : .connectedParent
             }
         } catch {
             do {
@@ -160,7 +155,7 @@ private extension LoginView {
 }
 
 #Preview {
-    LoginView(userState: .constant(.notExist))
+    LoginView()
         .environment(NavigationManager())
         .preferredColorScheme(.dark)
 }
