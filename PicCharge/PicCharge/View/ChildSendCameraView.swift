@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 struct ChildSendCameraView: View {
     @Environment(NavigationManager.self) var navigationManager
@@ -69,6 +70,8 @@ struct ChildSendCameraView: View {
                             await FirestoreService.shared.uploadPhoto(userName: user.name, photoForSwiftData: photoForSwiftData)
                         }
                         isChildLoadingView = true
+                        
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                 }
             }

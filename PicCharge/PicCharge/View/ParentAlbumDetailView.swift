@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import Combine
+import WidgetKit
 
 struct ParentAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
@@ -133,6 +134,9 @@ struct ParentAlbumDetailView: View {
                     Task {
                         await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
                     }
+                    
+                    WidgetCenter.shared.reloadAllTimelines()
+                    
                     navigationManager.pop()
                 }
                 Button("Cancel", role: .cancel) {}
@@ -150,6 +154,9 @@ struct ParentAlbumDetailView: View {
                 Task {
                     await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
                 }
+                
+                WidgetCenter.shared.reloadAllTimelines()
+                
                 navigationManager.pop()
             }
             Button("Cancel", role: .cancel) {}
