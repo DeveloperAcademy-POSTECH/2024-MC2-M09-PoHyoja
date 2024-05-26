@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChildTabView: View {
     @State private var tab: Int = 1
-    
+    @Bindable var user: UserForSwiftData
     
     var navigationTitle: String {
         switch tab {
@@ -23,14 +23,14 @@ struct ChildTabView: View {
     var body: some View {
         TabView(selection: $tab) {
             Group {
-                ChildMainView()
+                ChildMainView(user: user)
                     .tabItem {
                         Icon.heartBolt
                         Text("Main")
                     }
                     .tag(1)
                 
-                ChildAlbumView()
+                ChildAlbumView(user: user)
                     .tabItem {
                         Icon.album
                         Text("Album")
@@ -57,7 +57,7 @@ struct ChildTabView: View {
 
 #Preview {
     NavigationStack {
-        ChildTabView()
+        ChildTabView(user: UserForSwiftData(name: "", role: .child, email: ""))
 
     }
     .environment(NavigationManager())

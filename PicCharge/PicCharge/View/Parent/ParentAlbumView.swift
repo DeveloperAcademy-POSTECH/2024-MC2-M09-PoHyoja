@@ -13,8 +13,7 @@ struct ParentAlbumView: View {
     @Environment(\.modelContext) var modelContext
 
     @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
-    @Query var userForSwiftDatas: [UserForSwiftData]
-    @State private var isLoading = true
+    @Bindable var user: UserForSwiftData
 
     //geometryReader로 3등분
     let columnLayout = [
@@ -25,73 +24,69 @@ struct ParentAlbumView: View {
     
     var body: some View {
         Group {
-            if isLoading {
-                ProgressView("로딩중...")
-            } else {
-                if let first = photoForSwiftDatas.first {
-                    ScrollView {
-                        Divider()
-                            .padding(.bottom, 10)
-                        
-                        VStack(spacing: 8) {
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Text("최근 업로드 사진")
-                                        .font(.headline)
-                                        .foregroundStyle(.txtVibrantSecondary)
-                                    Spacer()
-                                    Button(action: {
-                                        Task {
-                                            await syncPhotoData()
-                                        }
-                                    }){
-                                        Image(systemName: "arrow.clockwise")
+            if let first = photoForSwiftDatas.first {
+                ScrollView {
+                    Divider()
+                        .padding(.bottom, 10)
+                    
+                    VStack(spacing: 8) {
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("최근 업로드 사진")
+                                    .font(.headline)
+                                    .foregroundStyle(.txtVibrantSecondary)
+                                Spacer()
+                                Button(action: {
+                                    Task {
+                                        await syncPhotoData()
                                     }
+                                }){
+                                    Image(systemName: "arrow.clockwise")
                                 }
-                                
-                                if let uiImage = UIImage(data: first.imgData) {
+                            }
+                            
+                            if let uiImage = UIImage(data: first.imgData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(1, contentMode: .fill)
+                                    .clipped()
+                                    .cornerRadius(10.0)
+                                    .onTapGesture {
+                                        navigationManager.push(to: .parentAlbumDetail(photo: first))
+                                    }
+                            }
+                            
+                            Text(first.uploadDate.toKR())
+                                .font(.subheadline)
+                            
+                            
+                            Divider()
+                                .padding(.vertical, 8)
+                            
+                            Text("충전 기록")
+                                .font(.headline)
+                                .foregroundStyle(.txtVibrantSecondary)
+                        }
+                        .padding(.horizontal, 16)
+                        
+                        LazyVGrid(columns: columnLayout, spacing: 3) {
+                            ForEach(photoForSwiftDatas.dropFirst()) { photo in
+                                if let uiImage = UIImage(data: photo.imgData) {
                                     Image(uiImage: uiImage)
                                         .resizable()
                                         .aspectRatio(1, contentMode: .fill)
                                         .clipped()
-                                        .cornerRadius(10.0)
                                         .onTapGesture {
-                                            navigationManager.push(to: .parentAlbumDetail(photo: first))
+                                            navigationManager.push(to: .parentAlbumDetail(photo: photo))
                                         }
-                                }
-                                
-                                Text(first.uploadDate.toKR())
-                                    .font(.subheadline)
-                                
-                                
-                                Divider()
-                                    .padding(.vertical, 8)
-                                
-                                Text("충전 기록")
-                                    .font(.headline)
-                                    .foregroundStyle(.txtVibrantSecondary)
-                            }
-                            .padding(.horizontal, 16)
-                            
-                            LazyVGrid(columns: columnLayout, spacing: 3) {
-                                ForEach(photoForSwiftDatas.dropFirst()) { photo in
-                                    if let uiImage = UIImage(data: photo.imgData) {
-                                        Image(uiImage: uiImage)
-                                            .resizable()
-                                            .aspectRatio(1, contentMode: .fill)
-                                            .clipped()
-                                            .onTapGesture {
-                                                navigationManager.push(to: .parentAlbumDetail(photo: photo))
-                                            }
-                                    }
                                 }
                             }
                         }
-                        
                     }
-                } else {
-                    Text("아직 업로드된 사진이 없어요.")
+                    
                 }
+            } else {
+                Text("아직 업로드된 사진이 없어요.")
             }
         }
         .navigationBarBackButtonHidden()
@@ -106,14 +101,6 @@ struct ParentAlbumView: View {
                 }
             }
         }
-        .onAppear {
-            if isLoading {
-                Task {
-                    await syncPhotoData() // 사진 정보 불러오기
-                    isLoading = false
-                }
-            }
-        }
     }
 }
 
@@ -121,60 +108,59 @@ extension ParentAlbumView {
     private func syncPhotoData() async {
         var updateCount = 0
         var addCount = 0
-        guard let swiftDataUser = userForSwiftDatas.first else {
-            print("로컬에 유저 데이터 없음")
-            return
-        }
+        var deleteCount = 0
         
         do {
-            let photos = try await FirestoreService.shared.fetchPhotos(userName: swiftDataUser.name)
+            let photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
             var photoIds = Set<UUID>()
             
             for photo in photos {
-                print(photo)
-                guard let photoIdString = photo.id, let photoId = UUID(uuidString: photoIdString) else {
+                
+                guard let photoIdString = photo.id,
+                      let photoId = UUID(uuidString: photoIdString)
+                else {
                     print("유효하지 않은 ID: \(String(describing: photo.id))")
                     continue
                 }
+                
                 photoIds.insert(photoId)
                 
-                // photoForSwiftDatas에서 같은 id를 가진 객체를 찾음
-                if let existingPhoto = fetchExistingPhoto(with: photoId) {
-                    updateExistingPhotosLikeCount(existingPhoto, with: photo)
-                    updateCount += 1
+                if let existingPhoto = photoForSwiftDatas.first(where: { $0.id == photoId }) {
+                    if existingPhoto.likeCount != photo.likeCount {
+                        updateCount += 1
+                        existingPhoto.likeCount = photo.likeCount
+                    }
                 } else {
                     addCount += 1
                     let newPhotoForSwiftData = try await FirestoreService.shared.fetchPhotoForSwiftDataByPhoto(photo: photo)
                     modelContext.insert(newPhotoForSwiftData)
                 }
             }
+            
             for photoForSwiftData in photoForSwiftDatas {
                 if !photoIds.contains(photoForSwiftData.id) {
+                    deleteCount += 1
                     modelContext.delete(photoForSwiftData)
                 }
             }
             
             try modelContext.save()
-            print("\(photos.count) 개의 이미지 동기화함")
+            
+            print("총\(photos.count) 개의 이미지")
+            print("\(updateCount + addCount + deleteCount) 개의 이미지 동기화함")
             print("\(updateCount) 개의 사진 업데이트됨")
             print("\(addCount) 개의 사진 추가됨")
+            print("\(deleteCount) 개의 사진 삭제됨")
+            
         } catch {
             print("사진 데이터 동기화 실패: \(error)")
         }
-    }
-    
-    private func fetchExistingPhoto(with id: UUID) -> PhotoForSwiftData? {
-        return photoForSwiftDatas.first(where: { $0.id == id })
-    }
-    
-    private func updateExistingPhotosLikeCount(_ existingPhoto: PhotoForSwiftData, with newPhoto: Photo) {
-        existingPhoto.likeCount = newPhoto.likeCount
     }
 }
 
 #Preview {
     NavigationStack {
-        ParentAlbumView()
+        ParentAlbumView(user: UserForSwiftData(name: "", role: .child, email: ""))
             .environment(NavigationManager())
             .preferredColorScheme(.dark)
     }

@@ -23,6 +23,11 @@ struct ConnectUserView: View {
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     
+    init(user: UserForSwiftData, userState: Binding<UserState>) {
+        self.user = user
+        self._userState = userState
+    }
+    
     var body: some View {
         Group {
             if isConnected {

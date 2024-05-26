@@ -13,8 +13,7 @@ struct ChildAlbumView: View {
     @Environment(\.modelContext) var modelContext
     
     @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
-    @Query var userForSwiftDatas: [UserForSwiftData]
-    @State private var hasLoadedData = false
+    @Bindable var user: UserForSwiftData
 
     //geometryReader로 3등분
     let columnLayout = [
@@ -90,14 +89,6 @@ struct ChildAlbumView: View {
                 Text("아직 업로드된 사진이 없어요.")
             }
         }
-        .onAppear {
-            Task {
-                if !hasLoadedData {
-                    await syncPhotoData()
-                    hasLoadedData = true
-                }
-            }
-        }
     }
 }
 
@@ -106,62 +97,62 @@ extension ChildAlbumView {
         var updateCount = 0
         var addCount = 0
         var deleteCount = 0
-        guard let swiftDataUser = userForSwiftDatas.first else {
-            print("로컬에 유저 데이터 없음")
-            return
-        }
         
         do {
-            let photos = try await FirestoreService.shared.fetchPhotos(userName: swiftDataUser.name)
+            let photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
             var photoIds = Set<UUID>()
+            
             for photo in photos {
-                guard let photoIdString = photo.id, let photoId = UUID(uuidString: photoIdString) else {
+                
+                guard let photoIdString = photo.id,
+                      let photoId = UUID(uuidString: photoIdString)
+                else {
                     print("유효하지 않은 ID: \(String(describing: photo.id))")
                     continue
                 }
+                
                 photoIds.insert(photoId)
-                // photoForSwiftDatas에서 같은 id를 가진 객체를 찾음
-                if let existingPhoto = fetchExistingPhoto(with: photoId) {
-                    print("2.1 photo id:\(existingPhoto.id)")
-                    updateExistingPhotosLikeCount(existingPhoto, with: photo)
-                    updateCount += 1
+                
+                if let existingPhoto = photoForSwiftDatas.first(where: { $0.id == photoId }) {
+                    if existingPhoto.likeCount != photo.likeCount {
+                        updateCount += 1
+                        existingPhoto.likeCount = photo.likeCount
+                    }
                 } else {
                     addCount += 1
                     let newPhotoForSwiftData = try await FirestoreService.shared.fetchPhotoForSwiftDataByPhoto(photo: photo)
                     modelContext.insert(newPhotoForSwiftData)
                 }
             }
+            
             for photoForSwiftData in photoForSwiftDatas {
                 if !photoIds.contains(photoForSwiftData.id) {
-                    modelContext.delete(photoForSwiftData)
                     deleteCount += 1
+                    modelContext.delete(photoForSwiftData)
                 }
             }
             
             try modelContext.save()
-            print("\(photos.count) 개의 이미지 동기화함")
+            
+            print("총\(photos.count) 개의 이미지")
+            print("\(updateCount + addCount + deleteCount) 개의 이미지 동기화함")
             print("\(updateCount) 개의 사진 업데이트됨")
             print("\(addCount) 개의 사진 추가됨")
             print("\(deleteCount) 개의 사진 삭제됨")
+            
         } catch {
             print("사진 데이터 동기화 실패: \(error)")
         }
-    }
-    
-    private func fetchExistingPhoto(with id: UUID) -> PhotoForSwiftData? {
-        return photoForSwiftDatas.first(where: { $0.id == id })
-    }
-    
-    private func updateExistingPhotosLikeCount(_ existingPhoto: PhotoForSwiftData, with newPhoto: Photo) {
-        existingPhoto.likeCount = newPhoto.likeCount
     }
 }
 
 #Preview {
     NavigationStack {
-        ChildAlbumView()
-            .environment(NavigationManager())
-            .preferredColorScheme(.dark)
-            .navigationTitle("앨범")
+        ChildAlbumView(
+            user: UserForSwiftData(name: "", role: .child, email: "")
+        )
+        .environment(NavigationManager())
+        .preferredColorScheme(.dark)
+        .navigationTitle("앨범")
     }
 }
