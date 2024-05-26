@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>dgh06175.PicCharge</string>
+	<string>com.pohyoja.PicCharge</string>
 	<key>PROJECT_ID</key>
 	<string>piccharge-afbc7</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:1072252489603:ios:ca1426423a28eae082f0b6</string>
+	<string>1:1072252489603:ios:dd802aa3a7bc8aa982f0b6</string>
+	<key>DATABASE_URL</key>
+	<string>https://piccharge-afbc7-default-rtdb.asia-southeast1.firebasedatabase.app</string>
 </dict>
 </plist>

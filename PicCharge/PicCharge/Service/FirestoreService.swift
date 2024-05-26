@@ -276,7 +276,7 @@ class FirestoreService {
     }
     
     // Firebase Storage 에서 이미지 데이타 받아오기
-    private func fetchPhotoData(urlString: String) async throws -> Data {
+    func fetchPhotoData(urlString: String) async throws -> Data {
         let storageRef = storage.reference(forURL: urlString)
         return try await storageRef.data(maxSize: 5 * 1024 * 1024)
     }

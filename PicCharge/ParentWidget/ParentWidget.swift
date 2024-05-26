@@ -23,29 +23,33 @@ struct ParentProvider: TimelineProvider {
 
     
     func getTimeline(in context: Context, completion: @escaping (Timeline<ParentSimpleEntry>) -> ()) {
-        var entries: [ParentSimpleEntry] = []
-        var timeline = Timeline(entries: entries, policy: .atEnd)
-        
-        guard let urlString = UserDefaults.shared.string(forKey: "urlString"),
-              let url = URL(string: urlString)
-        else {
-            let entry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
-            entries.append(entry)
-            timeline = Timeline(entries: entries, policy: .atEnd)
-            completion(timeline)
-            return
-        }
-        
-        let task = URLSession.shared.dataTask(with: url) { (data, _, _) in
-            if let data = data, let image = UIImage(data: data) {
-                let entry = ParentSimpleEntry(date: Date(), image: image)
-                entries.append(entry)
+        Task {
+            var entries: [ParentSimpleEntry] = []
+            let currentDate = Date()
+            
+            for hourOffset in 0 ..< 100 {
+                let entryDate = Calendar.current.date(byAdding: .hour, value: hourOffset, to: currentDate)!
+                var photos: [Photo] = []
                 
-                timeline = Timeline(entries: entries, policy: .atEnd)
-                completion(timeline)
+                do {
+                    photos = try await FirestoreService.shared.fetchPhotos(userName: "자식")
+                    
+                    if let lastPhoto = photos.last {
+                        let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
+                        
+                        let entry = ParentSimpleEntry(date: Date(), image: UIImage(data: imgData) ?? UIImage(named: "ParentWidgetPreview")!)
+                        entries.append(entry)
+                    }
+                    
+                } catch {
+                    let entry = ParentSimpleEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+                    entries.append(entry)
+                }
             }
+            
+            let timeline = Timeline(entries: entries, policy: .atEnd)
+            completion(timeline)
         }
-        task.resume()
     }
 }
 
@@ -55,8 +59,6 @@ struct ParentSimpleEntry: TimelineEntry {
     let date: Date
     let image: UIImage
 }
-
-
 
 struct ParentWidgetView : View {
     var entry: ParentProvider.Entry
@@ -84,9 +86,14 @@ struct ParentWidgetView : View {
 
 
 
+import FirebaseCore
 
 struct ParentWidget: Widget {
     let kind: String = "ParentWidget"
+    
+    init() {
+        FirebaseApp.configure()
+    }
     
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: ParentProvider()) { entry in
