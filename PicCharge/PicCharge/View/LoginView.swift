@@ -9,74 +9,115 @@ import SwiftUI
 import Firebase
 
 struct LoginView: View {
+    enum Field: Hashable {
+        case email
+        case password
+    }
+    
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
+
     @Binding var userState: UserState
     @State private var email: String = ""
     @State private var password: String = ""
-    @State private var errorMessage: String?
-    @State private var isLoading: Bool = false
-    @State private var showEndView: Bool = false
+
+    @State private var isNetworking: Bool = false
+    @State private var errorMessage: String? = nil
+    
+    @FocusState var focusField: Field?
+    
+    var isLoginAvailable: Bool {
+        !email.isEmpty && !password.isEmpty && errorMessage == nil
+    }
     
     var body: some View {
         ZStack {
-            VStack {
-                TextField("이메일", text: $email)
-                    .autocapitalization(.none)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                SecureField("비밀번호", text: $password)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                Button(action: {
-                    Task {
-                        isLoading = true
-                        await signIn(email: email, password: password)
-                    }
-                }) {
-                    Text("로그인")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .padding()
-                
-                Button(
-                    action: {
-                        navigationManager.push(to: .signUp)
-                    }) {
-                        Text("아이디가 없다면? 회원가입 하기!")
-                    }
-                    .padding()
-                
-                if let errorMessage = errorMessage {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .padding()
-                }
-            }
-            .padding()
+            Color.bgPrimary.ignoresSafeArea()
             
-            if isLoading {
-                BuggungLoadingView()
-                    .transition(.opacity.animation(.easeInOut(duration: 1)))
-                    .background(Color.black.opacity(1).edgesIgnoringSafeArea(.all))
-            } else if showEndView {
-                BuggungEndView()
-                    .transition(.opacity.animation(.easeInOut(duration: 1)))
-                    .background(Color.black.opacity(1).edgesIgnoringSafeArea(.all))
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                            withAnimation {
-                                showEndView = false
+            VStack {
+                if focusField == nil {
+                    Spacer()
+                    
+                    Text(errorMessage ?? "반갑습니다")
+                        .font(.largeTitle.bold())
+                        .foregroundStyle(.txtPrimaryDark)
+                }
+                
+                Spacer()
+                
+                Image("LogoSmall")
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fit)
+                    .frame(width: 188)
+                
+                Spacer()
+                
+                VStack(spacing: 16) {
+                    VStack(spacing: 8) {
+                        TextField("이메일", text: $email)
+                            .focused($focusField, equals: .email)
+                            .autocapitalization(.none)
+                            .foregroundStyle(.txtPrimaryDark)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 11)
+                            .background(.bgPrimaryElevated)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .onChange(of: email) {
+                                errorMessage = nil
+                            }
+                        
+                        SecureField("비밀번호", text: $password)
+                            .focused($focusField, equals: .password)
+                            .foregroundStyle(.txtPrimaryDark)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 11)
+                            .background(.bgPrimaryElevated)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .onChange(of: password) {
+                                errorMessage = nil
+                            }
+                    }
+                    
+                    Button {
+                        Task {
+                            isNetworking = true
+                            await signIn(email: email, password: password)
+                            isNetworking = false
+                        }
+                    } label: {
+                        ZStack {
+                            isLoginAvailable ? Color.green : Color.gray
+                            
+                            if isNetworking {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            } else {
+                                Text("로그인")
+                                    .bold()
+                                    .foregroundStyle(.txtPrimaryDark)
                             }
                         }
                     }
+                    .frame(height: 54)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .disabled(isNetworking || !isLoginAvailable)
+                }
+    
+                Button {
+                    navigationManager.push(to: .signUp)
+                } label: {
+                    Text("아이디가 없다면? 회원가입 하기!")
+                }
+                .padding(.vertical, 11)
             }
+            .padding(.horizontal, 16)
+        }
+        .onAppear {
+            errorMessage = nil
+            focusField = nil
+        }
+        .onTapGesture {
+            focusField = nil
         }
     }
 }
@@ -97,18 +138,11 @@ private extension LoginView {
                 uploadCycle: user.uploadCycle
             )
             modelContext.insert(localUser)
-            
-            withAnimation {
-                isLoading = false
-                showEndView = true
-            }
-            
             if user.connectedTo.isEmpty {
                 userState = .notConnected
             } else {
                 userState = (user.role == .child) ? .connectedChild : .connectedParent
             }
-            
         } catch {
             do {
                 try Auth.auth().signOut()
@@ -116,6 +150,13 @@ private extension LoginView {
                 print("Auth 로그아웃 실패: \(error)")
             }
             print("로그인 실패")
+            errorMessage = "이메일과 비밀번호를 확인해주세요"
         }
     }
+}
+
+#Preview {
+    LoginView(userState: .constant(.notExist))
+        .environment(NavigationManager())
+        .preferredColorScheme(.dark)
 }
