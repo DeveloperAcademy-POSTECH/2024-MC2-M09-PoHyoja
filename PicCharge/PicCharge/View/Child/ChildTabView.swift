@@ -12,7 +12,7 @@ struct ChildTabView: View {
     @State private var tab: Int = 1
     @Bindable var user: UserForSwiftData
     @State private var isLoading: Bool = false
-    var didRefreshBtnTap: () async -> Void
+    var didRefresh: () async -> Void
     
     var navigationTitle: String {
         switch tab {
@@ -33,7 +33,9 @@ struct ChildTabView: View {
                     }
                     .tag(1)
                 
-                ChildAlbumView(user: user)
+                ChildAlbumView(user: user) {
+                    await didRefresh()
+                }
                     .tabItem {
                         Icon.album
                         Text("Album")
@@ -54,29 +56,12 @@ struct ChildTabView: View {
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle(navigationTitle)
-        .toolbar {
-            if tab == 2 {
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    Button {
-                        Task {
-                            isLoading = true
-                            await didRefreshBtnTap()
-                            WidgetCenter.shared.reloadAllTimelines()
-                            isLoading = false
-                        }
-                    } label: {
-                        Icon.refresh
-                    }
-                    .disabled(isLoading)
-                }
-            }
-        }
     }
 }
 
 #Preview {
     NavigationStack {
-        ChildTabView(user: UserForSwiftData(name: "", role: .child, email: ""), didRefreshBtnTap: { } )
+        ChildTabView(user: UserForSwiftData(name: "", role: .child, email: ""), didRefresh: { } )
     }
     .environment(NavigationManager())
     .preferredColorScheme(.dark)
