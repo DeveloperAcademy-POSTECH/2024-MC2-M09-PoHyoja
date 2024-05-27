@@ -85,6 +85,7 @@ struct SettingView: View {
                         do {
                             try logout()
                             navigationManager.userState = .notExist
+                            navigationManager.popToRoot()
                         } catch {
                             print("로그아웃 에러: \(error.localizedDescription)")
                         }
@@ -102,6 +103,7 @@ struct SettingView: View {
                         do {
                             try deleteUser()
                             navigationManager.userState = .notExist
+                            navigationManager.popToRoot()
                         } catch {
                             print("회원 탈퇴 에러: \(error.localizedDescription)")
                         }

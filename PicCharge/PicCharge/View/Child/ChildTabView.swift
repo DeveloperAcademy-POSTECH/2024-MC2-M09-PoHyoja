@@ -51,7 +51,6 @@ struct ChildTabView: View {
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle(navigationTitle)
-        
     }
 }
 

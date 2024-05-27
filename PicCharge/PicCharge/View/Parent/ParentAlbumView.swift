@@ -14,6 +14,7 @@ struct ParentAlbumView: View {
 
     @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
     @Bindable var user: UserForSwiftData
+    @State private var isLoading: Bool = false
 
     //geometryReader로 3등분
     let columnLayout = [
@@ -36,13 +37,6 @@ struct ParentAlbumView: View {
                                     .font(.headline)
                                     .foregroundStyle(.txtVibrantSecondary)
                                 Spacer()
-                                Button(action: {
-                                    Task {
-                                        await syncPhotoData()
-                                    }
-                                }){
-                                    Image(systemName: "arrow.clockwise")
-                                }
                             }
                             
                             if let uiImage = UIImage(data: first.imgData) {
@@ -93,6 +87,19 @@ struct ParentAlbumView: View {
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle("앨범")
         .toolbar {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button {
+                    Task {
+                        isLoading = true
+                        await syncPhotoData()
+                        isLoading = false
+                    }
+                } label: {
+                    Icon.refresh
+                }
+                .disabled(isLoading)
+            }
+            
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
                     navigationManager.push(to: .setting(role: .parent))
