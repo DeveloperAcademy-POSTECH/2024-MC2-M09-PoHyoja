@@ -110,6 +110,9 @@ struct ParentAlbumView: View {
                 }
             }
         }
+        .task {
+            await syncPhotoData()
+        }
     }
 }
 
