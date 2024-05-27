@@ -80,16 +80,13 @@ struct ParentAlbumView: View {
                     }
                     
                 }
-                .refreshable {
-                    Task {
-                        isLoading = true
-                        await syncPhotoData()
-                        WidgetCenter.shared.reloadAllTimelines()
-                        isLoading = false
+            } else {
+                GeometryReader { geometry in
+                    ScrollView {
+                        Text("아직 업로드된 사진이 없어요.")
+                            .frame(width: geometry.size.width, height: geometry.size.height)
                     }
                 }
-            } else {
-                Text("아직 업로드된 사진이 없어요.")
             }
         }
         .navigationBarBackButtonHidden()
@@ -106,6 +103,14 @@ struct ParentAlbumView: View {
         }
         .task {
             await syncPhotoData()
+        }
+        .refreshable {
+            Task {
+                isLoading = true
+                await syncPhotoData()
+                WidgetCenter.shared.reloadAllTimelines()
+                isLoading = false
+            }
         }
     }
 }

@@ -80,14 +80,19 @@ struct ChildAlbumView: View {
                     }
                     
                 }
-                .refreshable {
-                    Task {
-                        await didRefresh()
-                        WidgetCenter.shared.reloadAllTimelines()
+            } else {
+                GeometryReader { geometry in
+                    ScrollView {
+                        Text("아직 업로드된 사진이 없어요.")
+                            .frame(width: geometry.size.width, height: geometry.size.height)
                     }
                 }
-            } else {
-                Text("아직 업로드된 사진이 없어요.")
+            }
+        }
+        .refreshable {
+            Task {
+                await didRefresh()
+                WidgetCenter.shared.reloadAllTimelines()
             }
         }
     }
