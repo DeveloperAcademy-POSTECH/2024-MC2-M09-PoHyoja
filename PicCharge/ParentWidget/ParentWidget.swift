@@ -133,12 +133,12 @@ struct ParentWidget: Widget {
         }
         .configurationDisplayName("자식 앨범")
         .description("자식이 올린 사진을 보아요.")
-        .supportedFamilies([.systemLarge])
+        .supportedFamilies([.systemSmall])
         .contentMarginsDisabled()
     }
 }
 
-#Preview(as: .systemLarge) {
+#Preview(as: .systemSmall) {
     ParentWidget()
 } timeline: {
     ParentEntry(date: .now, image: UIImage())
