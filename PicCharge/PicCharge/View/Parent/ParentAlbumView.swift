@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 struct ParentAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
@@ -92,6 +93,7 @@ struct ParentAlbumView: View {
                     Task {
                         isLoading = true
                         await syncPhotoData()
+                        WidgetCenter.shared.reloadAllTimelines()
                         isLoading = false
                     }
                 } label: {
