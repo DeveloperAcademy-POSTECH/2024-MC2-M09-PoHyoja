@@ -67,13 +67,9 @@ struct ParentAlbumDetailView: View {
                     
                     Button {
                         photo.likeCount += 1
-                        let likeID = UUID()
-                        likeAnimationIDs.append(likeID)
+                        likeAnimationIDs.append(UUID())
                         self.resetTimer()
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            isLiked = false
-                        }
-                        
+                        HapticManager.instance.impact(style: .soft)
                     } label: {
                         Icon.heart
                             .font(.system(size: 50))
@@ -169,9 +165,6 @@ struct ParentAlbumDetailView: View {
         cancellable = Just(())
             .delay(for: .seconds(2), scheduler: RunLoop.main)
             .sink {
-                withAnimation {
-                    self.isLiked = false
-                }
                 Task {
                     try await FirestoreService.shared.updatePhoto(photoForSwiftData: photo)
                 }
