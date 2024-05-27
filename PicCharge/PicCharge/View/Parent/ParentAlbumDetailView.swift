@@ -69,7 +69,7 @@ struct ParentAlbumDetailView: View {
                         photo.likeCount += 1
                         likeAnimationIDs.append(UUID())
                         self.resetTimer()
-                        HapticManager.instance.impact(style: .soft)
+                        HapticManager.instance.impact(style: .light)
                     } label: {
                         Icon.heart
                             .font(.system(size: 50))
