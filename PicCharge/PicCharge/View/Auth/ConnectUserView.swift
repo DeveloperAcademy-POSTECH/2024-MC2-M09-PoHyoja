@@ -61,7 +61,7 @@ struct ConnectUserView: View {
             }
         }
         .task {
-            if let request = await fetchWaitingRequest() {
+            if let _ = await fetchWaitingRequest() {
                 listenRequest(from: user.name)
             } else {
                 listenRequest(to: user.name)

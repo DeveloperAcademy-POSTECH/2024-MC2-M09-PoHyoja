@@ -129,7 +129,7 @@ private extension LoginView {
             }
             
             // 로컬 유저 저장
-            var localUser = UserForSwiftData(
+            let localUser = UserForSwiftData(
                 name: user.name,
                 role: user.role,
                 email: user.email,
