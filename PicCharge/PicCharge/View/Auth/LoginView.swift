@@ -20,6 +20,7 @@ struct LoginView: View {
     @State private var email: String = ""
     @State private var password: String = ""
 
+    @State private var isLogoVisible: Bool = true
     @State private var isNetworking: Bool = false
     @State private var errorMessage: String? = nil
     
@@ -32,22 +33,29 @@ struct LoginView: View {
     var body: some View {
         ZStack {
             Color.bgPrimary.ignoresSafeArea()
+                .onTapGesture {
+                    withAnimation {
+                        focusField = nil
+                    }
+                }
             
             VStack {
-                if focusField == nil {
-                    Spacer()
-                    
-                    Text(errorMessage ?? "반갑습니다")
-                        .font(.largeTitle.bold())
-                        .foregroundStyle(.txtPrimaryDark)
-                }
-                
                 Spacer()
                 
-                Image("LogoSmall")
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fit)
-                    .frame(width: 188)
+                Text(errorMessage ?? "반갑습니다")
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(.txtPrimaryDark)
+                
+                if isLogoVisible {
+                    Spacer()
+                    
+                    Image("LogoSmall")
+                        .resizable()
+                        .aspectRatio(1, contentMode: .fit)
+                        .frame(width: 188)
+                        .animation(.easeInOut(duration: 0.1), value: isLogoVisible)
+                        .transition(AnyTransition.opacity.combined(with: .move(edge: .top)))
+                }
                 
                 Spacer()
                 
@@ -101,13 +109,14 @@ struct LoginView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .disabled(isNetworking || !isLoginAvailable)
                 }
-    
+                
                 Button {
                     navigationManager.push(to: .signUp)
                 } label: {
                     Text("아이디가 없다면? 회원가입 하기!")
+                        .padding(.vertical, 11)
                 }
-                .padding(.vertical, 11)
+                .padding(.bottom, 16)
             }
             .padding(.horizontal, 16)
         }
@@ -115,8 +124,10 @@ struct LoginView: View {
             errorMessage = nil
             focusField = nil
         }
-        .onTapGesture {
-            focusField = nil
+        .onChange(of: focusField) {
+            withAnimation {
+                isLogoVisible = (focusField == nil)
+            }
         }
     }
 }
