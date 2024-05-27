@@ -26,7 +26,7 @@ public enum Icon {
     static let flashOn = Image(systemName: "bolt.fill")
     static let flashOff = Image(systemName: "bolt.slash.fill")
     static let switchCam = Image(systemName: "arrow.triangle.2.circlepath")
-    
+    static let refresh = Image(systemName: "arrow.clockwise")
     static let waitingPerson = Image(systemName: "person.badge.clock.fill")
     static let person = Image(systemName: "person.fill")
 }

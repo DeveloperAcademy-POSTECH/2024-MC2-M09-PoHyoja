@@ -71,11 +71,21 @@ extension PathType {
 @Observable
 class NavigationManager {
     var path: [PathType]
-    var userState: UserState
+    var userState: UserState {
+        willSet {
+            prevUserState = userState
+        }
+    }
+    @ObservationIgnored var prevUserState: UserState
     
-    init(path: [PathType] = [], userState: UserState = .checkNeeded) {
+    init(
+        path: [PathType] = [],
+        userState: UserState = .checkNeeded,
+        prevUserState: UserState = .checkNeeded
+    ) {
         self.path = path
         self.userState = userState
+        self.prevUserState = userState
     }
 }
 
@@ -95,6 +105,10 @@ extension NavigationManager {
     func pop(to pathType: PathType) {
         guard let lastIndex = path.lastIndex(of: pathType) else { return }
         path.removeLast(path.count - (lastIndex + 1))
+    }
+    
+    func isPrevState(_ state: UserState) -> Bool {
+        return state == prevUserState
     }
 }
 

@@ -82,12 +82,12 @@ struct ConnectUserView: View {
                 Spacer()
                 
                 Button {
-                    isNetworking = true
-                    listenRequest(to: user.name)
                     Task {
+                        isNetworking = true
+                        listenRequest(to: user.name)
                         await rejectConnectionRequest(request: request)
+                        isNetworking = false
                     }
-                    isNetworking = false
                 } label: {
                     ZStack {
                         Color.gray
@@ -108,12 +108,12 @@ struct ConnectUserView: View {
                 .disabled(isNetworking)
                 
                 Button {
-                    isNetworking = true
                     Task {
+                        isNetworking = true
                         await acceptConnectionRequest(currentUserName: user.name, request: request)
+                        isConnected = true
+                        isNetworking = false
                     }
-                    isConnected = true
-                    isNetworking = false
                 } label: {
                     ZStack {
                         Color.green
@@ -200,12 +200,12 @@ struct ConnectUserView: View {
             Spacer()
             
             Button {
-                isNetworking = true
-                listenRequest(from: user.name)
                 Task {
+                    isNetworking = true
+                    listenRequest(from: user.name)
                     await sendConnectionRequest(currentUserName: user.name, otherUserName: nameInput)
+                    isNetworking = false
                 }
-                isNetworking = false
             } label: {
                 ZStack {
                     nameInput.isEmpty ? Color.gray : Color.green

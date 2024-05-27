@@ -14,7 +14,7 @@ struct ChildAlbumView: View {
     
     @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
     @Bindable var user: UserForSwiftData
-
+    
     //geometryReader로 3등분
     let columnLayout = [
         GridItem(.flexible(), spacing: 3),
@@ -36,13 +36,6 @@ struct ChildAlbumView: View {
                                     .font(.headline)
                                     .foregroundStyle(.txtVibrantSecondary)
                                 Spacer()
-                                Button(action: {
-                                    Task {
-                                        await syncPhotoData()
-                                    }
-                                }){
-                                    Image(systemName: "arrow.clockwise")
-                                }
                             }
                             
                             if let uiImage = UIImage(data: first.imgData) {
