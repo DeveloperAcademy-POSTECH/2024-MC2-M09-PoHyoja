@@ -31,6 +31,7 @@
 		4214DA1E2C0392DC0096D48B /* PhotoForShare.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CAE2BFDC2DE003C7001 /* PhotoForShare.swift */; };
 		4214DA1F2C03931E0096D48B /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C682BFA3761003C7001 /* Date+.swift */; };
 		4214DA212C0393830096D48B /* AppDelgate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA202C0393830096D48B /* AppDelgate.swift */; };
+		4214DA292C0436CC0096D48B /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA282C0436CC0096D48B /* HapticManager.swift */; };
 		421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
 		421A8C642BF8FA69003C7001 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
 		421A8C672BFA358A003C7001 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
@@ -128,6 +129,7 @@
 		4214DA192C0392610096D48B /* ConnectionRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionRequests.swift; sourceTree = "<group>"; };
 		4214DA202C0393830096D48B /* AppDelgate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelgate.swift; sourceTree = "<group>"; };
 		4214DA242C03CAF20096D48B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4214DA282C0436CC0096D48B /* HapticManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryShadowModifier.swift; sourceTree = "<group>"; };
 		421A8C632BF8FA69003C7001 /* Icon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Icon.swift; sourceTree = "<group>"; };
 		421A8C662BFA358A003C7001 /* Color+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+.swift"; sourceTree = "<group>"; };
@@ -336,6 +338,15 @@
 			path = Photo;
 			sourceTree = "<group>";
 		};
+		4214DA2A2C0436E30096D48B /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				4214DA282C0436CC0096D48B /* HapticManager.swift */,
+				4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */,
+			);
+			path = Helper;
+			sourceTree = "<group>";
+		};
 		421A8C5A2BF885BD003C7001 /* Global */ = {
 			isa = PBXGroup;
 			children = (
@@ -406,7 +417,7 @@
 			children = (
 				4214DA0E2C0391480096D48B /* App */,
 				4214DA082C0390920096D48B /* Resources */,
-				4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */,
+				4214DA2A2C0436E30096D48B /* Helper */,
 				421A8C5A2BF885BD003C7001 /* Global */,
 				4280466C2BF5DD5B0097EB0B /* View */,
 				51E239D82BF636700051943D /* Model */,
@@ -599,6 +610,7 @@
 				428046762BF5DE6A0097EB0B /* ChildMainView.swift in Sources */,
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
+				4214DA292C0436CC0096D48B /* HapticManager.swift in Sources */,
 				518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */,
 				421A8CAF2BFDC2DE003C7001 /* PhotoForShare.swift in Sources */,
 				421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */,
