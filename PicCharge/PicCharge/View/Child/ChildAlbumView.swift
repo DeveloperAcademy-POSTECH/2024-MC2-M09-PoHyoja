@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 struct ChildAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
@@ -14,6 +15,7 @@ struct ChildAlbumView: View {
     
     @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
     @Bindable var user: UserForSwiftData
+    var didRefresh: () async -> Void
     
     //geometryReader로 3등분
     let columnLayout = [
@@ -78,6 +80,12 @@ struct ChildAlbumView: View {
                     }
                     
                 }
+                .refreshable {
+                    Task {
+                        await didRefresh()
+                        WidgetCenter.shared.reloadAllTimelines()
+                    }
+                }
             } else {
                 Text("아직 업로드된 사진이 없어요.")
             }
@@ -88,7 +96,8 @@ struct ChildAlbumView: View {
 #Preview {
     NavigationStack {
         ChildAlbumView(
-            user: UserForSwiftData(name: "", role: .child, email: "")
+            user: UserForSwiftData(name: "", role: .child, email: ""),
+            didRefresh: {}
         )
         .environment(NavigationManager())
         .preferredColorScheme(.dark)

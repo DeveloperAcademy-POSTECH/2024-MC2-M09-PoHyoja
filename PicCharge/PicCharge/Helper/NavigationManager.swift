@@ -13,11 +13,9 @@ enum PathType: Hashable {
     case selectRole(name: String, email: String, password: String)
     
     // MARK: - 자식
-    case childMain(user: UserForSwiftData)
     case childCamera
     case childSendCamera(imageData: Data)
     case childSendGallery
-    case childAlbum(user: UserForSwiftData)
     case childAlbumDetail(photo: PhotoForSwiftData)
     
     // MARK: - 부모
@@ -40,16 +38,12 @@ extension PathType {
             SelectRoleForSignUpView(name: name, email: email, password: password)
             
         // MARK: - 자식
-        case .childMain(let user):
-            ChildMainView(user: user)
         case .childCamera:
             ChildCameraView()
         case .childSendCamera(let imageData):
             ChildSendCameraView(imageData: imageData)
         case .childSendGallery:
             ChildSendGalleryView()
-        case .childAlbum(let user):
-            ChildAlbumView(user: user)
         case .childAlbumDetail(let photo):
             ChildAlbumDetailView(photo: photo)
             
