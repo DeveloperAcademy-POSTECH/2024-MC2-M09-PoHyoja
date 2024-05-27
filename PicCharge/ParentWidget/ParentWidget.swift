@@ -133,7 +133,7 @@ struct ParentWidget: Widget {
         }
         .configurationDisplayName("자식 앨범")
         .description("자식이 올린 사진을 보아요.")
-        .supportedFamilies([.systemSmall])
+        .supportedFamilies([.systemSmall, .systemLarge])
         .contentMarginsDisabled()
     }
 }
