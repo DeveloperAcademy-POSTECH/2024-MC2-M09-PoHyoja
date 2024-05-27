@@ -85,60 +85,6 @@ struct ChildAlbumView: View {
     }
 }
 
-extension ChildAlbumView {
-    private func syncPhotoData() async {
-        var updateCount = 0
-        var addCount = 0
-        var deleteCount = 0
-        
-        do {
-            let photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
-            var photoIds = Set<UUID>()
-            
-            for photo in photos {
-                
-                guard let photoIdString = photo.id,
-                      let photoId = UUID(uuidString: photoIdString)
-                else {
-                    print("유효하지 않은 ID: \(String(describing: photo.id))")
-                    continue
-                }
-                
-                photoIds.insert(photoId)
-                
-                if let existingPhoto = photoForSwiftDatas.first(where: { $0.id == photoId }) {
-                    if existingPhoto.likeCount != photo.likeCount {
-                        updateCount += 1
-                        existingPhoto.likeCount = photo.likeCount
-                    }
-                } else {
-                    addCount += 1
-                    let newPhotoForSwiftData = try await FirestoreService.shared.fetchPhotoForSwiftDataByPhoto(photo: photo)
-                    modelContext.insert(newPhotoForSwiftData)
-                }
-            }
-            
-            for photoForSwiftData in photoForSwiftDatas {
-                if !photoIds.contains(photoForSwiftData.id) {
-                    deleteCount += 1
-                    modelContext.delete(photoForSwiftData)
-                }
-            }
-            
-            try modelContext.save()
-            
-            print("총\(photos.count) 개의 이미지")
-            print("\(updateCount + addCount + deleteCount) 개의 이미지 동기화함")
-            print("\(updateCount) 개의 사진 업데이트됨")
-            print("\(addCount) 개의 사진 추가됨")
-            print("\(deleteCount) 개의 사진 삭제됨")
-            
-        } catch {
-            print("사진 데이터 동기화 실패: \(error)")
-        }
-    }
-}
-
 #Preview {
     NavigationStack {
         ChildAlbumView(

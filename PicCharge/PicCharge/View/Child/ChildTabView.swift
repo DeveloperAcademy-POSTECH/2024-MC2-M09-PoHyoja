@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import WidgetKit
 
 struct ChildTabView: View {
     @State private var tab: Int = 1
@@ -60,8 +61,8 @@ struct ChildTabView: View {
                         Task {
                             isLoading = true
                             await didRefreshBtnTap()
+                            WidgetCenter.shared.reloadAllTimelines()
                             isLoading = false
-                            
                         }
                     } label: {
                         Icon.refresh
