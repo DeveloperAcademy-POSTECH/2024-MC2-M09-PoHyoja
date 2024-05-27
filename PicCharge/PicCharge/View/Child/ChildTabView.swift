@@ -10,6 +10,8 @@ import SwiftUI
 struct ChildTabView: View {
     @State private var tab: Int = 1
     @Bindable var user: UserForSwiftData
+    @State private var isLoading: Bool = false
+    var didRefreshBtnTap: () async -> Void
     
     var navigationTitle: String {
         switch tab {
@@ -51,12 +53,29 @@ struct ChildTabView: View {
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.large)
         .navigationTitle(navigationTitle)
+        .toolbar {
+            if tab == 2 {
+                ToolbarItemGroup(placement: .topBarTrailing) {
+                    Button {
+                        Task {
+                            isLoading = true
+                            await didRefreshBtnTap()
+                            isLoading = false
+                            
+                        }
+                    } label: {
+                        Icon.refresh
+                    }
+                    .disabled(isLoading)
+                }
+            }
+        }
     }
 }
 
 #Preview {
     NavigationStack {
-        ChildTabView(user: UserForSwiftData(name: "", role: .child, email: ""))
+        ChildTabView(user: UserForSwiftData(name: "", role: .child, email: ""), didRefreshBtnTap: Task { async { } })
 
     }
     .environment(NavigationManager())
