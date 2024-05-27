@@ -116,6 +116,7 @@ struct SettingView: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 200)
         }
+        .navigationTitle("설정")
     }
 }
 
