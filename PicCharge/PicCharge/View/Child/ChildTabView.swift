@@ -73,11 +73,10 @@ struct ChildTabView: View {
     }
 }
 
-//#Preview {
-//    NavigationStack {
-//        ChildTabView(user: UserForSwiftData(name: "", role: .child, email: ""), didRefreshBtnTap: Task { async { } })
-//
-//    }
-//    .environment(NavigationManager())
-//    .preferredColorScheme(.dark)
-//}
+#Preview {
+    NavigationStack {
+        ChildTabView(user: UserForSwiftData(name: "", role: .child, email: ""), didRefreshBtnTap: { } )
+    }
+    .environment(NavigationManager())
+    .preferredColorScheme(.dark)
+}

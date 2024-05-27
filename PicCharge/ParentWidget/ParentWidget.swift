@@ -24,7 +24,7 @@ struct ParentProvider: AppIntentTimelineProvider {
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ParentEntry {
-        var entry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
+        let entry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
         
         do {
             guard let user = await getUserForSwiftData() else {
