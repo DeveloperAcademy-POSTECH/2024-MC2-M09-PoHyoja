@@ -230,7 +230,7 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         }
         
         // 이미지를 JPEG 형식으로 압축하고 Data 형식으로 변환
-        guard let compressedImageData = croppedUIImage.jpegData(compressionQuality: 0.5) else {
+        guard let compressedImageData = croppedUIImage.jpegData(compressionQuality: 0.2) else {
             return
         }
         

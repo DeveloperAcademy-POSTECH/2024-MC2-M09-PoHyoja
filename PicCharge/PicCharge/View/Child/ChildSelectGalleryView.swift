@@ -46,7 +46,7 @@ struct ChildSelectGalleryView: UIViewControllerRepresentable {
                 print("이미지 크롭, 압축 실패")
                 return
             }
-            parentGalleryPicker.selectedImageData = croppedImage.jpegData(compressionQuality: 0.5)
+            parentGalleryPicker.selectedImageData = croppedImage.jpegData(compressionQuality: 0.2)
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {            
