@@ -25,6 +25,7 @@ struct ChildMainView: View {
     @State private var isGaugeAnimating: Bool = false
     @State private var infoPage: Int = 1
     @State private var timer: Timer?
+    @State private var remainingTimeString: String = ""
     
     var uploadCycle: Int {
         user.uploadCycle ?? 3
@@ -150,6 +151,7 @@ struct ChildMainView: View {
         
         withAnimation {
             batteryPercent = round(currentPercentage)
+            remainingTimeString = lastUploadDate.timeIntervalKRStringSeconds()
         }
     
         if currentPercentage <= 0 {
@@ -182,7 +184,7 @@ struct ChildMainView: View {
                         .foregroundStyle(.txtVibrantTertiary)
                         .padding(.bottom, 16)
                     
-                    Text("마지막으로 보낸지 \(lastUploaded.timeIntervalKRStringSeconds()) 됐어요")
+                    Text("마지막으로 보낸지 \(remainingTimeString) 됐어요")
 //                    Text("마지막으로 보낸지 \(lastUploaded.timeIntervalKRString()) 됐어요")
                         .font(.body.weight(.bold))
                         .foregroundStyle(.txtVibrantSecondary)

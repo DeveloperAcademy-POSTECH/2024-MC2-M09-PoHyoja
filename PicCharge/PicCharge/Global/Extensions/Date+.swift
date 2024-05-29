@@ -34,7 +34,7 @@ extension Date {
     func timeIntervalKRStringSeconds() -> String {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .full
-        formatter.allowedUnits = [.minute]
+        formatter.allowedUnits = [.minute, .second]
         formatter.maximumUnitCount = 2
         
         let now = Date()
