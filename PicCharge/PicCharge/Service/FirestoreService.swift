@@ -284,9 +284,13 @@ class FirestoreService {
     /// Firestore의 photo 정보를 업데이트하는 메소드
     func updatePhoto(photoForSwiftData: PhotoForSwiftData) async throws {
         let photoId = photoForSwiftData.id.uuidString
-        try await db.collection("photos").document(photoId).updateData([
-            "likeCount": photoForSwiftData.likeCount,
-        ])
+        do {
+            try await db.collection("photos").document(photoId).updateData([
+                "likeCount": photoForSwiftData.likeCount,
+            ])
+        } catch { 
+            print(error)
+        }
     }
     
     /// Firestore 및 Firebase Storage에서 사진 삭제

@@ -19,6 +19,7 @@ struct SettingView: View {
     
     @State private var isShowingLogoutActionSheet = false
     @State private var isShowingWithdrawActionSheet = false
+    @State private var isShowingAlert = false
     
     private let version = "1.0.0"
     
@@ -58,10 +59,10 @@ struct SettingView: View {
                         }
                     }
                     Section {
-                        Button("서비스 약관 / 개인정보 방침") {
-                            navigationManager.push(to: .settingTermsOfUse)
-                        }
-                        
+//                        Button("서비스 약관 / 개인정보 방침") {
+//                            navigationManager.push(to: .settingTermsOfUse)
+//                        }
+//                        
                         Button("로그아웃") {
                             isShowingLogoutActionSheet = true
                         }
@@ -82,13 +83,14 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("로그아웃", role: .destructive) {
-                        do {
-                            try logout()
-                            navigationManager.userState = .notExist
-                            navigationManager.popToRoot()
-                        } catch {
-                            print("로그아웃 에러: \(error.localizedDescription)")
-                        }
+                        isShowingAlert = true
+//                        do {
+//                            try logout()
+//                            navigationManager.userState = .notExist
+//                            navigationManager.popToRoot()
+//                        } catch {
+//                            print("로그아웃 에러: \(error.localizedDescription)")
+//                        }
                     }
                     Button("취소", role: .cancel) {}
                 }
@@ -100,13 +102,14 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("탈퇴하기", role: .destructive) {
-                        do {
-                            try deleteUser()
-                            navigationManager.userState = .notExist
-                            navigationManager.popToRoot()
-                        } catch {
-                            print("회원 탈퇴 에러: \(error.localizedDescription)")
-                        }
+                        isShowingAlert = true
+//                        do {
+//                            try deleteUser()
+//                            navigationManager.userState = .notExist
+//                            navigationManager.popToRoot()
+//                        } catch {
+//                            print("회원 탈퇴 에러: \(error.localizedDescription)")
+//                        }
                     }
                     Button("취소", role: .cancel) {}
                 }
@@ -117,6 +120,22 @@ struct SettingView: View {
                 .padding(.top, 200)
         }
         .navigationTitle("설정")
+        .alert(isPresented: $isShowingAlert) {
+            Alert(
+                title: Text("뉴 런"),
+                message: Text("안뎀안뎀~~지금 시연 중임"),
+                primaryButton:  .cancel(Text("뉴런 말 듣기")),
+                secondaryButton: .destructive(Text("그래도 ㄱ")) {
+                    do {
+                        try logout()
+                        navigationManager.userState = .notExist
+                        navigationManager.popToRoot()
+                    } catch {
+                        print("로그아웃 에러: \(error.localizedDescription)")
+                    }
+                }
+            )
+        }
     }
 }
 
