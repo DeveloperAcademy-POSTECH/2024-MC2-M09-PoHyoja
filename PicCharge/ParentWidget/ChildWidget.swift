@@ -18,10 +18,10 @@ struct ChildProvider: AppIntentTimelineProvider {
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ChildEntry {
         let currentTime = Date()
-        let uploadCycle = (await getUploadCycle() ?? 3) * 24 // 목표로 설정한 시간
+        let uploadCycle = (await getUploadCycle() ?? 3) // 목표로 설정한 시간
         let lastUploadDate = await getLastUploadedDate() ?? Date() // 사진을 보낸 시간
         let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
-        let uploadCycleSeconds = Double(uploadCycle * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
+        let uploadCycleSeconds = Double(uploadCycle * 100) // uploadCycle을 시간 단위로, N일 지나면 0%
         
         // 배터리 백분율 계산, 1프로 이하는 1로 고정
         let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
@@ -32,7 +32,7 @@ struct ChildProvider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ChildEntry> {
         var entries: [ChildEntry] = []
         
-        let uploadCycle = (await getUploadCycle() ?? 3) * 24 // 목표로 설정한 시간
+        let uploadCycle = (await getUploadCycle() ?? 3) * 100// 목표로 설정한 시간
         let lastUploadDate = await getLastUploadedDate() ?? Date() // 사진을 보낸 시간
         
         // 근사값이라 targetTime에 어떤 값이 오더라도 배터리가 0이하가 될 수 있게 +1을 해줌
@@ -100,7 +100,8 @@ struct ChildWidgetEntryView : View {
                             Spacer()
                         }
                         HStack {
-                            Text("사진 보낸 지 \(entry.lastUploadedDate.timeIntervalKRString()) 됐어요")
+                            Text("사진 보낸 지 \(entry.lastUploadedDate.timeIntervalKRStringSeconds()) 됐어요")
+//                            Text("사진 보낸 지 \(entry.lastUploadedDate.timeIntervalKRString()) 됐어요")
                                 .font(.body.weight(.bold))
                                 .foregroundStyle(.txtAAA8A9)
                             

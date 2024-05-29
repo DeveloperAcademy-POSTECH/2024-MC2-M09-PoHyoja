@@ -51,7 +51,7 @@ struct ParentAlbumDetailView: View {
                     .transition(.opacity)
                     .opacity(0.5)
                     .frame(width: 160, height: 240)
-                    .offset(y: 150)
+                    .offset(y: 188) // iPhone 13 Pro Max, iPhone 15 Pro: 150
                     .onAppear {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                             likeAnimationIDs.removeAll { $0 == id }
@@ -156,6 +156,11 @@ struct ParentAlbumDetailView: View {
                 navigationManager.pop()
             }
             Button("Cancel", role: .cancel) {}
+        }
+        .onDisappear {
+            Task {
+                try await FirestoreService.shared.updatePhoto(photoForSwiftData: photo)
+            }
         }
     }
     
