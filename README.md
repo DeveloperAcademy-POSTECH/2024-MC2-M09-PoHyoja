@@ -1,46 +1,63 @@
-# 2024-MC2-M09-PoHyoja
+![image](https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/0d92ad80-e24a-4826-9b98-884bb9a9d37e)
 
-## 이슈 컨벤션
-```[FEAT] 설명```  
-ex) [FEAT] 네비게이션 패스 작업 구현
-- [] 대괄호 안에 대문자로 항목을 넣고 뒤에 설명을 간단하게 작성한다.
-- [FEAT], [BUG] ...
+<div align=center> 
+    <img src="https://img.shields.io/badge/swift-F05138?style=for-the-badge&logo=swift&logoColor=white">
+    <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
+</div>
 
-## 브랜치 컨벤션
+# <img width="35" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/2cc8b170-99ac-48e9-9f44-90bf2e3e143b"> 픽-챠 PicCharge
 
-```Feat/기능요약```  
-ex) Feat/NavigationPath
-- 첫 글자만 대문자로 시작합니다.
-- / 뒤에는 CamelCase로 작성합니다. 
-    - (단어가 합쳐진 부분마다 맨 처음 글자를 대문자로 표기)
-    - ex) NavigationPath
+> 아버지에게 아들의 소중한 추억을 더 가까이에서 느낄 수 있도록 도와주는 앱
 
-## 커밋 메세지 컨벤션
+**아들에겐**, 아버지에게 보내드릴 사진의 목표를 위젯에 표시해주는 앱입니다.
+아버지의 배터리를 충전시키고, 특별한 순간을 사진으로 공유하세요.
+소중한 추억을 더 가까이에서 느낄 수 있게 도와줍니다.
 
-```(항목): (이슈번호) (설명)```  
-ex) Feat: #1 사진 저장 기능 추가
-- 항목의 첫 글자만 대문자로 시작합니다. (Feat-O, FEAT/feat-X)
-- 항목과 콜론(:)은 붙여 씁니다.
-- 그 후 이슈번호와 설명은 한 칸 씩 띄워줍니다.
+**아버지에겐**, 아들이 보내는 사진을 위젯에 표시해주는 간단한 앱입니다.
+복잡한 조작 없이, 아들이 보내는 소중한 순간들을 디지털 액자처럼 손쉽게 감상하세요.
+가족의 특별한 순간을 언제 어디서나 함께할 수 있습니다.
 
- <br> 
+# 쇼케이스 영상
 
-| 항목               | 설명                                                         | 예시                                                        |
-| ------------------ | ------------------------------------------------------------ | ----------------------------------------------------------- |
-| Feat               | 새로운 기능 추가                                             |                                                             |
-| Fix                | 버그 수정                                                    |                                                             |
-| Design             | CSS 등 사용자 UI 디자인 변경                                 |                                                             |
-| !BREAKING CHANGE   | 커다란 API 변경의 경우                                        | ex) API의 arguments, return 값의 변경<br />ex) DB 테이블 변경 |
-| !HOTFIX            | 급하게 치명적인 버그를 고쳐야하는 경우                       |                                                             |
-| Comment            | 필요한 주석 추가 및 변경                                     |                                                             |
-| Style              | 스타일 관련 기능                                             | ex) 코드 포맷팅, 세미콜론 누락, 코드 자체의 변경이 없는 경우<br />ex) 오타 수정, 탭 사이즈 변경, 변수명 변경 등 |
-| Refactor           | 코드 리팩토링                                                 |                                                             |
-| Docs               | 문서 수정                                                    | ex) README.md 수정 등<br />기타                             |
-| Test               | • 테스트 코드, 리펙토링 테스트 코드 추가(프로덕션 코드 변경 X)<br />• test 폴더 내부 변경이 발생한 경우에만 해당 |                                                             |
-| Rename             | 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우         |                                                             |
-| Remove             | 사용하지 않는 파일 혹은 폴더를 삭제하는 경우                 |                                                             |
-| Chore              | • 빌드 업무 수정, 패키지 매니저 수정<br />• 모듈의 변경    |                                                             |
+https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/2f41b19d-1d90-4060-a8bb-281aa7c8ba76
 
-<br>
+## 기능 소개 영상
 
-- 추가, 수정 사항 있으면 작성해주십쇼.
+https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/2afdce93-f253-43e3-84e7-ecbac339d975
+
+## 스크린샷
+
+### 자녀가 보는 화면
+
+| 메인화면 - 배터리 | 메인화면 - 통계 | 앨범 |
+|:---:|:---:|:---:|
+|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/557cbc10-ca9c-4781-959f-807b5cbfaab6">|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/de08eea0-cfd7-415a-bfc1-2bbf76ac3fc5">|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/8643b3cd-5632-49d8-b322-675e0ab39932">|
+
+| 사진 촬영 | 아이폰 앨범 사진 보내기 | 위젯 | 
+|:---:|:---:|:---:|
+|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/c645fc34-5c31-47f8-9c8d-eed13b9928bd">|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/2f5cd575-43f7-4783-b05d-cd19a74b27cc">|<img width="200" alt="image" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/ee2e652a-0b89-473d-a5bc-ee764aacdc16">|
+
+### 부모가 보는 화면
+
+
+| 앨범 | 좋아요 | 위젯 |
+|:---:|:---:|:---:|
+|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/69770556-5177-4c32-8ac0-0f3c042dfd58">|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/a7abdda9-9417-4626-9b4e-e3e8171bcdd4">|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/c88f08cc-2fd3-4027-a000-950ab6896f49">|
+
+
+## 🎁 Frameworks and Libraries
+
+- SwiftUI
+- WidgetKit
+- Firebase
+
+## Team
+
+<img width="800" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/a716ffd2-9149-416e-9667-9261c31b314f">
+
+|<img src="https://avatars.githubusercontent.com/u/75793880?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/77305722?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/82072195?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/166782110?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/116636498?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/160083809?v=4" width="150" height="150"/>|
+|:-:|:-:|:-:|:-:|:-:|:-:|
+|Nam Yuseong(라뮤)<br/>[@99yuseong](https://github.com/99yuseong)|이상현(에이스)<br/>[@dgh06175](https://github.com/dgh06175)|Won(원)<br/>[@mosiccan](https://github.com/mosiccan)|Byhoon kim (마일스)<br/>[@by-h00n](https://github.com/by-h00n)|Kim Dohyun(뉴런)<br/>[@GitDohyun](https://github.com/GitDohyun)|안종민(모닝)<br/>[@JongminAhn](https://github.com/JongminAhn)|
+
+> Apple Developer Academy @ POSTECH 3th - MC2 Team 9<br>
+> 2024.04.29 ~ 2024.05.31
