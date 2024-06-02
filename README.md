@@ -17,15 +17,15 @@
 복잡한 조작 없이, 아들이 보내는 소중한 순간들을 디지털 액자처럼 손쉽게 감상하세요.
 가족의 특별한 순간을 언제 어디서나 함께할 수 있습니다.
 
-# 쇼케이스 영상
+## 🎥 쇼케이스 영상
 
 https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/2f41b19d-1d90-4060-a8bb-281aa7c8ba76
 
-## 기능 소개 영상
+## 📱시연 영상
 
 https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/2afdce93-f253-43e3-84e7-ecbac339d975
 
-## 스크린샷
+## 🖼️ 스크린샷
 
 ### 자녀가 보는 화면
 
@@ -39,7 +39,6 @@ https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722
 
 ### 부모가 보는 화면
 
-
 | 앨범 | 좋아요 | 위젯 |
 |:---:|:---:|:---:|
 |<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/69770556-5177-4c32-8ac0-0f3c042dfd58">|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/a7abdda9-9417-4626-9b4e-e3e8171bcdd4">|<img width="200" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/c88f08cc-2fd3-4027-a000-950ab6896f49">|
@@ -51,11 +50,11 @@ https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722
 - WidgetKit
 - Firebase
 
-## Team
+## 🧑‍🤝‍🧑 Team
 
-<img width="800" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/a716ffd2-9149-416e-9667-9261c31b314f">
+![MC2 팀9 단체사진](https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/a716ffd2-9149-416e-9667-9261c31b314f)
 
-|<img src="https://avatars.githubusercontent.com/u/75793880?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/77305722?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/82072195?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/166782110?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/116636498?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/160083809?v=4" width="150" height="150"/>|
+|<img src="https://avatars.githubusercontent.com/u/75793880?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/77305722?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/82072195?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/166782110?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/116636498?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/160083809?v=4" width="100" height="100"/>|
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |Nam Yuseong(라뮤)<br/>[@99yuseong](https://github.com/99yuseong)|이상현(에이스)<br/>[@dgh06175](https://github.com/dgh06175)|Won(원)<br/>[@mosiccan](https://github.com/mosiccan)|Byhoon kim (마일스)<br/>[@by-h00n](https://github.com/by-h00n)|Kim Dohyun(뉴런)<br/>[@GitDohyun](https://github.com/GitDohyun)|안종민(모닝)<br/>[@JongminAhn](https://github.com/JongminAhn)|
 
