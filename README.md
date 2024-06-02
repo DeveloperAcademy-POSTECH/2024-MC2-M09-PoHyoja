@@ -54,9 +54,10 @@ https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722
 
 ![MC2 팀9 단체사진](https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/a716ffd2-9149-416e-9667-9261c31b314f)
 
-|<img src="https://avatars.githubusercontent.com/u/75793880?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/77305722?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/82072195?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/166782110?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/116636498?v=4" width="100" height="100"/>|<img src="https://avatars.githubusercontent.com/u/160083809?v=4" width="100" height="100"/>|
+|라뮤<br/>Nam Yuseong|에이스<br/>(이상현)|원<br/>Won|마일스<br/>Byhoon kim|뉴런<br/>Kim Dohyun|모닝<br/>안종민|
 |:-:|:-:|:-:|:-:|:-:|:-:|
-|Nam Yuseong(라뮤)<br/>[@99yuseong](https://github.com/99yuseong)|이상현(에이스)<br/>[@dgh06175](https://github.com/dgh06175)|Won(원)<br/>[@mosiccan](https://github.com/mosiccan)|Byhoon kim (마일스)<br/>[@by-h00n](https://github.com/by-h00n)|Kim Dohyun(뉴런)<br/>[@GitDohyun](https://github.com/GitDohyun)|안종민(모닝)<br/>[@JongminAhn](https://github.com/JongminAhn)|
+|<img src="https://avatars.githubusercontent.com/u/75793880?v=4"/>|<img src="https://avatars.githubusercontent.com/u/77305722?v=4"/>|<img src="https://avatars.githubusercontent.com/u/82072195?v=4"/>|<img src="https://avatars.githubusercontent.com/u/166782110?v=4"/>|<img src="https://avatars.githubusercontent.com/u/116636498?v=4"/>|<img src="https://avatars.githubusercontent.com/u/160083809?v=4"/>|
+|[@99yuseong](https://github.com/99yuseong)|[@dgh06175](https://github.com/dgh06175)|[@mosiccan](https://github.com/mosiccan)|[@by-h00n](https://github.com/by-h00n)|[@GitDohyun](https://github.com/GitDohyun)|[@JongminAhn](https://github.com/JongminAhn)|
 
 > Apple Developer Academy @ POSTECH 3th - MC2 Team 9<br>
 > 2024.04.29 ~ 2024.05.31
