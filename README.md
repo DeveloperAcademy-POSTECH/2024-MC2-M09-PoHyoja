@@ -54,7 +54,7 @@ https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722
 
 ![MC2 팀9 단체사진](https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/a716ffd2-9149-416e-9667-9261c31b314f)
 
-|라뮤<br/>Nam Yuseong|에이스<br/>(이상현)|원<br/>Won|마일스<br/>Byhoon kim|뉴런<br/>Kim Dohyun|모닝<br/>안종민|
+|라뮤<br/>Nam Yuseong|에이스<br/>이상현|원<br/>Won|마일스<br/>Byhoon kim|뉴런<br/>Kim Dohyun|모닝<br/>안종민|
 |:-:|:-:|:-:|:-:|:-:|:-:|
 |<img src="https://avatars.githubusercontent.com/u/75793880?v=4"/>|<img src="https://avatars.githubusercontent.com/u/77305722?v=4"/>|<img src="https://avatars.githubusercontent.com/u/82072195?v=4"/>|<img src="https://avatars.githubusercontent.com/u/166782110?v=4"/>|<img src="https://avatars.githubusercontent.com/u/116636498?v=4"/>|<img src="https://avatars.githubusercontent.com/u/160083809?v=4"/>|
 |[@99yuseong](https://github.com/99yuseong)|[@dgh06175](https://github.com/dgh06175)|[@mosiccan](https://github.com/mosiccan)|[@by-h00n](https://github.com/by-h00n)|[@GitDohyun](https://github.com/GitDohyun)|[@JongminAhn](https://github.com/JongminAhn)|
