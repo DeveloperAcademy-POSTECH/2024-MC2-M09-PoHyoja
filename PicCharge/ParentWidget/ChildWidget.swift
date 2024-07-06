@@ -9,6 +9,16 @@ import SwiftUI
 import WidgetKit
 import SwiftData
 
+
+struct ChildEntry: TimelineEntry {
+    let date: Date
+    let configuration: ConfigurationAppIntent
+    let batteryPercentage: Double // 근사값이라 정확도 최대한 높이려고 Double 사용
+    let lastUploadedDate: Date
+    let hourOffset: Int // hourOffset 값을 사진 보낸지 얼마나 됐는지로도 사용
+}
+
+
 struct ChildProvider: AppIntentTimelineProvider {
     let container: ModelContainer
     
@@ -67,13 +77,7 @@ struct ChildProvider: AppIntentTimelineProvider {
     }
 }
 
-struct ChildEntry: TimelineEntry {
-    let date: Date
-    let configuration: ConfigurationAppIntent
-    let batteryPercentage: Double // 근사값이라 정확도 최대한 높이려고 Double 사용
-    let lastUploadedDate: Date
-    let hourOffset: Int // hourOffset 값을 사진 보낸지 얼마나 됐는지로도 사용
-}
+
 
 struct ChildWidgetEntryView : View {
     var entry: ChildProvider.Entry

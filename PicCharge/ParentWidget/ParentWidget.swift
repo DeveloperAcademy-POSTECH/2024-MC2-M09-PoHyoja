@@ -101,10 +101,10 @@ struct ParentWidgetView : View {
                     .cornerRadius(21)
                     .clipped()
             )
-            .overlay(
-                RoundedRectangle(cornerRadius: 21)
-                    .stroke(Color.bgSecondaryElevated, lineWidth: 20)
-            )
+//            .overlay(
+//                RoundedRectangle(cornerRadius: 21)
+//                    .stroke(Color.bgSecondaryElevated, lineWidth: 20)
+//            )
             .containerBackground(Color.clear, for: .widget)
     }
 }
