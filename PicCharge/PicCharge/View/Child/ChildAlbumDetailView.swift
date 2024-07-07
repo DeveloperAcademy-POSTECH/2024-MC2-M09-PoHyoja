@@ -43,19 +43,19 @@ struct ChildAlbumDetailView: View {
                 }
                 
                 VStack(spacing: 8) {
-                        Button { } label: {
-                            Icon.heart
-                                .font(.system(size: 50))
-                                .foregroundColor(photo.likeCount > 0 ? .grpRed : .clear)
-                        }
-                        .disabled(true)
-                        
-                        Text(photo.likeCount > 0 ? "\(photo.likeCount)개" : " ")
-                            .font(.body)
-                            .fontWeight(.bold)
+                    Button { } label: {
+                        Icon.heart
+                            .font(.system(size: 50))
+                            .foregroundColor(photo.likeCount > 0 ? .grpRed : .clear)
                     }
-                    .padding(.vertical, 80)
-                    .opacity(isZooming ? 0 : 1)
+                    .disabled(true)
+                    
+                    Text(photo.likeCount > 0 ? "\(photo.likeCount)개" : " ")
+                        .font(.body)
+                        .fontWeight(.bold)
+                }
+                .padding(.vertical, 80)
+                .opacity(isZooming ? 0 : 1)
             }
             Spacer()
         }
