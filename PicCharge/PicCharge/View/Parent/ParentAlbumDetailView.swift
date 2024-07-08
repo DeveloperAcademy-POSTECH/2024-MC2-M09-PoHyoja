@@ -29,7 +29,7 @@ struct ParentAlbumDetailView: View {
     private let photoForShare: PhotoForShare
     
     var photo: PhotoForSwiftData {
-        photoForSwiftDatas.first { $0.id == self.selection }!
+        photoForSwiftDatas.first { $0.id == self.selection } ?? .empty()
     }
     
     init(photo: PhotoForSwiftData) {
