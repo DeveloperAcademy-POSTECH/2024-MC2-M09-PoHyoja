@@ -20,11 +20,11 @@ struct ParentProvider: AppIntentTimelineProvider {
     let container: ModelContainer
     
     func placeholder(in context: Context) -> ParentEntry {
-        ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
+        ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ParentEntry {
-        let entry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
+        let entry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
         
         do {
             guard let user = await getUserForSwiftData() else {
@@ -38,7 +38,9 @@ struct ParentProvider: AppIntentTimelineProvider {
             if let lastPhoto = photos.last {
                 let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
                 
-                return ParentEntry(date: Date(), image: (UIImage(data: imgData)?.resized(toWidth: 512) ?? UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512)!)!)
+                if let image = UIImage(data: imgData) {
+                    return ParentEntry(date: Date(), image: image)
+                }
             }
         } catch {
             return entry
@@ -48,7 +50,7 @@ struct ParentProvider: AppIntentTimelineProvider {
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ParentEntry> {
-        var entry: ParentEntry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512) ?? UIImage())
+        var entry: ParentEntry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
         
         do {
             guard let user = await getUserForSwiftData() else {
@@ -62,7 +64,9 @@ struct ParentProvider: AppIntentTimelineProvider {
             if let lastPhoto = photos.last {
                 let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
                 
-                entry = ParentEntry(date: Date(), image: (UIImage(data: imgData)?.resized(toWidth: 512) ?? UIImage(named: "ParentWidgetPreview")?.resized(toWidth: 512)!)!)
+                if let image = UIImage(data: imgData) {
+                    entry = ParentEntry(date: Date(), image: image)
+                }
             }
             
         } catch {
@@ -92,20 +96,18 @@ struct ParentWidgetView : View {
     var entry: ParentProvider.Entry
     
     var body: some View {
-        RoundedRectangle(cornerRadius: 21)
-            .fill(Color.clear)
-            .overlay(
-                Image(uiImage: entry.image.resized(toWidth: 512, isOpaque: true)!)
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fit)
-                    .cornerRadius(21)
-                    .clipped()
-            )
-//            .overlay(
-//                RoundedRectangle(cornerRadius: 21)
-//                    .stroke(Color.bgSecondaryElevated, lineWidth: 20)
-//            )
-            .containerBackground(Color.clear, for: .widget)
+        GeometryReader { geometry in
+            RoundedRectangle(cornerRadius: 21)
+                .fill(Color.clear)
+                .overlay(
+                    Image(uiImage: entry.image.resized(toWidth: geometry.size.width, isOpaque: true)!)
+                        .resizable()
+                        .frame(width: geometry.size.width, height: geometry.size.height)
+                        .cornerRadius(21)
+                        .clipped()
+                )
+                .containerBackground(Color.clear, for: .widget)
+        }
     }
 }
 
