@@ -13,36 +13,57 @@ struct ChildAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
     
-    @Bindable var photo: PhotoForSwiftData
+    @Query(
+        sort: \PhotoForSwiftData.uploadDate,
+        order: .reverse
+    ) var photoForSwiftDatas: [PhotoForSwiftData]
+    @State var selection: UUID
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     
     private let photoForShare: PhotoForShare
     
+    var photo: PhotoForSwiftData {
+        photoForSwiftDatas.first { $0.id == self.selection } ?? .empty()
+    }
+    
     init(photo: PhotoForSwiftData) {
-        self.photo = photo
+        self.selection = photo.id
         self.photoForShare = PhotoForShare(imgData: photo.imgData, uploadDate: photo.uploadDate)
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack{
-                Spacer()
-                
-                if let uiImg = UIImage(data: photo.imgData) {
-                    Image(uiImage: uiImg)
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: geometry.size.width, height: geometry.size.width)
-                        .clipped()
-                        .zoomable(isZooming: $isZooming)
-                } else {
-                    Color.bgGray
-                        .frame(width: geometry.size.width, height: geometry.size.width)
+        ZStack {
+            Color.clear.ignoresSafeArea()
+            
+            VStack {
+                TabView(selection: $selection) {
+                    ForEach(photoForSwiftDatas) { photo in
+                        Group {
+                            if let uiImg = UIImage(data: photo.imgData) {
+                                Image(uiImage: uiImg)
+                                    .resizable()
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .zoomable(isZooming: $isZooming)
+                            } else {
+                                Color.bgGray
+                                    .aspectRatio(1, contentMode: .fit)
+                            }
+                        }
+                        .tag(photo.id)
+                        .padding(.bottom, 166)
+                    }
                 }
-                
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .animation(.smooth, value: selection)
+            }
+            
+            VStack {
+                Spacer()
                 VStack(spacing: 8) {
-                    Button { } label: {
+                    Button { 
+                        
+                    } label: {
                         Icon.heart
                             .font(.system(size: 50))
                             .foregroundColor(photo.likeCount > 0 ? .grpRed : .clear)
@@ -53,10 +74,9 @@ struct ChildAlbumDetailView: View {
                         .font(.body)
                         .fontWeight(.bold)
                 }
-                .padding(.vertical, 80)
                 .opacity(isZooming ? 0 : 1)
+                .padding(.bottom, 80)
             }
-            Spacer()
         }
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)

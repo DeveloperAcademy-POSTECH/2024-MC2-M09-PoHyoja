@@ -53,3 +53,9 @@ extension PhotoForSwiftData: Hashable {
         return lhs.id == rhs.id
     }
 }
+
+extension PhotoForSwiftData {
+    static func empty() -> PhotoForSwiftData {
+        .init(uploadBy: "", sharedWith: [], imgData: Data())
+    }
+}
