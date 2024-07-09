@@ -15,7 +15,6 @@ struct ChildAlbumDetailView: View {
     
     @Bindable var photo: PhotoForSwiftData
     @State private var isShowingDeleteSheet: Bool = false
-    @State private var isShowingInquirySheet: Bool = false
     @State private var isZooming: Bool = false
     
     private let photoForShare: PhotoForShare

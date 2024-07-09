@@ -21,7 +21,7 @@ struct SettingView: View {
     @State private var isShowingWithdrawActionSheet = false
     @State private var isShowingAlert = false
     
-    private let version = "1.0.1"
+    private let version = "1.0.0"
     
     init(myRole: Role) {
         self.myRole = myRole
