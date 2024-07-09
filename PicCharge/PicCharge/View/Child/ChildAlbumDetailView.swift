@@ -15,7 +15,6 @@ struct ChildAlbumDetailView: View {
     
     @Bindable var photo: PhotoForSwiftData
     @State private var isShowingDeleteSheet: Bool = false
-    @State private var isShowingInquirySheet: Bool = false
     @State private var isZooming: Bool = false
     
     private let photoForShare: PhotoForShare
@@ -46,13 +45,13 @@ struct ChildAlbumDetailView: View {
                     Button { } label: {
                         Icon.heart
                             .font(.system(size: 50))
-                            .foregroundColor(.grpRed)
+                            .foregroundColor(photo.likeCount > 0 ? .grpRed : .clear)
                     }
                     .disabled(true)
                     
-                    Text(photo.likeCount == 0 ? " " : "\(photo.likeCount)개")
+                    Text(photo.likeCount > 0 ? "\(photo.likeCount)개" : " ")
                         .font(.body)
-                        .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
+                        .fontWeight(.bold)
                 }
                 .padding(.vertical, 80)
                 .opacity(isZooming ? 0 : 1)
@@ -64,13 +63,6 @@ struct ChildAlbumDetailView: View {
         .toolbar(isZooming ? .hidden : .visible, for: .navigationBar)
         .toolbar {
             Menu {
-                Button {
-                    self.isShowingInquirySheet = true
-                } label: {
-                    Icon.inquiry
-                    Text("문의하기")
-                }
-                
                 ShareLink(
                     item: photoForShare,
                     preview: SharePreview(photoForShare.caption, image: photoForShare.image)
@@ -111,26 +103,6 @@ struct ChildAlbumDetailView: View {
                 }
                 Button("Cancel", role: .cancel) {}
             }
-        }
-        .confirmationDialog(
-            "이 사진을 문의하시겠습니까?",
-            isPresented: $isShowingInquirySheet,
-            titleVisibility: .visible
-        ) {
-            Button("문의하기") {
-                // MARK: - 로컬 사진 삭제 처리
-                modelContext.delete(photo)
-                
-                // MARK: - 서버 사진 삭제 처리
-                Task {
-                    await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
-                }
-                
-                WidgetCenter.shared.reloadAllTimelines()
-                
-                navigationManager.pop()
-            }
-            Button("Cancel", role: .cancel) {}
         }
     }
 }

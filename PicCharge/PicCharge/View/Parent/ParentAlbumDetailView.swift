@@ -16,7 +16,6 @@ struct ParentAlbumDetailView: View {
     
     @Bindable var photo: PhotoForSwiftData
     @State private var isShowingDeleteSheet: Bool = false
-    @State private var isShowingInquirySheet: Bool = false
     @State private var isZooming: Bool = false
     @State private var isLiked: Bool = false
     @State private var cancellable: AnyCancellable?
@@ -90,13 +89,6 @@ struct ParentAlbumDetailView: View {
         .toolbar(isZooming ? .hidden : .visible, for: .navigationBar)
         .toolbar {
             Menu {
-                Button {
-                    self.isShowingInquirySheet = true
-                } label: {
-                    Icon.inquiry
-                    Text("문의하기")
-                }
-                
                 ShareLink(
                     item: photoForShare,
                     preview: SharePreview(photoForShare.caption, image: photoForShare.image)
@@ -137,25 +129,6 @@ struct ParentAlbumDetailView: View {
                 }
                 Button("Cancel", role: .cancel) {}
             }
-        }
-        .confirmationDialog(
-            "이 사진을 문의하시겠습니까?",
-            isPresented: $isShowingInquirySheet,
-            titleVisibility: .visible
-        ) {
-            Button("문의하기") {
-                // MARK: - 로컬 사진 삭제 처리
-                modelContext.delete(photo)
-                
-                Task {
-                    await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
-                }
-                
-                WidgetCenter.shared.reloadAllTimelines()
-                
-                navigationManager.pop()
-            }
-            Button("Cancel", role: .cancel) {}
         }
         .onDisappear {
             Task {
