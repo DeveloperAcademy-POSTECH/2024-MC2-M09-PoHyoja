@@ -14,20 +14,26 @@ struct ParentAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
     
-    @Bindable var photo: PhotoForSwiftData
+    @Query(
+        sort: \PhotoForSwiftData.uploadDate,
+        order: .reverse
+    ) var photoForSwiftDatas: [PhotoForSwiftData]
+    @State var selection: UUID
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     @State private var isLiked: Bool = false
     @State private var cancellable: AnyCancellable?
     @State private var likeAnimationIDs: [UUID] = []
     
-    private let imageView: Image
     private let photoForShare: PhotoForShare
     
+    var photo: PhotoForSwiftData {
+        photoForSwiftDatas.first { $0.id == self.selection } ?? .empty()
+    }
+    
     init(photo: PhotoForSwiftData) {
-        self.photo = photo
+        self.selection = photo.id
         self.photoForShare = PhotoForShare(imgData: photo.imgData, uploadDate: photo.uploadDate)
-        self.imageView = Image(uiImage: UIImage(data: photo.imgData)!)
     }
     
     var body: some View {
@@ -35,14 +41,25 @@ struct ParentAlbumDetailView: View {
             Color.clear.ignoresSafeArea()
             
             VStack {
-                Spacer()
-                imageView
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fit)
-                    .clipped()
-                    .zoomable(isZooming: $isZooming)
-                    .padding(.bottom, 166)
-                Spacer()
+                TabView(selection: $selection) {
+                    ForEach(photoForSwiftDatas) { photo in
+                        Group {
+                            if let uiImg = UIImage(data: photo.imgData) {
+                                Image(uiImage: uiImg)
+                                    .resizable()
+                                    .aspectRatio(1, contentMode: .fit)
+                                    .zoomable(isZooming: $isZooming)
+                            } else {
+                                Color.bgGray
+                                    .aspectRatio(1, contentMode: .fit)
+                            }
+                        }
+                        .tag(photo.id)
+                        .padding(.bottom, 166)
+                    }
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .animation(.smooth, value: selection)
             }
             
             ForEach(likeAnimationIDs, id: \.self) { id in
@@ -82,7 +99,6 @@ struct ParentAlbumDetailView: View {
             }
             .opacity(isZooming ? 0 : 1)
             .padding(.bottom, 80)
-            
         }
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)
