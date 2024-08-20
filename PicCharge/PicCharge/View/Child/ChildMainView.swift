@@ -25,7 +25,6 @@ struct ChildMainView: View {
     @State private var isGaugeAnimating: Bool = false
     @State private var infoPage: Int = 1
     @State private var timer: Timer?
-    @State private var remainingTimeString: String = ""
     
     var uploadCycle: Int {
         user.uploadCycle ?? 3
@@ -102,7 +101,7 @@ struct ChildMainView: View {
                     }
                     .padding(.horizontal, 16)
                 }
-                .frame(height: 306)
+                .frame(height: 300)
                 .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
                 .tabViewStyle(.page(indexDisplayMode: .always))
                 .onTapGesture {
@@ -143,15 +142,13 @@ struct ChildMainView: View {
         
         let currentTime = Date()
         let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
-//        let uploadCycleSeconds = Double(uploadCycle * 24 * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
-        let uploadCycleSeconds = Double(uploadCycle * 100) // uploadCycle을 시간 단위로, N일 지나면 0%
+        let uploadCycleSeconds = Double(uploadCycle * 24 * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
         
         // 배터리 백분율 계산, 1프로 이하는 1로 고정
         let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
         
         withAnimation {
             batteryPercent = round(currentPercentage)
-            remainingTimeString = lastUploadDate.timeIntervalKRStringSeconds()
         }
     
         if currentPercentage <= 0 {
@@ -184,15 +181,14 @@ struct ChildMainView: View {
                         .foregroundStyle(.txtVibrantTertiary)
                         .padding(.bottom, 16)
                     
-                    Text("마지막으로 보낸지 \(remainingTimeString) 됐어요")
-//                    Text("마지막으로 보낸지 \(lastUploaded.timeIntervalKRString()) 됐어요")
+                    Text("마지막으로 보낸지 \(lastUploaded.timeIntervalKRString()) 됐어요")
                         .font(.body.weight(.bold))
                         .foregroundStyle(.txtVibrantSecondary)
                         .padding(.bottom, 21)
                 }
             }
             .padding(11)
-            .frame(height: 272)
+            .frame(height: 267)
             .background(Color.bgSecondaryElevated)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             
@@ -302,8 +298,8 @@ struct ChildMainView: View {
     
     @ViewBuilder
     func InfoView(
-        Icon: Image, 
-        label: String, 
+        Icon: Image,
+        label: String,
         content: String,
         tintColor: Color
     ) -> some View {
