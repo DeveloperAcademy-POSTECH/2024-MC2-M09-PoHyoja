@@ -154,6 +154,8 @@
 		428046892BF5E0170097EB0B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTermsOfUseView.swift; sourceTree = "<group>"; };
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
+		42EFC37E2CA0956A00C0DC51 /* GoogleService-Info-Debug.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Debug.plist"; sourceTree = "<group>"; };
+		42EFC37F2CA0956A00C0DC51 /* GoogleService-Info-Release.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Release.plist"; sourceTree = "<group>"; };
 		5151CB892BFEE41300AF792F /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
 		516978312C00CDEF00168164 /* BuggungEnd.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungEnd.json; sourceTree = "<group>"; };
 		516978332C01B51800168164 /* BuggungEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungEndView.swift; sourceTree = "<group>"; };
@@ -382,6 +384,31 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		42EFC37D2CA0954400C0DC51 /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				42EFC3812CA095D200C0DC51 /* Prod */,
+				42EFC3802CA095CA00C0DC51 /* Dev */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		42EFC3802CA095CA00C0DC51 /* Dev */ = {
+			isa = PBXGroup;
+			children = (
+				42EFC37E2CA0956A00C0DC51 /* GoogleService-Info-Debug.plist */,
+			);
+			path = Dev;
+			sourceTree = "<group>";
+		};
+		42EFC3812CA095D200C0DC51 /* Prod */ = {
+			isa = PBXGroup;
+			children = (
+				42EFC37F2CA0956A00C0DC51 /* GoogleService-Info-Release.plist */,
+			);
+			path = Prod;
+			sourceTree = "<group>";
+		};
 		51E239D82BF636700051943D /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -415,6 +442,7 @@
 		55B5E3622BF5A13E00E413C6 /* PicCharge */ = {
 			isa = PBXGroup;
 			children = (
+				42EFC37D2CA0954400C0DC51 /* Firebase */,
 				4214DA0E2C0391480096D48B /* App */,
 				4214DA082C0390920096D48B /* Resources */,
 				4214DA2A2C0436E30096D48B /* Helper */,
@@ -477,6 +505,7 @@
 			buildPhases = (
 				55B5E35C2BF5A13E00E413C6 /* Sources */,
 				55B5E35D2BF5A13E00E413C6 /* Frameworks */,
+				42EFC37C2CA0947A00C0DC51 /* Setup Firebase Environment GoogleService-Info.plist */,
 				55B5E35E2BF5A13E00E413C6 /* Resources */,
 				FF73157D2BF9076A0074D7AA /* Embed Foundation Extensions */,
 			);
@@ -586,6 +615,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		42EFC37C2CA0947A00C0DC51 /* Setup Firebase Environment GoogleService-Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Setup Firebase Environment GoogleService-Info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "case \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Dev/GoogleService-Info-Debug.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Prod/GoogleService-Info-Release.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n출처: https://jintaewoo.tistory.com/47 [Decoding Note:티스토리]\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		55B5E35C2BF5A13E00E413C6 /* Sources */ = {

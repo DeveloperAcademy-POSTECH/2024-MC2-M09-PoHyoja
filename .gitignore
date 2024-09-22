@@ -137,6 +137,8 @@ Packages
 xcuserdata
 DerivedData/
 *.xcodeproj
-**/GoogleService-Info.plist
+GoogleService-Info.plist
+**/GoogleService-Info-Debug.plist
+**/GoogleService-Info-Release.plist
 
 # End of https://www.toptal.com/developers/gitignore/api/swift,macos,xcode,SPM
