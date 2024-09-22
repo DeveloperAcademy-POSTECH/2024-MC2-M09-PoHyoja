@@ -9,7 +9,8 @@ import Foundation
 
 extension UserDefaults {
     static var shared: UserDefaults {
-        let appGroupId = "group.com.pohyoja.PicCharge"
+        let bundle = Bundle.main.bundleIdentifier
+        let appGroupId = "group." + (bundle ?? "com.pohyoja.PicCharge")
         return UserDefaults(suiteName: appGroupId)!
     }
 }

@@ -88,7 +88,7 @@
 		FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315732BF907690074D7AA /* ParentWidget.swift */; };
 		FF7315762BF907690074D7AA /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315752BF907690074D7AA /* AppIntent.swift */; };
 		FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF7315772BF9076A0074D7AA /* Assets.xcassets */; };
-		FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.Dev.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FFA8CC2D2C01AB3C007428F8 /* WidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */; };
 		FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */; };
 		FFA8CC2F2C01AFCF007428F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
@@ -113,7 +113,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */,
+				FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.Dev.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -166,7 +166,7 @@
 		550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PicCharge.entitlements; sourceTree = "<group>"; };
 		552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 		552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreServiceError.swift; sourceTree = "<group>"; };
-		55B5E3602BF5A13E00E413C6 /* PicCharge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicCharge.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		55B5E3602BF5A13E00E413C6 /* PicCharge.Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PicCharge.Dev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PicChargeApp.swift; sourceTree = "<group>"; };
 		55B5E3652BF5A13E00E413C6 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		55B5E3672BF5A13F00E413C6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -174,7 +174,7 @@
 		E32B7D402BFC77DC00814489 /* BatteryLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BatteryLoading.json; sourceTree = "<group>"; };
 		E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildLoadingView.swift; sourceTree = "<group>"; };
 		E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
-		FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentWidgetExtension.Dev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF73156C2BF907690074D7AA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		FF73156E2BF907690074D7AA /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FF7315712BF907690074D7AA /* ParentWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentWidgetBundle.swift; sourceTree = "<group>"; };
@@ -433,8 +433,8 @@
 		55B5E3612BF5A13E00E413C6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				55B5E3602BF5A13E00E413C6 /* PicCharge.app */,
-				FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */,
+				55B5E3602BF5A13E00E413C6 /* PicCharge.Dev.app */,
+				FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -524,7 +524,7 @@
 				E33AFF662BFC397700BFB665 /* Lottie */,
 			);
 			productName = PicCharge;
-			productReference = 55B5E3602BF5A13E00E413C6 /* PicCharge.app */;
+			productReference = 55B5E3602BF5A13E00E413C6 /* PicCharge.Dev.app */;
 			productType = "com.apple.product-type.application";
 		};
 		FF7315692BF907690074D7AA /* ParentWidgetExtension */ = {
@@ -547,7 +547,7 @@
 				4214D9F32C0330260096D48B /* FirebaseStorageCombine-Community */,
 			);
 			productName = ParentWidgetExtension;
-			productReference = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */;
+			productReference = FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -633,7 +633,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "case \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Dev/GoogleService-Info-Debug.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Prod/GoogleService-Info-Release.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n출처: https://jintaewoo.tistory.com/47 [Decoding Note:티스토리]\n";
+			shellScript = "case \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Dev/GoogleService-Info-Debug.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Prod/GoogleService-Info-Release.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -765,7 +765,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -828,7 +828,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -853,14 +853,13 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUNDLE_ID_SUFFIX = .PicCharge.Dev;
 				CODE_SIGN_ENTITLEMENTS = PicCharge/Resources/PicCharge.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PicCharge/Resources/Info.plist;
@@ -876,10 +875,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pohyoja${BUNDLE_ID_SUFFIX}";
+				PRODUCT_NAME = "$(TARGET_NAME).Dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "MC2 PoHyoJa";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -892,6 +890,7 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				BUNDLE_ID_SUFFIX = .PicCharge;
 				CODE_SIGN_ENTITLEMENTS = PicCharge/Resources/PicCharge.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -915,7 +914,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pohyoja${BUNDLE_ID_SUFFIX}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "MC2 PoHyoJa";
@@ -930,13 +929,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				BUNDLE_ID_SUFFIX = .PicCharge.Dev;
 				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = Q6CK9777WL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParentWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
@@ -948,10 +946,9 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge.ParentWidget;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pohyoja${BUNDLE_ID_SUFFIX}.ParentWidget";
+				PRODUCT_NAME = "$(TARGET_NAME).Dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "ParentWidget for PicCharge";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -968,13 +965,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				BUNDLE_ID_SUFFIX = .PicCharge;
 				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7V4779Q2XR;
+				DEVELOPMENT_TEAM = Q6CK9777WL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParentWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
@@ -986,10 +982,9 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.PicCharge.ParentWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.pohyoja${BUNDLE_ID_SUFFIX}.ParentWidget";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "ParentWidget for PicCharge";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
