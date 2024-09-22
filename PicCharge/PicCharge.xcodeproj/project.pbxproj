@@ -16,8 +16,6 @@
 		4214D9F72C0333140096D48B /* UserForSwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CBD2BFE5114003C7001 /* UserForSwiftData.swift */; };
 		4214D9F82C0333160096D48B /* PhotoForSwiftData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CBF2BFE516C003C7001 /* PhotoForSwiftData.swift */; };
 		4214D9F92C0333260096D48B /* FirestoreServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */; };
-		4214D9FB2C03337B0096D48B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4214D9FA2C03337B0096D48B /* GoogleService-Info.plist */; };
-		4214D9FC2C03337B0096D48B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4214D9FA2C03337B0096D48B /* GoogleService-Info.plist */; };
 		4214DA002C0387F20096D48B /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214D9FF2C0387F20096D48B /* UIImage+.swift */; };
 		4214DA012C0388020096D48B /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214D9FF2C0387F20096D48B /* UIImage+.swift */; };
 		4214DA022C0388800096D48B /* ChildWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214D9FD2C0387D40096D48B /* ChildWidget.swift */; };
@@ -123,7 +121,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		4214D9FA2C03337B0096D48B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4214D9FD2C0387D40096D48B /* ChildWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildWidget.swift; sourceTree = "<group>"; };
 		4214D9FF2C0387F20096D48B /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		4214DA132C0392080096D48B /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -399,7 +396,6 @@
 		55B5E3572BF5A13E00E413C6 = {
 			isa = PBXGroup;
 			children = (
-				4214D9FA2C03337B0096D48B /* GoogleService-Info.plist */,
 				55B5E3622BF5A13E00E413C6 /* PicCharge */,
 				FF7315702BF907690074D7AA /* ParentWidget */,
 				FF73156B2BF907690074D7AA /* Frameworks */,
@@ -571,7 +567,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4214D9FB2C03337B0096D48B /* GoogleService-Info.plist in Resources */,
 				E32B7D412BFC77DC00814489 /* BatteryLoading.json in Resources */,
 				55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */,
 				518752092C00A98800005AF8 /* BuggungLoading.json in Resources */,
@@ -585,7 +580,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4214D9FC2C03337B0096D48B /* GoogleService-Info.plist in Resources */,
 				FFA8CC2F2C01AFCF007428F8 /* Assets.xcassets in Resources */,
 				FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */,
 			);
