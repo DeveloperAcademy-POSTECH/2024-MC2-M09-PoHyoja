@@ -116,7 +116,10 @@ struct ParentWidget: Widget {
     var container: ModelContainer
     
     init() {
-        FirebaseApp.configure()
+        let filePath = Bundle.main.path(forResource: "../../GoogleService-Info", ofType: "plist")!
+        let options = FirebaseOptions(contentsOfFile: filePath)
+        FirebaseApp.configure(options: options!)
+        
         do {
             container = try ModelContainer(for: UserForSwiftData.self, PhotoForSwiftData.self)
         } catch {

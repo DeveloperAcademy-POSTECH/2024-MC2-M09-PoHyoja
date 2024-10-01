@@ -48,8 +48,9 @@ struct ChildProvider: AppIntentTimelineProvider {
     }
     
     @MainActor func getLastUploadedDate() -> Date? {
-        let descriptor = FetchDescriptor<PhotoForSwiftData>(sortBy: [SortDescriptor(\.uploadDate)])
-        let date = (try? container.mainContext.fetch(descriptor))?.last?.uploadDate ?? nil
+        var descriptor = FetchDescriptor<PhotoForSwiftData>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
+        descriptor.fetchLimit = 1
+        let date = (try? container.mainContext.fetch(descriptor))?.first?.uploadDate ?? nil
         return date
     }
     
