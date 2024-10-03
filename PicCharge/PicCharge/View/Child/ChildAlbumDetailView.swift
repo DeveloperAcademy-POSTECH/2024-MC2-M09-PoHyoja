@@ -12,24 +12,18 @@ import WidgetKit
 struct ChildAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
-    
-    @Query(
-        sort: \PhotoForSwiftData.uploadDate,
-        order: .reverse
-    ) var photoForSwiftDatas: [PhotoForSwiftData]
-    @State var selection: UUID
+
+    @State private var photoForSwiftDatas: [PhotoForSwiftData] = []
+    @State private var photo: PhotoForSwiftData
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     
-    private let photoForShare: PhotoForShare
-    
-    var photo: PhotoForSwiftData {
-        photoForSwiftDatas.first { $0.id == self.selection } ?? .empty()
+    private var photoForShare: PhotoForShare {
+        PhotoForShare(imgData: photo.imgData, uploadDate: photo.uploadDate)
     }
     
     init(photo: PhotoForSwiftData) {
-        self.selection = photo.id
-        self.photoForShare = PhotoForShare(imgData: photo.imgData, uploadDate: photo.uploadDate)
+        self.photo = photo
     }
     
     var body: some View {
@@ -37,45 +31,15 @@ struct ChildAlbumDetailView: View {
             Color.clear.ignoresSafeArea()
             
             VStack {
-                TabView(selection: $selection) {
+                TabView(selection: $photo) {
                     ForEach(photoForSwiftDatas) { photo in
-                        Group {
-                            if let uiImg = UIImage(data: photo.imgData) {
-                                Image(uiImage: uiImg)
-                                    .resizable()
-                                    .aspectRatio(1, contentMode: .fit)
-                                    .zoomable(isZooming: $isZooming)
-                            } else {
-                                Color.bgGray
-                                    .aspectRatio(1, contentMode: .fit)
-                            }
-                        }
-                        .tag(photo.id)
-                        .padding(.bottom, 166)
+                        ImageView(image: photo.imgData)
+                            .zoomable(isZooming: $isZooming)
+                            .tag(photo)
+                            .padding(.bottom, 166)
                     }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-                .animation(.smooth, value: selection)
-            }
-            
-            VStack {
-                Spacer()
-                VStack(spacing: 8) {
-                    Button { 
-                        
-                    } label: {
-                        Icon.heart
-                            .font(.system(size: 50))
-                            .foregroundColor(photo.likeCount > 0 ? .grpRed : .clear)
-                    }
-                    .disabled(true)
-                    
-                    Text(photo.likeCount > 0 ? "\(photo.likeCount)개" : " ")
-                        .font(.body)
-                        .fontWeight(.bold)
-                }
-                .opacity(isZooming ? 0 : 1)
-                .padding(.bottom, 80)
             }
         }
         .navigationTitle(photo.uploadDate.toKR())
@@ -124,6 +88,31 @@ struct ChildAlbumDetailView: View {
                 Button("Cancel", role: .cancel) {}
             }
         }
+        .task {
+            photoForSwiftDatas = await getPhotos()
+        }
+    }
+    
+    func getPhotos() async -> [PhotoForSwiftData] {
+        let descriptor = FetchDescriptor<PhotoForSwiftData>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
+        return (try? modelContext.fetch(descriptor)) ?? []
+    }
+}
+
+extension ChildAlbumDetailView {
+    struct ImageView: View {
+        let image: Data
+        
+        var body: some View {
+            if let uiImg = UIImage(data: image) {
+                Image(uiImage: uiImg)
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fit)
+            } else {
+                Color.bgGray
+                    .aspectRatio(1, contentMode: .fit)
+            }
+        }
     }
 }
 
@@ -131,4 +120,3 @@ struct ChildAlbumDetailView: View {
     ChildAlbumDetailView(photo: PhotoForSwiftData(uploadBy: "", sharedWith: [], imgData: UIImage(systemName: "camera")!.pngData()!))
         .environment(NavigationManager())
 }
-
