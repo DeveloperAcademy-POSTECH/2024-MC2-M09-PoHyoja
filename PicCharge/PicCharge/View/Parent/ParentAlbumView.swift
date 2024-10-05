@@ -101,9 +101,6 @@ struct ParentAlbumView: View {
                 }
             }
         }
-        .task {
-            await syncPhotoData()
-        }
         .refreshable {
             Task {
                 isLoading = true
