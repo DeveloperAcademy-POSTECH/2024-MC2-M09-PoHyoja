@@ -28,6 +28,8 @@ struct ChildAlbumView: View {
         Group {
             if let first = photoForSwiftDatas.first {
                 ScrollView {
+                    TitleView(title: "앨범")
+                    
                     Divider()
                         .padding(.bottom, 10)
                     

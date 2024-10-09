@@ -57,6 +57,8 @@ struct ChildMainView: View {
             .ignoresSafeArea()
             
             VStack(spacing: 12) {
+                TitleView(title: "픽-챠")
+                
                 Divider()
                     .padding(.bottom, 10)
                 

@@ -60,6 +60,7 @@
 		5151CB8A2BFEE41300AF792F /* LikeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5151CB892BFEE41300AF792F /* LikeAnimation.json */; };
 		516978322C00CDEF00168164 /* BuggungEnd.json in Resources */ = {isa = PBXBuildFile; fileRef = 516978312C00CDEF00168164 /* BuggungEnd.json */; };
 		516978342C01B51800168164 /* BuggungEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516978332C01B51800168164 /* BuggungEndView.swift */; };
+		5172EE5D2CB66BDD001B128E /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5172EE5C2CB66BCF001B128E /* TitleView.swift */; };
 		518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */; };
 		518752092C00A98800005AF8 /* BuggungLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 518752082C00A98800005AF8 /* BuggungLoading.json */; };
 		51E239DA2BF636920051943D /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E239D92BF636920051943D /* Role.swift */; };
@@ -159,6 +160,7 @@
 		5151CB892BFEE41300AF792F /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
 		516978312C00CDEF00168164 /* BuggungEnd.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungEnd.json; sourceTree = "<group>"; };
 		516978332C01B51800168164 /* BuggungEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungEndView.swift; sourceTree = "<group>"; };
+		5172EE5C2CB66BCF001B128E /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungLoadingView.swift; sourceTree = "<group>"; };
 		518752082C00A98800005AF8 /* BuggungLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungLoading.json; sourceTree = "<group>"; };
 		51E239D92BF636920051943D /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
@@ -363,6 +365,7 @@
 		421A8CA92BFBBCD0003C7001 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				5172EE5C2CB66BCF001B128E /* TitleView.swift */,
 				E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */,
 				518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */,
 				516978332C01B51800168164 /* BuggungEndView.swift */,
@@ -661,6 +664,7 @@
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
 				4214DA292C0436CC0096D48B /* HapticManager.swift in Sources */,
 				518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */,
+				5172EE5D2CB66BDD001B128E /* TitleView.swift in Sources */,
 				421A8CAF2BFDC2DE003C7001 /* PhotoForShare.swift in Sources */,
 				421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */,
 				421A8CC02BFE516C003C7001 /* PhotoForSwiftData.swift in Sources */,
