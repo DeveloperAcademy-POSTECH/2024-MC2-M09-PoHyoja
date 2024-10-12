@@ -29,7 +29,7 @@ struct SettingView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 0) {
+            VStack(spacing: 12) {
                 TitleView(title: "설정")
                 
                 Divider()
@@ -121,7 +121,6 @@ struct SettingView: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 200)
         }
-        .navigationTitle("설정")
         .alert(isPresented: $isShowingAlert) {
             Alert(
                 title: Text("정말 탈퇴하시겠습니까?"),
