@@ -29,7 +29,9 @@ struct SettingView: View {
     
     var body: some View {
         ZStack {
-            VStack(spacing: 0) {
+            VStack(spacing: 12) {
+                TitleView(title: "설정")
+                
                 Divider()
                 
                 List {
@@ -119,13 +121,12 @@ struct SettingView: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 200)
         }
-        .navigationTitle("설정")
         .alert(isPresented: $isShowingAlert) {
             Alert(
-                title: Text("뉴 런"),
-                message: Text("안뎀안뎀~~지금 시연 중임"),
-                primaryButton:  .cancel(Text("뉴런 말 듣기")),
-                secondaryButton: .destructive(Text("그래도 ㄱ")) {
+                title: Text("정말 탈퇴하시겠습니까?"),
+                message: Text("탈퇴 후에는 모든 기록이 사라집니다."),
+                primaryButton:  .cancel(Text("취소")),
+                secondaryButton: .destructive(Text("탈퇴하기")) {
                     do {
                         try logout()
                         navigationManager.userState = .notExist

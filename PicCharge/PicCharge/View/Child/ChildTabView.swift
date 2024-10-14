@@ -14,15 +14,6 @@ struct ChildTabView: View {
     @State private var isLoading: Bool = false
     var didRefresh: () async -> Void
     
-    var navigationTitle: String {
-        switch tab {
-        case 1: "픽-챠"
-        case 2: "앨범"
-        case 3: "설정"
-        default: ""
-        }
-    }
-    
     var body: some View {
         TabView(selection: $tab) {
             Group {
@@ -55,7 +46,6 @@ struct ChildTabView: View {
         }
         .navigationBarBackButtonHidden()
         .navigationBarTitleDisplayMode(.large)
-        .navigationTitle(navigationTitle)
     }
 }
 
