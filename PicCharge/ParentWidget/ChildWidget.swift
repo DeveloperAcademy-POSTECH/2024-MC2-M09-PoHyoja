@@ -94,7 +94,7 @@ struct ChildWidgetEntryView : View {
                             
                             Text("남았어요")
                                 .font(.system(size: 20, weight: .bold))
-                                .foregroundStyle(.txtVibrantSecondary)
+                                .foregroundStyle(.txtVibrantTertiary)
                                 .opacity(0.8)
                                 .offset(y: 4)
                             
