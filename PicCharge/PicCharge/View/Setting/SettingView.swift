@@ -19,7 +19,7 @@ struct SettingView: View {
     
     @State private var isShowingLogoutActionSheet = false
     @State private var isShowingWithdrawActionSheet = false
-    @State private var isShowingAlert = false
+    @State private var isShowingWithdrawAlert = false
     
     private let version = "1.1.2"
     
@@ -85,14 +85,13 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("로그아웃", role: .destructive) {
-                        isShowingAlert = true
-//                        do {
-//                            try logout()
-//                            navigationManager.userState = .notExist
-//                            navigationManager.popToRoot()
-//                        } catch {
-//                            print("로그아웃 에러: \(error.localizedDescription)")
-//                        }
+                        do {
+                            try logout()
+                            navigationManager.userState = .notExist
+                            navigationManager.popToRoot()
+                        } catch {
+                            print("로그아웃 에러: \(error.localizedDescription)")
+                        }
                     }
                     Button("취소", role: .cancel) {}
                 }
@@ -104,7 +103,7 @@ struct SettingView: View {
             ) {
                 VStack {
                     Button("탈퇴하기", role: .destructive) {
-                        isShowingAlert = true
+                        isShowingWithdrawAlert = true
 //                        do {
 //                            try deleteUser()
 //                            navigationManager.userState = .notExist
@@ -121,12 +120,13 @@ struct SettingView: View {
                 .foregroundStyle(.secondary)
                 .padding(.top, 200)
         }
-        .alert(isPresented: $isShowingAlert) {
+        .alert(isPresented: $isShowingWithdrawAlert) {
             Alert(
                 title: Text("정말 탈퇴하시겠습니까?"),
                 message: Text("탈퇴 후에는 모든 기록이 사라집니다."),
                 primaryButton:  .cancel(Text("취소")),
                 secondaryButton: .destructive(Text("탈퇴하기")) {
+                    //TODO: 현재는 탈퇴하기 눌러도 로그아웃 처리, 추후 탈퇴기능 논의
                     do {
                         try logout()
                         navigationManager.userState = .notExist
