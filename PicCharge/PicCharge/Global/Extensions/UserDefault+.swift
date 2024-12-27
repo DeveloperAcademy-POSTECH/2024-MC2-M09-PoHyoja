@@ -12,6 +12,6 @@ extension UserDefaults {
         let bundle = Bundle.main.bundleIdentifier
         let appGroupId = "group." + (bundle ?? "com.pohyoja.co")
         
-        return UserDefaults(suiteName: appGroupId)!
+        return UserDefaults(suiteName: appGroupId) ?? UserDefaults.standard
     }
 }
