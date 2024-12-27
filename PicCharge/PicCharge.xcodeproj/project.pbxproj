@@ -42,6 +42,8 @@
 		421A8CC42BFF63A5003C7001 /* SelectRoleForSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CC32BFF63A5003C7001 /* SelectRoleForSignUpView.swift */; };
 		4256DC3A2C0716C600FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
 		4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
+		425B44012D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
+		425B44022D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
 		428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046732BF5DDD30097EB0B /* ChildTabView.swift */; };
@@ -140,6 +142,7 @@
 		421A8CBF2BFE516C003C7001 /* PhotoForSwiftData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoForSwiftData.swift; sourceTree = "<group>"; };
 		421A8CC32BFF63A5003C7001 /* SelectRoleForSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRoleForSignUpView.swift; sourceTree = "<group>"; };
 		4256DC392C0716C600FC3541 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		425B44002D1ED446001E23FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
 		428046732BF5DDD30097EB0B /* ChildTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTabView.swift; sourceTree = "<group>"; };
@@ -155,8 +158,6 @@
 		428046892BF5E0170097EB0B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTermsOfUseView.swift; sourceTree = "<group>"; };
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
-		42EFC37E2CA0956A00C0DC51 /* GoogleService-Info-Debug.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Debug.plist"; sourceTree = "<group>"; };
-		42EFC37F2CA0956A00C0DC51 /* GoogleService-Info-Release.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Release.plist"; sourceTree = "<group>"; };
 		5151CB892BFEE41300AF792F /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
 		516978312C00CDEF00168164 /* BuggungEnd.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungEnd.json; sourceTree = "<group>"; };
 		516978332C01B51800168164 /* BuggungEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungEndView.swift; sourceTree = "<group>"; };
@@ -223,6 +224,7 @@
 		4214DA082C0390920096D48B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				425B44002D1ED446001E23FA /* GoogleService-Info.plist */,
 				4214DA242C03CAF20096D48B /* Info.plist */,
 				550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */,
 				55B5E3672BF5A13F00E413C6 /* Assets.xcassets */,
@@ -387,31 +389,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		42EFC37D2CA0954400C0DC51 /* Firebase */ = {
-			isa = PBXGroup;
-			children = (
-				42EFC3812CA095D200C0DC51 /* Prod */,
-				42EFC3802CA095CA00C0DC51 /* Dev */,
-			);
-			path = Firebase;
-			sourceTree = "<group>";
-		};
-		42EFC3802CA095CA00C0DC51 /* Dev */ = {
-			isa = PBXGroup;
-			children = (
-				42EFC37E2CA0956A00C0DC51 /* GoogleService-Info-Debug.plist */,
-			);
-			path = Dev;
-			sourceTree = "<group>";
-		};
-		42EFC3812CA095D200C0DC51 /* Prod */ = {
-			isa = PBXGroup;
-			children = (
-				42EFC37F2CA0956A00C0DC51 /* GoogleService-Info-Release.plist */,
-			);
-			path = Prod;
-			sourceTree = "<group>";
-		};
 		51E239D82BF636700051943D /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -445,7 +422,6 @@
 		55B5E3622BF5A13E00E413C6 /* PicCharge */ = {
 			isa = PBXGroup;
 			children = (
-				42EFC37D2CA0954400C0DC51 /* Firebase */,
 				4214DA0E2C0391480096D48B /* App */,
 				4214DA082C0390920096D48B /* Resources */,
 				4214DA2A2C0436E30096D48B /* Helper */,
@@ -605,6 +581,7 @@
 				55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */,
 				5151CB8A2BFEE41300AF792F /* LikeAnimation.json in Resources */,
 				516978322C00CDEF00168164 /* BuggungEnd.json in Resources */,
+				425B44012D1ED446001E23FA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -614,6 +591,7 @@
 			files = (
 				FFA8CC2F2C01AFCF007428F8 /* Assets.xcassets in Resources */,
 				FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */,
+				425B44022D1ED446001E23FA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -636,7 +614,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "case \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Dev/GoogleService-Info-Debug.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Prod/GoogleService-Info-Release.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n";
+			shellScript = "case \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Resources/GoogleService-Info.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Resources/GoogleService-Info.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
