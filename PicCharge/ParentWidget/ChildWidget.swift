@@ -48,14 +48,14 @@ struct ChildProvider: AppIntentTimelineProvider {
     }
     
     @MainActor func getLastUploadedDate() -> Date? {
-        var descriptor = FetchDescriptor<PhotoForSwiftData>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
+        var descriptor = FetchDescriptor<PhotoEntity>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
         descriptor.fetchLimit = 1
         let date = (try? container.mainContext.fetch(descriptor))?.first?.uploadDate ?? nil
         return date
     }
     
     @MainActor func getUploadCycle() -> Int? {
-        let descriptor = FetchDescriptor<UserForSwiftData>()
+        let descriptor = FetchDescriptor<UserEntity>()
         let uploadCycle = (try? container.mainContext.fetch(descriptor))?.last?.uploadCycle ?? nil
         return uploadCycle
     }
@@ -162,7 +162,8 @@ struct ChildWidget: Widget {
     
     init() {
         do {
-            container = try ModelContainer(for: UserForSwiftData.self, PhotoForSwiftData.self)
+            container = try ModelContainer(for: UserEntity.self,
+                                           PhotoEntity.self)
         } catch {
             fatalError("Failed to configure SwiftData container.")
         }

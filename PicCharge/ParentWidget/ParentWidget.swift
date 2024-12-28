@@ -31,7 +31,7 @@ struct ParentProvider: AppIntentTimelineProvider {
                 return entry
             }
             
-            var photos: [Photo] = []
+            var photos: [PhotoDTO] = []
             photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
             photos.sort { $0.uploadDate < $1.uploadDate }
             
@@ -57,7 +57,7 @@ struct ParentProvider: AppIntentTimelineProvider {
                 return Timeline(entries: [entry], policy: .atEnd)
             }
             
-            var photos: [Photo] = []
+            var photos: [PhotoDTO] = []
             photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
             photos.sort { $0.uploadDate < $1.uploadDate }
             
@@ -77,8 +77,8 @@ struct ParentProvider: AppIntentTimelineProvider {
         return Timeline(entries: [entry], policy: .atEnd)
     }
     
-    @MainActor func getUserForSwiftData() -> UserForSwiftData? {
-        let descriptor = FetchDescriptor<UserForSwiftData>()
+    @MainActor func getUserForSwiftData() -> UserEntity? {
+        let descriptor = FetchDescriptor<UserEntity>()
         
         let user = (try? container.mainContext.fetch(descriptor))?.first ?? nil
         
@@ -121,7 +121,7 @@ struct ParentWidget: Widget {
         FirebaseApp.configure(options: options!)
         
         do {
-            container = try ModelContainer(for: UserForSwiftData.self, PhotoForSwiftData.self)
+            container = try ModelContainer(for: UserEntity.self, PhotoEntity.self)
         } catch {
             fatalError("Failed to configure SwiftData container.")
         }
