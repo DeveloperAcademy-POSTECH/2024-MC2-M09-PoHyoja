@@ -34,3 +34,15 @@ final class UserEntity {
 //        self.photos = photos
     }
 }
+
+extension UserEntity: DomainConvertible {
+    func toDomain() -> User {
+        User(
+            name: name,
+            role: role,
+            email: email,
+            connectedTo: connectedTo,
+            uploadCycle: uploadCycle
+        )
+    }
+}

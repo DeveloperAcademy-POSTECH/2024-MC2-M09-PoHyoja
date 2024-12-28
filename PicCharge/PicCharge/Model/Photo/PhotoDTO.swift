@@ -82,3 +82,16 @@ extension PhotoDTO: Hashable {
         return lhs.id == rhs.id
     }
 }
+
+extension PhotoDTO: DomainConvertible {
+    func toDomain() -> Photo {
+        return Photo(
+            id: UUID(uuidString: id ?? "") ?? UUID(),
+            uploadBy: uploadBy,
+            uploadDate: uploadDate,
+            urlString: urlString,
+            likeCount: likeCount,
+            sharedWith: sharedWith
+        )
+    }
+}

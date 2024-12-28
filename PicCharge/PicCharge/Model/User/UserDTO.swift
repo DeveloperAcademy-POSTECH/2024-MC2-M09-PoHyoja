@@ -49,3 +49,15 @@ struct UserDTO: Identifiable, Codable {
     var connectedTo: [String] = []
     var uploadCycle: Int? = nil
 }
+
+extension UserDTO: DomainConvertible {
+    func toDomain() -> User {
+        User(
+            name: name,
+            role: role,
+            email: email,
+            connectedTo: connectedTo,
+            uploadCycle: uploadCycle
+        )
+    }
+}
