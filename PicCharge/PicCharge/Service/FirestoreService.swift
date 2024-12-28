@@ -19,7 +19,7 @@ class FirestoreService {
     private init(){}
     
     /// 이메일로 Firestore에서 유저 정보 가져오기
-    func fetchUserByEmail(email: String) async -> User? {
+    func fetchUserByEmail(email: String) async -> UserDTO? {
         do {
             let snapshot = try await db.collection("users")
                 .whereField("email", isEqualTo: email)
@@ -31,7 +31,7 @@ class FirestoreService {
                 return nil
             }
             
-            return try document.data(as: User.self)
+            return try document.data(as: UserDTO.self)
         } catch {
             print("유저 데이터 페치 에러: \(error)")
             return nil
@@ -39,7 +39,7 @@ class FirestoreService {
     }
     
     /// 이름으로 Firestore에서 유저 정보 가져오기
-    func fetchUserByName(name: String) async -> User? {
+    func fetchUserByName(name: String) async -> UserDTO? {
         do {
             let snapshot = try await db.collection("users")
                 .whereField("name", isEqualTo: name)
@@ -51,7 +51,7 @@ class FirestoreService {
                 return nil
             }
             
-            return try document.data(as: User.self)
+            return try document.data(as: UserDTO.self)
         } catch {
             print("유저 데이터 페치 에러: \(error)")
             return nil
@@ -59,7 +59,7 @@ class FirestoreService {
     }
     
     /// 서버에 유저 추가
-    func addUser(user: User) async throws {
+    func addUser(user: UserDTO) async throws {
         guard let userId = user.id else {
             throw FirestoreServiceError.invalidUserId
         }
@@ -90,7 +90,7 @@ class FirestoreService {
     }
     
     /// 서버에서 유저 살제
-    func deleteUser(user: User) async throws {
+    func deleteUser(user: UserDTO) async throws {
         guard let userId = user.id else {
             throw FirestoreServiceError.invalidUserId
         }
@@ -228,7 +228,7 @@ class FirestoreService {
     }
     
     /// 사용자 연결 정보를 넘겨준 User 로 업데이트하는 메서드
-    func updateUserConnections(user: User) async throws {
+    func updateUserConnections(user: UserDTO) async throws {
         guard let userId = user.id else {
             throw FirestoreServiceError.invalidUserId
         }
@@ -237,7 +237,7 @@ class FirestoreService {
     }
     
     /// 사진을 Firebase Storage에 업로드하고 메타데이터를 Firestore에 저장합니다.
-    func uploadPhoto(userName: String, photoForSwiftData: PhotoForSwiftData) async {
+    func uploadPhoto(userName: String, photoForSwiftData: PhotoEntity) async {
         let photoID = photoForSwiftData.id.uuidString
         let storageRef = storage.reference().child("photos/\(userName)/\(photoID).jpg")
         
@@ -249,7 +249,7 @@ class FirestoreService {
             let downloadURL = try await storageRef.downloadURL()
             
             // Firestore에 저장할 메타데이터 생성
-            let photo = Photo(from: photoForSwiftData, urlString: downloadURL.absoluteString)
+            let photo = PhotoDTO(from: photoForSwiftData, urlString: downloadURL.absoluteString)
             
             // Firestore에 메타데이터 저장
             try db.collection("photos").document(photoID).setData(from: photo)
@@ -258,21 +258,21 @@ class FirestoreService {
         }
     }
     
-    func fetchPhotos(userName: String) async throws -> [Photo] {
+    func fetchPhotos(userName: String) async throws -> [PhotoDTO] {
         let snapshot = try await db.collection("photos")
             .whereField("sharedWith", arrayContains: userName)
             .getDocuments()
         
         return try snapshot.documents.compactMap { document in
-            try document.data(as: Photo.self)
+            try document.data(as: PhotoDTO.self)
         }
     }
     
     // Photo의 정보로 Firebase Storage에서 이미지 데이터를 받아와서 PhotoForSwiftData 로 변경
-    func fetchPhotoForSwiftDataByPhoto(photo: Photo) async throws -> PhotoForSwiftData {
+    func fetchPhotoForSwiftDataByPhoto(photo: PhotoDTO) async throws -> PhotoEntity {
         let imgData = try await fetchPhotoData(urlString: photo.urlString)
         
-        return PhotoForSwiftData(from: photo, imgData: imgData)
+        return PhotoEntity(from: photo, imgData: imgData)
     }
     
     // Firebase Storage 에서 이미지 데이타 받아오기
@@ -282,7 +282,7 @@ class FirestoreService {
     }
     
     /// Firestore의 photo 정보를 업데이트하는 메소드
-    func updatePhoto(photoForSwiftData: PhotoForSwiftData) async throws {
+    func updatePhoto(photoForSwiftData: PhotoEntity) async throws {
         let photoId = photoForSwiftData.id.uuidString
         do {
             try await db.collection("photos").document(photoId).updateData([
@@ -300,7 +300,7 @@ class FirestoreService {
         // Firestore에서 사진 데이터 가져오기
         do {
             let documentSnapshot = try await photoRef.getDocument()
-            let photo = try documentSnapshot.data(as: Photo.self)
+            let photo = try documentSnapshot.data(as: PhotoDTO.self)
             
             
             // Firebase Storage에서 이미지 삭제

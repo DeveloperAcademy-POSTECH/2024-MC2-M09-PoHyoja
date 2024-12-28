@@ -1,5 +1,5 @@
 //
-//  PhotoForSwiftData.swift
+//  PhotoEntity.swift
 //  PicCharge
 //
 //  Created by 남유성 on 5/23/24.
@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @Model
-final class PhotoForSwiftData {
+final class PhotoEntity {
     @Attribute(.unique) var id: UUID
     var uploadBy: String // 유저 닉네임
     var uploadDate: Date // 업로드 날짜
@@ -34,7 +34,7 @@ final class PhotoForSwiftData {
         self.imgData = imgData
     }
     
-    init(from photo: Photo, imgData: Data) {
+    init(from photo: PhotoDTO, imgData: Data) {
         self.id = UUID(uuidString: photo.id ?? UUID().uuidString) ?? UUID()
         self.uploadBy = photo.uploadBy
         self.uploadDate = photo.uploadDate
@@ -44,18 +44,18 @@ final class PhotoForSwiftData {
     }
 }
 
-extension PhotoForSwiftData: Hashable {
+extension PhotoEntity: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
-    static func == (lhs: PhotoForSwiftData, rhs: PhotoForSwiftData) -> Bool {
+    static func == (lhs: PhotoEntity, rhs: PhotoEntity) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension PhotoForSwiftData {
-    static func empty() -> PhotoForSwiftData {
+extension PhotoEntity {
+    static func empty() -> PhotoEntity {
         .init(uploadBy: "", sharedWith: [], imgData: Data())
     }
 }

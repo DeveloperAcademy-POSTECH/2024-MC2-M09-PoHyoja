@@ -34,7 +34,7 @@ import FirebaseFirestoreSwift
  }
  ```
  */
-struct Photo: Identifiable, Codable {
+struct PhotoDTO: Identifiable, Codable {
     // 목업 생성 예시 let photos = Photo.mockup.chunked(into: 3)
     
     @DocumentID var id: String?
@@ -53,7 +53,7 @@ struct Photo: Identifiable, Codable {
         self.sharedWith = sharedWith
     }
     
-    init(from photoForSwiftData: PhotoForSwiftData, urlString: String) {
+    init(from photoForSwiftData: PhotoEntity, urlString: String) {
         self.id = photoForSwiftData.id.uuidString
         self.uploadBy = photoForSwiftData.uploadBy
         self.uploadDate = photoForSwiftData.uploadDate
@@ -62,23 +62,23 @@ struct Photo: Identifiable, Codable {
         self.sharedWith = photoForSwiftData.sharedWith
     }
     
-    static let mockup: [Photo] = {
+    static let mockup: [PhotoDTO] = {
         let uploadBy = "TestID"
         let uploadDate = Date()
         let urlString = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsNICnidsWi7x-UmXHlkEz-8VUeKwmJSg86Xli4i-26A&s"
         
         return (0..<100).map {
-            Photo(id: UUID().uuidString, uploadBy: uploadBy, uploadDate: uploadDate, urlString: urlString, likeCount: $0, sharedWith: [])
+            PhotoDTO(id: UUID().uuidString, uploadBy: uploadBy, uploadDate: uploadDate, urlString: urlString, likeCount: $0, sharedWith: [])
         }
     }()
 }
 
-extension Photo: Hashable {
+extension PhotoDTO: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
-    static func == (lhs: Photo, rhs: Photo) -> Bool {
+    static func == (lhs: PhotoDTO, rhs: PhotoDTO) -> Bool {
         return lhs.id == rhs.id
     }
 }

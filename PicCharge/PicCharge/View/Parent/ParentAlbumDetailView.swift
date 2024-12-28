@@ -14,19 +14,19 @@ struct ParentAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
     
-    @State private var photoForSwiftDatas: [PhotoForSwiftData] = []
-    @State private var photo: PhotoForSwiftData
+    @State private var photoForSwiftDatas: [PhotoEntity] = []
+    @State private var photo: PhotoEntity
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     @State private var isLiked: Bool = false
     @State private var cancellable: AnyCancellable?
     @State private var likeAnimationIDs: [UUID] = []
     
-    private var photoForShare: PhotoForShare {
-        PhotoForShare(imgData: photo.imgData, uploadDate: photo.uploadDate)
+    private var photoForShare: PhotoShareDTO {
+        PhotoShareDTO(imgData: photo.imgData, uploadDate: photo.uploadDate)
     }
     
-    init(photo: PhotoForSwiftData) {
+    init(photo: PhotoEntity) {
         self.photo = photo
     }
     
@@ -155,8 +155,8 @@ struct ParentAlbumDetailView: View {
             }
     }
     
-    func getPhotos() async -> [PhotoForSwiftData] {
-        let descriptor = FetchDescriptor<PhotoForSwiftData>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
+    func getPhotos() async -> [PhotoEntity] {
+        let descriptor = FetchDescriptor<PhotoEntity>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
         return (try? modelContext.fetch(descriptor)) ?? []
     }
 }
@@ -180,7 +180,7 @@ extension ParentAlbumDetailView {
 
 #Preview {
     ParentAlbumDetailView(
-        photo: PhotoForSwiftData(uploadBy: "", sharedWith: [], imgData: UIImage(systemName: "camera")!.pngData()!)
+        photo: PhotoEntity(uploadBy: "", sharedWith: [], imgData: UIImage(systemName: "camera")!.pngData()!)
     )
     .environment(NavigationManager())
     .preferredColorScheme(.dark)

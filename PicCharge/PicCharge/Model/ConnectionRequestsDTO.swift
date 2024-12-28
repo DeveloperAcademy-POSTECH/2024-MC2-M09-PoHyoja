@@ -1,5 +1,5 @@
 //
-//  ConnectionRequests.swift
+//  ConnectionRequestsDTO.swift
 //  PicCharge
 //
 //  Created by 남유성 on 5/27/24.

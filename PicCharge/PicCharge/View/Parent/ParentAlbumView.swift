@@ -13,8 +13,8 @@ struct ParentAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
 
-    @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
-    @Bindable var user: UserForSwiftData
+    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoEntity]
+    @Bindable var user: UserEntity
     @State private var isLoading: Bool = false
 
     //geometryReader로 3등분
@@ -168,7 +168,7 @@ extension ParentAlbumView {
 
 #Preview {
     NavigationStack {
-        ParentAlbumView(user: UserForSwiftData(name: "", role: .child, email: ""))
+        ParentAlbumView(user: UserEntity(name: "", role: .child, email: ""))
             .environment(NavigationManager())
             .preferredColorScheme(.dark)
     }

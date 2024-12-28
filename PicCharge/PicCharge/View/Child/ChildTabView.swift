@@ -10,7 +10,7 @@ import WidgetKit
 
 struct ChildTabView: View {
     @State private var tab: Int = 1
-    @Bindable var user: UserForSwiftData
+    @Bindable var user: UserEntity
     @State private var isLoading: Bool = false
     var didRefresh: () async -> Void
     
@@ -51,7 +51,7 @@ struct ChildTabView: View {
 
 #Preview {
     NavigationStack {
-        ChildTabView(user: UserForSwiftData(name: "", role: .child, email: ""), didRefresh: { } )
+        ChildTabView(user: UserEntity(name: "", role: .child, email: ""), didRefresh: { } )
     }
     .environment(NavigationManager())
     .preferredColorScheme(.dark)

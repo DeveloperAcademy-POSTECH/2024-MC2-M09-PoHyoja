@@ -1,5 +1,5 @@
 //
-//  UserForSwiftData.swift
+//  UserEntity.swift
 //  PicCharge
 //
 //  Created by 남유성 on 5/23/24.
@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 @Model
-final class UserForSwiftData {
+final class UserEntity {
     @Attribute(.unique) var name: String
     var role: Role
     var email: String

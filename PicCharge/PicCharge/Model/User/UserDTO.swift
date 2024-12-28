@@ -41,7 +41,7 @@ import FirebaseFirestoreSwift
  }
  ```
  */
-struct User: Identifiable, Codable {
+struct UserDTO: Identifiable, Codable {
     @DocumentID var id: String? // Firestore의 문서 ID와 매핑
     var name: String
     var role: Role

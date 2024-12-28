@@ -13,8 +13,8 @@ struct ChildAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
     
-    @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
-    @Bindable var user: UserForSwiftData
+    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoEntity]
+    @Bindable var user: UserEntity
     var didRefresh: () async -> Void
     
     //geometryReader로 3등분
@@ -105,7 +105,7 @@ struct ChildAlbumView: View {
 #Preview {
     NavigationStack {
         ChildAlbumView(
-            user: UserForSwiftData(name: "", role: .child, email: ""),
+            user: UserEntity(name: "", role: .child, email: ""),
             didRefresh: {}
         )
         .environment(NavigationManager())

@@ -17,7 +17,7 @@ struct PicChargeApp: App {
     
     init() {
         do {
-            container = try ModelContainer(for: UserForSwiftData.self, PhotoForSwiftData.self)
+            container = try ModelContainer(for: UserEntity.self, PhotoEntity.self)
         } catch {
             fatalError("Failed to configure SwiftData container.")
         }

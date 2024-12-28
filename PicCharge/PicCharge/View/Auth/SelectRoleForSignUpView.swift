@@ -142,7 +142,7 @@ extension SelectRoleForSignUpView {
             let authResult = try await Auth.auth().createUser(withEmail: email, password: password)
             let user = authResult.user
             
-            let newUser = User(id: user.uid, name: name, role: role, email: email, connectedTo: [])
+            let newUser = UserDTO(id: user.uid, name: name, role: role, email: email, connectedTo: [])
             try await FirestoreService.shared.addUser(user: newUser)
             
             navigationManager.popToRoot()
