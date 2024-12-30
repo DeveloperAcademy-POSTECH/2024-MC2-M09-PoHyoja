@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -53,8 +53,10 @@
 		425B442A2D1FE6C4001E23FA /* UserConnectingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44292D1FE6C4001E23FA /* UserConnectingService.swift */; };
 		425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B442B2D1FEA02001E23FA /* UserViewModel.swift */; };
 		425B442E2D1FEAAA001E23FA /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */; };
+		425B44302D1FEF96001E23FA /* DIContainerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B442F2D1FEF96001E23FA /* DIContainerModifier.swift */; };
 		425D7DB12D22BF7D00DB82A6 /* MockLocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */; };
 		425D7DB32D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */; };
+		425D7DBD2D22C2F700DB82A6 /* AppNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DBC2D22C2F700DB82A6 /* AppNavigationView.swift */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
 		428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046732BF5DDD30097EB0B /* ChildTabView.swift */; };
@@ -161,8 +163,10 @@
 		425B44292D1FE6C4001E23FA /* UserConnectingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectingService.swift; sourceTree = "<group>"; };
 		425B442B2D1FEA02001E23FA /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
+		425B442F2D1FEF96001E23FA /* DIContainerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DIContainerModifier.swift; sourceTree = "<group>"; };
 		425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalStorageService.swift; sourceTree = "<group>"; };
 		425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteStorageServiceImpl.swift; sourceTree = "<group>"; };
+		425D7DBC2D22C2F700DB82A6 /* AppNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationView.swift; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
 		428046732BF5DDD30097EB0B /* ChildTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTabView.swift; sourceTree = "<group>"; };
@@ -209,10 +213,6 @@
 		FFD221AF2BFB8433009735E4 /* UserDefault+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefault+.swift"; sourceTree = "<group>"; };
 		FFD221B32BFB84C1009735E4 /* ParentWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		425B44132D1FD11F001E23FA /* Firebase */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Firebase; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		55B5E35D2BF5A13E00E413C6 /* Frameworks */ = {
@@ -301,6 +301,7 @@
 			children = (
 				55B5E3632BF5A13E00E413C6 /* PicChargeApp.swift */,
 				4214DA202C0393830096D48B /* AppDelgate.swift */,
+				425D7DBC2D22C2F700DB82A6 /* AppNavigationView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -429,6 +430,7 @@
 		55B5E3572BF5A13E00E413C6 = {
 			isa = PBXGroup;
 			children = (
+				425B442F2D1FEF96001E23FA /* DIContainerModifier.swift */,
 				425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */,
 				425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */,
 				425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */,
@@ -455,7 +457,6 @@
 		55B5E3622BF5A13E00E413C6 /* PicCharge */ = {
 			isa = PBXGroup;
 			children = (
-				425B44132D1FD11F001E23FA /* Firebase */,
 				4214DA0E2C0391480096D48B /* App */,
 				4214DA082C0390920096D48B /* Resources */,
 				4214DA2A2C0436E30096D48B /* Helper */,
@@ -527,9 +528,6 @@
 			dependencies = (
 				FF73157B2BF9076A0074D7AA /* PBXTargetDependency */,
 			);
-			fileSystemSynchronizedGroups = (
-				425B44132D1FD11F001E23FA /* Firebase */,
-			);
 			name = PicCharge;
 			packageProductDependencies = (
 				559AB7652BF8434300FF216B /* FirebaseAuth */,
@@ -555,9 +553,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				425B44132D1FD11F001E23FA /* Firebase */,
-			);
 			name = ParentWidgetExtension;
 			packageProductDependencies = (
 				4214D9ED2C0330260096D48B /* FirebaseFirestore */,
@@ -577,7 +572,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1540;
-				LastUpgradeCheck = 1540;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					55B5E35F2BF5A13E00E413C6 = {
 						CreatedOnToolsVersion = 15.4;
@@ -652,7 +647,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "case \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Dev/GoogleService-Info-Debug.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Firebase/Prod/GoogleService-Info-Release.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n";
+			shellScript = "case \"${CONFIGURATION}\" in\n  \"Debug\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Resources/GoogleService-Info.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n  \"Release\" )\ncp -r \"$SRCROOT/${PROJECT_NAME}/Resources/GoogleService-Info.plist\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app/GoogleService-Info.plist\" ;;\n*)\n;;\nesac\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -689,7 +684,9 @@
 				425B441E2D1FD2D2001E23FA /* User.swift in Sources */,
 				425B44262D1FDAF5001E23FA /* LocalStorageService.swift in Sources */,
 				FFA8CC2D2C01AB3C007428F8 /* WidgetOption.swift in Sources */,
+				425B44302D1FEF96001E23FA /* DIContainerModifier.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,
+				425D7DBD2D22C2F700DB82A6 /* AppNavigationView.swift in Sources */,
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
 				425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */,
@@ -883,16 +880,16 @@
 		55B5E36F2BF5A13F00E413C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				BUNDLE_ID_SUFFIX = .PicCharge.Dev;
 				CODE_SIGN_ENTITLEMENTS = PicCharge/Resources/PicCharge.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PicCharge/Resources/Info.plist;
@@ -908,9 +905,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.pohyoja${BUNDLE_ID_SUFFIX}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.co;
 				PRODUCT_NAME = "$(TARGET_NAME).Dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = PicChargeDev;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -920,18 +918,16 @@
 		55B5E3702BF5A13F00E413C6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				BUNDLE_ID_SUFFIX = .PicCharge;
 				CODE_SIGN_ENTITLEMENTS = PicCharge/Resources/PicCharge.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"PicCharge/Preview Content\"";
 				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = 7V4779Q2XR;
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q6CK9777WL;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = PicCharge/Resources/Info.plist;
@@ -947,10 +943,10 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.pohyoja${BUNDLE_ID_SUFFIX}";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.co;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "MC2 PoHyoJa";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = PicChargeProd;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -965,9 +961,11 @@
 				BUNDLE_ID_SUFFIX = .PicCharge.Dev;
 				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q6CK9777WL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParentWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
@@ -979,9 +977,10 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.pohyoja${BUNDLE_ID_SUFFIX}.ParentWidget";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.co.pohyojaWidget;
 				PRODUCT_NAME = "$(TARGET_NAME).Dev";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = PicChargeWidgetDev;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1001,9 +1000,11 @@
 				BUNDLE_ID_SUFFIX = .PicCharge;
 				CODE_SIGN_ENTITLEMENTS = ParentWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Q6CK9777WL;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = Q6CK9777WL;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = ParentWidget/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = ParentWidget;
@@ -1015,9 +1016,10 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.pohyoja${BUNDLE_ID_SUFFIX}.ParentWidget";
+				PRODUCT_BUNDLE_IDENTIFIER = com.pohyoja.co.pohyojaWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = PicChargeWidgetProd;
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

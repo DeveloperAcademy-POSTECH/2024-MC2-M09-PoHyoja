@@ -7,14 +7,18 @@
 
 import SwiftUI
 
-final class PhotoViewModel: ObservableObject {
+@Observable
+final class PhotoViewModel {
     struct State {
         
     }
     
-    @Published private(set) var state: State = .init()
+    private(set) var state: State = .init()
     
+    @ObservationIgnored
     private let localStorageService: LocalStorageService
+    
+    @ObservationIgnored
     private let remoteStorageService: RemoteStorageService
     
     init(

@@ -72,6 +72,8 @@ class NavigationManager {
     }
     @ObservationIgnored var prevUserState: UserState
     
+    static let shared = NavigationManager()
+    
     init(
         path: [PathType] = [],
         userState: UserState = .checkNeeded,

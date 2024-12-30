@@ -7,14 +7,18 @@
 
 import SwiftUI
 
-final class UserViewModel: ObservableObject {
+@Observable
+final class UserViewModel {
     struct State {
         
     }
     
-    @Published private(set) var state: State = .init()
+    private(set) var state: State = .init()
     
+    @ObservationIgnored
     private let localStorageService: LocalStorageService
+    
+    @ObservationIgnored
     private let remoteStorageService: RemoteStorageService
     
     init(
