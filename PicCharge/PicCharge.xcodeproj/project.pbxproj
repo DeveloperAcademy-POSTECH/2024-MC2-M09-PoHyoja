@@ -53,6 +53,8 @@
 		425B442A2D1FE6C4001E23FA /* UserConnectingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44292D1FE6C4001E23FA /* UserConnectingService.swift */; };
 		425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B442B2D1FEA02001E23FA /* UserViewModel.swift */; };
 		425B442E2D1FEAAA001E23FA /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */; };
+		425D7DB12D22BF7D00DB82A6 /* MockLocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */; };
+		425D7DB32D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
 		428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046732BF5DDD30097EB0B /* ChildTabView.swift */; };
@@ -159,6 +161,8 @@
 		425B44292D1FE6C4001E23FA /* UserConnectingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectingService.swift; sourceTree = "<group>"; };
 		425B442B2D1FEA02001E23FA /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
+		425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalStorageService.swift; sourceTree = "<group>"; };
+		425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteStorageServiceImpl.swift; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
 		428046732BF5DDD30097EB0B /* ChildTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTabView.swift; sourceTree = "<group>"; };
@@ -426,6 +430,8 @@
 			isa = PBXGroup;
 			children = (
 				425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */,
+				425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */,
+				425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */,
 				425B442B2D1FEA02001E23FA /* UserViewModel.swift */,
 				425B44292D1FE6C4001E23FA /* UserConnectingService.swift */,
 				425B44252D1FDAF5001E23FA /* LocalStorageService.swift */,
@@ -698,7 +704,9 @@
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
 				421A8CBE2BFE5114003C7001 /* UserEntity.swift in Sources */,
+				425D7DB12D22BF7D00DB82A6 /* MockLocalStorageService.swift in Sources */,
 				421A8C692BFA3761003C7001 /* Date+.swift in Sources */,
+				425D7DB32D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift in Sources */,
 				550FDD162BFC3DE6007A6B42 /* UserInfoForSignUpView.swift in Sources */,
 				425B44232D1FD631001E23FA /* DomainConvertible.swift in Sources */,
 				E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */,
