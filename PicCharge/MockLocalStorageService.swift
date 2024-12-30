@@ -16,7 +16,7 @@ class MockLocalStorageServiceImpl: LocalStorageService {
         print("add User")
     }
     
-    func deleteUser() async throws {
+    func deleteUser(_ name: String) async throws {
         print("delete User")
     }
     
@@ -28,7 +28,7 @@ class MockLocalStorageServiceImpl: LocalStorageService {
         print("add Photo")
     }
     
-    func deletePhoto(_ photoId: String) async throws {
+    func deletePhoto(_ photoId: UUID) async throws {
         print("delete Photo")
     }
 }
