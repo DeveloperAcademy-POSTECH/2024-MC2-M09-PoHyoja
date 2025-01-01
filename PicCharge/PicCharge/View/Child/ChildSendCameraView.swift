@@ -12,7 +12,7 @@ import WidgetKit
 struct ChildSendCameraView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
-    @Query var userForSwiftDatas: [UserForSwiftData]
+    @Query var userForSwiftDatas: [UserEntity]
     
     @State private var isChildLoadingView: Bool = false
     private let imageData: Data
@@ -60,7 +60,7 @@ struct ChildSendCameraView: View {
                         }
                         var newConnectedTo = user.connectedTo
                         newConnectedTo.append(user.name)
-                        let photoForSwiftData = PhotoForSwiftData(uploadBy: user.name, sharedWith: newConnectedTo, imgData: imageData)
+                        let photoForSwiftData = PhotoEntity(uploadBy: user.name, sharedWith: newConnectedTo, imgData: imageData)
 
                         // MARK: - 로컬에 이미지 저장
                         modelContext.insert(photoForSwiftData)

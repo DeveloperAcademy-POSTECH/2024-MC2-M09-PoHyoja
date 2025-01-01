@@ -16,11 +16,11 @@ enum PathType: Hashable {
     case childCamera
     case childSendCamera(imageData: Data)
     case childSendGallery
-    case childAlbumDetail(photo: PhotoForSwiftData)
+    case childAlbumDetail(photo: PhotoEntity)
     
     // MARK: - 부모
-    case parentAlbum(user: UserForSwiftData)
-    case parentAlbumDetail(photo: PhotoForSwiftData)
+    case parentAlbum(user: UserEntity)
+    case parentAlbumDetail(photo: PhotoEntity)
     
     // MARK: - Setting
     case setting(role: Role)
@@ -71,6 +71,8 @@ class NavigationManager {
         }
     }
     @ObservationIgnored var prevUserState: UserState
+    
+    static let shared = NavigationManager()
     
     init(
         path: [PathType] = [],

@@ -12,8 +12,8 @@ import FirebaseAuth
 struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
-    @Query var userForSwiftDatas: [UserForSwiftData]
-    @Query var photoForSwiftDatas: [PhotoForSwiftData]
+    @Query var userForSwiftDatas: [UserEntity]
+    @Query var photoForSwiftDatas: [PhotoEntity]
 
     @State private var myRole: Role
     

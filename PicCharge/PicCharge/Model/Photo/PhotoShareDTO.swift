@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PhotoForShare: Transferable {
+struct PhotoShareDTO: Transferable {
     static var transferRepresentation: some TransferRepresentation {
         ProxyRepresentation(exporting: \.image)
     }

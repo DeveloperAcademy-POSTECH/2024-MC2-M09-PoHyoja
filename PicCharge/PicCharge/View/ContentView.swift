@@ -22,15 +22,15 @@ struct ContentView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(\.modelContext) var modelContext
     
-    @Query var userForSwiftDatas: [UserForSwiftData]
-    @Query(sort: \PhotoForSwiftData.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoForSwiftData]
+    @Query var userForSwiftDatas: [UserEntity]
+    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoEntity]
     
     @State private var isAppearing: Bool = true
     @State private var isFirstLoad = true
     @State private var buggungEnd = false
     
-    var user: UserForSwiftData {
-        userForSwiftDatas.first ?? UserForSwiftData(name: "", role: .child, email: "")
+    var user: UserEntity {
+        userForSwiftDatas.first ?? UserEntity(name: "", role: .child, email: "")
     }
     
     var body: some View {

@@ -11,13 +11,12 @@ import SwiftData
 @main
 struct PicChargeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @State private var navigationManager = NavigationManager()
     
     let container: ModelContainer
     
     init() {
         do {
-            container = try ModelContainer(for: UserForSwiftData.self, PhotoForSwiftData.self)
+            container = try ModelContainer(for: UserEntity.self, PhotoEntity.self)
         } catch {
             fatalError("Failed to configure SwiftData container.")
         }
@@ -25,15 +24,10 @@ struct PicChargeApp: App {
     
     var body: some Scene {
         WindowGroup {
-            NavigationStack(path: $navigationManager.path) {
-                ContentView()
-                    .navigationDestination(for: PathType.self) { path in
-                        path.NavigatingView()
-                    }
-                    .preferredColorScheme(.dark)
-            }
+            AppNavigationView()
+                .injectDIContainer()
+                .preferredColorScheme(.dark)
         }
         .modelContainer(container)
-        .environment(navigationManager)
     }
 }

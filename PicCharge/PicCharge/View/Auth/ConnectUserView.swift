@@ -11,7 +11,7 @@ import SwiftData
 struct ConnectUserView: View {
     @Environment(NavigationManager.self) var navigationManager
 
-    @Bindable var user: UserForSwiftData
+    @Bindable var user: UserEntity
     
     @State private var requestToMe: ConnectionRequestsDTO? = nil
     @State private var requestFromMe: ConnectionRequestsDTO? = nil
@@ -22,7 +22,7 @@ struct ConnectUserView: View {
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     
-    init(user: UserForSwiftData) {
+    init(user: UserEntity) {
         self.user = user
     }
     
