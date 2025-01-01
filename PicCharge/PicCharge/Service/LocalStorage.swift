@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  LocalStorage.swift
 //  PicCharge
 //
 //  Created by 남유성 on 12/30/24.
@@ -19,4 +19,8 @@ protocol LocalStorage {
               sortDescriptors: SortDescriptorType...) throws -> [T]
     func update(_ item: T) throws
     func delete(_ item: T) throws
+}
+
+enum LocalStorageError: Error {
+    case itemNotExist
 }

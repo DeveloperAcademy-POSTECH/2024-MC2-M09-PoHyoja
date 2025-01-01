@@ -20,6 +20,10 @@ class MockLocalStorageServiceImpl: LocalStorageService {
         print("delete User")
     }
     
+    func fetchPhotos(for option: PhotoSortOption, _ order: SortOrder) async -> [Photo] {
+        []
+    }
+    
     func fetchPhotos() async -> [Photo] {
         return []
     }

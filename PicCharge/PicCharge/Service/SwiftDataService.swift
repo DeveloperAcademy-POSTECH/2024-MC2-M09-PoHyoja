@@ -61,9 +61,13 @@ extension SwiftDataService {
 // MARK: - Photo Entity
 extension SwiftDataService {
     func fetchPhotos() async -> [Photo] {
+        await fetchPhotos(for: .uploadDate, .reverse)
+    }
+    
+    func fetchPhotos(for option: PhotoSortOption, _ order: SortOrder) async -> [Photo] {
         do {
             let photoEntities: [PhotoEntity] = try photoStorage.read(
-                sortDescriptors: SortDescriptor(\.uploadDate, order: .reverse)
+                sortDescriptors: PhotoSortDescriptor.build(option, order: order)
             )
             
             return photoEntities.map { $0.toDomain() }
@@ -80,5 +84,18 @@ extension SwiftDataService {
     
     func deletePhoto(_ photoId: UUID) async throws {
         try photoStorage.delete(photoId)
+    }
+}
+
+extension SwiftDataService {
+    struct PhotoSortDescriptor {
+        static func build(_ option: PhotoSortOption = .uploadDate,
+                          order: SortOrder = .reverse) -> SortDescriptor<PhotoEntity> {
+            
+            switch option {
+            case .uploadDate:
+                return SortDescriptor(\.uploadDate, order: order)
+            }
+        }
     }
 }
