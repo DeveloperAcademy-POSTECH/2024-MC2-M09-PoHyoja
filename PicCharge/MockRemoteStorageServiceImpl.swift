@@ -8,6 +8,10 @@
 import Foundation
 
 class MockRemoteStorageServiceImpl: RemoteStorageService {
+    func downloadPhoto(of urlString: String) async throws -> Data {
+        return Data()
+    }
+    
     func fetchUserByEmail(_ email: String) async -> User? {
         return nil
     }
