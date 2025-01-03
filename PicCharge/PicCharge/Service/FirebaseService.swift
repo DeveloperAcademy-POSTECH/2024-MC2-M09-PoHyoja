@@ -10,61 +10,9 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
-enum RemoteStorageServiceError: Error {
-    case invalidQuery
-    case invalidUserName
-    case invalidUserId
-    case invalidUserDTOFormat
-    case userNotExists
-    case userAlreadyExists
-    case invalidPhotoData
-    case invalidDownloadURL
-    case invalidPhotoDTOFormat
-    case uploadPhotoFailed
-    case downloadPhotoFailed
-    case updatePhotoFailed
-    case deleteUserFailed
-    case deletePhotoFailed
-}
-
-extension RemoteStorageServiceError: LocalizedError {
-    var errorDescription: String? {
-        switch self {
-        case .invalidQuery:
-            return "잘못된 쿼리입니다."
-        case .invalidUserName:
-            return "유효하지 않은 사용자 이름입니다."
-        case .invalidUserId:
-            return "유효하지 않은 사용자 ID입니다."
-        case .invalidUserDTOFormat:
-            return "사용자 데이터 형식이 잘못되었습니다."
-        case .userAlreadyExists:
-            return "이미 존재하는 사용자입니다."
-        case .invalidPhotoData:
-            return "유효하지 않은 사진 데이터입니다."
-        case .invalidDownloadURL:
-            return "유효하지 않은 다운로드 URL입니다."
-        case .invalidPhotoDTOFormat:
-            return "사진 데이터 형식이 잘못되었습니다."
-        case .uploadPhotoFailed:
-            return "사진 업로드에 실패했습니다."
-        case .downloadPhotoFailed:
-            return "사진 다운로드에 실패했습니다."
-        case .updatePhotoFailed:
-            return "사진 업데이트에 실패했습니다."
-        case .deletePhotoFailed:
-            return "사진 삭제에 실패했습니다."
-        case .userNotExists:
-            return "존재하지 않은 사용자입니다."
-        case .deleteUserFailed:
-            return "유저 삭제에 실패했습니다."
-        }
-    }
-}
-
 class FirebaseService: RemoteStorageService {
     
-    typealias ServiceError = RemoteStorageServiceError
+    typealias ServiceError = FirebaseServiceError
     
     private let db = Firestore.firestore()
     private let storage = Storage.storage()
@@ -194,8 +142,7 @@ extension FirebaseService {
                 .setData(from: userDTO)
             
         } catch {
-            print(#fileID, #function, #line, "서버 에러")
-            throw ServiceError.deleteUserFailed
+            throw ServiceError.addUserFailed(error: error)
         }
     }
     
@@ -227,7 +174,7 @@ extension FirebaseService {
                 .delete()
             
         } catch {
-            throw ServiceError.deleteUserFailed
+            throw ServiceError.deleteUserFailed(error: error)
         }
     }
 }
@@ -262,7 +209,7 @@ extension FirebaseService {
                 .setData(from: photoDTO)
                 
         } catch {
-            throw ServiceError.updatePhotoFailed
+            throw ServiceError.updatePhotoFailed(error: error)
         }
     }
     
@@ -274,16 +221,20 @@ extension FirebaseService {
         let storageRef = storage.reference().child("\(folder)/\(userName)/\(photo.id.uuidString).jpg")
         
         // 2. 업로드
-        guard let _ = try? await storageRef.putDataAsync(imgData, metadata: nil) else {
-            throw ServiceError.uploadPhotoFailed
+        do {
+            _ = try await storageRef.putDataAsync(imgData, metadata: nil)
+        } catch {
+            throw ServiceError.uploadPhotoFailed(error: error)
         }
         
         // 3. 다운로드 URL 변환 (업로드 후 접근 가능)
-        guard let downloadURL = try? await storageRef.downloadURL() else {
-            throw ServiceError.downloadPhotoFailed
+        do {
+            let downloadURL = try await storageRef.downloadURL()
+            return downloadURL.absoluteString
+            
+        } catch {
+            throw ServiceError.updatePhotoFailed(error: error)
         }
-        
-        return downloadURL.absoluteString
     }
     
     func downloadPhotoData(of urlString: String) async throws -> Data {
@@ -294,7 +245,7 @@ extension FirebaseService {
             // 2. 다운로드
             return try await storageRef.data(maxSize: 5 * 1024 * 1024)
         } catch {
-            throw ServiceError.downloadPhotoFailed
+            throw ServiceError.downloadPhotoFailed(error: error)
         }
     }
     
@@ -308,7 +259,7 @@ extension FirebaseService {
                 ])
             
         } catch {
-            throw ServiceError.updatePhotoFailed
+            throw ServiceError.updatePhotoFailed(error: error)
         }
     }
     
@@ -348,7 +299,7 @@ extension FirebaseService {
                 try await group.waitForAll()
             }
         } catch {
-            throw ServiceError.deletePhotoFailed
+            throw ServiceError.deletePhotoFailed(error: error)
         }
     }
 }

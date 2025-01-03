@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -77,6 +77,8 @@
 		42CF70402D2556070054F244 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF703F2D2556070054F244 /* FirebaseService.swift */; };
 		42CF70412D2556070054F244 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF703F2D2556070054F244 /* FirebaseService.swift */; };
 		42CF70422D2560350054F244 /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44272D1FDB09001E23FA /* RemoteStorageService.swift */; };
+		42CF70722D28569D0054F244 /* FirebaseServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70712D28569D0054F244 /* FirebaseServiceError.swift */; };
+		42CF70732D28569D0054F244 /* FirebaseServiceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70712D28569D0054F244 /* FirebaseServiceError.swift */; };
 		5151CB8A2BFEE41300AF792F /* LikeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5151CB892BFEE41300AF792F /* LikeAnimation.json */; };
 		516978322C00CDEF00168164 /* BuggungEnd.json in Resources */ = {isa = PBXBuildFile; fileRef = 516978312C00CDEF00168164 /* BuggungEnd.json */; };
 		516978342C01B51800168164 /* BuggungEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516978332C01B51800168164 /* BuggungEndView.swift */; };
@@ -197,6 +199,7 @@
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		42CF703F2D2556070054F244 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
 		42CF70472D2560B70054F244 /* PicChargeTests(Temp).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PicChargeTests(Temp).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		42CF70712D28569D0054F244 /* FirebaseServiceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseServiceError.swift; sourceTree = "<group>"; };
 		5151CB892BFEE41300AF792F /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
 		516978312C00CDEF00168164 /* BuggungEnd.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungEnd.json; sourceTree = "<group>"; };
 		516978332C01B51800168164 /* BuggungEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungEndView.swift; sourceTree = "<group>"; };
@@ -512,6 +515,7 @@
 				552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */,
 				552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */,
 				42CF703F2D2556070054F244 /* FirebaseService.swift */,
+				42CF70712D28569D0054F244 /* FirebaseServiceError.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -731,6 +735,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				421A8CC42BFF63A5003C7001 /* SelectRoleForSignUpView.swift in Sources */,
+				42CF70732D28569D0054F244 /* FirebaseServiceError.swift in Sources */,
 				428046842BF5DFA50097EB0B /* ChildAlbumDetailView.swift in Sources */,
 				4214DA1A2C0392610096D48B /* ConnectionRequestsDTO.swift in Sources */,
 				FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */,
@@ -819,6 +824,7 @@
 				4214DA022C0388800096D48B /* ChildWidget.swift in Sources */,
 				4214D9F82C0333160096D48B /* PhotoEntity.swift in Sources */,
 				4214DA1E2C0392DC0096D48B /* PhotoShareDTO.swift in Sources */,
+				42CF70722D28569D0054F244 /* FirebaseServiceError.swift in Sources */,
 				FF3ECB772C003F0800E65D83 /* BatteryShadowModifier.swift in Sources */,
 				425B441D2D1FD2D2001E23FA /* User.swift in Sources */,
 			);
