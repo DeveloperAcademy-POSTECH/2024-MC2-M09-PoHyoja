@@ -39,7 +39,7 @@ protocol RemoteStorageService {
     /// 유저 이름을 통해 사진 데이터를 가져옵니다.
     /// - Parameter userName: 사진을 가져올 유저 이름
     /// - Returns: 해당 유저의 사진 목록 (`[Photo]`)
-    func fetchPhotos(_ userName: String) async -> [Photo]
+    func fetchPhotos(_ userName: String) async throws -> [Photo]
     
     /// 유저의 사진을 원격 스토리지에 업로드합니다.
     /// - Parameters:
@@ -62,5 +62,5 @@ protocol RemoteStorageService {
     /// 원격 스토리지에서 일치하는 ID의 사진을 삭제합니다.
     /// - Parameter photoId: 삭제할 사진의 ID
     /// - Throws: 삭제 과정에서 오류 발생 시 예외를 던짐
-    func deletePhoto(of photoId: String) async throws
+    func deletePhoto(of photoId: UUID) async throws
 }

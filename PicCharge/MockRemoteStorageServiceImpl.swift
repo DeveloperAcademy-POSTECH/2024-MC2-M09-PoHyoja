@@ -44,7 +44,7 @@ class MockRemoteStorageServiceImpl: RemoteStorageService {
         print("update Photo")
     }
     
-    func deletePhoto(of photoId: String) async throws {
+    func deletePhoto(of photoId: UUID) async throws {
         print("delete Photo")
     }
 }
