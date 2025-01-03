@@ -7,10 +7,53 @@
 
 import XCTest
 @testable import PicCharge_Dev
+import FirebaseStorage
+import FirebaseFirestore
+
+class TestFireBaseService: FirebaseService {
+    override var userCollection: String { "testUsers" }
+    override var photoCollection: String { "testPhotos" }
+    override var folder: String { "testPhotos" }
+    
+    private let testFireStore: Firestore
+    
+    override init(fireStore: Firestore, storage: Storage) {
+        self.testFireStore = fireStore
+        super.init(fireStore: fireStore, storage: storage)
+    }
+    
+    func clearTests() async throws {
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            for collection in [userCollection, photoCollection] {
+                group.addTask {
+                    try await self.clearCollection(named: collection)
+                }
+            }
+        
+            try await group.waitForAll()
+        }
+    }
+    
+    private func clearCollection(named collectionName: String) async throws {
+        let documents = try await testFireStore
+            .collection(collectionName)
+            .getDocuments()
+            .documents
+        
+        try await withThrowingTaskGroup(of: Void.self) { group in
+            for document in documents {
+                group.addTask {
+                    try await document.reference.delete()
+                }
+            }
+            try await group.waitForAll()
+        }
+    }
+}
 
 final class PicChargeTests_Temp_: XCTestCase {
     
-    var service: FirebaseService!
+    var service: TestFireBaseService!
     
     var unknownUser: User!
     var myUser: User!
@@ -21,7 +64,10 @@ final class PicChargeTests_Temp_: XCTestCase {
     var invalidPhoto: Photo!
     
     override func setUpWithError() throws {
-        service = FirebaseService(isTest: true)
+        service = TestFireBaseService(
+            fireStore: .firestore(),
+            storage: .storage()
+        )
         
         unknownUser = User(
             name: "unknown",
@@ -87,6 +133,12 @@ final class PicChargeTests_Temp_: XCTestCase {
         newUser = nil
         userForDelete = nil
         samplePhoto = nil
+    }
+    
+    func test_() {
+        XCTAssertEqual(service.userCollection, "testUsers")
+        XCTAssertEqual(service.photoCollection, "testPhotos")
+        XCTAssertEqual(service.folder, "testPhotos")
     }
     
     func test_유저_이메일로_조회_없는_유저() async throws {
@@ -182,7 +234,7 @@ final class PicChargeTests_Temp_: XCTestCase {
         do {
             try await service.addUser(newUser)
             XCTFail("중복으로 유저를 추가가 가능해 테스트에 실패했습니다.")
-        } catch let error as RemoteStorageServiceError {
+        } catch let error as FirebaseServiceError {
             XCTAssertEqual(error, .userAlreadyExists)
         } catch {
             XCTFail("알수 없는 오류로 테스트에 실패했습니다.")
@@ -248,7 +300,7 @@ final class PicChargeTests_Temp_: XCTestCase {
             _ = try await service.fetchPhotos("")
             XCTFail("예상한 에러가 발생하지 않았습니다.")
             
-        } catch let error as RemoteStorageServiceError {
+        } catch let error as FirebaseServiceError {
             XCTAssertEqual(error, .invalidUserName)
         } catch {
             XCTFail("예상한 에러와 다른 에러가 발생했습니다.")

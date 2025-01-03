@@ -14,40 +14,17 @@ class FirebaseService: RemoteStorageService {
     
     typealias ServiceError = FirebaseServiceError
     
-    private let db = Firestore.firestore()
-    private let storage = Storage.storage()
+    private let db: Firestore
+    private let storage: Storage
     
-    private let isTest: Bool
-    
-    init(isTest: Bool = false) {
-        self.isTest = isTest
+    init(fireStore: Firestore, storage: Storage) {
+        self.db = fireStore
+        self.storage = storage
     }
     
-    var userCollection: String { isTest ? "testUsers" : "users" }
-    var photoCollection: String { isTest ? "testPhotos" : "photos" }
-    var folder: String { isTest ? "testPhotos" : "photos" }
-    
-    func clearTests() async throws {
-        guard isTest else { return }
-        
-        _ = try await db.collection(userCollection)
-            .getDocuments()
-            .documents
-            .map { document in
-                Task {
-                    try await document.reference.delete()
-                }
-            }
-        
-        _ = try await db.collection(photoCollection)
-            .getDocuments()
-            .documents
-            .map { document in
-                Task {
-                    try await document.reference.delete()
-                }
-            }
-    }
+    var userCollection: String { "users" }
+    var photoCollection: String { "photos" }
+    var folder: String { "photos" }
 }
 
 extension FirebaseService {
@@ -142,7 +119,7 @@ extension FirebaseService {
                 .setData(from: userDTO)
             
         } catch {
-            throw ServiceError.addUserFailed(error: error)
+            throw ServiceError.addUserFailed(error: error.localizedDescription)
         }
     }
     
@@ -174,7 +151,7 @@ extension FirebaseService {
                 .delete()
             
         } catch {
-            throw ServiceError.deleteUserFailed(error: error)
+            throw ServiceError.deleteUserFailed(error: error.localizedDescription)
         }
     }
 }
@@ -209,7 +186,7 @@ extension FirebaseService {
                 .setData(from: photoDTO)
                 
         } catch {
-            throw ServiceError.updatePhotoFailed(error: error)
+            throw ServiceError.updatePhotoFailed(error: error.localizedDescription)
         }
     }
     
@@ -224,7 +201,7 @@ extension FirebaseService {
         do {
             _ = try await storageRef.putDataAsync(imgData, metadata: nil)
         } catch {
-            throw ServiceError.uploadPhotoFailed(error: error)
+            throw ServiceError.uploadPhotoFailed(error: error.localizedDescription)
         }
         
         // 3. 다운로드 URL 변환 (업로드 후 접근 가능)
@@ -233,7 +210,7 @@ extension FirebaseService {
             return downloadURL.absoluteString
             
         } catch {
-            throw ServiceError.updatePhotoFailed(error: error)
+            throw ServiceError.updatePhotoFailed(error: error.localizedDescription)
         }
     }
     
@@ -245,7 +222,7 @@ extension FirebaseService {
             // 2. 다운로드
             return try await storageRef.data(maxSize: 5 * 1024 * 1024)
         } catch {
-            throw ServiceError.downloadPhotoFailed(error: error)
+            throw ServiceError.downloadPhotoFailed(error: error.localizedDescription)
         }
     }
     
@@ -259,7 +236,7 @@ extension FirebaseService {
                 ])
             
         } catch {
-            throw ServiceError.updatePhotoFailed(error: error)
+            throw ServiceError.updatePhotoFailed(error: error.localizedDescription)
         }
     }
     
@@ -299,7 +276,7 @@ extension FirebaseService {
                 try await group.waitForAll()
             }
         } catch {
-            throw ServiceError.deletePhotoFailed(error: error)
+            throw ServiceError.deletePhotoFailed(error: error.localizedDescription)
         }
     }
 }

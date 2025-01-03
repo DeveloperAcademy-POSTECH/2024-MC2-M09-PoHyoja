@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FirebaseServiceError: Error {
+enum FirebaseServiceError: Error, Equatable {
     case invalidQuery
     
     case invalidUserName
@@ -20,13 +20,13 @@ enum FirebaseServiceError: Error {
     case invalidDownloadURL
     case invalidPhotoDTOFormat
     
-    case addUserFailed(error: Error)
-    case deleteUserFailed(error: Error)
+    case addUserFailed(error: String)
+    case deleteUserFailed(error: String)
     
-    case uploadPhotoFailed(error: Error)
-    case downloadPhotoFailed(error: Error)
-    case updatePhotoFailed(error: Error)
-    case deletePhotoFailed(error: Error)
+    case uploadPhotoFailed(error: String)
+    case downloadPhotoFailed(error: String)
+    case updatePhotoFailed(error: String)
+    case deletePhotoFailed(error: String)
 }
 
 extension FirebaseServiceError: LocalizedError {
