@@ -10,88 +10,144 @@ import XCTest
 
 final class PicChargeTests_Temp_: XCTestCase {
     
-    private var service: FirebaseService!
+    var service: FirebaseService!
     
-    private let unknownUser = User(name: "unknown", role: .child, email: "user@unknown.com", connectedTo: [])
-    private let myUser = User(name: "myUser", role: .child, email: "user@my.com", connectedTo: [])
-    private let userForDelete = User(name: "userForDelete", role: .child, email: "user@delete.com", connectedTo: [])
+    var unknownUser: User!
+    var myUser: User!
+    var newUser: User!
+    var userForDelete: User!
+    
+    var samplePhoto: Photo!
+    var invalidPhoto: Photo!
     
     override func setUpWithError() throws {
-        let isTest = true
+        service = FirebaseService(isTest: true)
         
-        if isTest {
-            service = FirebaseService(isTest: isTest)
-        } else {
-            fatalError("테스트 여부 확인!!!!!!!!!!")
-        }
-        
-        
-        // 데이터를 비동기적으로 생성하고 기다림
-        let expectation = self.expectation(description: "Setup Test Data")
-        
-        Task {
-            do {
-                // 테스트 데이터를 생성
-                try await service.addUser(myUser)
-                expectation.fulfill() // 데이터 생성이 완료되면 기대치를 충족
-            } catch {
-                XCTFail("Failed to create test data: \(error)")
-            }
-        }
-        
-        // 비동기 작업이 완료될 때까지 기다림 (최대 5초)
-        wait(for: [expectation], timeout: 5.0)
+        unknownUser = User(
+            name: "unknown",
+            role: .child,
+            email: "user@unknown.com",
+            connectedTo: []
+        )
+        myUser = User(
+            name: "myUser",
+            role: .child,
+            email: "user@my.com",
+            connectedTo: []
+        )
+        newUser = User(
+            name: "otherUser",
+            role: .child,
+            email: "user@other.com",
+            connectedTo: []
+        )
+        userForDelete = User(
+            name: "userForDelete",
+            role: .child,
+            email: "user@delete.com",
+            connectedTo: []
+        )
+        samplePhoto = Photo(
+            id: UUID(),
+            uploadBy: "myUser",
+            uploadDate: .now,
+            imgData: Data("sample image".utf8),
+            likeCount: 0,
+            sharedWith: ["myUser"]
+        )
+        invalidPhoto = Photo(
+            id: UUID(),
+            uploadBy: "",
+            uploadDate: .now,
+            imgData: Data("invalid image".utf8),
+            likeCount: 0,
+            sharedWith: []
+        )
     }
     
     override func tearDownWithError() throws {
-        // 데이터를 비동기적으로 생성하고 기다림
         let expectation = self.expectation(description: "Delete Test Data")
-        
         Task {
             do {
-                // 테스트 데이터를 생성
                 try await service.clearTests()
-                service = nil
-                expectation.fulfill() // 데이터 생성이 완료되면 기대치를 충족
+                expectation.fulfill()
+                clear()
             } catch {
                 XCTFail("Failed to create test data: \(error)")
-                service = nil
+                clear()
             }
         }
-        
-        // 비동기 작업이 완료될 때까지 기다림 (최대 5초)
         wait(for: [expectation], timeout: 5.0)
     }
     
-    func test_없는유저_이메일로_조회() async throws {
-        let fetchUser = await service.fetchUserByEmail(unknownUser.email)
+    func clear() {
+        service = nil
+        unknownUser = nil
+        myUser = nil
+        newUser = nil
+        userForDelete = nil
+        samplePhoto = nil
+    }
+    
+    func test_유저_이메일로_조회_없는_유저() async throws {
+        let fetchUser = try await service.fetchUserByEmail(unknownUser.email)
         
         XCTAssertNil(fetchUser) // nil
     }
     
-    func test_기존유저_이메일로_조회() async throws {
-        let fetchUser = await service.fetchUserByEmail(myUser.email)
+    func test_유저_이메일로_조회_있는_유저() async throws {
+        do {
+            try await service.addUser(myUser)
+        } catch {
+            XCTFail("테스트할 유저가 추가에 실패했습니다.")
+        }
         
-        XCTAssertNotNil(fetchUser)
-        XCTAssertEqual(fetchUser?.name, myUser.name)
-        XCTAssertEqual(fetchUser?.email, myUser.email)
+        do {
+            let fetchUser = try await service.fetchUserByEmail(myUser.email)
+            
+            XCTAssertNotNil(fetchUser)
+            XCTAssertEqual(fetchUser?.name, myUser.name)
+            XCTAssertEqual(fetchUser?.email, myUser.email)
+        } catch {
+            XCTFail("유저 이메일로 조회 테스트에 실패했습니다.")
+        }
     }
     
     func test_없는유저_이름으로_조회() async throws {
-        let fetchUser = await service.fetchUserByName(unknownUser.name)
-        
-        XCTAssertNil(fetchUser) // nil
+        do {
+            let fetchUser = try await service.fetchUserByName(unknownUser.name)
+            
+            XCTAssertNil(fetchUser) // nil
+        } catch {
+            XCTFail("유저 이름으로 조회 테스트에 실패했습니다.")
+        }
     }
     
-    func test_기존유저_이름으로_조회() async throws {
-        let fetchUser = await service.fetchUserByName(myUser.name)
+    func test_유저_이름으로_조회_있는_유저() async throws {
+        do {
+            try await service.addUser(myUser)
+        } catch {
+            XCTFail("테스트할 유저가 추가에 실패했습니다.")
+        }
         
-        XCTAssertNotNil(fetchUser)
-        XCTAssertEqual(fetchUser?.name, myUser.name)
-        XCTAssertEqual(fetchUser?.email, myUser.email)
+        do {
+            let fetchUser = try await service.fetchUserByName(myUser.name)
+            
+            XCTAssertNotNil(fetchUser)
+            XCTAssertEqual(fetchUser?.name, myUser.name)
+            XCTAssertEqual(fetchUser?.email, myUser.email)
+        } catch {
+            XCTFail("유저 이름으로 조회 테스트에 실패했습니다.")
+        }
     }
     
-    func test_유저존재여부_확인() async throws {
+    func test_유저_존재여부_확인() async throws {
+        do {
+            try await service.addUser(myUser)
+        } catch {
+            XCTFail("테스트할 유저가 추가에 실패했습니다.")
+        }
+        
         let isUnknownExist = try await service.checkUserExists(by: unknownUser.name)
         let isMyUserExist = try await service.checkUserExists(by: myUser.name)
         
@@ -99,26 +155,182 @@ final class PicChargeTests_Temp_: XCTestCase {
         XCTAssertTrue(isMyUserExist)
     }
     
-    func test_신규유저_추가() async throws {
-        let newUser = User(name: "newUser", role: .child, email: "newUser@newUser.com", connectedTo: [])
-        try await service.addUser(newUser)
+    func test_신규_유저_추가() async throws {
+        do {
+            try await service.addUser(newUser)
+        } catch {
+            XCTFail("테스트할 유저가 추가에 실패했습니다.")
+        }
         
-        let fetchUser = await service.fetchUserByName(newUser.name)
-        XCTAssertNotNil(fetchUser)
-        XCTAssertEqual(fetchUser?.name, newUser.name)
+        do {
+            let fetchUser = try await service.fetchUserByName(newUser.name)
+            
+            XCTAssertNotNil(fetchUser)
+            XCTAssertEqual(fetchUser?.name, newUser.name)
+        } catch {
+            XCTFail("신규 유저 추가 테스트에 실패했습니다.")
+        }
+    }
+    
+    func test_신규_유저_추가_중복() async throws {
+        do {
+            try await service.addUser(newUser)
+        } catch {
+            XCTFail("테스트할 유저가 추가에 실패했습니다.")
+        }
         
         do {
             try await service.addUser(newUser)
-            XCTFail("유저 중복 생성 불가")
+            XCTFail("중복으로 유저를 추가가 가능해 테스트에 실패했습니다.")
+        } catch let error as RemoteStorageServiceError {
+            XCTAssertEqual(error, .userAlreadyExists)
         } catch {
-            
+            XCTFail("알수 없는 오류로 테스트에 실패했습니다.")
         }
     }
     
     func test_기존유저_삭제() async throws {
-        try await service.deleteUser(userForDelete)
+        do {
+            try await service.addUser(userForDelete)
+        } catch {
+            XCTFail("테스트할 유저가 추가에 실패했습니다.")
+        }
         
-        let fetchUser = await service.fetchUserByName(userForDelete.name)
-        XCTAssertNil(fetchUser)
+        do {
+            try await service.deleteUser(userForDelete)
+        } catch {
+            XCTFail("유저 삭제에 실패했습니다.")
+        }
+        
+        do {
+            let fetchUser = try await service.fetchUserByName(userForDelete.name)
+            
+            XCTAssertNil(fetchUser)
+        } catch {
+            XCTFail("테스트할 유저가 조회에 실패했습니다.")
+        }
+    }
+    
+    // MARK: - Photo
+    
+    func test_사진_업로드_데이터_조회() async throws {
+        guard let imgData = samplePhoto.imgData else {
+            XCTFail("테스트할 사진 데이터가 빈 데이터입니다.")
+            return
+        }
+        
+        guard let urlString = try? await service.uploadPhotoData(of: myUser.name, photo: samplePhoto, imgData: imgData)
+        else {
+            XCTFail("테스트에 사용될 사진 업로드에 실패했습니다.")
+            return
+        }
+        
+        do {
+            try await service.addPhoto(samplePhoto, urlString: urlString)
+        } catch {
+            XCTFail("테스트에 사용될 사진 추가에 실패했습니다.")
+            return
+        }
+        
+        do {
+            let photos = try await service.fetchPhotos(myUser.name)
+            
+            XCTAssertNotNil(photos)
+            XCTAssertTrue(photos.contains { $0.id == samplePhoto.id })
+        } catch {
+            
+            XCTFail("사진 조회 테스트에 실패 했습니다.")
+        }
+    }
+    
+    func test_사진_조회_Empty_이름() async {
+        do {
+            _ = try await service.fetchPhotos("")
+            XCTFail("예상한 에러가 발생하지 않았습니다.")
+            
+        } catch let error as RemoteStorageServiceError {
+            XCTAssertEqual(error, .invalidUserName)
+        } catch {
+            XCTFail("예상한 에러와 다른 에러가 발생했습니다.")
+        }
+    }
+    
+    func test_사진_다운로드() async throws {
+        guard let imgData = samplePhoto.imgData else {
+            XCTFail("테스트할 사진 데이터가 빈 데이터입니다.")
+            return
+        }
+        
+        guard let urlString = try? await service.uploadPhotoData(of: myUser.name, photo: samplePhoto, imgData: imgData)
+        else {
+            XCTFail("테스트에 사용될 사진 업로드에 실패했습니다.")
+            return
+        }
+        
+        do {
+            let photoData = try await service.downloadPhotoData(of: urlString)
+            
+            XCTAssertNotNil(photoData)
+            XCTAssertEqual(photoData, imgData)
+        } catch {
+            XCTFail("사진 다운로드에 실패했습니다.")
+        }
+    }
+    
+    func test_사진_업데이트() async throws {
+        guard let imgData = samplePhoto.imgData else {
+            XCTFail("테스트할 사진 데이터가 빈 데이터입니다.")
+            return
+        }
+        
+        guard let urlString = try? await service.uploadPhotoData(of: myUser.name, photo: samplePhoto, imgData: imgData)
+        else {
+            XCTFail("테스트에 사용될 사진 업로드에 실패했습니다.")
+            return
+        }
+        
+        do {
+            try await service.addPhoto(samplePhoto, urlString: urlString)
+        } catch {
+            XCTFail("테스트에 사용될 사진 추가에 실패했습니다.")
+            return
+        }
+        
+        do {
+            samplePhoto.likeCount = 1
+            try await service.updatePhoto(samplePhoto)
+        }
+        
+        let storedPhotos = try await service.fetchPhotos(myUser.name)
+        XCTAssertEqual(storedPhotos.filter { $0.id == samplePhoto.id }.first?.likeCount, 1)
+    }
+    
+    func test_사진_삭제() async throws {
+        guard let imgData = samplePhoto.imgData else {
+            XCTFail("테스트할 사진 데이터가 빈 데이터입니다.")
+            return
+        }
+        
+        guard let urlString = try? await service.uploadPhotoData(of: myUser.name, photo: samplePhoto, imgData: imgData)
+        else {
+            XCTFail("테스트에 사용될 사진 업로드에 실패했습니다.")
+            return
+        }
+        
+        do {
+            try await service.addPhoto(samplePhoto, urlString: urlString)
+        } catch {
+            XCTFail("테스트에 사용될 사진 추가에 실패했습니다.")
+            return
+        }
+        
+        do {
+            try await service.deletePhoto(of: samplePhoto.id)
+        } catch {
+            XCTFail("사진 삭제에 실패했습니다.")
+        }
+        
+        let storedPhotos = try await service.fetchPhotos(myUser.name)
+        XCTAssertFalse(storedPhotos.contains { $0.id == samplePhoto.id })
     }
 }

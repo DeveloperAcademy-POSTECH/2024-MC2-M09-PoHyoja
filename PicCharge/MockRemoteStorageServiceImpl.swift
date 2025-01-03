@@ -8,10 +8,6 @@
 import Foundation
 
 class MockRemoteStorageServiceImpl: RemoteStorageService {
-    func downloadPhoto(of urlString: String) async throws -> Data {
-        return Data()
-    }
-    
     func fetchUserByEmail(_ email: String) async throws -> User? {
         return nil
     }
@@ -36,8 +32,8 @@ class MockRemoteStorageServiceImpl: RemoteStorageService {
         return []
     }
     
-    func uploadPhoto(of userName: String, photo: Photo) async throws {
-        print("upload Photo")
+    func addPhoto(_ photo: Photo, urlString: String) async throws {
+        print("add Photo")
     }
     
     func updatePhoto(_ photo: Photo) async throws {
@@ -46,5 +42,13 @@ class MockRemoteStorageServiceImpl: RemoteStorageService {
     
     func deletePhoto(of photoId: UUID) async throws {
         print("delete Photo")
+    }
+    
+    func uploadPhotoData(of userName: String, photo: Photo, imgData: Data) async throws -> String {
+        return ""
+    }
+    
+    func downloadPhotoData(of urlString: String) async throws -> Data {
+        return Data()
     }
 }

@@ -15,6 +15,7 @@ enum RemoteStorageServiceError: Error {
     case invalidUserName
     case invalidUserId
     case invalidUserDTOFormat
+    case userNotExists
     case userAlreadyExists
     case invalidPhotoData
     case invalidDownloadURL
@@ -22,6 +23,7 @@ enum RemoteStorageServiceError: Error {
     case uploadPhotoFailed
     case downloadPhotoFailed
     case updatePhotoFailed
+    case deleteUserFailed
     case deletePhotoFailed
 }
 
@@ -52,6 +54,10 @@ extension RemoteStorageServiceError: LocalizedError {
             return "사진 업데이트에 실패했습니다."
         case .deletePhotoFailed:
             return "사진 삭제에 실패했습니다."
+        case .userNotExists:
+            return "존재하지 않은 사용자입니다."
+        case .deleteUserFailed:
+            return "유저 삭제에 실패했습니다."
         }
     }
 }
@@ -69,8 +75,9 @@ class FirebaseService: RemoteStorageService {
         self.isTest = isTest
     }
     
-    var userCollection: String { isTest ? "testUser" : "users" }
+    var userCollection: String { isTest ? "testUsers" : "users" }
     var photoCollection: String { isTest ? "testPhotos" : "photos" }
+    var folder: String { isTest ? "testPhotos" : "photos" }
     
     func clearTests() async throws {
         guard isTest else { return }
@@ -99,7 +106,7 @@ extension FirebaseService {
     func fetchUserByEmail(_ email: String) async throws -> User? {
         
         // 1. FireStore 이메일 일치 여부 세팅
-        let document = db.collection(photoCollection)
+        let document = db.collection(userCollection)
             .whereField("email", isEqualTo: email)
         
         // 2. 유저 데이터 가져오기
@@ -125,7 +132,7 @@ extension FirebaseService {
         guard !name.isEmpty else { throw ServiceError.invalidUserName }
         
         // 2. FireStore 이름 일치 여부 세팅
-        let document = db.collection(photoCollection)
+        let document = db.collection(userCollection)
             .whereField("name", isEqualTo: name)
         
         // 3. 유저 데이터 가져오기
@@ -164,36 +171,63 @@ extension FirebaseService {
     }
     
     func addUser(_ user: User) async throws {
+        
+        // 1. 기존 유저 여부 체크
         let userExists = try await checkUserExists(by: user.name)
         
-        guard !userExists else { throw ServiceError.userAlreadyExists }
+        guard !userExists else {
+            throw ServiceError.userAlreadyExists
+        }
         
+        // 2. 신규 DTO 생성
         let userDTO = UserDTO(domain: user)
-        
-        guard let userId = userDTO.id else { throw ServiceError.invalidUserId }
+
+        // 3. Id 가능여부 확인
+        guard let userId = userDTO.id else {
+            throw ServiceError.invalidUserId
+        }
         
         do {
+            // 4. 유저 데이터 저장
             try db.collection(userCollection)
                 .document(userId)
                 .setData(from: userDTO)
+            
         } catch {
             print(#fileID, #function, #line, "서버 에러")
-            throw error
+            throw ServiceError.deleteUserFailed
         }
     }
     
     func deleteUser(_ user: User) async throws {
-        let userDTO = UserDTO(domain: user)
         
-        guard let userId = userDTO.id else { throw ServiceError.invalidUserId }
+        // 1. FireStore 이메일 일치 여부 세팅
+        let document = db.collection(userCollection)
+            .whereField("email", isEqualTo: user.email)
         
+        // 2. 유저 데이터 가져오기
+        guard let snapshot = try? await document.getDocuments().documents else {
+            throw ServiceError.invalidQuery
+        }
+        
+        // 3. 데이터에서 유저 정보 변환 [유저정보] -> 유저정보
+        guard let user = snapshot.first else {
+            throw ServiceError.userNotExists
+        }
+        
+        // 4. 유저 Id 확인
+        guard let userId = try? user.data(as: UserDTO.self).id else {
+            throw ServiceError.invalidUserDTOFormat
+        }
+       
         do {
+            // 5. 유저 삭제
             try await db.collection(userCollection)
                 .document(userId)
                 .delete()
+            
         } catch {
-            print(#fileID, #function, #line, "서버 에러")
-            throw error
+            throw ServiceError.deleteUserFailed
         }
     }
 }
@@ -218,39 +252,41 @@ extension FirebaseService {
             .map { $0.toDomain() }
     }
     
-    func uploadPhoto(of userName: String, photo: Photo) async throws {
-        
-        // 1. 이미지 데이터 확인
-        guard let imgData = photo.imgData else {
-            throw ServiceError.invalidPhotoData
-        }
-
-        // 2. 업로드 위치 결정
-        let storageRef = storage.reference().child("photos/\(userName)/\(photo.id.uuidString).jpg")
-        
-        // 3. 업로드
-        guard let _ = try? await storageRef.putDataAsync(imgData, metadata: nil) else {
-            throw ServiceError.uploadPhotoFailed
-        }
-        
-        // 4. 다운로드 URL 변환 (업로드 후 접근 가능)
-        guard let downloadURL = try? await storageRef.downloadURL() else {
-            throw ServiceError.downloadPhotoFailed
-        }
+    func addPhoto(_ photo: Photo, urlString: String) async throws {
+        let photoDTO = PhotoDTO(photo, urlString: urlString)
         
         do {
-            // 5. DB 사진 URL 정보 업데이트
-            try await db.collection(photoCollection)
+            // 1. DB 사진 URL 정보 업데이트
+            try db.collection(photoCollection)
                 .document(photo.id.uuidString)
-                .updateData([
-                    "urlString" : downloadURL.absoluteString
-                ])
+                .setData(from: photoDTO)
+                
         } catch {
             throw ServiceError.updatePhotoFailed
         }
     }
     
-    func downloadPhoto(of urlString: String) async throws -> Data {
+    func uploadPhotoData(of userName: String,
+                     photo: Photo,
+                     imgData: Data) async throws -> String {
+
+        // 1. 업로드 위치 결정
+        let storageRef = storage.reference().child("\(folder)/\(userName)/\(photo.id.uuidString).jpg")
+        
+        // 2. 업로드
+        guard let _ = try? await storageRef.putDataAsync(imgData, metadata: nil) else {
+            throw ServiceError.uploadPhotoFailed
+        }
+        
+        // 3. 다운로드 URL 변환 (업로드 후 접근 가능)
+        guard let downloadURL = try? await storageRef.downloadURL() else {
+            throw ServiceError.downloadPhotoFailed
+        }
+        
+        return downloadURL.absoluteString
+    }
+    
+    func downloadPhotoData(of urlString: String) async throws -> Data {
         do {
             // 1. Storage 주소
             let storageRef = storage.reference(forURL: urlString)
