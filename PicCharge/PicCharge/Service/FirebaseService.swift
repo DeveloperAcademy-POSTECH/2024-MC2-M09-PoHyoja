@@ -10,8 +10,6 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
-
-
 enum RemoteStorageServiceError: Error {
     case invalidQuery
     case invalidUserName
@@ -28,7 +26,34 @@ enum RemoteStorageServiceError: Error {
 }
 
 extension RemoteStorageServiceError: LocalizedError {
-    
+    var errorDescription: String? {
+        switch self {
+        case .invalidQuery:
+            return "잘못된 쿼리입니다."
+        case .invalidUserName:
+            return "유효하지 않은 사용자 이름입니다."
+        case .invalidUserId:
+            return "유효하지 않은 사용자 ID입니다."
+        case .invalidUserDTOFormat:
+            return "사용자 데이터 형식이 잘못되었습니다."
+        case .userAlreadyExists:
+            return "이미 존재하는 사용자입니다."
+        case .invalidPhotoData:
+            return "유효하지 않은 사진 데이터입니다."
+        case .invalidDownloadURL:
+            return "유효하지 않은 다운로드 URL입니다."
+        case .invalidPhotoDTOFormat:
+            return "사진 데이터 형식이 잘못되었습니다."
+        case .uploadPhotoFailed:
+            return "사진 업로드에 실패했습니다."
+        case .downloadPhotoFailed:
+            return "사진 다운로드에 실패했습니다."
+        case .updatePhotoFailed:
+            return "사진 업데이트에 실패했습니다."
+        case .deletePhotoFailed:
+            return "사진 삭제에 실패했습니다."
+        }
+    }
 }
 
 class FirebaseService: RemoteStorageService {
