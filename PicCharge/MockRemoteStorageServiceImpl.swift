@@ -12,11 +12,11 @@ class MockRemoteStorageServiceImpl: RemoteStorageService {
         return Data()
     }
     
-    func fetchUserByEmail(_ email: String) async -> User? {
+    func fetchUserByEmail(_ email: String) async throws -> User? {
         return nil
     }
     
-    func fetchUserByName(_ name: String) async -> User? {
+    func fetchUserByName(_ name: String) async throws -> User? {
         return nil
     }
     

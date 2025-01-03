@@ -13,22 +13,18 @@ import FirebaseStorage
 
 
 enum RemoteStorageServiceError: Error {
+    case invalidQuery
     case invalidUserName
     case invalidUserId
+    case invalidUserDTOFormat
     case userAlreadyExists
-    
     case invalidPhotoData
     case invalidDownloadURL
-    case documentPhotoNotFound
+    case invalidPhotoDTOFormat
     case uploadPhotoFailed
     case downloadPhotoFailed
     case updatePhotoFailed
-    case invalidPhotoDTOFormat
-    
-    case missingImageData
-
     case deletePhotoFailed
-    
 }
 
 extension RemoteStorageServiceError: LocalizedError {
@@ -75,51 +71,71 @@ class FirebaseService: RemoteStorageService {
 }
 
 extension FirebaseService {
-    func fetchUserByEmail(_ email: String) async -> User? {
+    func fetchUserByEmail(_ email: String) async throws -> User? {
+        
+        // 1. FireStore 이메일 일치 여부 세팅
+        let document = db.collection(photoCollection)
+            .whereField("email", isEqualTo: email)
+        
+        // 2. 유저 데이터 가져오기
+        guard let snapshot = try? await document.getDocuments().documents else {
+            throw ServiceError.invalidQuery
+        }
+        
+        // 3. 데이터에서 유저 정보 변환 [유저정보] -> 유저정보
+        guard let user = snapshot.first else { return nil }
+        
         do {
-            let snapshot = try await db.collection(userCollection)
-                .whereField("email", isEqualTo: email)
-                .getDocuments()
-            
-            guard let document = snapshot.documents.first else {
-                return nil
-            }
-            
-            return try document.data(as: UserDTO.self).toDomain()
+            // 4. DTO -> Domain
+            return try user.data(as: UserDTO.self).toDomain()
             
         } catch {
-            print(#fileID, #function, #line, "유저 Fetch Error: \(error)")
-            return nil
+            throw ServiceError.invalidUserDTOFormat
         }
     }
     
-    func fetchUserByName(_ name: String) async -> User? {
+    func fetchUserByName(_ name: String) async throws -> User? {
+        
+        // 1. 유저 이름 체크
+        guard !name.isEmpty else { throw ServiceError.invalidUserName }
+        
+        // 2. FireStore 이름 일치 여부 세팅
+        let document = db.collection(photoCollection)
+            .whereField("name", isEqualTo: name)
+        
+        // 3. 유저 데이터 가져오기
+        guard let snapshot = try? await document.getDocuments().documents else {
+            throw ServiceError.invalidQuery
+        }
+        
+        // 4. 데이터에서 유저 정보 변환 [유저정보] -> 유저정보
+        guard let user = snapshot.first else { return nil }
+        
         do {
-            let snapshot = try await db.collection(userCollection)
-                .whereField("name", isEqualTo: name)
-                .getDocuments()
-            
-            guard let document = snapshot.documents.first else {
-                return nil
-            }
-            
-            return try document.data(as: UserDTO.self).toDomain()
+            // 5. DTO -> Domain
+            return try user.data(as: UserDTO.self).toDomain()
             
         } catch {
-            print(#fileID, #function, #line, "유저 Fetch Error: \(error)")
-            return nil
+            throw ServiceError.invalidUserDTOFormat
         }
     }
     
     func checkUserExists(by name: String) async throws -> Bool {
-        guard !name.isEmpty
-        else { throw ServiceError.invalidUserName }
+        // 1. 유저 이름 체크
+        guard !name.isEmpty else { throw ServiceError.invalidUserName }
         
-        let querySnapshot = try await db.collection(userCollection)
+        // 2. 이름 일치 여부 세팅
+        let snapshot = db.collection(userCollection)
             .whereField("name", isEqualTo: name)
-            .getDocuments()
-        
-        return !querySnapshot.documents.isEmpty
+            
+        do {
+            // 3. 쿼리 데이터 호출
+            let documents = try await snapshot.getDocuments().documents
+            
+            return !documents.isEmpty
+        } catch {
+            throw ServiceError.invalidQuery
+        }
     }
     
     func addUser(_ user: User) async throws {
@@ -168,7 +184,7 @@ extension FirebaseService {
         
         // 2. FireStore에서 자료 가져오기
         guard let snapshots = try? await document.getDocuments().documents else {
-            throw ServiceError.documentPhotoNotFound
+            throw ServiceError.invalidQuery
         }
         
         // 3. DTO -> Domain으로 변환
@@ -243,7 +259,7 @@ extension FirebaseService {
         
         // 2. 사진 데이터 가져오기
         guard let snapshot = try? await photoRef.getDocument() else {
-            throw ServiceError.documentPhotoNotFound
+            throw ServiceError.invalidQuery
         }
         
         // 3. DTO로 변환

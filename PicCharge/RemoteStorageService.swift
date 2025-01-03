@@ -13,12 +13,12 @@ protocol RemoteStorageService {
     /// 이메일로 유저를 가져옵니다.
     /// - Parameter email: 검색할 유저의 이메일
     /// - Returns: 해당 이메일을 가진 유저 (`User`) 또는 없을 경우 `nil`
-    func fetchUserByEmail(_ email: String) async -> User?
+    func fetchUserByEmail(_ email: String) async throws -> User?
     
     /// 이름으로 유저를 가져옵니다.
     /// - Parameter name: 검색할 유저의 이름
     /// - Returns: 해당 이름을 가진 유저 (`User`) 또는 없을 경우 `nil`
-    func fetchUserByName(_ name: String) async -> User?
+    func fetchUserByName(_ name: String) async throws -> User?
     
     /// 이름으로 유저의 존재 여부를 확인합니다.
     /// - Parameter name: 확인할 유저의 이름
