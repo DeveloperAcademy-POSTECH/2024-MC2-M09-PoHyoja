@@ -8,22 +8,23 @@
 import Foundation
 import SwiftData
 
-protocol SwiftDataStorage: LocalStorage {
-    associatedtype T = PersistentModel
-    associatedtype PredicateType = Predicate<T>
-    associatedtype SortDescriptorType = SortDescriptor<T>
+final class SwiftDataStorage<T: PersistentModel>: LocalStorage {
     
-    var container: ModelContainer { get }
+    private var container: ModelContainer
+    
+    init(container: ModelContainer) {
+        self.container = container
+    }
 }
 
 extension SwiftDataStorage {
-    func create<T: PersistentModel>(_ item: T) throws {
+    func create(_ item: T) throws {
         let context = ModelContext(container)
         context.insert(item)
         try context.save()
     }
     
-    func create<T: PersistentModel>(_ items: [T]) throws {
+    func create(_ items: [T]) throws {
         let context = ModelContext(container)
         for item in items {
             context.insert(item)
@@ -31,8 +32,8 @@ extension SwiftDataStorage {
         try context.save()
     }
     
-    func read<T: PersistentModel>(predicate: Predicate<T>? = nil,
-                                  sortDescriptors: SortDescriptor<T>...) throws -> [T] {
+    func read(predicate: Predicate<T>? = nil,
+              sortDescriptors: SortDescriptor<T>...) throws -> [T] {
         let context = ModelContext(container)
         
         let fetchDescriptor = FetchDescriptor<T>(
@@ -43,14 +44,20 @@ extension SwiftDataStorage {
         return try context.fetch(fetchDescriptor)
     }
     
-    func update<T: PersistentModel>(_ item: T) throws {
+    func update(_ item: T) throws {
         let context = ModelContext(container)
         try context.save()
     }
     
-    func delete<T: PersistentModel>(_ item: T) throws {
+    func delete(_ item: T) throws {
         let context = ModelContext(container)
         context.delete(item)
+        try context.save()
+    }
+    
+    func delete(where predicate: Predicate<T>) throws {
+        let context = ModelContext(container)
+        try context.delete(model: T.self, where: predicate)
         try context.save()
     }
 }

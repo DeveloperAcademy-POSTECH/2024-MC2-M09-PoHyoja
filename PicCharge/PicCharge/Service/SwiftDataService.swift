@@ -10,8 +10,8 @@ import SwiftData
 
 final class SwiftDataService: LocalStorageService {
     
-    private let userStorage: UserLocalStorage
-    private let photoStorage: PhotoLocalStorage
+    private let userStorage: SwiftDataStorage<UserEntity>
+    private let photoStorage: SwiftDataStorage<PhotoEntity>
 
     init(isStoredInMemoryOnly: Bool = false) throws {
         let schema = Schema([
@@ -26,12 +26,13 @@ final class SwiftDataService: LocalStorageService {
                 for: schema,
                 configurations: [modelConfiguration]
             )
-            userStorage = UserLocalStorage(container: container)
-            photoStorage = PhotoLocalStorage(container: container)
+            
+            self.userStorage = SwiftDataStorage<UserEntity>(container: container)
+            self.photoStorage = SwiftDataStorage<PhotoEntity>(container: container)
+            
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }
-        
     }
 }
 
@@ -54,7 +55,7 @@ extension SwiftDataService {
     }
     
     func deleteUser(_ name: String) async throws {
-        try userStorage.delete(name)
+        try userStorage.delete(where: #Predicate { $0.name == name })
     }
 }
 
@@ -83,7 +84,7 @@ extension SwiftDataService {
     }
     
     func deletePhoto(_ photoId: UUID) async throws {
-        try photoStorage.delete(photoId)
+        try photoStorage.delete(where: #Predicate { $0.id == photoId })
     }
 }
 

@@ -10,17 +10,12 @@ import SwiftData
 
 protocol LocalStorage {
     associatedtype T
-    associatedtype PredicateType
-    associatedtype SortDescriptorType
     
     func create(_ item: T) throws
     func create(_ items: [T]) throws
-    func read(predicate: PredicateType?,
-              sortDescriptors: SortDescriptorType...) throws -> [T]
+    func read(predicate: Predicate<T>?,
+              sortDescriptors: SortDescriptor<T>...) throws -> [T]
     func update(_ item: T) throws
     func delete(_ item: T) throws
-}
-
-enum LocalStorageError: Error {
-    case itemNotExist
+    func delete(where predicate: Predicate<T>) throws
 }
