@@ -10,7 +10,7 @@ import XCTest
 import FirebaseStorage
 import FirebaseFirestore
 
-class TestFireBaseService: FirebaseService {
+class TestFireStoreRepository: FireStoreRepository {
     override var userCollection: String { "testUsers" }
     override var photoCollection: String { "testPhotos" }
     override var folder: String { "testPhotos" }
@@ -51,9 +51,9 @@ class TestFireBaseService: FirebaseService {
     }
 }
 
-final class PicChargeTests_Temp_: XCTestCase {
+final class FireStoreRepositoryTest: XCTestCase {
     
-    var service: TestFireBaseService!
+    var service: RemoteStorageService!
     
     var unknownUser: User!
     var myUser: User!
@@ -64,7 +64,7 @@ final class PicChargeTests_Temp_: XCTestCase {
     var invalidPhoto: Photo!
     
     override func setUpWithError() throws {
-        service = TestFireBaseService(
+        service = TestFireStoreRepository(
             fireStore: .firestore(),
             storage: .storage()
         )
@@ -115,7 +115,7 @@ final class PicChargeTests_Temp_: XCTestCase {
         let expectation = self.expectation(description: "Delete Test Data")
         Task {
             do {
-                try await service.clearTests()
+                try await (service as? TestFireStoreRepository)?.clearTests()
                 expectation.fulfill()
                 clear()
             } catch {
@@ -136,6 +136,12 @@ final class PicChargeTests_Temp_: XCTestCase {
     }
     
     func test_() {
+        guard let service = service as? TestFireStoreRepository
+        else {
+            XCTFail("테스트할 수 없는 레포지토리입니다.")
+            return
+        }
+        
         XCTAssertEqual(service.userCollection, "testUsers")
         XCTAssertEqual(service.photoCollection, "testPhotos")
         XCTAssertEqual(service.folder, "testPhotos")
@@ -234,7 +240,7 @@ final class PicChargeTests_Temp_: XCTestCase {
         do {
             try await service.addUser(newUser)
             XCTFail("중복으로 유저를 추가가 가능해 테스트에 실패했습니다.")
-        } catch let error as FirebaseServiceError {
+        } catch let error as FireStoreError {
             XCTAssertEqual(error, .userAlreadyExists)
         } catch {
             XCTFail("알수 없는 오류로 테스트에 실패했습니다.")
@@ -300,7 +306,7 @@ final class PicChargeTests_Temp_: XCTestCase {
             _ = try await service.fetchPhotos("")
             XCTFail("예상한 에러가 발생하지 않았습니다.")
             
-        } catch let error as FirebaseServiceError {
+        } catch let error as FireStoreError {
             XCTAssertEqual(error, .invalidUserName)
         } catch {
             XCTFail("예상한 에러와 다른 에러가 발생했습니다.")

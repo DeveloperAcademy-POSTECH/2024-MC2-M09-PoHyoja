@@ -1,5 +1,5 @@
 //
-//  FirebaseService.swift
+//  FireStoreRepository.swift
 //  PicCharge
 //
 //  Created by 남유성 on 1/1/25.
@@ -10,9 +10,9 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
-class FirebaseService: RemoteStorageService {
+class FireStoreRepository: RemoteStorageService {
     
-    typealias ServiceError = FirebaseServiceError
+    typealias ServiceError = FireStoreError
     
     private let db: Firestore
     private let storage: Storage
@@ -27,7 +27,7 @@ class FirebaseService: RemoteStorageService {
     var folder: String { "photos" }
 }
 
-extension FirebaseService {
+extension FireStoreRepository {
     func fetchUserByEmail(_ email: String) async throws -> User? {
         
         // 1. FireStore 이메일 일치 여부 세팅
@@ -156,7 +156,7 @@ extension FirebaseService {
     }
 }
 
-extension FirebaseService {
+extension FireStoreRepository {
     func fetchPhotos(_ userName: String) async throws -> [Photo] {
         
         // 1. 유저 네임 check

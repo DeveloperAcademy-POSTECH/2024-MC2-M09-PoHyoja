@@ -1,5 +1,5 @@
 //
-//  FirebaseServiceError.swift
+//  FireStoreRepositoryError.swift
 //  PicCharge
 //
 //  Created by 남유성 on 1/4/25.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FirebaseServiceError: Error, Equatable {
+enum FireStoreError: Error, Equatable {
     case invalidQuery
     
     case invalidUserName
@@ -29,7 +29,7 @@ enum FirebaseServiceError: Error, Equatable {
     case deletePhotoFailed(error: String)
 }
 
-extension FirebaseServiceError: LocalizedError {
+extension FireStoreError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidQuery:
