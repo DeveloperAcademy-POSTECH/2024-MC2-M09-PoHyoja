@@ -7,7 +7,7 @@
 
 import Foundation
 
-class MockLocalStorageServiceImpl: LocalStorageService {
+class MockLocalStorageServiceImpl: LocalDataRepository {
     func fetchUser() async -> User? {
         return nil
     }

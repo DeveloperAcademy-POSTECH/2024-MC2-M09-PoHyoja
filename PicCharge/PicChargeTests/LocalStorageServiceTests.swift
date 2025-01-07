@@ -10,10 +10,10 @@ import XCTest
 
 final class LocalStorageServiceTests: XCTestCase {
     
-    private var service: LocalStorageService!
+    private var service: LocalDataRepository!
     
     override func setUpWithError() throws {
-        service = try SwiftDataService(isStoredInMemoryOnly: true)
+        service = try SwiftDataRepository(isMemoryOnly: true)
     }
     
     override func tearDownWithError() throws {

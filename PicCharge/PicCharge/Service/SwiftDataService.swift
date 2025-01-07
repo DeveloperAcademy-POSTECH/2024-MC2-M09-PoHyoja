@@ -8,95 +8,56 @@
 import Foundation
 import SwiftData
 
-final class SwiftDataService: LocalStorageService {
+final class SwiftDataService<T: PersistentModel> {
     
-    private let userStorage: SwiftDataStorage<UserEntity>
-    private let photoStorage: SwiftDataStorage<PhotoEntity>
-
-    init(isStoredInMemoryOnly: Bool = false) throws {
-        let schema = Schema([
-            UserEntity.self,
-            PhotoEntity.self
-        ])
-        
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: isStoredInMemoryOnly)
-        
-        do {
-            let container = try ModelContainer(
-                for: schema,
-                configurations: [modelConfiguration]
-            )
-            
-            self.userStorage = SwiftDataStorage<UserEntity>(container: container)
-            self.photoStorage = SwiftDataStorage<PhotoEntity>(container: container)
-            
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }
-}
-
-// MARK: - User Entity
-extension SwiftDataService {
-    func fetchUser() async -> User? {
-        do {
-            let userEntity: [UserEntity] = try userStorage.read()
-            
-            return userEntity.first?.toDomain()
-        } catch {
-            return nil
-        }
-    }
+    private var container: ModelContainer
     
-    func addUser(_ user: User) async throws {
-        let userEntity = UserEntity(user)
-        
-        try userStorage.create(userEntity)
-    }
-    
-    func deleteUser(_ name: String) async throws {
-        try userStorage.delete(where: #Predicate { $0.name == name })
-    }
-}
-
-// MARK: - Photo Entity
-extension SwiftDataService {
-    func fetchPhotos() async -> [Photo] {
-        await fetchPhotos(for: .uploadDate, .reverse)
-    }
-    
-    func fetchPhotos(for option: PhotoSortOption, _ order: SortOrder) async -> [Photo] {
-        do {
-            let photoEntities: [PhotoEntity] = try photoStorage.read(
-                sortDescriptors: PhotoSortDescriptor.build(option, order: order)
-            )
-            
-            return photoEntities.map { $0.toDomain() }
-        } catch {
-            return []
-        }
-    }
-    
-    func addPhoto(_ photo: Photo) async throws {
-        let photoEntity = PhotoEntity(photo)
-        
-        try photoStorage.create(photoEntity)
-    }
-    
-    func deletePhoto(_ photoId: UUID) async throws {
-        try photoStorage.delete(where: #Predicate { $0.id == photoId })
+    init(container: ModelContainer) {
+        self.container = container
     }
 }
 
 extension SwiftDataService {
-    struct PhotoSortDescriptor {
-        static func build(_ option: PhotoSortOption = .uploadDate,
-                          order: SortOrder = .reverse) -> SortDescriptor<PhotoEntity> {
-            
-            switch option {
-            case .uploadDate:
-                return SortDescriptor(\.uploadDate, order: order)
-            }
+    func create(_ item: T) throws {
+        let context = ModelContext(container)
+        context.insert(item)
+        try context.save()
+    }
+    
+    func create(_ items: [T]) throws {
+        let context = ModelContext(container)
+        for item in items {
+            context.insert(item)
         }
+        try context.save()
+    }
+    
+    func read(predicate: Predicate<T>? = nil,
+              sortDescriptors: SortDescriptor<T>...) throws -> [T] {
+        let context = ModelContext(container)
+        
+        let fetchDescriptor = FetchDescriptor<T>(
+            predicate: predicate,
+            sortBy: sortDescriptors
+        )
+        
+        return try context.fetch(fetchDescriptor)
+    }
+    
+    func update(_ item: T) throws {
+        let context = ModelContext(container)
+        try context.save()
+    }
+    
+    func delete(_ item: T) throws {
+        let context = ModelContext(container)
+        context.delete(item)
+        try context.save()
+    }
+    
+    func delete(where predicate: Predicate<T>) throws {
+        let context = ModelContext(container)
+        try context.delete(model: T.self, where: predicate)
+        try context.save()
     }
 }

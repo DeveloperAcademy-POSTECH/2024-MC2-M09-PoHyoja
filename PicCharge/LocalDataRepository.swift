@@ -8,7 +8,7 @@
 import Foundation
 
 /// 로컬 스토리지 서비스 프로토콜
-protocol LocalStorageService {
+protocol LocalDataRepository {
     
     /// 로컬 스토리지에서 현재 유저 정보를 가져옵니다.
     /// - Returns: 현재 유저 정보 (`User`) 또는 없을 경우 `nil`

@@ -10,7 +10,7 @@ import SwiftUI
 struct DIContainerModifier: ViewModifier {
     
     let remoteStorageService: RemoteStorageService
-    let localStorageService: LocalStorageService
+    let localStorageService: LocalDataRepository
     
     init() {
         remoteStorageService = MockRemoteStorageServiceImpl()
