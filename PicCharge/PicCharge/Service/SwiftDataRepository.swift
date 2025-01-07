@@ -15,7 +15,7 @@ final class SwiftDataRepository: LocalStorageService {
 
     init(isMemoryOnly: Bool = false) throws {
         do {
-            let persistanceStack = try PersistanceStack(isMemoryOnly: isMemoryOnly)
+            let persistanceStack = try PersistenceStack(isMemoryOnly: isMemoryOnly)
             
             self.userStorage = SwiftDataService<UserEntity>(container: persistanceStack.container)
             self.photoStorage = SwiftDataService<PhotoEntity>(container: persistanceStack.container)

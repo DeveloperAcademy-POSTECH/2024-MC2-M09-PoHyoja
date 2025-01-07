@@ -1,5 +1,5 @@
 //
-//  PersistanceStack.swift
+//  PersistenceStack.swift
 //  PicCharge
 //
 //  Created by 남유성 on 1/7/25.
@@ -7,7 +7,7 @@
 
 import SwiftData
 
-final class PersistanceStack {
+final class PersistenceStack {
     let container: ModelContainer
     
     init(isMemoryOnly: Bool = false) throws {
