@@ -10,7 +10,7 @@ import XCTest
 
 final class LocalStorageServiceTests: XCTestCase {
     
-    private var service: LocalDataRepository!
+    private var service: LocalStorageService!
     
     override func setUpWithError() throws {
         service = try SwiftDataRepository(isMemoryOnly: true)
@@ -22,7 +22,7 @@ final class LocalStorageServiceTests: XCTestCase {
     
     // MARK: - User Tests
     
-    func test_신규유저추가후조회() async throws {
+    func test_신규_유저_추가_후_조회() async throws {
         let user = User(name: "에이스", role: .child, email: "ace@ace.com", connectedTo: [])
         try await service.addUser(user)
         
@@ -33,7 +33,7 @@ final class LocalStorageServiceTests: XCTestCase {
         XCTAssertEqual(fetchedUser?.email, "ace@ace.com")
     }
     
-    func test_유저삭제() async throws {
+    func test_유저_삭제() async throws {
         let user = User(name: "에이스", role: .child, email: "ace@ace.com", connectedTo: [])
         try await service.addUser(user)
         
@@ -43,14 +43,14 @@ final class LocalStorageServiceTests: XCTestCase {
         XCTAssertNil(fetchedUser)
     }
     
-    func test_빈DB유저조회() async {
+    func test_빈_DB_유저_조회() async {
         let fetchedUser = await service.fetchUser()
         XCTAssertNil(fetchedUser)
     }
     
     // MARK: - Photo Tests
     
-    func test_사진추가후조회() async throws {
+    func test_사진_추가_후_조회() async throws {
         let photoData1 = Data(count: 1)
         let photoData2 = Data(count: 2)
         
@@ -66,7 +66,7 @@ final class LocalStorageServiceTests: XCTestCase {
         XCTAssertEqual(photos[1].uploadBy, "ace")
     }
     
-    func test_사진삭제() async throws {
+    func test_사진_삭제() async throws {
         let photo = Photo(id: UUID(), uploadBy: "ace", uploadDate: .now, imgData: Data(), likeCount: 0, sharedWith: [])
         try await service.addPhoto(photo)
         
@@ -76,12 +76,12 @@ final class LocalStorageServiceTests: XCTestCase {
         XCTAssertTrue(photos.isEmpty)
     }
     
-    func test_빈DB사진삭제() async {
+    func test_빈_DB_사진_삭제() async {
         let photos = await service.fetchPhotos()
         XCTAssertTrue(photos.isEmpty)
     }
     
-    func test_최신순사진정렬() async throws {
+    func test_최신순_사진_정렬() async throws {
         let photoData1 = Data(count: 1)
         let photoData2 = Data(count: 2)
         
@@ -97,7 +97,7 @@ final class LocalStorageServiceTests: XCTestCase {
         XCTAssertEqual(photos[1].uploadBy, "ace2") // 오래된 사진
     }
     
-    func test_오래된순사진정렬() async throws {
+    func test_오래된순_사진_정렬() async throws {
         let photoData1 = Data(count: 1)
         let photoData2 = Data(count: 2)
         

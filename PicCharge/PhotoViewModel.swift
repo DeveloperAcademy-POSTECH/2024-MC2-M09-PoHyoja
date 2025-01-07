@@ -16,13 +16,13 @@ final class PhotoViewModel {
     private(set) var state: State = .init()
     
     @ObservationIgnored
-    private let localStorageService: LocalDataRepository
+    private let localStorageService: LocalStorageService
     
     @ObservationIgnored
     private let remoteStorageService: RemoteStorageService
     
     init(
-        localStorageService: LocalDataRepository,
+        localStorageService: LocalStorageService,
         remoteStorageService: RemoteStorageService
     ) {
         self.localStorageService = localStorageService

@@ -50,7 +50,7 @@
 		425B44212D1FD430001E23FA /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441F2D1FD430001E23FA /* Photo.swift */; };
 		425B44232D1FD631001E23FA /* DomainConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44222D1FD631001E23FA /* DomainConvertible.swift */; };
 		425B44242D1FD631001E23FA /* DomainConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44222D1FD631001E23FA /* DomainConvertible.swift */; };
-		425B44262D1FDAF5001E23FA /* LocalDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44252D1FDAF5001E23FA /* LocalDataRepository.swift */; };
+		425B44262D1FDAF5001E23FA /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44252D1FDAF5001E23FA /* LocalStorageService.swift */; };
 		425B44282D1FDB09001E23FA /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44272D1FDB09001E23FA /* RemoteStorageService.swift */; };
 		425B442A2D1FE6C4001E23FA /* UserConnectingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44292D1FE6C4001E23FA /* UserConnectingService.swift */; };
 		425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B442B2D1FEA02001E23FA /* UserViewModel.swift */; };
@@ -78,7 +78,7 @@
 		42CF6FD42D22EF3C0054F244 /* SwiftDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */; };
 		42CF6FDC2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */; };
 		42CF6FDD2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */; };
-		42CF70252D22FD2D0054F244 /* LocalDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44252D1FDAF5001E23FA /* LocalDataRepository.swift */; };
+		42CF70252D22FD2D0054F244 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44252D1FDAF5001E23FA /* LocalStorageService.swift */; };
 		42CF708A2D2D4C7B0054F244 /* PersistanceStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70892D2D4C7B0054F244 /* PersistanceStack.swift */; };
 		42CF708B2D2D4C7B0054F244 /* PersistanceStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70892D2D4C7B0054F244 /* PersistanceStack.swift */; };
 		5151CB8A2BFEE41300AF792F /* LikeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5151CB892BFEE41300AF792F /* LikeAnimation.json */; };
@@ -175,7 +175,7 @@
 		425B441C2D1FD2D2001E23FA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		425B441F2D1FD430001E23FA /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		425B44222D1FD631001E23FA /* DomainConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainConvertible.swift; sourceTree = "<group>"; };
-		425B44252D1FDAF5001E23FA /* LocalDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataRepository.swift; sourceTree = "<group>"; };
+		425B44252D1FDAF5001E23FA /* LocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageService.swift; sourceTree = "<group>"; };
 		425B44272D1FDB09001E23FA /* RemoteStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteStorageService.swift; sourceTree = "<group>"; };
 		425B44292D1FE6C4001E23FA /* UserConnectingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectingService.swift; sourceTree = "<group>"; };
 		425B442B2D1FEA02001E23FA /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
@@ -469,7 +469,7 @@
 				425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */,
 				425B442B2D1FEA02001E23FA /* UserViewModel.swift */,
 				425B44292D1FE6C4001E23FA /* UserConnectingService.swift */,
-				425B44252D1FDAF5001E23FA /* LocalDataRepository.swift */,
+				425B44252D1FDAF5001E23FA /* LocalStorageService.swift */,
 				425B44272D1FDB09001E23FA /* RemoteStorageService.swift */,
 				55B5E3622BF5A13E00E413C6 /* PicCharge */,
 				FF7315702BF907690074D7AA /* ParentWidget */,
@@ -766,7 +766,7 @@
 				421A8C5C2BF885D8003C7001 /* BatteryShadowModifier.swift in Sources */,
 				421A8CC02BFE516C003C7001 /* PhotoEntity.swift in Sources */,
 				425B441E2D1FD2D2001E23FA /* User.swift in Sources */,
-				425B44262D1FDAF5001E23FA /* LocalDataRepository.swift in Sources */,
+				425B44262D1FDAF5001E23FA /* LocalStorageService.swift in Sources */,
 				FFA8CC2D2C01AB3C007428F8 /* WidgetOption.swift in Sources */,
 				425B44302D1FEF96001E23FA /* DIContainerModifier.swift in Sources */,
 				4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */,
@@ -813,7 +813,7 @@
 				FF3ECB762C003F0300E65D83 /* Color+.swift in Sources */,
 				FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */,
 				42CF6FD42D22EF3C0054F244 /* SwiftDataService.swift in Sources */,
-				42CF70252D22FD2D0054F244 /* LocalDataRepository.swift in Sources */,
+				42CF70252D22FD2D0054F244 /* LocalStorageService.swift in Sources */,
 				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
 				4214DA1B2C03926F0096D48B /* ConnectionRequestsDTO.swift in Sources */,
 				FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */,

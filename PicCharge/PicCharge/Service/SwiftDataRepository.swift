@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-final class SwiftDataRepository: LocalDataRepository {
+final class SwiftDataRepository: LocalStorageService {
     
     private let userStorage: SwiftDataService<UserEntity>
     private let photoStorage: SwiftDataService<PhotoEntity>
