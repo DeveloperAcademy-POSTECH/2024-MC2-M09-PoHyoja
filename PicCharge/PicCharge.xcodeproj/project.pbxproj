@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -231,10 +231,6 @@
 		FFD221AF2BFB8433009735E4 /* UserDefault+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserDefault+.swift"; sourceTree = "<group>"; };
 		FFD221B32BFB84C1009735E4 /* ParentWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ParentWidgetExtension.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		42CF70482D2560B70054F244 /* PicChargeTests(Temp) */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = "PicChargeTests(Temp)"; sourceTree = "<group>"; };
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		42CF70442D2560B70054F244 /* Frameworks */ = {
@@ -470,7 +466,6 @@
 				425B44272D1FDB09001E23FA /* RemoteStorageService.swift */,
 				55B5E3622BF5A13E00E413C6 /* PicCharge */,
 				FF7315702BF907690074D7AA /* ParentWidget */,
-				42CF70482D2560B70054F244 /* PicChargeTests(Temp) */,
 				FF73156B2BF907690074D7AA /* Frameworks */,
 				55B5E3612BF5A13E00E413C6 /* Products */,
 			);
@@ -559,9 +554,6 @@
 			);
 			dependencies = (
 				42CF704C2D2560B70054F244 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				42CF70482D2560B70054F244 /* PicChargeTests(Temp) */,
 			);
 			name = "PicChargeTests(Temp)";
 			packageProductDependencies = (
