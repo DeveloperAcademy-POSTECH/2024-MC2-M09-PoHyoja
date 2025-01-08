@@ -42,6 +42,8 @@
 		421A8CC42BFF63A5003C7001 /* SelectRoleForSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CC32BFF63A5003C7001 /* SelectRoleForSignUpView.swift */; };
 		4256DC3A2C0716C600FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
 		4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
+		425B44012D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
+		425B44022D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
 		425B441D2D1FD2D2001E23FA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441C2D1FD2D2001E23FA /* User.swift */; };
 		425B441E2D1FD2D2001E23FA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441C2D1FD2D2001E23FA /* User.swift */; };
 		425B44202D1FD430001E23FA /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441F2D1FD430001E23FA /* Photo.swift */; };
@@ -57,8 +59,6 @@
 		425D7DB12D22BF7D00DB82A6 /* MockLocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */; };
 		425D7DB32D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */; };
 		425D7DBD2D22C2F700DB82A6 /* AppNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DBC2D22C2F700DB82A6 /* AppNavigationView.swift */; };
-		425B44012D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
-		425B44022D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
 		428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046732BF5DDD30097EB0B /* ChildTabView.swift */; };
@@ -80,6 +80,9 @@
 		5172EE5D2CB66BDD001B128E /* TitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5172EE5C2CB66BCF001B128E /* TitleView.swift */; };
 		518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */; };
 		518752092C00A98800005AF8 /* BuggungLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 518752082C00A98800005AF8 /* BuggungLoading.json */; };
+		51D2FFF12D2E377100004EDD /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2FFF02D2E377100004EDD /* AuthService.swift */; };
+		51D2FFF22D2E377100004EDD /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51D2FFF02D2E377100004EDD /* AuthService.swift */; };
+		51D2FFF42D2E512F00004EDD /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 51D2FFF32D2E512F00004EDD /* FirebaseAuth */; };
 		51E239DA2BF636920051943D /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E239D92BF636920051943D /* Role.swift */; };
 		550FDD162BFC3DE6007A6B42 /* UserInfoForSignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FDD152BFC3DE6007A6B42 /* UserInfoForSignUpView.swift */; };
 		552E24E32BF9CB7500E5CF24 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */; };
@@ -157,6 +160,7 @@
 		421A8CBF2BFE516C003C7001 /* PhotoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEntity.swift; sourceTree = "<group>"; };
 		421A8CC32BFF63A5003C7001 /* SelectRoleForSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectRoleForSignUpView.swift; sourceTree = "<group>"; };
 		4256DC392C0716C600FC3541 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
+		425B44002D1ED446001E23FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		425B441C2D1FD2D2001E23FA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		425B441F2D1FD430001E23FA /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		425B44222D1FD631001E23FA /* DomainConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainConvertible.swift; sourceTree = "<group>"; };
@@ -169,7 +173,6 @@
 		425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalStorageService.swift; sourceTree = "<group>"; };
 		425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteStorageServiceImpl.swift; sourceTree = "<group>"; };
 		425D7DBC2D22C2F700DB82A6 /* AppNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationView.swift; sourceTree = "<group>"; };
-		425B44002D1ED446001E23FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
 		428046732BF5DDD30097EB0B /* ChildTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTabView.swift; sourceTree = "<group>"; };
@@ -191,6 +194,7 @@
 		5172EE5C2CB66BCF001B128E /* TitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleView.swift; sourceTree = "<group>"; };
 		518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungLoadingView.swift; sourceTree = "<group>"; };
 		518752082C00A98800005AF8 /* BuggungLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungLoading.json; sourceTree = "<group>"; };
+		51D2FFF02D2E377100004EDD /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		51E239D92BF636920051943D /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
 		550FDD152BFC3DE6007A6B42 /* UserInfoForSignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoForSignUpView.swift; sourceTree = "<group>"; };
 		550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PicCharge.entitlements; sourceTree = "<group>"; };
@@ -241,6 +245,7 @@
 				4214D9EE2C0330260096D48B /* FirebaseFirestore in Frameworks */,
 				4214D9F22C0330260096D48B /* FirebaseStorage in Frameworks */,
 				4214D9F42C0330260096D48B /* FirebaseStorageCombine-Community in Frameworks */,
+				51D2FFF42D2E512F00004EDD /* FirebaseAuth in Frameworks */,
 				4214D9F02C0330260096D48B /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,6 +491,7 @@
 			children = (
 				552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */,
 				552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */,
+				51D2FFF02D2E377100004EDD /* AuthService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -563,6 +569,7 @@
 				4214D9EF2C0330260096D48B /* FirebaseFirestoreSwift */,
 				4214D9F12C0330260096D48B /* FirebaseStorage */,
 				4214D9F32C0330260096D48B /* FirebaseStorageCombine-Community */,
+				51D2FFF32D2E512F00004EDD /* FirebaseAuth */,
 			);
 			productName = ParentWidgetExtension;
 			productReference = FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */;
@@ -668,6 +675,7 @@
 				FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */,
 				428046782BF5DE830097EB0B /* ChildCameraView.swift in Sources */,
 				552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */,
+				51D2FFF12D2E377100004EDD /* AuthService.swift in Sources */,
 				425B44282D1FDB09001E23FA /* RemoteStorageService.swift in Sources */,
 				4280467A2BF5DEBA0097EB0B /* ChildSendCameraView.swift in Sources */,
 				4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */,
@@ -744,6 +752,7 @@
 				4214DA182C03923D0096D48B /* PhotoDTO.swift in Sources */,
 				4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */,
 				FF7315762BF907690074D7AA /* AppIntent.swift in Sources */,
+				51D2FFF22D2E377100004EDD /* AuthService.swift in Sources */,
 				4214D9F52C0332F10096D48B /* FirestoreService.swift in Sources */,
 				4214DA022C0388800096D48B /* ChildWidget.swift in Sources */,
 				4214D9F82C0333160096D48B /* PhotoEntity.swift in Sources */,
@@ -1119,6 +1128,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 421A8CB42BFDD20B003C7001 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		51D2FFF32D2E512F00004EDD /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FirebaseAuth;
 		};
 		559AB7652BF8434300FF216B /* FirebaseAuth */ = {
 			isa = XCSwiftPackageProductDependency;

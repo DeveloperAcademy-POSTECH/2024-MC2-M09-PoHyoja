@@ -19,12 +19,12 @@ struct LoginView: View {
 
     @State private var email: String = ""
     @State private var password: String = ""
-
     @State private var isLogoVisible: Bool = true
     @State private var isNetworking: Bool = false
     @State private var errorMessage: String? = nil
-    
     @FocusState var focusField: Field?
+    
+    private let authService = AuthService()
     
     var isLoginAvailable: Bool {
         !email.isEmpty && !password.isEmpty && errorMessage == nil
@@ -117,6 +117,18 @@ struct LoginView: View {
                         .padding(.vertical, 11)
                 }
                 .padding(.bottom, 16)
+                
+                Button(action: {
+                    signInWithApple()
+                }) {
+                    Text(" Apple로 로그인")
+                        .frame(maxWidth: .infinity, maxHeight: 54)
+                        .background(Color.white)
+                        .foregroundStyle(.black)
+                        .font(.system(size: 19))
+                        .fontWeight(.semibold)
+                        .cornerRadius(16)
+                }
             }
             .padding(.horizontal, 16)
         }
@@ -161,6 +173,42 @@ private extension LoginView {
             }
             print("로그인 실패")
             errorMessage = "이메일과 비밀번호를 확인해주세요"
+        }
+    }
+    
+    func signInWithApple() {
+        Task {
+            do {
+                // AuthService를 사용해 Apple 로그인 처리
+                if let userDTO = try await authService.startSignInWithApple() {
+                    // Firestore 데이터 또는 기본값으로 UserEntity 생성
+                    let localUser = UserEntity(
+                        name: userDTO.name,
+                        role: userDTO.role,
+                        email: userDTO.email,
+                        connectedTo: userDTO.connectedTo,
+                        uploadCycle: userDTO.uploadCycle
+                    )
+
+                    // 로컬 데이터 저장
+                    modelContext.insert(localUser)
+
+                    // Navigation 상태 업데이트
+                    navigationManager.userState = userDTO.connectedTo.isEmpty ? .notConnected : (userDTO.role == .child ? .connectedChild : .connectedParent)
+
+                    print("UserEntity 저장 성공: \(localUser)")
+                } else {
+                    print("Apple 로그인 성공했지만 사용자 정보를 가져올 수 없습니다.")
+                }
+            } catch {
+                do {
+                    try Auth.auth().signOut()
+                } catch {
+                    print("Auth 로그아웃 실패: \(error)")
+                }
+                print("로그인 실패")
+                errorMessage = "이메일과 비밀번호를 확인해주세요"
+            }
         }
     }
 }

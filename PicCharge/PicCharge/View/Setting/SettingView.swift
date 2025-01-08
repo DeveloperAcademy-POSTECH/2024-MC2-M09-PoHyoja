@@ -89,6 +89,7 @@ struct SettingView: View {
                             try logout()
                             navigationManager.userState = .notExist
                             navigationManager.popToRoot()
+                            print("로그아웃 함: \(navigationManager.userState)")
                         } catch {
                             print("로그아웃 에러: \(error.localizedDescription)")
                         }
