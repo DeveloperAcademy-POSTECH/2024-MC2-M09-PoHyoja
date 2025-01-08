@@ -61,6 +61,17 @@ extension PhotoEntity {
 }
 
 extension PhotoEntity: DomainConvertible {
+    convenience init(_ domain: Photo) {
+        self.init(
+            id: domain.id,
+            uploadBy: domain.uploadBy,
+            uploadDate: domain.uploadDate,
+            likeCount: domain.likeCount,
+            sharedWith: domain.sharedWith,
+            imgData: domain.imgData ?? Data()
+        )
+    }
+    
     func toDomain() -> Photo {
         Photo(
             id: id,

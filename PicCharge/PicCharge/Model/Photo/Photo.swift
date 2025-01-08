@@ -16,3 +16,7 @@ struct Photo {
     var likeCount: Int
     var sharedWith: [String]
 }
+
+enum PhotoSortOption {
+    case uploadDate
+}
