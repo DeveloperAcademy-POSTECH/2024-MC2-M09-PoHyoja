@@ -51,6 +51,15 @@ struct UserDTO: Identifiable, Codable {
 }
 
 extension UserDTO: DomainConvertible {
+    init(domain: User) {
+        self.id = UUID().uuidString
+        self.name = domain.name
+        self.role = domain.role
+        self.email = domain.email
+        self.connectedTo = domain.connectedTo
+        self.uploadCycle = domain.uploadCycle
+    }
+    
     func toDomain() -> User {
         User(
             name: name,

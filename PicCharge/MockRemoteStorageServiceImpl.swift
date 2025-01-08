@@ -56,4 +56,12 @@ class MockRemoteStorageServiceImpl: RemoteStorageService {
     func deletePhoto(of photoId: UUID) async throws {
         print("Mock 원격 사진 삭제 됨")
     }
+    
+    func uploadPhotoData(of userName: String, photo: Photo, imgData: Data) async throws -> String {
+        return ""
+    }
+    
+    func downloadPhotoData(of urlString: String) async throws -> Data {
+        return Data()
+    }
 }

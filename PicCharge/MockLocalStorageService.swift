@@ -20,6 +20,10 @@ class MockLocalStorageServiceImpl: LocalStorageService {
         print("Mock 로컬 유저 삭제됨")
     }
     
+    func fetchPhotos(for option: PhotoSortOption, _ order: SortOrder) async -> [Photo] {
+        []
+    }
+    
     func fetchPhotos() async -> [Photo] {
         return [
             .init(id: UUID(), uploadBy: "Mock", uploadDate: .now, likeCount: 0, sharedWith: []),
