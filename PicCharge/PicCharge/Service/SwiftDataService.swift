@@ -24,14 +24,6 @@ extension SwiftDataService {
         try context.save()
     }
     
-    func create(_ items: [T]) throws {
-        let context = ModelContext(container)
-        for item in items {
-            context.insert(item)
-        }
-        try context.save()
-    }
-    
     func read(predicate: Predicate<T>? = nil,
               sortDescriptors: SortDescriptor<T>...) throws -> [T] {
         let context = ModelContext(container)
@@ -46,12 +38,6 @@ extension SwiftDataService {
     
     func update(_ item: T) throws {
         let context = ModelContext(container)
-        try context.save()
-    }
-    
-    func delete(_ item: T) throws {
-        let context = ModelContext(container)
-        context.delete(item)
         try context.save()
     }
     
