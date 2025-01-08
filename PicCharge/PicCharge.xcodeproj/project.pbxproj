@@ -120,13 +120,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		42CF704B2D2560B70054F244 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 55B5E3582BF5A13E00E413C6 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 55B5E35F2BF5A13E00E413C6;
-			remoteInfo = PicCharge;
-		};
 		FF73157A2BF9076A0074D7AA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55B5E3582BF5A13E00E413C6 /* Project object */;
@@ -198,7 +191,6 @@
 		4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTermsOfUseView.swift; sourceTree = "<group>"; };
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
 		42CF703F2D2556070054F244 /* FireStoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreRepository.swift; sourceTree = "<group>"; };
-		42CF70472D2560B70054F244 /* PicChargeTests(Temp).xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PicChargeTests(Temp).xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		42CF70712D28569D0054F244 /* FireStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreError.swift; sourceTree = "<group>"; };
 		5151CB892BFEE41300AF792F /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
 		516978312C00CDEF00168164 /* BuggungEnd.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungEnd.json; sourceTree = "<group>"; };
@@ -233,13 +225,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		42CF70442D2560B70054F244 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		55B5E35D2BF5A13E00E413C6 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -476,7 +461,6 @@
 			children = (
 				55B5E3602BF5A13E00E413C6 /* PicCharge.Dev.app */,
 				FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */,
-				42CF70472D2560B70054F244 /* PicChargeTests(Temp).xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -542,26 +526,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		42CF70462D2560B70054F244 /* PicChargeTests(Temp) */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 42CF704D2D2560B70054F244 /* Build configuration list for PBXNativeTarget "PicChargeTests(Temp)" */;
-			buildPhases = (
-				42CF70432D2560B70054F244 /* Sources */,
-				42CF70442D2560B70054F244 /* Frameworks */,
-				42CF70452D2560B70054F244 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				42CF704C2D2560B70054F244 /* PBXTargetDependency */,
-			);
-			name = "PicChargeTests(Temp)";
-			packageProductDependencies = (
-			);
-			productName = "PicChargeTests(Temp)";
-			productReference = 42CF70472D2560B70054F244 /* PicChargeTests(Temp).xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		55B5E35F2BF5A13E00E413C6 /* PicCharge */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 55B5E36E2BF5A13F00E413C6 /* Build configuration list for PBXNativeTarget "PicCharge" */;
@@ -623,10 +587,6 @@
 				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
-					42CF70462D2560B70054F244 = {
-						CreatedOnToolsVersion = 16.1;
-						TestTargetID = 55B5E35F2BF5A13E00E413C6;
-					};
 					55B5E35F2BF5A13E00E413C6 = {
 						CreatedOnToolsVersion = 15.4;
 					};
@@ -654,19 +614,11 @@
 			targets = (
 				55B5E35F2BF5A13E00E413C6 /* PicCharge */,
 				FF7315692BF907690074D7AA /* ParentWidgetExtension */,
-				42CF70462D2560B70054F244 /* PicChargeTests(Temp) */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		42CF70452D2560B70054F244 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		55B5E35E2BF5A13E00E413C6 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -715,13 +667,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		42CF70432D2560B70054F244 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		55B5E35C2BF5A13E00E413C6 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -825,11 +770,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		42CF704C2D2560B70054F244 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 55B5E35F2BF5A13E00E413C6 /* PicCharge */;
-			targetProxy = 42CF704B2D2560B70054F244 /* PBXContainerItemProxy */;
-		};
 		FF73157B2BF9076A0074D7AA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FF7315692BF907690074D7AA /* ParentWidgetExtension */;
@@ -838,46 +778,6 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		42CF704E2D2560B70054F244 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Q6CK9777WL;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yuseong.PicChargeTests-Temp-";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PicCharge.Dev.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PicCharge.Dev";
-			};
-			name = Debug;
-		};
-		42CF704F2D2560B70054F244 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = Q6CK9777WL;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.yuseong.PicChargeTests-Temp-";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PicCharge.Dev.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PicCharge.Dev";
-			};
-			name = Release;
-		};
 		55B5E36C2BF5A13F00E413C6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1152,15 +1052,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		42CF704D2D2560B70054F244 /* Build configuration list for PBXNativeTarget "PicChargeTests(Temp)" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				42CF704E2D2560B70054F244 /* Debug */,
-				42CF704F2D2560B70054F244 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		55B5E35B2BF5A13E00E413C6 /* Build configuration list for PBXProject "PicCharge" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
