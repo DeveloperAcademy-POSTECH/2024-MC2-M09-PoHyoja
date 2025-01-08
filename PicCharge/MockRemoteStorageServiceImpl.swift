@@ -8,39 +8,52 @@
 import Foundation
 
 class MockRemoteStorageServiceImpl: RemoteStorageService {
-    func fetchUserByEmail(_ email: String) async -> User? {
-        return nil
+    func fetchUserByEmail(_ email: String) async throws -> User? {
+        return User(name: "Mock", role: .child, email: "Mock@Mock.com", connectedTo: [])
     }
     
-    func fetchUserByName(_ name: String) async -> User? {
-        return nil
+    func fetchUserByName(_ name: String) async throws -> User? {
+        return User(name: "Mock", role: .child, email: "Mock@Mock.com", connectedTo: [])
     }
     
     func checkUserExists(by name: String) async throws -> Bool {
-        return false
+        return true
     }
     
     func addUser(_ user: User) async throws {
-        print("add User")
+        print("Mock 원격 유저 추가됨")
     }
     
     func deleteUser(_ user: User) async throws {
-        print("delete User")
+        print("Mock 원격 유저 삭제됨")
     }
     
-    func fetchPhotos(_ userName: String) async -> [Photo] {
-        return []
+    func fetchPhotos(_ userName: String) async throws -> [Photo] {
+        return [
+            .init(id: UUID(), uploadBy: "Mock", uploadDate: .now, likeCount: 0, sharedWith: []),
+            .init(id: UUID(), uploadBy: "Mock", uploadDate: .now, likeCount: 0, sharedWith: []),
+            .init(id: UUID(), uploadBy: "Mock", uploadDate: .now, likeCount: 0, sharedWith: [])
+        ]
     }
     
-    func uploadPhoto(of userName: String, photo: Photo) async throws {
-        print("upload Photo")
+    func addPhoto(_ photo: Photo, urlString: String) async throws {
+        print("Mock 원격 사진 추가됨")
+    }
+    
+    func uploadPhotoData(of userName: String, photo: Photo, imgData: Data) async throws -> String {
+        print("Mock 원격 사진 업로드됨")
+        return "MockUrlString"
+    }
+    
+    func downloadPhotoData(of urlString: String) async throws -> Data {
+        return Data()
     }
     
     func updatePhoto(_ photo: Photo) async throws {
-        print("update Photo")
+        print("Mock 원격 사진 업데이트 됨")
     }
     
-    func deletePhoto(of photoId: String) async throws {
-        print("delete Photo")
+    func deletePhoto(of photoId: UUID) async throws {
+        print("Mock 원격 사진 삭제 됨")
     }
 }
