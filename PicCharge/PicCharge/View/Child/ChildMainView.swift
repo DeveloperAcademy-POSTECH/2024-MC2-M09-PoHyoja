@@ -9,6 +9,14 @@ import SwiftUI
 import SwiftData
 
 struct ChildMainView: View {
+    enum CGCircleGaugeFloat: CGFloat {
+        case bottom = 0.525 // 배터리 0 퍼센트
+        case top = 0.975 // 배터리 100 퍼센트
+        
+        func add(for percent: Double) -> CGFloat {
+            self.rawValue + ((CGCircleGaugeFloat.top.rawValue - CGCircleGaugeFloat.bottom.rawValue) / 100.0) * percent
+        }
+    }
     
     @Environment(NavigationManager.self) var navigationManager
     @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photos: [PhotoEntity]
@@ -127,12 +135,26 @@ struct ChildMainView: View {
     /// 배터리 상태를 계산하는 함수 입니다.
     /// let uploadCycleSeconds = Double(uploadCycle * 숫자) 를 활용해 시간 단위를 계산할 수 있습니다.
     func updateBatteryStatus() {
-        let lastUploadDate = photos.first?.uploadDate
+        guard let lastUploadDate = photos.first?.uploadDate else {
+            withAnimation {
+                batteryPercent = 100
+            }
+            return
+        }
+        
+        let currentTime = Date()
+        let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
+        let uploadCycleSeconds = Double(uploadCycle * 24 * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
+        
+        // 배터리 백분율 계산, 1프로 이하는 1로 고정
+        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
+        
         withAnimation {
-            batteryPercent = Date().calculateBatteryPercentage(
-                uploadCycle: uploadCycle,
-                lastUploadDate: lastUploadDate
-            )
+            batteryPercent = round(currentPercentage)
+        }
+    
+        if currentPercentage <= 0 {
+            stopTimer()
         }
     }
 

@@ -57,6 +57,8 @@
 		425D7DB12D22BF7D00DB82A6 /* MockLocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */; };
 		425D7DB32D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */; };
 		425D7DBD2D22C2F700DB82A6 /* AppNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425D7DBC2D22C2F700DB82A6 /* AppNavigationView.swift */; };
+		425B44012D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
+		425B44022D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
 		4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280466D2BF5DD720097EB0B /* LoginView.swift */; };
 		428046722BF5DDA80097EB0B /* ConnectUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046712BF5DDA80097EB0B /* ConnectUserView.swift */; };
 		428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046732BF5DDD30097EB0B /* ChildTabView.swift */; };
@@ -95,10 +97,6 @@
 		E33AFF642BFC389800BFB665 /* ChildLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */; };
 		E33AFF672BFC397700BFB665 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = E33AFF662BFC397700BFB665 /* Lottie */; };
 		E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */; };
-		FF1238F62D268BC700F48732 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF1238F52D268BC700F48732 /* GoogleService-Info.plist */; };
-		FF1238F72D268BC700F48732 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF1238F52D268BC700F48732 /* GoogleService-Info.plist */; };
-		FF1238F92D26990700F48732 /* Battery+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1238F82D2698FE00F48732 /* Battery+.swift */; };
-		FF1238FA2D26990700F48732 /* Battery+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1238F82D2698FE00F48732 /* Battery+.swift */; };
 		FF3ECB752C003F0000E65D83 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
 		FF3ECB762C003F0300E65D83 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
 		FF3ECB772C003F0800E65D83 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
@@ -171,6 +169,7 @@
 		425D7DB02D22BF7D00DB82A6 /* MockLocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalStorageService.swift; sourceTree = "<group>"; };
 		425D7DB22D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteStorageServiceImpl.swift; sourceTree = "<group>"; };
 		425D7DBC2D22C2F700DB82A6 /* AppNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppNavigationView.swift; sourceTree = "<group>"; };
+		425B44002D1ED446001E23FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4280466D2BF5DD720097EB0B /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		428046712BF5DDA80097EB0B /* ConnectUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectUserView.swift; sourceTree = "<group>"; };
 		428046732BF5DDD30097EB0B /* ChildTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildTabView.swift; sourceTree = "<group>"; };
@@ -205,8 +204,6 @@
 		E32B7D402BFC77DC00814489 /* BatteryLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BatteryLoading.json; sourceTree = "<group>"; };
 		E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildLoadingView.swift; sourceTree = "<group>"; };
 		E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
-		FF1238F52D268BC700F48732 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		FF1238F82D2698FE00F48732 /* Battery+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Battery+.swift"; sourceTree = "<group>"; };
 		FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentWidgetExtension.Dev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF73156C2BF907690074D7AA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		FF73156E2BF907690074D7AA /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -254,7 +251,7 @@
 		4214DA082C0390920096D48B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				FF1238F52D268BC700F48732 /* GoogleService-Info.plist */,
+				425B44002D1ED446001E23FA /* GoogleService-Info.plist */,
 				4214DA242C03CAF20096D48B /* Info.plist */,
 				550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */,
 				55B5E3672BF5A13F00E413C6 /* Assets.xcassets */,
@@ -277,7 +274,6 @@
 		4214DA0A2C0390FD0096D48B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				FF1238F82D2698FE00F48732 /* Battery+.swift */,
 				FFD221AF2BFB8433009735E4 /* UserDefault+.swift */,
 				421A8C662BFA358A003C7001 /* Color+.swift */,
 				4256DC392C0716C600FC3541 /* Int+.swift */,
@@ -619,12 +615,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				E32B7D412BFC77DC00814489 /* BatteryLoading.json in Resources */,
-				FF1238F62D268BC700F48732 /* GoogleService-Info.plist in Resources */,
 				55B5E36B2BF5A13F00E413C6 /* Preview Assets.xcassets in Resources */,
 				518752092C00A98800005AF8 /* BuggungLoading.json in Resources */,
 				55B5E3682BF5A13F00E413C6 /* Assets.xcassets in Resources */,
 				5151CB8A2BFEE41300AF792F /* LikeAnimation.json in Resources */,
 				516978322C00CDEF00168164 /* BuggungEnd.json in Resources */,
+				425B44012D1ED446001E23FA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,8 +629,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				FFA8CC2F2C01AFCF007428F8 /* Assets.xcassets in Resources */,
-				FF1238F72D268BC700F48732 /* GoogleService-Info.plist in Resources */,
 				FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */,
+				425B44022D1ED446001E23FA /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -711,7 +707,6 @@
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
 				421A8CBE2BFE5114003C7001 /* UserEntity.swift in Sources */,
-				FF1238F92D26990700F48732 /* Battery+.swift in Sources */,
 				425D7DB12D22BF7D00DB82A6 /* MockLocalStorageService.swift in Sources */,
 				421A8C692BFA3761003C7001 /* Date+.swift in Sources */,
 				425D7DB32D22BFF600DB82A6 /* MockRemoteStorageServiceImpl.swift in Sources */,
@@ -740,7 +735,6 @@
 				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
 				4214DA1B2C03926F0096D48B /* ConnectionRequestsDTO.swift in Sources */,
 				FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */,
-				FF1238FA2D26990700F48732 /* Battery+.swift in Sources */,
 				4214D9F62C03330F0096D48B /* Role.swift in Sources */,
 				4214DA152C0392230096D48B /* UserDTO.swift in Sources */,
 				FF3ECB752C003F0000E65D83 /* Icon.swift in Sources */,
