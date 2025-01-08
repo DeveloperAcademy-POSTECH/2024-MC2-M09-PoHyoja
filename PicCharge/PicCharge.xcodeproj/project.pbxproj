@@ -74,6 +74,11 @@
 		4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046892BF5E0170097EB0B /* SettingView.swift */; };
 		4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */; };
 		4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */; };
+		42CF70402D2556070054F244 /* FireStoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF703F2D2556070054F244 /* FireStoreRepository.swift */; };
+		42CF70412D2556070054F244 /* FireStoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF703F2D2556070054F244 /* FireStoreRepository.swift */; };
+		42CF70422D2560350054F244 /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44272D1FDB09001E23FA /* RemoteStorageService.swift */; };
+		42CF70722D28569D0054F244 /* FireStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70712D28569D0054F244 /* FireStoreError.swift */; };
+		42CF70732D28569D0054F244 /* FireStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70712D28569D0054F244 /* FireStoreError.swift */; };
 		42CF6FD32D22EF3C0054F244 /* SwiftDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */; };
 		42CF6FD42D22EF3C0054F244 /* SwiftDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */; };
 		42CF6FDC2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */; };
@@ -199,6 +204,8 @@
 		428046892BF5E0170097EB0B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		4280468B2BF5E03F0097EB0B /* SettingTermsOfUseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTermsOfUseView.swift; sourceTree = "<group>"; };
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
+		42CF703F2D2556070054F244 /* FireStoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreRepository.swift; sourceTree = "<group>"; };
+		42CF70712D28569D0054F244 /* FireStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreError.swift; sourceTree = "<group>"; };
 		42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataService.swift; sourceTree = "<group>"; };
 		42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRepository.swift; sourceTree = "<group>"; };
 		42CF702A2D2302040054F244 /* PicChargeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicChargeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -517,6 +524,8 @@
 			children = (
 				552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */,
 				552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */,
+				42CF703F2D2556070054F244 /* FireStoreRepository.swift */,
+				42CF70712D28569D0054F244 /* FireStoreError.swift */,
 				42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */,
 				42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */,
 				42CF70892D2D4C7B0054F244 /* PersistenceStack.swift */,
@@ -739,6 +748,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				421A8CC42BFF63A5003C7001 /* SelectRoleForSignUpView.swift in Sources */,
+				42CF70732D28569D0054F244 /* FireStoreError.swift in Sources */,
 				42CF6FD32D22EF3C0054F244 /* SwiftDataService.swift in Sources */,
 				428046842BF5DFA50097EB0B /* ChildAlbumDetailView.swift in Sources */,
 				4214DA1A2C0392610096D48B /* ConnectionRequestsDTO.swift in Sources */,
@@ -758,6 +768,7 @@
 				4280466E2BF5DD720097EB0B /* LoginView.swift in Sources */,
 				425B44212D1FD430001E23FA /* Photo.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
+				42CF70402D2556070054F244 /* FireStoreRepository.swift in Sources */,
 				4214DA292C0436CC0096D48B /* HapticManager.swift in Sources */,
 				42CF708B2D2D4C7B0054F244 /* PersistenceStack.swift in Sources */,
 				518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */,
@@ -812,6 +823,7 @@
 				4214DA012C0388020096D48B /* UIImage+.swift in Sources */,
 				FF3ECB762C003F0300E65D83 /* Color+.swift in Sources */,
 				FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */,
+				42CF70422D2560350054F244 /* RemoteStorageService.swift in Sources */,
 				42CF6FD42D22EF3C0054F244 /* SwiftDataService.swift in Sources */,
 				42CF70252D22FD2D0054F244 /* LocalStorageService.swift in Sources */,
 				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
@@ -827,10 +839,12 @@
 				4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */,
 				FF7315762BF907690074D7AA /* AppIntent.swift in Sources */,
 				4214D9F52C0332F10096D48B /* FirestoreService.swift in Sources */,
+				42CF70412D2556070054F244 /* FireStoreRepository.swift in Sources */,
 				42CF6FDD2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */,
 				4214DA022C0388800096D48B /* ChildWidget.swift in Sources */,
 				4214D9F82C0333160096D48B /* PhotoEntity.swift in Sources */,
 				4214DA1E2C0392DC0096D48B /* PhotoShareDTO.swift in Sources */,
+				42CF70722D28569D0054F244 /* FireStoreError.swift in Sources */,
 				FF3ECB772C003F0800E65D83 /* BatteryShadowModifier.swift in Sources */,
 				425B441D2D1FD2D2001E23FA /* User.swift in Sources */,
 			);

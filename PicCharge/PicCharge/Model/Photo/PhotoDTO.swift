@@ -84,6 +84,17 @@ extension PhotoDTO: Hashable {
 }
 
 extension PhotoDTO: DomainConvertible {
+    init(_ domain: Photo, urlString: String) {
+        self.init(
+            id: domain.id.uuidString,
+            uploadBy: domain.uploadBy,
+            uploadDate: domain.uploadDate,
+            urlString: urlString,
+            likeCount: domain.likeCount,
+            sharedWith: domain.sharedWith
+        )
+    }
+    
     func toDomain() -> Photo {
         return Photo(
             id: UUID(uuidString: id ?? "") ?? UUID(),
