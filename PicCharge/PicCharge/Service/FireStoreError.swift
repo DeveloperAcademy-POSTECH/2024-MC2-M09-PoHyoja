@@ -16,6 +16,7 @@ enum FireStoreError: Error, Equatable {
     case userAlreadyExists
     case invalidUserDTOFormat
     
+    case noPhotoData
     case invalidPhotoData
     case invalidDownloadURL
     case invalidPhotoDTOFormat
@@ -46,6 +47,8 @@ extension FireStoreError: LocalizedError {
         case .invalidUserDTOFormat:
             return "사용자 데이터 형식이 잘못되었습니다."
             
+        case .noPhotoData:
+            return "빈 사진 데이터입니다."
         case .invalidPhotoData:
             return "유효하지 않은 사진 데이터입니다."
         case .invalidDownloadURL:

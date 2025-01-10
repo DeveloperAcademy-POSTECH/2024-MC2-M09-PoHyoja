@@ -14,7 +14,7 @@ enum PathType: Hashable {
     
     // MARK: - 자식
     case childCamera
-    case childSendCamera(imageData: Data)
+    case childSendCamera(imgData: Data)
     case childSendGallery
     case childAlbumDetail(photo: Photo)
     
@@ -40,8 +40,8 @@ extension PathType {
         // MARK: - 자식
         case .childCamera:
             ChildCameraView()
-        case .childSendCamera(let imageData):
-            ChildSendCameraView(imageData: imageData)
+        case .childSendCamera(let imgData):
+            ChildSendCameraView(imgData: imgData)
         case .childSendGallery:
             ChildSendGalleryView()
         case .childAlbumDetail(let photo):

@@ -51,9 +51,9 @@ struct ChildCameraView: View {
                 .padding(.top, 20)
                 
                 Button {
-                    camera.takePicture { imageData in
-                        if let data = imageData {
-                            navigationManager.push(to: .childSendCamera(imageData: data))
+                    camera.takePicture { imgData in
+                        if let data = imgData {
+                            navigationManager.push(to: .childSendCamera(imgData: data))
                         }
                     }
                 } label: {
@@ -209,8 +209,8 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
             return
         }
         
-        guard let imageData = photo.fileDataRepresentation(),
-              let uiImage = UIImage(data: imageData) else {
+        guard let imgData = photo.fileDataRepresentation(),
+              let uiImage = UIImage(data: imgData) else {
             return
         }
         
@@ -230,13 +230,13 @@ class CameraModel: NSObject, ObservableObject, AVCapturePhotoCaptureDelegate {
         }
         
         // 이미지를 JPEG 형식으로 압축하고 Data 형식으로 변환
-        guard let compressedImageData = croppedUIImage.jpegData(compressionQuality: 0.2) else {
+        guard let compressedImgData = croppedUIImage.jpegData(compressionQuality: 0.2) else {
             return
         }
         
         DispatchQueue.main.async {
-            self.capturedImage = compressedImageData
-            self.captureCompletion?(compressedImageData)
+            self.capturedImage = compressedImgData
+            self.captureCompletion?(compressedImgData)
         }
     }
 }

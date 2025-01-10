@@ -9,7 +9,7 @@ import SwiftUI
 
 @Observable
 final class UserViewModel {
-    private(set) var user: User?
+    private(set) var user: User? = .init(name: "자식", role: .child, email: "child@test.com", connectedTo: ["자식", "부모"])
     
     @ObservationIgnored
     private let localStorageService: LocalStorageService

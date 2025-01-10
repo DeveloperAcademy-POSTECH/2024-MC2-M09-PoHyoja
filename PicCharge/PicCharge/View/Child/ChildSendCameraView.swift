@@ -11,14 +11,14 @@ import WidgetKit
 
 struct ChildSendCameraView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(\.modelContext) var modelContext
-    @Query var userForSwiftDatas: [UserEntity]
+    @Environment(UserViewModel.self) var userVM
+    @Environment(PhotoViewModel.self) var photoVM
     
     @State private var isChildLoadingView: Bool = false
-    private let imageData: Data
+    private let imgData: Data
     
-    init(imageData: Data) {
-        self.imageData = imageData
+    init(imgData: Data) {
+        self.imgData = imgData
     }
     
     var body: some View {
@@ -30,7 +30,7 @@ struct ChildSendCameraView: View {
                     Spacer()
                     
                     Group {
-                        if let uiImage = UIImage(data: imageData) {
+                        if let uiImage = UIImage(data: imgData) {
                             Image(uiImage: uiImage)
                                 .resizable()
                                 .scaledToFill()
@@ -54,28 +54,40 @@ struct ChildSendCameraView: View {
                     .foregroundStyle(.txtPrimaryDark)
                     
                     Button("사진 보내기") {
-                        guard let user = userForSwiftDatas.first else {
-                            print("UserForSwiftData 에서 정보 불러오기 실패")
-                            return
-                        }
-                        var newConnectedTo = user.connectedTo
-                        newConnectedTo.append(user.name)
-                        let photoForSwiftData = PhotoEntity(uploadBy: user.name, sharedWith: newConnectedTo, imgData: imageData)
-
-                        // MARK: - 로컬에 이미지 저장
-                        modelContext.insert(photoForSwiftData)
-                        
-                        // MARK: - 사진 전송 로직 imageData: Data를 서버로 전송
                         Task {
-                            await FirestoreService.shared.uploadPhoto(userName: user.name, photoForSwiftData: photoForSwiftData)
+                            isChildLoadingView = true
+                            do {
+                                // 1. 사진 업로드
+                                try await sendPhoto()
+                                // 2. 위젯 리로드
+                                WidgetCenter.shared.reloadAllTimelines()
+                                // 3. 화면 이동
+                                navigationManager.popToRoot()
+                            } catch {
+                                // Fail: 사진 업로드 실패
+                                isChildLoadingView = false
+                            }
                         }
-                        isChildLoadingView = true
-                        
-                        WidgetCenter.shared.reloadAllTimelines()
                     }
                 }
             }
             .navigationBarBackButtonHidden(true)
         }
     }
+}
+
+extension ChildSendCameraView {
+    func sendPhoto() async throws {
+        guard let user = userVM.user else { return }
+        
+        let photo = Photo(of: user, imgData: imgData)
+        
+        try await photoVM.addPhoto(of: user.name, photo: photo)
+    }
+}
+
+#Preview {
+    ChildSendCameraView(imgData: UIImage(resource: .logoLarge).pngData()!)
+        .injectDIContainer()
+        .preferredColorScheme(.dark)
 }

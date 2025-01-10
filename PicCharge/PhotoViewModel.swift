@@ -27,6 +27,20 @@ final class PhotoViewModel {
 }
 
 extension PhotoViewModel {
+    func addPhoto(of userName: String, photo: Photo) async throws {
+        // 1. 원격 사진 데이터 업로드
+        let urlString = try await remoteStorageService.uploadPhotoData(of: userName, photo: photo)
+        
+        // 2. 원격 사진 정보 저장
+        try await remoteStorageService.addPhoto(photo, urlString: urlString)
+        
+        // 3. 로컬 저장
+        try await localStorageService.addPhoto(photo)
+        
+        // 4. 최신순 데이터 추가
+        self.photos.insert(photo, at: 0)
+    }
+    
     func syncPhoto(of userName: String) async {
         do {
             let remoteData = try await remoteStorageService.fetchPhotos(userName)

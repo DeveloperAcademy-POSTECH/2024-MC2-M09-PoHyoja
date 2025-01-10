@@ -27,6 +27,19 @@ extension Photo {
     }
 }
 
+extension Photo {
+    init(of user: User, imgData: Data) {
+        self.init(
+            id: UUID(),
+            uploadBy: user.name,
+            uploadDate: .now,
+            imgData: imgData,
+            likeCount: 0,
+            sharedWith: user.connectedTo
+        )
+    }
+}
+
 #if DEBUG
 import UIKit
 
