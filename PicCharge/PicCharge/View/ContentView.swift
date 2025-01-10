@@ -20,18 +20,15 @@ enum UserState {
 
 struct ContentView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @Environment(UserViewModel.self) var userVM
+    @Environment(PhotoViewModel.self) var photoVM
+    
+    // TODO: - 제거
     @Environment(\.modelContext) var modelContext
-    
     @Query var userForSwiftDatas: [UserEntity]
-    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoEntity]
     
-    @State private var isAppearing: Bool = true
     @State private var isFirstLoad = true
     @State private var buggungEnd = false
-    
-    var user: UserEntity {
-        userForSwiftDatas.first ?? UserEntity(name: "", role: .child, email: "")
-    }
     
     var body: some View {
         Group {
@@ -39,15 +36,10 @@ struct ContentView: View {
             case .notExist:
                 LoginView()
             case .notConnected:
-                ConnectUserView(user: user)
+                ConnectUserView(user: UserEntity(userVM.user!))
             case .connectedChild:
                 ChildTabView()
                     .transition(.opacity.animation(.easeInOut(duration: 1)))
-                    .onAppear {
-                        withAnimation {
-                            isAppearing = false
-                        }
-                    }
             case .connectedParent:
                 ParentAlbumView()
             default:
@@ -86,7 +78,7 @@ extension ContentView {
             
             switch state {
             case .connectedChild, .connectedParent:
-                await syncPhotoData()
+                await photoVM.syncPhoto(of: userVM.user?.name ?? "자식")
                 WidgetCenter.shared.reloadAllTimelines()
             default:
                 break
@@ -141,63 +133,6 @@ extension ContentView {
         case .parent:
             print("유저정보 확인: parent 역할")
             return .connectedParent
-        }
-    }
-    
-    private func syncPhotoData() async {
-        var updateCount = 0
-        var addCount = 0
-        var deleteCount = 0
-        
-        guard let swiftDataUser = userForSwiftDatas.first else {
-            print("로컬에 유저 데이터 없음")
-            return
-        }
-        
-        do {
-            let photos = try await FirestoreService.shared.fetchPhotos(userName: swiftDataUser.name)
-            var photoIds = Set<UUID>()
-            
-            for photo in photos {
-                
-                guard let photoIdString = photo.id,
-                      let photoId = UUID(uuidString: photoIdString)
-                else {
-                    print("유효하지 않은 ID: \(String(describing: photo.id))")
-                    continue
-                }
-                
-                photoIds.insert(photoId)
-                
-                if let existingPhoto = photoForSwiftDatas.first(where: { $0.id == photoId }) {
-                    if existingPhoto.likeCount != photo.likeCount {
-                        updateCount += 1
-                        existingPhoto.likeCount = photo.likeCount
-                    }
-                } else {
-                    addCount += 1
-                    let newPhotoForSwiftData = try await FirestoreService.shared.fetchPhotoForSwiftDataByPhoto(photo: photo)
-                    modelContext.insert(newPhotoForSwiftData)
-                }
-            }
-            
-            for photoForSwiftData in photoForSwiftDatas {
-                if !photoIds.contains(photoForSwiftData.id) {
-                    deleteCount += 1
-                    modelContext.delete(photoForSwiftData)
-                }
-            }
-            
-            try modelContext.save()
-            
-            print("총\(photos.count) 개의 이미지")
-            print("\(updateCount + addCount + deleteCount) 개의 이미지 동기화함")
-            print("\(updateCount) 개의 사진 업데이트됨")
-            print("\(addCount) 개의 사진 추가됨")
-            print("\(deleteCount) 개의 사진 삭제됨")
-            
-        } catch {
-            print("사진 데이터 동기화 실패: \(error)")
         }
     }
 }
