@@ -9,9 +9,6 @@ import SwiftUI
 import SwiftData
 import WidgetKit
 
-// photo는 현재 보고 있는 사진이다.
-// 만약 photo가 모두 삭제된다면 해당 페이지에서 나와야한다.
-
 struct ChildAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(PhotoViewModel.self) var photoVM

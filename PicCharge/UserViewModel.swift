@@ -9,11 +9,7 @@ import SwiftUI
 
 @Observable
 final class UserViewModel {
-    struct State {
-        
-    }
-    
-    private(set) var state: State = .init()
+    private(set) var user: User?
     
     @ObservationIgnored
     private let localStorageService: LocalStorageService
