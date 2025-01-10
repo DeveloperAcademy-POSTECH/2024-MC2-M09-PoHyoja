@@ -24,9 +24,7 @@ struct ChildTabView: View {
                     }
                     .tag(1)
                 
-                ChildAlbumView(user: user) {
-                    await didRefresh()
-                }
+                ChildAlbumView()
                     .tabItem {
                         Icon.album
                         Text("Album")

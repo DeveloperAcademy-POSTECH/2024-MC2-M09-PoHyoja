@@ -81,6 +81,18 @@ final class LocalStorageServiceTests: XCTestCase {
         XCTAssertTrue(photos.isEmpty)
     }
     
+    func test_사진들_삭제() async throws {
+        let photo1 = Photo(id: UUID(), uploadBy: "ace", uploadDate: .now, imgData: Data(), likeCount: 0, sharedWith: [])
+        let photo2 = Photo(id: UUID(), uploadBy: "ace", uploadDate: .now, imgData: Data(), likeCount: 0, sharedWith: [])
+        
+        try await service.addPhotos([photo1, photo2])
+        try await service.deletePhotos([photo1.id, photo2.id])
+       
+        let photos = await service.fetchPhotos()
+        
+        XCTAssertTrue(photos.isEmpty)
+    }
+    
     func test_최신순_사진_정렬() async throws {
         let photoData1 = Data(count: 1)
         let photoData2 = Data(count: 2)

@@ -16,7 +16,7 @@ enum PathType: Hashable {
     case childCamera
     case childSendCamera(imageData: Data)
     case childSendGallery
-    case childAlbumDetail(photo: PhotoEntity)
+    case childAlbumDetail(photo: Photo)
     
     // MARK: - 부모
     case parentAlbum(user: UserEntity)

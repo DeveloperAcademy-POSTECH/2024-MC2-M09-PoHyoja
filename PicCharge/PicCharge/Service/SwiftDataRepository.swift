@@ -13,16 +13,11 @@ final class SwiftDataRepository: LocalStorageService {
     private let userStorage: SwiftDataService<UserEntity>
     private let photoStorage: SwiftDataService<PhotoEntity>
 
-    init(isMemoryOnly: Bool = false) throws {
-        do {
-            let persistanceStack = try PersistenceStack(isMemoryOnly: isMemoryOnly)
-            
-            self.userStorage = SwiftDataService<UserEntity>(container: persistanceStack.container)
-            self.photoStorage = SwiftDataService<PhotoEntity>(container: persistanceStack.container)
-            
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
+    init(isMemoryOnly: Bool = false) {
+        let persistanceStack = PersistenceStack(isMemoryOnly: isMemoryOnly)
+        
+        self.userStorage = SwiftDataService<UserEntity>(container: persistanceStack.container)
+        self.photoStorage = SwiftDataService<PhotoEntity>(container: persistanceStack.container)
     }
 }
 
@@ -73,8 +68,24 @@ extension SwiftDataRepository {
         try photoStorage.create(photoEntity)
     }
     
+    func addPhotos(_ photos: [Photo]) async throws {
+        try photoStorage.create(photos.map { PhotoEntity($0) })
+    }
+    
+    func updatePhotos(_ photos: [Photo]) async throws {
+        try photoStorage.update(photos.map { PhotoEntity($0) })
+    }
+    
     func deletePhoto(_ photoId: UUID) async throws {
         try photoStorage.delete(where: #Predicate { $0.id == photoId })
+    }
+    
+    func deletePhotos(_ photoIds: [UUID]) async throws {
+        let photoSet = Set(photoIds)
+        
+        try photoStorage.delete(where: #Predicate { item in
+            photoSet.contains(item.id)
+        })
     }
 }
 

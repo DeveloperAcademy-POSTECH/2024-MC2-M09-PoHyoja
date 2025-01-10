@@ -11,11 +11,8 @@ import WidgetKit
 
 struct ChildAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(\.modelContext) var modelContext
-    
-    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoEntity]
-    @Bindable var user: UserEntity
-    var didRefresh: () async -> Void
+    @Environment(UserViewModel.self) var userVM
+    @Environment(PhotoViewModel.self) var photoVM
     
     //geometryReader로 3등분
     let columnLayout = [
@@ -26,7 +23,7 @@ struct ChildAlbumView: View {
     
     var body: some View {
         Group {
-            if let first = photoForSwiftDatas.first {
+            if let mainPhoto = photoVM.photos.first {
                 ScrollView {
                     VStack(spacing: 12) {
                         TitleView(title: "앨범")
@@ -44,20 +41,14 @@ struct ChildAlbumView: View {
                                 Spacer()
                             }
                             
-                            if let uiImage = UIImage(data: first.imgData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .aspectRatio(1, contentMode: .fill)
-                                    .clipped()
-                                    .cornerRadius(10.0)
-                                    .onTapGesture {
-                                        navigationManager.push(to: .childAlbumDetail(photo: first))
-                                    }
-                            }
+                            SquareImage(data: mainPhoto.imgData)
+                                .cornerRadius(10.0)
+                                .onTapGesture {
+                                    navigationManager.push(to: .childAlbumDetail(photo: mainPhoto))
+                                }
                             
-                            Text(first.uploadDate.toKR())
+                            Text(mainPhoto.uploadDate.toKR())
                                 .font(.subheadline)
-                            
                             
                             Divider()
                                 .padding(.vertical, 8)
@@ -69,16 +60,12 @@ struct ChildAlbumView: View {
                         .padding(.horizontal, 16)
                         
                         LazyVGrid(columns: columnLayout, spacing: 3) {
-                            ForEach(photoForSwiftDatas.dropFirst()) { photo in
-                                if let uiImage = UIImage(data: photo.imgData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(1, contentMode: .fill)
-                                        .clipped()
-                                        .onTapGesture {
-                                            navigationManager.push(to: .childAlbumDetail(photo: photo))
-                                        }
-                                }
+                            ForEach(photoVM.photos.dropFirst()) { photo in
+                                SquareImage(data: photo.imgData)
+                                    .onTapGesture {
+                                        navigationManager.push(to: .childAlbumDetail(photo: photo)
+                                        )
+                                    }
                             }
                         }
                     }
@@ -95,7 +82,7 @@ struct ChildAlbumView: View {
         }
         .refreshable {
             Task {
-                await didRefresh()
+                await photoVM.syncPhoto(of: "자식")
                 WidgetCenter.shared.reloadAllTimelines()
             }
         }
@@ -104,12 +91,8 @@ struct ChildAlbumView: View {
 
 #Preview {
     NavigationStack {
-        ChildAlbumView(
-            user: UserEntity(name: "", role: .child, email: ""),
-            didRefresh: {}
-        )
-        .environment(NavigationManager())
-        .preferredColorScheme(.dark)
-        .navigationTitle("앨범")
+        ChildAlbumView()
+            .injectDIContainer()
+            .preferredColorScheme(.dark)
     }
 }

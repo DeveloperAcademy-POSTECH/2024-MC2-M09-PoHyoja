@@ -10,7 +10,7 @@ import SwiftData
 final class PersistenceStack {
     let container: ModelContainer
     
-    init(isMemoryOnly: Bool = false) throws {
+    init(isMemoryOnly: Bool = false) {
         let schema = Schema([
             UserEntity.self,
             PhotoEntity.self
