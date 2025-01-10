@@ -11,12 +11,9 @@ import WidgetKit
 
 struct ParentAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(\.modelContext) var modelContext
-
-    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoEntity]
-    @Bindable var user: UserEntity
-    @State private var isLoading: Bool = false
-
+    @Environment(PhotoViewModel.self) var photoVM
+    @Environment(UserViewModel.self) var userVM
+    
     //geometryReader로 3등분
     let columnLayout = [
         GridItem(.flexible(), spacing: 3),
@@ -26,7 +23,7 @@ struct ParentAlbumView: View {
     
     var body: some View {
         Group {
-            if let first = photoForSwiftDatas.first {
+            if let mainPhoto = photoVM.photos.first {
                 ScrollView {
                     Divider()
                         .padding(.bottom, 10)
@@ -40,18 +37,13 @@ struct ParentAlbumView: View {
                                 Spacer()
                             }
                             
-                            if let uiImage = UIImage(data: first.imgData) {
-                                Image(uiImage: uiImage)
-                                    .resizable()
-                                    .aspectRatio(1, contentMode: .fill)
-                                    .clipped()
-                                    .cornerRadius(10.0)
-                                    .onTapGesture {
-                                        navigationManager.push(to: .parentAlbumDetail(photo: first))
-                                    }
-                            }
+                            SquareImage(data: mainPhoto.imgData)
+                                .cornerRadius(10.0)
+                                .onTapGesture {
+                                    navigationManager.push(to: .parentAlbumDetail(photo: mainPhoto))
+                                }
                             
-                            Text(first.uploadDate.toKR())
+                            Text(mainPhoto.uploadDate.toKR())
                                 .font(.subheadline)
                             
                             
@@ -65,16 +57,11 @@ struct ParentAlbumView: View {
                         .padding(.horizontal, 16)
                         
                         LazyVGrid(columns: columnLayout, spacing: 3) {
-                            ForEach(photoForSwiftDatas.dropFirst()) { photo in
-                                if let uiImage = UIImage(data: photo.imgData) {
-                                    Image(uiImage: uiImage)
-                                        .resizable()
-                                        .aspectRatio(1, contentMode: .fill)
-                                        .clipped()
-                                        .onTapGesture {
-                                            navigationManager.push(to: .parentAlbumDetail(photo: photo))
-                                        }
-                                }
+                            ForEach(photoVM.photos.dropFirst()) { photo in
+                                SquareImage(data: photo.imgData)
+                                    .onTapGesture {
+                                        navigationManager.push(to: .parentAlbumDetail(photo: photo))
+                                    }
                             }
                         }
                     }
@@ -103,73 +90,17 @@ struct ParentAlbumView: View {
         }
         .refreshable {
             Task {
-                isLoading = true
-                await syncPhotoData()
+                await photoVM.syncPhoto(of: userVM.user?.name ?? "자식")
                 WidgetCenter.shared.reloadAllTimelines()
-                isLoading = false
             }
-        }
-    }
-}
-
-extension ParentAlbumView {
-    private func syncPhotoData() async {
-        var updateCount = 0
-        var addCount = 0
-        var deleteCount = 0
-        
-        do {
-            let photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
-            var photoIds = Set<UUID>()
-            
-            for photo in photos {
-                
-                guard let photoIdString = photo.id,
-                      let photoId = UUID(uuidString: photoIdString)
-                else {
-                    print("유효하지 않은 ID: \(String(describing: photo.id))")
-                    continue
-                }
-                
-                photoIds.insert(photoId)
-                
-                if let existingPhoto = photoForSwiftDatas.first(where: { $0.id == photoId }) {
-                    if existingPhoto.likeCount != photo.likeCount {
-                        updateCount += 1
-                        existingPhoto.likeCount = photo.likeCount
-                    }
-                } else {
-                    addCount += 1
-                    let newPhotoForSwiftData = try await FirestoreService.shared.fetchPhotoForSwiftDataByPhoto(photo: photo)
-                    modelContext.insert(newPhotoForSwiftData)
-                }
-            }
-            
-            for photoForSwiftData in photoForSwiftDatas {
-                if !photoIds.contains(photoForSwiftData.id) {
-                    deleteCount += 1
-                    modelContext.delete(photoForSwiftData)
-                }
-            }
-            
-            try modelContext.save()
-            
-            print("총\(photos.count) 개의 이미지")
-            print("\(updateCount + addCount + deleteCount) 개의 이미지 동기화함")
-            print("\(updateCount) 개의 사진 업데이트됨")
-            print("\(addCount) 개의 사진 추가됨")
-            print("\(deleteCount) 개의 사진 삭제됨")
-            
-        } catch {
-            print("사진 데이터 동기화 실패: \(error)")
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        ParentAlbumView(user: UserEntity(name: "", role: .child, email: ""))
-            .environment(NavigationManager())
+        ParentAlbumView()
+            .injectDIContainer()
             .preferredColorScheme(.dark)
     }
 }

@@ -19,8 +19,8 @@ enum PathType: Hashable {
     case childAlbumDetail(photo: Photo)
     
     // MARK: - 부모
-    case parentAlbum(user: UserEntity)
-    case parentAlbumDetail(photo: PhotoEntity)
+    case parentAlbum
+    case parentAlbumDetail(photo: Photo)
     
     // MARK: - Setting
     case setting(role: Role)
@@ -48,8 +48,8 @@ extension PathType {
             ChildAlbumDetailView(photo: photo)
             
         // MARK: - 부모
-        case .parentAlbum(let user):
-            ParentAlbumView(user: user)
+        case .parentAlbum:
+            ParentAlbumView()
         case .parentAlbumDetail(let photo):
             ParentAlbumDetailView(photo: photo)
             

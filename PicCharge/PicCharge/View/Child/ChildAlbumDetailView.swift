@@ -80,8 +80,11 @@ struct ChildAlbumDetailView: View {
             Button("Cancel", role: .cancel) {}
         }
         .onChange(of: photoVM.photos) { oldValue, newValue in
-            if photoVM.photos.isEmpty { navigationManager.pop() }
-            else {
+            WidgetCenter.shared.reloadAllTimelines()
+            
+            if photoVM.photos.isEmpty {
+                navigationManager.pop()
+            } else {
                 guard let index = oldValue.firstIndex(of: photo),
                       0..<newValue.count ~= index
                 else { return }

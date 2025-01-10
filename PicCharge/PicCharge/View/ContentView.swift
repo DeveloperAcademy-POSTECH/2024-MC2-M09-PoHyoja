@@ -49,7 +49,7 @@ struct ContentView: View {
                         }
                     }
             case .connectedParent:
-                ParentAlbumView(user: user)
+                ParentAlbumView()
             default:
                 if buggungEnd {
                     BuggungEndView()
