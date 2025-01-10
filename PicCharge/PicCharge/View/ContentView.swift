@@ -41,9 +41,7 @@ struct ContentView: View {
             case .notConnected:
                 ConnectUserView(user: user)
             case .connectedChild:
-                ChildTabView(user: user) {
-                    await syncPhotoData()
-                }
+                ChildTabView()
                     .transition(.opacity.animation(.easeInOut(duration: 1)))
                     .onAppear {
                         withAnimation {
