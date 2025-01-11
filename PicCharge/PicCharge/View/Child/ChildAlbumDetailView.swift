@@ -88,8 +88,8 @@ struct ChildAlbumDetailView: View {
                             }
                         }
                     } catch {
-                        print("사진 삭제 실패")
                         // TODO: - Alert 뜨도록 변경
+                        print("[TODO] 사진 삭제 실패 - Alert 뜨도록 변경")
                     }
                 }
             }

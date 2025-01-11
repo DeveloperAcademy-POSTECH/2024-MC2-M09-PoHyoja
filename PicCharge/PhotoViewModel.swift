@@ -27,18 +27,36 @@ final class PhotoViewModel {
 }
 
 extension PhotoViewModel {
-    func addPhoto(of userName: String, photo: Photo) async throws {
+    func uploadPhoto(of user: User, imgData: Data) async throws {
+        
+        let photo = Photo(of: user, imgData: imgData)
+        
         // 1. 원격 사진 데이터 업로드
-        let urlString = try await remoteStorageService.uploadPhotoData(of: userName, photo: photo)
+        let urlString = try await remoteStorageService.uploadPhotoData(of: user.name, photo: photo)
         
-        // 2. 원격 사진 정보 저장
-        try await remoteStorageService.addPhoto(photo, urlString: urlString)
+        do {
+            // 2. 원격 사진 정보 저장
+            try await remoteStorageService.addPhoto(photo, urlString: urlString)
+            
+            // 3. UI에 최신순 데이터 추가
+            await MainActor.run { photos.insert(photo, at: 0) }
+            
+        } catch {
+            
+            // 2-1. 원격 사진 정보 저장 실패 시 - 업로드한 Data 삭제
+            try await remoteStorageService.deletePhotoData(of: urlString)
+            
+            throw error
+        }
         
-        // 3. 로컬 저장
-        try await localStorageService.addPhoto(photo)
-        
-        // 4. 최신순 데이터 추가
-        self.photos.insert(photo, at: 0)
+        do {
+            // 4. 로컬 저장
+            try await localStorageService.addPhoto(photo)
+            
+        } catch {
+            // 로컬 저장 에러는 무시
+            // (SOT - 원격) : 원격 성공, 로컬 실패 시에는 UI 복구 -> sync에서 해결!
+        }
     }
     
     func syncPhoto(of userName: String) async {
@@ -96,8 +114,7 @@ extension PhotoViewModel {
     /// - Parameter photo: 삭제할 photo
     func deletePhoto(_ photo: Photo) async throws {
         
-        let idx = await MainActor.run { photos.firstIndex(where: { $0.id == photo.id }) }
-        guard let idx else { return }
+        guard let idx = photos.firstIndex(where: { $0.id == photo.id }) else { return }
         
         // 1. UI에서 Photo 제거
         await MainActor.run { _ = photos.remove(at: idx) }

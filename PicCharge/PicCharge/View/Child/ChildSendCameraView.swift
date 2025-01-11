@@ -54,18 +54,21 @@ struct ChildSendCameraView: View {
                     .foregroundStyle(.txtPrimaryDark)
                     
                     Button("사진 보내기") {
-                        Task {
-                            isChildLoadingView = true
+                        isChildLoadingView = true
+                        Task.detached {
                             do {
                                 // 1. 사진 업로드
-                                try await sendPhoto()
+                                try await uploadPhoto()
                                 // 2. 위젯 리로드
                                 WidgetCenter.shared.reloadAllTimelines()
                                 // 3. 화면 이동
-                                navigationManager.popToRoot()
+                                await MainActor.run { navigationManager.popToRoot() }
+                                
                             } catch {
                                 // Fail: 사진 업로드 실패
-                                isChildLoadingView = false
+                                await MainActor.run { isChildLoadingView = false }
+                                // TODO: - Alert 뜨도록 변경
+                                print("[TODO] 사진 업로드 실패 - Alert 뜨도록 변경 ")
                             }
                         }
                     }
@@ -77,12 +80,10 @@ struct ChildSendCameraView: View {
 }
 
 extension ChildSendCameraView {
-    func sendPhoto() async throws {
+    func uploadPhoto() async throws {
         guard let user = userVM.user else { return }
         
-        let photo = Photo(of: user, imgData: imgData)
-        
-        try await photoVM.addPhoto(of: user.name, photo: photo)
+        try await photoVM.uploadPhoto(of: user, imgData: imgData)
     }
 }
 

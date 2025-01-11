@@ -240,6 +240,12 @@ extension FireStoreRepository {
         }
     }
     
+    func deletePhotoData(of urlString: String) async throws {
+        let storageRef = storage.reference(forURL: urlString)
+        
+        try await storageRef.delete()
+    }
+    
     func deletePhoto(of photoId: UUID) async throws {
         
         // 1. FireStore 사진 주소 변환
