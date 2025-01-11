@@ -11,9 +11,9 @@ import FirebaseAuth
 
 struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @Environment(PhotoViewModel.self) var photoVM
     @Environment(\.modelContext) var modelContext
     @Query var userForSwiftDatas: [UserEntity]
-    @Query var photoForSwiftDatas: [PhotoEntity]
 
     @State private var myRole: Role
     
@@ -167,9 +167,13 @@ extension SettingView {
             modelContext.delete(userForSwiftData)
             print("\(userForSwiftData.name) 유저 삭제")
         }
-        for photoForSwiftData in self.photoForSwiftDatas {
-            modelContext.delete(photoForSwiftData)
-            print("\(photoForSwiftData.id) 사진 삭제")
+        Task {
+            do {
+                try await photoVM.deleteAllLocal()
+                print("로컬 사진 모두 삭제")
+            } catch {
+                
+            }
         }
     }
 }
@@ -177,7 +181,7 @@ extension SettingView {
 #Preview {
     NavigationStack {
         SettingView(myRole: .child)
-            .environment(NavigationManager())
+            .injectDIContainer()
             .preferredColorScheme(.dark)
     }
 }

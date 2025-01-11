@@ -87,6 +87,10 @@ extension SwiftDataRepository {
             photoSet.contains(item.id)
         })
     }
+    
+    func deleteAllPhotos() async throws {
+        try photoStorage.deleteAll()
+    }
 }
 
 extension SwiftDataRepository {

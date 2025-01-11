@@ -52,6 +52,12 @@ extension SwiftDataService {
         try create(items)
     }
     
+    func deleteAll() throws {
+        let context = ModelContext(container)
+        try context.delete(model: T.self)
+        try context.save()
+    }
+    
     func delete(where predicate: Predicate<T>) throws {
         let context = ModelContext(container)
         try context.delete(model: T.self, where: predicate)

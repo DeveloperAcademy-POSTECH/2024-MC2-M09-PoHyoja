@@ -58,4 +58,8 @@ protocol LocalStorageService {
     /// - Parameter photoIds: 삭제할 사진의 ID 배열
     /// - Throws: 삭제 과정에서 오류 발생 시 예외를 던짐
     func deletePhotos(_ photoIds: [UUID]) async throws
+    
+    /// 로컬 스토리지에서 모든 사진을 삭제합니다.
+    /// - Throws: 삭제 과정에서 오류 발생 시 예외를 던짐
+    func deleteAllPhotos() async throws
 }

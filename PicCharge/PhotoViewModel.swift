@@ -115,4 +115,8 @@ extension PhotoViewModel {
             }
         }
     }
+    
+    func deleteAllLocal() async throws {
+        try await localStorageService.deleteAllPhotos()
+    }
 }
