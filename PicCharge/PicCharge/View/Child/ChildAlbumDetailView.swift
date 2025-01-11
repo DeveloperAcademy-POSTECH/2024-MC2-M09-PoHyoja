@@ -74,23 +74,35 @@ struct ChildAlbumDetailView: View {
             titleVisibility: .visible
         ) {
             Button("삭제하기", role: .destructive) {
-                photoVM.deletePhoto(photo: photo)
+                Task.detached {
+                    do {
+                        try await photoVM.deletePhoto(photo)
+                        
+                        // 위젯 리로드
+                        WidgetCenter.shared.reloadAllTimelines()
+                        
+                        // 남은 Photo 없다면 이전 화면으로
+                        await MainActor.run {
+                            if photoVM.photos.isEmpty {
+                                navigationManager.pop()
+                            }
+                        }
+                    } catch {
+                        print("사진 삭제 실패")
+                        // TODO: - Alert 뜨도록 변경
+                    }
+                }
             }
             
             Button("Cancel", role: .cancel) {}
         }
         .onChange(of: photoVM.photos) { oldValue, newValue in
-            WidgetCenter.shared.reloadAllTimelines()
-            
-            if photoVM.photos.isEmpty {
-                navigationManager.pop()
-            } else {
-                guard let index = oldValue.firstIndex(of: photo),
-                      0..<newValue.count ~= index
-                else { return }
+            // 현재 보고 있는 photo 업데이트
+            guard let index = oldValue.firstIndex(of: photo),
+                  0..<newValue.count ~= index
+            else { return }
 
-                self.photo = newValue[index]
-            }
+            self.photo = newValue[index]
         }
     }
 }

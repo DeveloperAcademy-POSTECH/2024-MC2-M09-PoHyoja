@@ -87,32 +87,34 @@ extension PhotoViewModel {
         }
     }
     
-    func deletePhoto(photo: Photo) {
-        guard let idx = photos.firstIndex(where: { $0.id == photo.id }) else {
-            return
-        }
-            
-        // UI 처리
-        photos.remove(at: idx)
+    /// 해당 사진을 삭제합니다.
+    ///
+    /// 1. photos에서 우선 사진을 삭제해 UI에 반영합니다.
+    /// 2. 비동기적으로 원격 / 로컬에서 사진을 삭제합니다.
+    /// 3. 에러 발생 시 삭제한 UI를 복구합니다.
+    ///
+    /// - Parameter photo: 삭제할 photo
+    func deletePhoto(_ photo: Photo) async throws {
         
-        Task.detached { [weak self] in
-            guard let ss = self else { return }
+        let idx = await MainActor.run { photos.firstIndex(where: { $0.id == photo.id }) }
+        guard let idx else { return }
+        
+        // 1. UI에서 Photo 제거
+        await MainActor.run { _ = photos.remove(at: idx) }
+        
+        do {
+            // 2-1. 원격 우선 삭제
+            try await remoteStorageService.deletePhoto(of: photo.id)
             
-            do {
-                // 1. 원격 우선 삭제
-                try await ss.remoteStorageService.deletePhoto(of: photo.id)
-                
-                // 2. 로컬 삭제
-                try await ss.localStorageService.deletePhoto(photo.id)
-                
-            } catch {
-                // 에러 시 복구
-                await MainActor.run { [weak self] in
-                    guard let self = self else { return }
-                    
-                    self.photos.insert(photo, at: idx)
-                }
-            }
+            // 2-2. 로컬 삭제
+            // (SOT - 원격) : 원격 성공, 로컬 실패 시에는 UI 복구 -> sync에서 해결!
+            try await localStorageService.deletePhoto(photo.id)
+            
+        } catch {
+            
+            // 3. UI에서 Photo 복구
+            await MainActor.run { photos.insert(photo, at: idx) }
+            throw error
         }
     }
     
