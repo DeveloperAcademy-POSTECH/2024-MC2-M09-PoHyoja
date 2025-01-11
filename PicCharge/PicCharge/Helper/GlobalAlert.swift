@@ -7,7 +7,7 @@
 
 import SwiftData
 
-@Observable
+@MainActor @Observable
 final class GlobalAlert {
     static let shared = GlobalAlert()
     

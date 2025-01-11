@@ -90,8 +90,7 @@ struct SettingView: View {
                             navigationManager.userState = .notExist
                             navigationManager.popToRoot()
                         } catch {
-                            // TODO: - Alert 뜨도록 변경
-                            print("[TODO] 로그아웃 실패 - Alert 뜨도록 변경")
+                            GlobalAlert.shared.show(message: error.localizedDescription)
                         }
                     }
                     
@@ -127,7 +126,7 @@ struct SettingView: View {
                         navigationManager.userState = .notExist
                         navigationManager.popToRoot()
                     } catch {
-                        print("로그아웃 에러: \(error.localizedDescription)")
+                        GlobalAlert.shared.show(message: error.localizedDescription)
                     }
                 }
             )

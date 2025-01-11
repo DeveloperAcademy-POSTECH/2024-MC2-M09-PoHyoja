@@ -120,20 +120,19 @@ struct ParentAlbumDetailView: View {
                 Button("삭제하기", role: .destructive) {
                     Task.detached {
                         do {
+                            // 1. 사진 삭제
                             try await photoVM.deletePhoto(photo)
-                            
-                            // 위젯 리로드
+                            // 2. 위젯 리로드
                             WidgetCenter.shared.reloadAllTimelines()
-                            
-                            // 남은 Photo 없다면 이전 화면으로
+                            // 3. 남은 Photo 없다면 이전 화면으로
                             await MainActor.run {
                                 if photoVM.photos.isEmpty {
                                     navigationManager.pop()
                                 }
                             }
                         } catch {
-                            // TODO: - Alert 뜨도록 변경
-                            print("[TODO] 사진 삭제 실패 - Alert 뜨도록 변경")
+                            // 4. 에러 처리
+                            await GlobalAlert.shared.show(message: error.localizedDescription)
                         }
                     }
                 }

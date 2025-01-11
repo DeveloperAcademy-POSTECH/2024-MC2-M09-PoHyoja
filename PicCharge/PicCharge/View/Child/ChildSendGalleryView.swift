@@ -85,12 +85,10 @@ struct ChildSendGalleryView: View {
                                 WidgetCenter.shared.reloadAllTimelines()
                                 // 3. 화면 이동
                                 await MainActor.run { navigationManager.popToRoot() }
-                                
                             } catch {
-                                // Fail: 사진 업로드 실패
+                                // 4. 에러 처리
                                 await MainActor.run { isChildLoadingView = false }
-                                // TODO: - Alert 뜨도록 변경
-                                print("[TODO] 사진 업로드 실패 - Alert 뜨도록 변경 ")
+                                await GlobalAlert.shared.show(message: error.localizedDescription)
                             }
                         }
                     }
