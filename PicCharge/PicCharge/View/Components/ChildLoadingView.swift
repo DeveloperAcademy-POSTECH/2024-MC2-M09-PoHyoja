@@ -8,8 +8,6 @@
 import SwiftUI
 
 struct ChildLoadingView: View {
-    @Environment(NavigationManager.self) var navigationManager
-    
     var body: some View {
         ZStack{
             VStack {
@@ -29,11 +27,6 @@ struct ChildLoadingView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                navigationManager.popToRoot()
-            }
-        }
     }
 }
 #Preview {

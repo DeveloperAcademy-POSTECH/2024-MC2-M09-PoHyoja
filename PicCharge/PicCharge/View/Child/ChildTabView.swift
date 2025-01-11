@@ -10,23 +10,18 @@ import WidgetKit
 
 struct ChildTabView: View {
     @State private var tab: Int = 1
-    @Bindable var user: UserEntity
-    @State private var isLoading: Bool = false
-    var didRefresh: () async -> Void
     
     var body: some View {
         TabView(selection: $tab) {
             Group {
-                ChildMainView(user: user)
+                ChildMainView()
                     .tabItem {
                         Icon.heartBolt
                         Text("Main")
                     }
                     .tag(1)
                 
-                ChildAlbumView(user: user) {
-                    await didRefresh()
-                }
+                ChildAlbumView()
                     .tabItem {
                         Icon.album
                         Text("Album")
@@ -51,8 +46,8 @@ struct ChildTabView: View {
 
 #Preview {
     NavigationStack {
-        ChildTabView(user: UserEntity(name: "", role: .child, email: ""), didRefresh: { } )
+        ChildTabView()
+            .injectDIContainer()
+            .preferredColorScheme(.dark)
     }
-    .environment(NavigationManager())
-    .preferredColorScheme(.dark)
 }

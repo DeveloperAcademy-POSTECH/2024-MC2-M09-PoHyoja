@@ -50,18 +50,21 @@ protocol RemoteStorageService {
     /// - Parameters:
     ///   - userName: 사진을 업로드할 유저 이름
     ///   - photo: 업로드할 사진 정보
-    ///   - imgData: 업로드할 이미지 데이터
     /// - Throws: 업로드 과정에서 오류 발생 시 예외를 던짐
     /// - Returns: 해당 업로드된 사진의 URL
-    func uploadPhotoData(of userName: String,
-                         photo: Photo,
-                         imgData: Data) async throws -> String
+    func uploadPhotoData(of userName: String, photo: Photo) async throws -> String
     
     /// url에 저장된 원격 스토리지의 사진을 다운로드합니다.
     /// - Parameters:
     ///   - urlString: 사진이 저장된 url
     /// - Throws: 다운로드 과정에서 오류 발생 시 예외를 던짐
     func downloadPhotoData(of urlString: String) async throws -> Data
+    
+    /// url에 저장된 원격 스토리지의 사진을 삭제합니다.
+    /// - Parameters:
+    ///   - urlString: 사진이 저장된 url
+    /// - Throws: 삭제 과정에서 오류 발생 시 예외를 던짐
+    func deletePhotoData(of urlString: String) async throws
     
     /// 원격 스토리지에서 사진을 업데이트합니다.
     /// - Parameter photo: 업데이트할 사진 데이터

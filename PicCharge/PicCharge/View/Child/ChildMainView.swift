@@ -19,28 +19,17 @@ struct ChildMainView: View {
     }
     
     @Environment(NavigationManager.self) var navigationManager
-    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photos: [PhotoEntity]
-    @Bindable var user: UserEntity
+    @Environment(UserViewModel.self) var userVM
+    @Environment(PhotoViewModel.self) var photoVM
+
     @State private var batteryPercent: Double = 0
     @State private var isGaugeAnimating: Bool = false
     @State private var infoPage: Int = 1
     @State private var timer: Timer?
     
-    var uploadCycle: Int {
-        user.uploadCycle ?? 3
-    }
-    
-    var totalLikeCount: Int {
-        return photos.reduce(0) { $0 + $1.likeCount }
-    }
-    
-    var totalUploadCount: Int {
-        return photos.count
-    }
-    
-    init(user: UserEntity) {
-        self.user = user
-    }
+    var uploadCycle: Int { userVM.user?.uploadCycle ?? 3 }
+    var totalLikeCount: Int { photoVM.photos.reduce(0) { $0 + $1.likeCount } }
+    var totalUploadCount: Int { photoVM.photos.count }
     
     var body: some View {
         ZStack {
@@ -88,7 +77,7 @@ struct ChildMainView: View {
                 TabView(selection: $infoPage) {
                     Group {
                         VStack {
-                            BatteryPageView(percent: batteryPercent, date: photos.first?.uploadDate ?? Date())
+                            BatteryPageView(percent: batteryPercent, date: photoVM.photos.first?.uploadDate ?? Date())
 
                             Spacer()
                         }
@@ -135,7 +124,7 @@ struct ChildMainView: View {
     /// 배터리 상태를 계산하는 함수 입니다.
     /// let uploadCycleSeconds = Double(uploadCycle * 숫자) 를 활용해 시간 단위를 계산할 수 있습니다.
     func updateBatteryStatus() {
-        guard let lastUploadDate = photos.first?.uploadDate else {
+        guard let lastUploadDate = photoVM.photos.first?.uploadDate else {
             withAnimation {
                 batteryPercent = 100
             }
@@ -359,8 +348,8 @@ struct ChildMainView: View {
 
 #Preview {
     NavigationStack {
-        ChildMainView(user: UserEntity(name: "", role: .child, email: ""))
-            .environment(NavigationManager())
+        ChildMainView()
+            .injectDIContainer()
             .preferredColorScheme(.dark)
     }
 }

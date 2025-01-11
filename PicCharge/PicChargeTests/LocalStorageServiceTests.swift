@@ -13,7 +13,7 @@ final class LocalStorageServiceTests: XCTestCase {
     private var service: LocalStorageService!
     
     override func setUpWithError() throws {
-        service = try SwiftDataRepository(isMemoryOnly: true)
+        service = SwiftDataRepository(isMemoryOnly: true)
     }
     
     override func tearDownWithError() throws {
@@ -78,6 +78,30 @@ final class LocalStorageServiceTests: XCTestCase {
     
     func test_빈_DB_사진_삭제() async {
         let photos = await service.fetchPhotos()
+        XCTAssertTrue(photos.isEmpty)
+    }
+    
+    func test_사진들_삭제() async throws {
+        let photo1 = Photo(id: UUID(), uploadBy: "ace", uploadDate: .now, imgData: Data(), likeCount: 0, sharedWith: [])
+        let photo2 = Photo(id: UUID(), uploadBy: "ace", uploadDate: .now, imgData: Data(), likeCount: 0, sharedWith: [])
+        
+        try await service.addPhotos([photo1, photo2])
+        try await service.deletePhotos([photo1.id, photo2.id])
+       
+        let photos = await service.fetchPhotos()
+        
+        XCTAssertTrue(photos.isEmpty)
+    }
+    
+    func test_사진_모두_삭제() async throws {
+        let photo1 = Photo(id: UUID(), uploadBy: "ace", uploadDate: .now, imgData: Data(), likeCount: 0, sharedWith: [])
+        let photo2 = Photo(id: UUID(), uploadBy: "ace", uploadDate: .now, imgData: Data(), likeCount: 0, sharedWith: [])
+        
+        try await service.addPhotos([photo1, photo2])
+        try await service.deleteAllPhotos()
+       
+        let photos = await service.fetchPhotos()
+        
         XCTAssertTrue(photos.isEmpty)
     }
     

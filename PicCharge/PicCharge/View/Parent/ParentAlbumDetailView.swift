@@ -12,10 +12,10 @@ import WidgetKit
 
 struct ParentAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(\.modelContext) var modelContext
+    @Environment(UserViewModel.self) var userVM
+    @Environment(PhotoViewModel.self) var photoVM
     
-    @State private var photoForSwiftDatas: [PhotoEntity] = []
-    @State private var photo: PhotoEntity
+    @State private var photo: Photo
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     @State private var isLiked: Bool = false
@@ -23,10 +23,13 @@ struct ParentAlbumDetailView: View {
     @State private var likeAnimationIDs: [UUID] = []
     
     private var photoForShare: PhotoShareDTO {
-        PhotoShareDTO(imgData: photo.imgData, uploadDate: photo.uploadDate)
+        return PhotoShareDTO(
+            imgData: photo.imgData ?? Data(),
+            uploadDate: photo.uploadDate
+        )
     }
     
-    init(photo: PhotoEntity) {
+    init(photo: Photo) {
         self.photo = photo
     }
     
@@ -36,8 +39,8 @@ struct ParentAlbumDetailView: View {
             
             VStack {
                 TabView(selection: $photo) {
-                    ForEach(photoForSwiftDatas) { photo in
-                        ImageView(image: photo.imgData)
+                    ForEach(photoVM.photos) { photo in
+                        SquareImage(data: photo.imgData)
                             .zoomable(isZooming: $isZooming)
                             .tag(photo)
                             .padding(.bottom, 166)
@@ -115,31 +118,42 @@ struct ParentAlbumDetailView: View {
         ) {
             VStack {
                 Button("삭제하기", role: .destructive) {
-                    // MARK: - 로컬 사진 삭제 처리
-                    modelContext.delete(photo)
-                    
-                    // MARK: - 서버 사진 삭제 처리
-                    Task {
-                        await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
+                    Task.detached {
+                        do {
+                            // 1. 사진 삭제
+                            try await photoVM.deletePhoto(photo)
+                            // 2. 위젯 리로드
+                            WidgetCenter.shared.reloadAllTimelines()
+                            // 3. 남은 Photo 없다면 이전 화면으로
+                            await MainActor.run {
+                                if photoVM.photos.isEmpty {
+                                    navigationManager.pop()
+                                }
+                            }
+                        } catch {
+                            // 4. 에러 처리
+                            await GlobalAlert.shared.show(message: error.localizedDescription)
+                        }
                     }
-                    
-                    WidgetCenter.shared.reloadAllTimelines()
-                    
-                    navigationManager.pop()
                 }
                 Button("Cancel", role: .cancel) {}
             }
-        }
-        .task {
-            photoForSwiftDatas = await getPhotos()
         }
         .onDisappear {
             guard let cancellable else { return }
             
             cancellable.cancel()
             Task.detached(priority: .background) {
-                try await FirestoreService.shared.updatePhoto(photoForSwiftData: photo)
+                // TODO: - 좋아요 개수 업데이트 로직 추가
             }
+        }
+        .onChange(of: photoVM.photos) { oldValue, newValue in
+            // 현재 보고 있는 photo 업데이트
+            guard let index = oldValue.firstIndex(of: photo),
+                  0..<newValue.count ~= index
+            else { return }
+
+            self.photo = newValue[index]
         }
     }
     
@@ -150,38 +164,14 @@ struct ParentAlbumDetailView: View {
             .delay(for: .seconds(2), scheduler: RunLoop.main)
             .sink {
                 Task.detached(priority: .background) {
-                    try await FirestoreService.shared.updatePhoto(photoForSwiftData: photo)
+                    // TODO: - 좋아요 개수 업데이트 로직 추가
                 }
             }
-    }
-    
-    func getPhotos() async -> [PhotoEntity] {
-        let descriptor = FetchDescriptor<PhotoEntity>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
-        return (try? modelContext.fetch(descriptor)) ?? []
-    }
-}
-
-extension ParentAlbumDetailView {
-    struct ImageView: View {
-        let image: Data
-        
-        var body: some View {
-            if let uiImg = UIImage(data: image) {
-                Image(uiImage: uiImg)
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fit)
-            } else {
-                Color.bgGray
-                    .aspectRatio(1, contentMode: .fit)
-            }
-        }
     }
 }
 
 #Preview {
-    ParentAlbumDetailView(
-        photo: PhotoEntity(uploadBy: "", sharedWith: [], imgData: UIImage(systemName: "camera")!.pngData()!)
-    )
-    .environment(NavigationManager())
-    .preferredColorScheme(.dark)
+    ParentAlbumDetailView(photo: Photo.mock)
+        .injectDIContainer()
+        .preferredColorScheme(.dark)
 }

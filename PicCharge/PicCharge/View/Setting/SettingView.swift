@@ -11,9 +11,9 @@ import FirebaseAuth
 
 struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @Environment(PhotoViewModel.self) var photoVM
     @Environment(\.modelContext) var modelContext
     @Query var userForSwiftDatas: [UserEntity]
-    @Query var photoForSwiftDatas: [PhotoEntity]
 
     @State private var myRole: Role
     
@@ -90,9 +90,10 @@ struct SettingView: View {
                             navigationManager.userState = .notExist
                             navigationManager.popToRoot()
                         } catch {
-                            print("로그아웃 에러: \(error.localizedDescription)")
+                            GlobalAlert.shared.show(message: error.localizedDescription)
                         }
                     }
+                    
                     Button("취소", role: .cancel) {}
                 }
             }
@@ -104,13 +105,6 @@ struct SettingView: View {
                 VStack {
                     Button("탈퇴하기", role: .destructive) {
                         isShowingWithdrawAlert = true
-//                        do {
-//                            try deleteUser()
-//                            navigationManager.userState = .notExist
-//                            navigationManager.popToRoot()
-//                        } catch {
-//                            print("회원 탈퇴 에러: \(error.localizedDescription)")
-//                        }
                     }
                     Button("취소", role: .cancel) {}
                 }
@@ -132,7 +126,7 @@ struct SettingView: View {
                         navigationManager.userState = .notExist
                         navigationManager.popToRoot()
                     } catch {
-                        print("로그아웃 에러: \(error.localizedDescription)")
+                        GlobalAlert.shared.show(message: error.localizedDescription)
                     }
                 }
             )
@@ -143,16 +137,18 @@ struct SettingView: View {
 extension SettingView {
     private func logout() throws {
         try Auth.auth().signOut()
+        
         print("-- 로컬 데이터 삭제 --")
-        deleteLocalData()
+        try deleteLocalData()
     }
     
     private func deleteUser() throws {
         guard Auth.auth().currentUser != nil else {
             throw FirestoreServiceError.userNotFound
         }
-        deleteLocalData()
-        return
+        
+        try deleteLocalData()
+        
         // TODO: 파이어베이스 서버에서 유저 정보 삭제
         
         // TODO: 로컬에서 유저 정보 삭제
@@ -161,15 +157,19 @@ extension SettingView {
         // TODO: alert 로직으로 성공 실패 표시
     }
     
-    private func deleteLocalData() {
+    private func deleteLocalData() throws {
         print("-- 로컬 데이터 삭제 --")
         for userForSwiftData in self.userForSwiftDatas {
             modelContext.delete(userForSwiftData)
             print("\(userForSwiftData.name) 유저 삭제")
         }
-        for photoForSwiftData in self.photoForSwiftDatas {
-            modelContext.delete(photoForSwiftData)
-            print("\(photoForSwiftData.id) 사진 삭제")
+        
+        Task.detached {
+            do {
+                try await photoVM.deleteAllLocal()
+            } catch {
+                // 로컬 사진 삭제 실패는 무시
+            }
         }
     }
 }
@@ -177,7 +177,7 @@ extension SettingView {
 #Preview {
     NavigationStack {
         SettingView(myRole: .child)
-            .environment(NavigationManager())
+            .injectDIContainer()
             .preferredColorScheme(.dark)
     }
 }

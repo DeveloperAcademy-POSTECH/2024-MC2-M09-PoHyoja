@@ -190,10 +190,10 @@ extension FireStoreRepository {
         }
     }
     
-    func uploadPhotoData(of userName: String,
-                     photo: Photo,
-                     imgData: Data) async throws -> String {
+    func uploadPhotoData(of userName: String, photo: Photo) async throws -> String {
 
+        guard let imgData = photo.imgData else { throw ServiceError.noPhotoData }
+        
         // 1. 업로드 위치 결정
         let storageRef = storage.reference().child("\(folder)/\(userName)/\(photo.id.uuidString).jpg")
         
@@ -238,6 +238,12 @@ extension FireStoreRepository {
         } catch {
             throw ServiceError.updatePhotoFailed(error: error.localizedDescription)
         }
+    }
+    
+    func deletePhotoData(of urlString: String) async throws {
+        let storageRef = storage.reference(forURL: urlString)
+        
+        try await storageRef.delete()
     }
     
     func deletePhoto(of photoId: UUID) async throws {
