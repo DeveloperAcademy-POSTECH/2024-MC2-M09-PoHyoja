@@ -35,7 +35,7 @@ extension Photo {
             uploadDate: .now,
             imgData: imgData,
             likeCount: 0,
-            sharedWith: user.connectedTo
+            sharedWith: user.connectedTo + [user.name]
         )
     }
 }
