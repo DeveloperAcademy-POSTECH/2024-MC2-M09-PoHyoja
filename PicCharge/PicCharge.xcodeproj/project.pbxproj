@@ -45,6 +45,8 @@
 		4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
 		425AF6AF2D32852E0056B97E /* GlobalAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6AE2D32852E0056B97E /* GlobalAlert.swift */; };
 		425AF6B12D328DA90056B97E /* GlobalAlertModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6B02D328DA90056B97E /* GlobalAlertModifier.swift */; };
+		425AF6BE2D340F420056B97E /* BgGradientModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6BD2D340F420056B97E /* BgGradientModifier.swift */; };
+		425AF6BF2D340F420056B97E /* BgGradientModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6BD2D340F420056B97E /* BgGradientModifier.swift */; };
 		425B44012D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
 		425B44022D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
 		425B441D2D1FD2D2001E23FA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441C2D1FD2D2001E23FA /* User.swift */; };
@@ -180,6 +182,7 @@
 		4256DC392C0716C600FC3541 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		425AF6AE2D32852E0056B97E /* GlobalAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAlert.swift; sourceTree = "<group>"; };
 		425AF6B02D328DA90056B97E /* GlobalAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAlertModifier.swift; sourceTree = "<group>"; };
+		425AF6BD2D340F420056B97E /* BgGradientModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BgGradientModifier.swift; sourceTree = "<group>"; };
 		425B44002D1ED446001E23FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		425B441C2D1FD2D2001E23FA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		425B441F2D1FD430001E23FA /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
@@ -326,6 +329,7 @@
 			children = (
 				421A8CB02BFDC9E7003C7001 /* ZoomableModifier.swift */,
 				421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */,
+				425AF6BD2D340F420056B97E /* BgGradientModifier.swift */,
 			);
 			path = CommonModifiers;
 			sourceTree = "<group>";
@@ -760,6 +764,7 @@
 				552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */,
 				425B44282D1FDB09001E23FA /* RemoteStorageService.swift in Sources */,
 				4280467A2BF5DEBA0097EB0B /* ChildSendCameraView.swift in Sources */,
+				425AF6BE2D340F420056B97E /* BgGradientModifier.swift in Sources */,
 				4280468C2BF5E03F0097EB0B /* SettingTermsOfUseView.swift in Sources */,
 				4256DC3A2C0716C600FC3541 /* Int+.swift in Sources */,
 				4280467E2BF5DF270097EB0B /* ChildSendGalleryView.swift in Sources */,
@@ -829,6 +834,7 @@
 				FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */,
 				42CF70422D2560350054F244 /* RemoteStorageService.swift in Sources */,
 				42CF6FD42D22EF3C0054F244 /* SwiftDataService.swift in Sources */,
+				425AF6BF2D340F420056B97E /* BgGradientModifier.swift in Sources */,
 				42CF70252D22FD2D0054F244 /* LocalStorageService.swift in Sources */,
 				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
 				4214DA1B2C03926F0096D48B /* ConnectionRequestsDTO.swift in Sources */,

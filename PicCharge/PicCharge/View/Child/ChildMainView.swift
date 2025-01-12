@@ -31,79 +31,66 @@ struct ChildMainView: View {
     var totalLikeCount: Int { photoVM.photos.reduce(0) { $0 + $1.likeCount } }
     var totalUploadCount: Int { photoVM.photos.count }
     
-    var body: some View {
-        ZStack {
-            VStack {
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.bgGreen, Color.bgGreen.opacity(0)]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .frame(height: 320)
-                
-                Spacer()
-            }
-            .ignoresSafeArea()
-            
-            VStack(spacing: 12) {
-                TitleView(title: "픽-챠")
-                
-                Divider()
-                    .padding(.bottom, 10)
-                
-                HStack(spacing: 12) {
-                    Button {
-                        navigationManager.push(to: .childSendGallery)
-                    } label: {
-                        NavigationButtonLabel(
-                            for: "사진 올리기",
-                            Icon: Icon.addPhoto,
-                            bgColor: .bgGray
-                        )
-                    }
-                    
-                    Button {
-                        navigationManager.push(to: .childCamera)
-                    } label: {
-                        NavigationButtonLabel(
-                            for: "사진 찍기",
-                            Icon: Icon.camera,
-                            bgColor: .accent
-                        )
-                    }
-                }
-                .padding(.horizontal, 16)
-                
-                TabView(selection: $infoPage) {
-                    Group {
-                        VStack {
-                            BatteryPageView(percent: batteryPercent, date: photoVM.photos.first?.uploadDate ?? Date())
-
-                            Spacer()
-                        }
-                        .tag(1)
-                        
-                        VStack {
-                            GoalPageView()
-                            Spacer()
-                            
-                        }
-                        .tag(2)
-                    }
-                    .padding(.horizontal, 16)
-                }
-                .frame(height: 300)
-                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
-                .tabViewStyle(.page(indexDisplayMode: .always))
-                .onTapGesture {
-                    withAnimation {
-                        infoPage = infoPage == 1 ? 2 : 1
-                    }
-                }
-                
-                Spacer()
-            }
+    var body: some View {        
+        VStack(spacing: 12) {
+            //                TitleView(title: "픽-챠")
+            //
+            //                Divider()
+            //                    .padding(.bottom, 10)
+            //
+            //                HStack(spacing: 12) {
+            //                    Button {
+            //                        navigationManager.push(to: .childSendGallery)
+            //                    } label: {
+            //                        NavigationButtonLabel(
+            //                            for: "사진 올리기",
+            //                            Icon: Icon.addPhoto,
+            //                            bgColor: .bgGray
+            //                        )
+            //                    }
+            //
+            //                    Button {
+            //                        navigationManager.push(to: .childCamera)
+            //                    } label: {
+            //                        NavigationButtonLabel(
+            //                            for: "사진 찍기",
+            //                            Icon: Icon.camera,
+            //                            bgColor: .accent
+            //                        )
+            //                    }
+            //                }
+            //                .padding(.horizontal, 16)
+            //
+            //                TabView(selection: $infoPage) {
+            //                    Group {
+            //                        VStack {
+            //                            BatteryPageView(percent: batteryPercent, date: photoVM.photos.first?.uploadDate ?? Date())
+            //
+            //                            Spacer()
+            //                        }
+            //                        .tag(1)
+            //
+            //                        VStack {
+            //                            GoalPageView()
+            //                            Spacer()
+            //
+            //                        }
+            //                        .tag(2)
+            //                    }
+            //                    .padding(.horizontal, 16)
+            //                }
+            //                .frame(height: 300)
+            //                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+            //                .tabViewStyle(.page(indexDisplayMode: .always))
+            //                .onTapGesture {
+            //                    withAnimation {
+            //                        infoPage = infoPage == 1 ? 2 : 1
+            //                    }
+            //                }
+            //
+//            Spacer()
         }
+        .bgGradient()
         .onAppear {
             startTimer()
         }
