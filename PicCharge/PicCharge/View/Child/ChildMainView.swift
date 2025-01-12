@@ -39,6 +39,7 @@ struct ChildMainView: View {
             VStack(spacing: 12) {
                 Header("픽-챠!")
                 
+                // MARK: - 배터리 퍼센트
                 Section(icon: Icon.heartBolt, title: "배터리") {
                     BatteryGauge(percent: batteryPercent, date: lastUploadDate)
                     
@@ -54,6 +55,7 @@ struct ChildMainView: View {
                 }
                 .foregroundStyle(.accent)
                 
+                // MARK: - 목표
                 Section(icon: Icon.goal, title: "목표") {
                     Text("마지막으로 보낸지 \(lastUploadDate.timeIntervalKRString()) 됐어요")
                         .foregroundStyle(.txtPrimaryDark)
@@ -65,6 +67,7 @@ struct ChildMainView: View {
                 }
                 .foregroundStyle(.grpTeal)
                 
+                // MARK: - 누적 업로드 수
                 Section(icon: Icon.upload, title: "누적 업로드 수") {
                     Text("\(photoVM.photos.count)장")
                         .foregroundStyle(.txtPrimaryDark)
@@ -72,6 +75,7 @@ struct ChildMainView: View {
                 }
                 .foregroundStyle(.grpOrange)
                 
+                // MARK: - 누적 반응 수
                 Section(icon: Icon.heart, title: "누적 반응 수") {
                     HStack {
                         Spacer()
