@@ -9,6 +9,8 @@ import SwiftUI
 import SwiftData
 
 struct ChildMainView: View {
+    
+    // TODO: - 뉴런 로직 통합
     enum GaugeFloat: CGFloat {
         case bottom = 0.525 // 배터리 0 퍼센트
         case top = 0.975 // 배터리 100 퍼센트
@@ -28,10 +30,10 @@ struct ChildMainView: View {
     
     var uploadCycle: Int { userVM.user?.uploadCycle ?? 3 }
     var lastUploadDate: Date { photoVM.photos.first?.uploadDate ?? .now }
-    var loveCount: Int { 12 }
-    var fireCount: Int { 34 }
-    var starCount: Int { 56 }
-    var likeCount: Int { 78 }
+    var loveCount: Int { 12 } // TODO: - 데이터 연결
+    var fireCount: Int { 34 } // TODO: - 데이터 연결
+    var starCount: Int { 56 } // TODO: - 데이터 연결
+    var likeCount: Int { 78 } // TODO: - 데이터 연결
     var totalUploadCount: Int { photoVM.photos.count }
     
     var body: some View {
@@ -45,7 +47,7 @@ struct ChildMainView: View {
                     
                     HStack(spacing: 12) {
                         UploadBtn("사진 찍기", icon: Icon.bolt, bgColor: .bgGray3) {
-                            navigationManager.push(to: .childSendGallery)
+                            navigationManager.push(to: .childCamera)
                         }
                         
                         UploadBtn("사진 올리기", icon: Icon.bolt, bgColor: .accent) {
@@ -124,7 +126,7 @@ struct ChildMainView: View {
             isGaugeAnimating = true
         }
         .onDisappear {
-            
+            // TODO: - withoutAnimation 처리
             isGaugeAnimating = false
         }
     }
@@ -141,6 +143,7 @@ struct ChildMainView: View {
         timer = nil
     }
     
+    // TODO: - 뉴런 로직 통합
     /// 배터리 상태를 계산하는 함수 입니다.
     /// let uploadCycleSeconds = Double(uploadCycle * 숫자) 를 활용해 시간 단위를 계산할 수 있습니다.
     func updateBatteryStatus() {
