@@ -30,9 +30,7 @@ struct SettingView: View {
     var body: some View {
         ZStack {
             VStack(spacing: 12) {
-                TitleView(title: "설정")
-                
-                Divider()
+                Header("설정")
                 
                 List {
                     Section {
