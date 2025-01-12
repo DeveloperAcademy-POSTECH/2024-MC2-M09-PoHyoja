@@ -273,7 +273,7 @@ extension ChildMainView {
                 content()
             }
             .padding(11)
-            .background(.grpBgTertiary)
+            .background(.ultraThinMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 16))
             .overlay(
                 RoundedRectangle(cornerRadius: 16)

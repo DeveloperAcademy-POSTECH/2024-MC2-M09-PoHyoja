@@ -39,16 +39,13 @@ struct ContentView: View {
                 ConnectUserView(user: UserEntity(userVM.user!))
             case .connectedChild:
                 ChildTabView()
-                    .transition(.opacity.animation(.easeInOut(duration: 1)))
             case .connectedParent:
                 ParentAlbumView()
             default:
                 if buggungEnd {
                     BuggungEndView()
-                        .transition(.opacity.animation(.easeInOut(duration: 1)))
                 } else {
                     BuggungLoadingView()
-                        .transition(.opacity.animation(.easeInOut(duration: 1)))
                         .onAppear {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                 withAnimation {
@@ -59,7 +56,6 @@ struct ContentView: View {
                 }
             }
         }
-        .transition(.opacity)
         .task {
             if isFirstLoad {
                 await startProcess()

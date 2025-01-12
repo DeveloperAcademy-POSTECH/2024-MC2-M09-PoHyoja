@@ -17,15 +17,13 @@ struct BgGradientModifier: ViewModifier {
                 startPoint: .leading,
                 endPoint: .trailing
             )
-            .frame(height: 470)
             .ignoresSafeArea()
             
             LinearGradient(
-                gradient: Gradient(colors: [Color.clear.opacity(0), Color.bgPrimary]),
+                gradient: Gradient(colors: [Color.clear, Color.bgPrimary]),
                 startPoint: .top,
-                endPoint: .bottom
+                endPoint: .center
             )
-            .frame(height: 470)
             .ignoresSafeArea()
         }
         .overlay {

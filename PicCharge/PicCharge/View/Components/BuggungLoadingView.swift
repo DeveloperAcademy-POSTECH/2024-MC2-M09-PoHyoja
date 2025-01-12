@@ -12,6 +12,7 @@ struct BuggungLoadingView: View {
         LottieView(jsonName: "BuggungLoading", loopMode: .loop)
             .frame(width: 200, height: 200)
             .bgGradient()
+            .transition(.opacity.animation(.easeInOut(duration: 1)))
     }
 }
 

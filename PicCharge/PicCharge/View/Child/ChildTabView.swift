@@ -35,6 +35,7 @@ struct ChildTabView: View {
                 .background(.bgPrimary)
                 .tag(3)
         }
+        .transition(.opacity.animation(.easeInOut(duration: 1)))
     }
 }
 
