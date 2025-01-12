@@ -17,6 +17,11 @@ struct ChildAlbumDetailView: View {
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     
+    var loveCount: Int { photo.likeCount }
+    var fireCount: Int { 34 }
+    var starCount: Int { 56 }
+    var likeCount: Int { 78 }
+    
     private var photoForShare: PhotoShareDTO {
         return PhotoShareDTO(
             imgData: photo.imgData ?? Data(),
@@ -29,30 +34,67 @@ struct ChildAlbumDetailView: View {
     }
     
     var body: some View {
-        ZStack {
-            Color.clear.ignoresSafeArea()
-            
-            TabView(selection: $photo) {
-                ForEach(photoVM.photos) { photo in
+        TabView(selection: $photo) {
+            ForEach(photoVM.photos) { photo in
+                VStack {
                     SquareImage(data: photo.imgData)
                         .zoomable(isZooming: $isZooming)
-                        .tag(photo)
-                        .padding(.bottom, 166)
+                        .padding(.top, 72)
+                    
+                    Spacer()
                 }
+                .tag(photo)
             }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .overlay {
+            if !isZooming {
+                HStack {
+                    Spacer()
+                    
+                    VStack(spacing: 6) {
+                        Icon.loveReaction.font(.system(size: 36))
+                        Text("\(loveCount)")
+                    }
+                    .foregroundStyle(.pink)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 6) {
+                        Icon.fireReaction.font(.system(size: 36))
+                        Text("\(fireCount)")
+                    }
+                    .foregroundStyle(.yellow)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 6) {
+                        Icon.starReaction.font(.system(size: 36))
+                        Text("\(starCount)")
+                    }
+                    .foregroundStyle(.teal)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 6) {
+                        Icon.likeReaction.font(.system(size: 36))
+                        Text("\(likeCount)")
+                    }
+                    .foregroundStyle(.purple)
+                    
+                    Spacer()
+                }
+                .padding(.top, 450)
+            }
         }
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(isZooming ? .hidden : .visible, for: .navigationBar)
         .toolbar {
             Menu {
-                ShareLink(
-                    item: photoForShare,
-                    preview: SharePreview(
-                        photoForShare.caption,
-                        image: photoForShare.image
-                    )
+                ShareLink(item: photoForShare,
+                          preview: SharePreview(photoForShare.caption,
+                                                image: photoForShare.image)
                 ) {
                     Icon.share
                     Text("공유하기")
@@ -110,5 +152,6 @@ struct ChildAlbumDetailView: View {
     NavigationStack {
         ChildAlbumDetailView(photo: Photo.mocks.first!)
             .injectDIContainer()
+            .preferredColorScheme(.dark)
     }
 }
