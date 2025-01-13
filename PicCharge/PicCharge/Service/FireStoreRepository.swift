@@ -172,12 +172,12 @@ extension FireStoreRepository {
         
         // 3. DTO -> Domain으로 변환
         return snapshots
-            .compactMap { try? $0.data(as: PhotoDTO_V0.self) }
+            .compactMap { try? $0.data(as: PhotoDTO_V1.self) }
             .map { $0.toDomain() }
     }
     
     func addPhoto(_ photo: Photo, urlString: String) async throws {
-        let photoDTO = PhotoDTO_V0(photo, urlString: urlString)
+        let photoDTO = PhotoDTO_V1(photo, urlString: urlString)
         
         do {
             // 1. DB 사진 URL 정보 업데이트
@@ -229,12 +229,16 @@ extension FireStoreRepository {
     func updatePhoto(_ photo: Photo) async throws {
         do {
             // TODO: - 카운드 업데이트 메커니즘 변경
-//            try await db.collection(photoCollection)
-//                .document(photo.id.uuidString)
-//                .updateData([
-//                    "likeCount" : photo.likeCount
-//                ])
-            
+            try await db.collection(photoCollection)
+                .document(photo.id.uuidString)
+                .updateData([
+                    "reactions" : [
+                        "love" : photo.reaction.love,
+                        "fire" : photo.reaction.fire,
+                        "star" : photo.reaction.star,
+                        "like" : photo.reaction.like
+                    ]
+                ])
         } catch {
             throw ServiceError.updatePhotoFailed(error: error.localizedDescription)
         }
@@ -258,7 +262,7 @@ extension FireStoreRepository {
         }
         
         // 3. DTO로 변환
-        guard let photoDTO = try? snapshot.data(as: PhotoDTO_V0.self) else {
+        guard let photoDTO = try? snapshot.data(as: PhotoDTO_V1.self) else {
             throw ServiceError.invalidPhotoDTOFormat
         }
         
