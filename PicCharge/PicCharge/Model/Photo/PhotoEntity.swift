@@ -34,7 +34,7 @@ final class PhotoEntity {
         self.imgData = imgData
     }
     
-    init(from photo: PhotoDTO, imgData: Data) {
+    init(from photo: PhotoDTO_V0, imgData: Data) {
         self.id = UUID(uuidString: photo.id ?? UUID().uuidString) ?? UUID()
         self.uploadBy = photo.uploadBy
         self.uploadDate = photo.uploadDate

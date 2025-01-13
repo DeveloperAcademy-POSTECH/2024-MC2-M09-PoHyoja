@@ -34,7 +34,7 @@ import FirebaseFirestoreSwift
  }
  ```
  */
-struct PhotoDTO: Identifiable, Codable {
+struct PhotoDTO_V0: Identifiable, Codable {
     // 목업 생성 예시 let photos = Photo.mockup.chunked(into: 3)
     
     @DocumentID var id: String?
@@ -62,28 +62,28 @@ struct PhotoDTO: Identifiable, Codable {
         self.sharedWith = photoForSwiftData.sharedWith
     }
     
-    static let mockup: [PhotoDTO] = {
+    static let mockup: [PhotoDTO_V0] = {
         let uploadBy = "TestID"
         let uploadDate = Date()
         let urlString = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsNICnidsWi7x-UmXHlkEz-8VUeKwmJSg86Xli4i-26A&s"
         
         return (0..<100).map {
-            PhotoDTO(id: UUID().uuidString, uploadBy: uploadBy, uploadDate: uploadDate, urlString: urlString, likeCount: $0, sharedWith: [])
+            PhotoDTO_V0(id: UUID().uuidString, uploadBy: uploadBy, uploadDate: uploadDate, urlString: urlString, likeCount: $0, sharedWith: [])
         }
     }()
 }
 
-extension PhotoDTO: Hashable {
+extension PhotoDTO_V0: Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
     
-    static func == (lhs: PhotoDTO, rhs: PhotoDTO) -> Bool {
+    static func == (lhs: PhotoDTO_V0, rhs: PhotoDTO_V0) -> Bool {
         return lhs.id == rhs.id
     }
 }
 
-extension PhotoDTO: DomainConvertible {
+extension PhotoDTO_V0: DomainConvertible {
     init(_ domain: Photo, urlString: String) {
         self.init(
             id: domain.id.uuidString,

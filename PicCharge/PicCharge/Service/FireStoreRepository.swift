@@ -172,12 +172,12 @@ extension FireStoreRepository {
         
         // 3. DTO -> Domain으로 변환
         return snapshots
-            .compactMap { try? $0.data(as: PhotoDTO.self) }
+            .compactMap { try? $0.data(as: PhotoDTO_V0.self) }
             .map { $0.toDomain() }
     }
     
     func addPhoto(_ photo: Photo, urlString: String) async throws {
-        let photoDTO = PhotoDTO(photo, urlString: urlString)
+        let photoDTO = PhotoDTO_V0(photo, urlString: urlString)
         
         do {
             // 1. DB 사진 URL 정보 업데이트
@@ -258,7 +258,7 @@ extension FireStoreRepository {
         }
         
         // 3. DTO로 변환
-        guard let photoDTO = try? snapshot.data(as: PhotoDTO.self) else {
+        guard let photoDTO = try? snapshot.data(as: PhotoDTO_V0.self) else {
             throw ServiceError.invalidPhotoDTOFormat
         }
         

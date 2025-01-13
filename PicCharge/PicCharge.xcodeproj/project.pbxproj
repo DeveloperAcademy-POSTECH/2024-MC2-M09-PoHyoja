@@ -23,8 +23,8 @@
 		4214DA0C2C03911F0096D48B /* ZoomableModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CB02BFDC9E7003C7001 /* ZoomableModifier.swift */; };
 		4214DA142C0392080096D48B /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA132C0392080096D48B /* UserDTO.swift */; };
 		4214DA152C0392230096D48B /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA132C0392080096D48B /* UserDTO.swift */; };
-		4214DA172C0392310096D48B /* PhotoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA162C0392310096D48B /* PhotoDTO.swift */; };
-		4214DA182C03923D0096D48B /* PhotoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA162C0392310096D48B /* PhotoDTO.swift */; };
+		4214DA172C0392310096D48B /* PhotoDTO_V0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA162C0392310096D48B /* PhotoDTO_V0.swift */; };
+		4214DA182C03923D0096D48B /* PhotoDTO_V0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA162C0392310096D48B /* PhotoDTO_V0.swift */; };
 		4214DA1A2C0392610096D48B /* ConnectionRequestsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA192C0392610096D48B /* ConnectionRequestsDTO.swift */; };
 		4214DA1B2C03926F0096D48B /* ConnectionRequestsDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4214DA192C0392610096D48B /* ConnectionRequestsDTO.swift */; };
 		4214DA1E2C0392DC0096D48B /* PhotoShareDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CAE2BFDC2DE003C7001 /* PhotoShareDTO.swift */; };
@@ -169,7 +169,7 @@
 		4214D9FD2C0387D40096D48B /* ChildWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildWidget.swift; sourceTree = "<group>"; };
 		4214D9FF2C0387F20096D48B /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		4214DA132C0392080096D48B /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
-		4214DA162C0392310096D48B /* PhotoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDTO.swift; sourceTree = "<group>"; };
+		4214DA162C0392310096D48B /* PhotoDTO_V0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDTO_V0.swift; sourceTree = "<group>"; };
 		4214DA192C0392610096D48B /* ConnectionRequestsDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionRequestsDTO.swift; sourceTree = "<group>"; };
 		4214DA202C0393830096D48B /* AppDelgate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelgate.swift; sourceTree = "<group>"; };
 		4214DA242C03CAF20096D48B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -415,7 +415,7 @@
 		4214DA1D2C0392D60096D48B /* Photo */ = {
 			isa = PBXGroup;
 			children = (
-				4214DA162C0392310096D48B /* PhotoDTO.swift */,
+				4214DA162C0392310096D48B /* PhotoDTO_V0.swift */,
 				421A8CAE2BFDC2DE003C7001 /* PhotoShareDTO.swift */,
 				421A8CBF2BFE516C003C7001 /* PhotoEntity.swift */,
 				425B441F2D1FD430001E23FA /* Photo.swift */,
@@ -804,7 +804,7 @@
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
 				425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */,
-				4214DA172C0392310096D48B /* PhotoDTO.swift in Sources */,
+				4214DA172C0392310096D48B /* PhotoDTO_V0.swift in Sources */,
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
 				4214DA212C0393830096D48B /* AppDelgate.swift in Sources */,
 				42CF6FDC2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */,
@@ -857,7 +857,7 @@
 				4214D9F92C0333260096D48B /* FirestoreServiceError.swift in Sources */,
 				4214DA0C2C03911F0096D48B /* ZoomableModifier.swift in Sources */,
 				4214D9F72C0333140096D48B /* UserEntity.swift in Sources */,
-				4214DA182C03923D0096D48B /* PhotoDTO.swift in Sources */,
+				4214DA182C03923D0096D48B /* PhotoDTO_V0.swift in Sources */,
 				4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */,
 				FF7315762BF907690074D7AA /* AppIntent.swift in Sources */,
 				4214D9F52C0332F10096D48B /* FirestoreService.swift in Sources */,
