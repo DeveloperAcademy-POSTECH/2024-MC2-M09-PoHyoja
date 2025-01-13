@@ -90,7 +90,7 @@ extension PhotoDTO_V0: DomainConvertible {
             uploadBy: domain.uploadBy,
             uploadDate: domain.uploadDate,
             urlString: urlString,
-            likeCount: domain.likeCount,
+            likeCount: domain.reaction.like,
             sharedWith: domain.sharedWith
         )
     }
@@ -101,7 +101,7 @@ extension PhotoDTO_V0: DomainConvertible {
             uploadBy: uploadBy,
             uploadDate: uploadDate,
             urlString: urlString,
-            likeCount: likeCount,
+            reaction: .init(love: 0, fire: 0, star: 0, like: likeCount),
             sharedWith: sharedWith
         )
     }

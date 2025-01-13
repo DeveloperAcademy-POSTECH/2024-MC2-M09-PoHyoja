@@ -229,11 +229,11 @@ extension FireStoreRepository {
     func updatePhoto(_ photo: Photo) async throws {
         do {
             // TODO: - 카운드 업데이트 메커니즘 변경
-            try await db.collection(photoCollection)
-                .document(photo.id.uuidString)
-                .updateData([
-                    "likeCount" : photo.likeCount
-                ])
+//            try await db.collection(photoCollection)
+//                .document(photo.id.uuidString)
+//                .updateData([
+//                    "likeCount" : photo.likeCount
+//                ])
             
         } catch {
             throw ServiceError.updatePhotoFailed(error: error.localizedDescription)

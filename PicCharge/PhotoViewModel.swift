@@ -73,7 +73,8 @@ extension PhotoViewModel {
                 .filter { localItem in
                     guard let remoteItem = remoteSet.first(where: { $0.id == localItem.id }) else { return false }
                     
-                    return localItem.likeCount != remoteItem.likeCount
+                    return false
+//                    return localItem.likeCount != remoteItem.likeCount
                 }
             
             try await localStorageService.updatePhotos(photosToUpdate)

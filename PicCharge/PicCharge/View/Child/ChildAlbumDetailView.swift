@@ -17,7 +17,7 @@ struct ChildAlbumDetailView: View {
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     
-    var loveCount: Int { photo.likeCount }
+    var loveCount: Int { 12 }
     var fireCount: Int { 34 }
     var starCount: Int { 56 }
     var likeCount: Int { 78 }
