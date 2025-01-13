@@ -94,7 +94,6 @@ struct SelectRoleForSignUpView: View {
             }
             
             Spacer()
-            Spacer()
             
             Button {
                 Task {

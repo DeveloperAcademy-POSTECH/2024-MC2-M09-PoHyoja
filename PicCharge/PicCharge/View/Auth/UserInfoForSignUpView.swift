@@ -21,7 +21,6 @@ struct UserInfoForSignUpView: View {
         !name.isEmpty && !email.isEmpty && !password.isEmpty && password == confirmPassword && errorMessage == nil
     }
 
-    
     var body: some View {
         VStack(alignment: .leading) {
             Text(errorMessage ?? "기본 정보를 입력해주세요")

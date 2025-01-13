@@ -39,24 +39,16 @@ class AuthService: NSObject, ObservableObject, ASAuthorizationControllerDelegate
                             // Firestore에서 사용자 정보 가져오기
                             Task {
                                 if let userDTO = await FirestoreService.shared.fetchUserByEmail(email: email) {
+                                    // Firestore에 사용자가 있는 경우
                                     continuation.resume(returning: userDTO)
-                                } else {
-                                    // Firestore에 없는 경우 기본값 반환
-                                    let newUser = UserDTO(
-                                        id: nil,
-                                        name: authResult.user.displayName ?? "Unknown",
-                                        role: .parent,
-                                        email: email,
-                                        connectedTo: [],
-                                        uploadCycle: nil
-                                    )
-                                    continuation.resume(returning: newUser)
                                 }
                             }
                         } catch {
+                            print("Apple 로그인 실패: \(error.localizedDescription)")
                             continuation.resume(throwing: error)
                         }
                     case .failure(let error):
+                        print("Apple 로그인 요청 실패: \(error.localizedDescription)")
                         continuation.resume(throwing: error)
                     }
                 }
