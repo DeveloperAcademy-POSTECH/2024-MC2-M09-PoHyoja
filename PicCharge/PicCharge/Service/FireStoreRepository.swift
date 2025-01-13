@@ -157,6 +157,34 @@ extension FireStoreRepository {
 }
 
 extension FireStoreRepository {
+    func migrationPhoto(_ userName: String) async throws {
+        // 1. 유저 네임 check
+        guard !userName.isEmpty else { throw ServiceError.invalidUserName }
+        
+        let document = db.collection(photoCollection)
+            .whereField("sharedWith", arrayContains: userName)
+        
+        // 2. FireStore에서 자료 가져오기
+        guard let documents = try? await document.getDocuments().documents else {
+            throw ServiceError.invalidQuery
+        }
+        
+        let group = DispatchGroup()
+        
+        for document in documents {
+            guard let photoV0 = try? document.data(as: PhotoDTO_V0.self) else { continue }
+            
+            let migratedPhoto = photoV0.toV1()
+            
+            group.enter()
+            try document.reference.setData(from: migratedPhoto) { _ in
+                group.leave()
+            }
+        }
+        
+        group.wait()
+    }
+    
     func fetchPhotos(_ userName: String) async throws -> [Photo] {
         
         // 1. 유저 네임 check
@@ -166,14 +194,19 @@ extension FireStoreRepository {
             .whereField("sharedWith", arrayContains: userName)
         
         // 2. FireStore에서 자료 가져오기
-        guard let snapshots = try? await document.getDocuments().documents else {
+        guard let documents = try? await document.getDocuments().documents else {
             throw ServiceError.invalidQuery
         }
         
         // 3. DTO -> Domain으로 변환
-        return snapshots
-            .compactMap { try? $0.data(as: PhotoDTO_V1.self) }
-            .map { $0.toDomain() }
+        do {
+            return try documents
+                .map { try $0.data(as: PhotoDTO_V1.self) }
+                .map { $0.toDomain() }
+            
+        } catch {
+            throw ServiceError.invalidPhotoDTOFormat
+        }
     }
     
     func addPhoto(_ photo: Photo, urlString: String) async throws {
