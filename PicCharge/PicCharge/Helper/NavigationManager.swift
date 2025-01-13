@@ -23,21 +23,20 @@ enum PathType: Hashable {
     case parentAlbumDetail(photo: Photo)
     
     // MARK: - Setting
-    case setting(role: Role)
-    case settingTermsOfUse
+    case setting
 }
 
 extension PathType {
     @ViewBuilder
     func NavigatingView() -> some View {
         switch self {
-        // MARK: - 초기 설정
+            // MARK: - 초기 설정
         case .signUp:
             UserInfoForSignUpView()
         case .selectRole(let name, let email, let password):
             SelectRoleForSignUpView(name: name, email: email, password: password)
             
-        // MARK: - 자식
+            // MARK: - 자식
         case .childCamera:
             ChildCameraView()
         case .childSendCamera(let imgData):
@@ -47,17 +46,15 @@ extension PathType {
         case .childAlbumDetail(let photo):
             ChildAlbumDetailView(photo: photo)
             
-        // MARK: - 부모
+            // MARK: - 부모
         case .parentAlbum:
             ParentAlbumView()
         case .parentAlbumDetail(let photo):
             ParentAlbumDetailView(photo: photo)
             
-        // MARK: - Setting
-        case .setting(let role):
-            SettingView(myRole: role)
-        case .settingTermsOfUse:
-            SettingTermsOfUseView()
+            // MARK: - Setting
+        case .setting:
+            SettingView()
         }
     }
 }
