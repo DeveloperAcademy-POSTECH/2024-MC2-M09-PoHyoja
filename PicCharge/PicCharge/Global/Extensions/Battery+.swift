@@ -2,36 +2,41 @@
 //  Battery+.swift
 //  PicCharge
 //
-//  Created by 김도현 on 1/2/25.
+//  Created by 김도현 on 1/8/25.
 //
 
 import Foundation
-import SwiftUI
 
-extension Date {
-    func calculateBatteryPercentage(uploadCycle: Int, lastUploadDate: Date?) -> Double {
-        guard let lastUploadDate = lastUploadDate else {
-            return 100.0
+struct BatteryCalculator {
+    private enum TimeUnit {
+        case seconds(Int)
+        case minutes(Int)
+        case hours(Int)
+        case days(Int)
+        
+        var inSeconds: Double {
+            switch self {
+            case .seconds(let value):
+                return Double(value)
+            case .minutes(let value):
+                return Double(value * 60)
+            case .hours(let value):
+                return Double(value * 60 * 60)
+            case .days(let value):
+                return Double(value * 24 * 60 * 60)
+            }
         }
+    }
+    
+    static func calculateBatteryPercentage(
+        lastUploadDate: Date,
+        uploadCycle: Int,
+        currentTime: Date = Date()
+    ) -> Double {
+        let timeElapsed = currentTime.timeIntervalSince(lastUploadDate)
+        let uploadCycleSeconds = TimeUnit.days(3).inSeconds //업로드 주기 변경 코드
         
-        let currentTime = self
-        let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간
-        let uploadCycleDays = Double(uploadCycle)
-        let uploadCycleSeconds = uploadCycleDays * 24 * 3600
-        
-        // 배터리 백분율 계산, 1프로 이하는 0으로 고정
-        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 0)
-        
-        return round(currentPercentage)
+        return max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 0.0)
     }
 }
 
-// 배터리 게이지 위치 계산을 위한 상수
-enum CGCircleGaugeFloat: CGFloat {
-    case bottom = 0.525 // 배터리 0 퍼센트
-    case top = 0.975 // 배터리 100 퍼센트
-    
-    func add(for percent: Double) -> CGFloat {
-        self.rawValue + ((CGCircleGaugeFloat.top.rawValue - CGCircleGaugeFloat.bottom.rawValue) / 100.0) * percent
-    }
-}

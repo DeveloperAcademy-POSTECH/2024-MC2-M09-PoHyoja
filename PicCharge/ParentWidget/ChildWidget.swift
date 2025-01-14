@@ -19,46 +19,42 @@ struct ChildProvider: AppIntentTimelineProvider {
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ChildEntry {
         let currentTime = Date()
         let uploadCycle = await getUploadCycle() ?? 3
-        let lastUploadDate = await getLastUploadedDate()
+        let lastUploadDate = await getLastUploadedDate() ?? Date()
         
-        let currentPercentage = currentTime.calculateBatteryPercentage(
+        let currentPercentage = BatteryCalculator.calculateBatteryPercentage(
+            lastUploadDate: lastUploadDate,
             uploadCycle: uploadCycle,
-            lastUploadDate: lastUploadDate
+            currentTime: currentTime
         )
         
-        return ChildEntry(
-            date: currentTime,
-            configuration: configuration,
-            batteryPercentage: currentPercentage,
-            lastUploadedDate: lastUploadDate ?? Date()
-        )
+        return ChildEntry(date: currentTime, configuration: configuration, batteryPercentage: currentPercentage, lastUploadedDate: lastUploadDate)
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ChildEntry> {
         var entries: [ChildEntry] = []
         
         let uploadCycle = await getUploadCycle() ?? 3
-        let lastUploadDate = await getLastUploadedDate()
+        let lastUploadDate = await getLastUploadedDate() ?? Date()
         
-        let totalHalfHours = uploadCycle * 24 * 2  // 30분마다 갱신
-        for halfHourOffset in 0...totalHalfHours {
-            let futureDate = Calendar.current.date(byAdding: .minute, value: halfHourOffset * 30, to: .now)!
+        for timeOffset in 0..<12 {
+            let elapsedTime = Calendar.current.date(byAdding: .minute, value: timeOffset * 5, to: .now)!
             
-            let currentPercentage = futureDate.calculateBatteryPercentage(
+            let currentPercentage = BatteryCalculator.calculateBatteryPercentage(
+                lastUploadDate: lastUploadDate,
                 uploadCycle: uploadCycle,
-                lastUploadDate: lastUploadDate
+                currentTime: elapsedTime
             )
             
             let entry = ChildEntry(
-                date: futureDate,
+                date: elapsedTime,
                 configuration: configuration,
                 batteryPercentage: currentPercentage,
-                lastUploadedDate: lastUploadDate ?? Date()
+                lastUploadedDate: lastUploadDate
             )
             entries.append(entry)
         }
         
-        return Timeline(entries: entries, policy: .atEnd)
+        return Timeline(entries: entries, policy: .after(.now.addingTimeInterval(300)))
     }
     
     @MainActor func getLastUploadedDate() -> Date? {
