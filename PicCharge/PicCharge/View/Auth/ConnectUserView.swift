@@ -34,7 +34,7 @@ struct ConnectUserView: View {
                         .transition(.opacity.animation(.easeInOut(duration: 1)))
                         .onAppear {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                navigationManager.userState = (user.role == .child) ? .connectedChild : .connectedParent
+                                navigationManager.userState = .connected(user.role)
                             }
                         }
                 } else {

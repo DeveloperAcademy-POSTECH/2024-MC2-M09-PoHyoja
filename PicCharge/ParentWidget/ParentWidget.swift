@@ -31,7 +31,7 @@ struct ParentProvider: AppIntentTimelineProvider {
                 return entry
             }
             
-            var photos: [PhotoDTO] = []
+            var photos: [PhotoDTO_V0] = []
             photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
             photos.sort { $0.uploadDate < $1.uploadDate }
             
@@ -57,7 +57,7 @@ struct ParentProvider: AppIntentTimelineProvider {
                 return Timeline(entries: [entry], policy: .atEnd)
             }
             
-            var photos: [PhotoDTO] = []
+            var photos: [PhotoDTO_V0] = []
             photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
             photos.sort { $0.uploadDate < $1.uploadDate }
             

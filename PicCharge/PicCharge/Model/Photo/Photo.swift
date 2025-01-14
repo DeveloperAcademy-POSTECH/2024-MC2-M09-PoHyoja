@@ -7,13 +7,20 @@
 
 import Foundation
 
+struct Reaction {
+    var love: Int
+    var fire: Int
+    var star: Int
+    var like: Int
+}
+
 struct Photo: Hashable, Identifiable {
     let id: UUID
     var uploadBy: String
     var uploadDate: Date
     var imgData: Data?
     var urlString: String?
-    var likeCount: Int
+    var reaction: Reaction
     var sharedWith: [String]
 }
 
@@ -34,7 +41,7 @@ extension Photo {
             uploadBy: user.name,
             uploadDate: .now,
             imgData: imgData,
-            likeCount: 0,
+            reaction: .init(love: 0, fire: 0, star: 0, like: 0),
             sharedWith: user.connectedTo + [user.name]
         )
     }
@@ -51,7 +58,7 @@ extension Photo {
             uploadDate: .now.addingTimeInterval(Double($0) * 3600),
             imgData: UIImage(resource: .logoLarge).pngData()!,
             urlString: "https://picsum.photos/200",
-            likeCount: $0,
+            reaction: .init(love: 0, fire: 0, star: 0, like: 0),
             sharedWith: []
         )
     }
@@ -62,7 +69,7 @@ extension Photo {
         uploadDate: .now.addingTimeInterval(Double.random(in: 0...10) * 3600),
         imgData: UIImage(resource: .logoLarge).pngData()!,
         urlString: "https://picsum.photos/200",
-        likeCount: 0,
+        reaction: .init(love: 0, fire: 0, star: 0, like: 0),
         sharedWith: []
     )
 }
