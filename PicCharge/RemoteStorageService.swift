@@ -75,9 +75,4 @@ protocol RemoteStorageService {
     /// - Parameter photoId: 삭제할 사진의 ID
     /// - Throws: 삭제 과정에서 오류 발생 시 예외를 던짐
     func deletePhoto(of photoId: UUID) async throws
-    
-    /// 원격 스토리지에서 유저의 사진 데이터를 마이그레이션 합니다.
-    /// - Parameter userName: 사진을 마이그레이션 할 유저의 이름
-    /// - Throws: 마이그레이션 과정에서 오류 발생 시 예외를 던짐
-    func migrationPhoto(_ userName: String) async throws
 }

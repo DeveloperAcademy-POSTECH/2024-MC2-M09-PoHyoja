@@ -157,14 +157,11 @@ extension FireStoreRepository {
 }
 
 extension FireStoreRepository {
-    func migrationPhoto(_ userName: String) async throws {
-        // 1. 유저 네임 check
-        guard !userName.isEmpty else { throw ServiceError.invalidUserName }
+    private func migrationPhoto(_ userName: String) async throws {
         
         let document = db.collection(photoCollection)
             .whereField("sharedWith", arrayContains: userName)
         
-        // 2. FireStore에서 자료 가져오기
         guard let documents = try? await document.getDocuments().documents else {
             throw ServiceError.invalidQuery
         }
@@ -186,6 +183,19 @@ extension FireStoreRepository {
     }
     
     func fetchPhotos(_ userName: String) async throws -> [Photo] {
+        do {
+            return try await _fetchPhotos(userName)
+            
+        } catch ServiceError.invalidPhotoDTOFormat {
+        
+            try await migrationPhoto(userName)
+            
+            return try await _fetchPhotos(userName)
+            
+        }
+    }
+    
+    private func _fetchPhotos(_ userName: String) async throws -> [Photo] {
         
         // 1. 유저 네임 check
         guard !userName.isEmpty else { throw ServiceError.invalidUserName }
