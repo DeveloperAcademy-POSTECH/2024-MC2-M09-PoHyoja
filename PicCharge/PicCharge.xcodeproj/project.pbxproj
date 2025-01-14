@@ -54,8 +54,6 @@
 		425AF6C72D345B4C0056B97E /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6C52D345B4C0056B97E /* Utils.swift */; };
 		425AF6C92D35011D0056B97E /* PhotoDTO_V1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6C82D35011D0056B97E /* PhotoDTO_V1.swift */; };
 		425AF6CA2D35011D0056B97E /* PhotoDTO_V1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6C82D35011D0056B97E /* PhotoDTO_V1.swift */; };
-		425B44012D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
-		425B44022D1ED446001E23FA /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 425B44002D1ED446001E23FA /* GoogleService-Info.plist */; };
 		425B441D2D1FD2D2001E23FA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441C2D1FD2D2001E23FA /* User.swift */; };
 		425B441E2D1FD2D2001E23FA /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441C2D1FD2D2001E23FA /* User.swift */; };
 		425B44202D1FD430001E23FA /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441F2D1FD430001E23FA /* Photo.swift */; };
@@ -120,8 +118,8 @@
 		E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */; };
 		FF1238F62D268BC700F48732 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF1238F52D268BC700F48732 /* GoogleService-Info.plist */; };
 		FF1238F72D268BC700F48732 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = FF1238F52D268BC700F48732 /* GoogleService-Info.plist */; };
-		FF1238F92D26990700F48732 /* Battery+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1238F82D2698FE00F48732 /* Battery+.swift */; };
-		FF1238FA2D26990700F48732 /* Battery+.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1238F82D2698FE00F48732 /* Battery+.swift */; };
+		FF1238F92D26990700F48732 /* BatteryCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1238F82D2698FE00F48732 /* BatteryCalculator.swift */; };
+		FF1238FA2D26990700F48732 /* BatteryCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1238F82D2698FE00F48732 /* BatteryCalculator.swift */; };
 		FF3ECB752C003F0000E65D83 /* Icon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C632BF8FA69003C7001 /* Icon.swift */; };
 		FF3ECB762C003F0300E65D83 /* Color+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C662BFA358A003C7001 /* Color+.swift */; };
 		FF3ECB772C003F0800E65D83 /* BatteryShadowModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8C5B2BF885D8003C7001 /* BatteryShadowModifier.swift */; };
@@ -131,7 +129,7 @@
 		FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315732BF907690074D7AA /* ParentWidget.swift */; };
 		FF7315762BF907690074D7AA /* AppIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7315752BF907690074D7AA /* AppIntent.swift */; };
 		FF7315782BF9076A0074D7AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF7315772BF9076A0074D7AA /* Assets.xcassets */; };
-		FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.Dev.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FFA8CC2D2C01AB3C007428F8 /* WidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */; };
 		FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA8CC2C2C01AB3C007428F8 /* WidgetOption.swift */; };
 		FFA8CC2F2C01AFCF007428F8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55B5E3672BF5A13F00E413C6 /* Assets.xcassets */; };
@@ -163,7 +161,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */,
+				FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.Dev.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,7 +195,6 @@
 		425AF6C22D34557D0056B97E /* URL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URL.swift; sourceTree = "<group>"; };
 		425AF6C52D345B4C0056B97E /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		425AF6C82D35011D0056B97E /* PhotoDTO_V1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDTO_V1.swift; sourceTree = "<group>"; };
-		425B44002D1ED446001E23FA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		425B441C2D1FD2D2001E23FA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		425B441F2D1FD430001E23FA /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		425B44222D1FD631001E23FA /* DomainConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainConvertible.swift; sourceTree = "<group>"; };
@@ -248,8 +245,8 @@
 		E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildLoadingView.swift; sourceTree = "<group>"; };
 		E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		FF1238F52D268BC700F48732 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		FF1238F82D2698FE00F48732 /* Battery+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Battery+.swift"; sourceTree = "<group>"; };
-		FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ParentWidgetExtension.Dev.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF1238F82D2698FE00F48732 /* BatteryCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryCalculator.swift; sourceTree = "<group>"; };
+		FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; name = ParentWidgetExtension.Dev.appex; path = ParentWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF73156C2BF907690074D7AA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		FF73156E2BF907690074D7AA /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		FF7315712BF907690074D7AA /* ParentWidgetBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentWidgetBundle.swift; sourceTree = "<group>"; };
@@ -330,7 +327,6 @@
 		4214DA0A2C0390FD0096D48B /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				FF1238F82D2698FE00F48732 /* Battery+.swift */,
 				FFD221AF2BFB8433009735E4 /* UserDefault+.swift */,
 				421A8C662BFA358A003C7001 /* Color+.swift */,
 				4256DC392C0716C600FC3541 /* Int+.swift */,
@@ -447,6 +443,7 @@
 		421A8C5A2BF885BD003C7001 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				FF1238F82D2698FE00F48732 /* BatteryCalculator.swift */,
 				4214DA0D2C0391260096D48B /* Literals */,
 				4214DA0B2C0391120096D48B /* CommonModifiers */,
 				4214DA0A2C0390FD0096D48B /* Extensions */,
@@ -516,7 +513,7 @@
 			isa = PBXGroup;
 			children = (
 				55B5E3602BF5A13E00E413C6 /* PicCharge.app */,
-				FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */,
+				FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */,
 				42CF702A2D2302040054F244 /* PicChargeTests.xctest */,
 			);
 			name = Products;
@@ -657,7 +654,7 @@
 				4214D9F32C0330260096D48B /* FirebaseStorageCombine-Community */,
 			);
 			productName = ParentWidgetExtension;
-			productReference = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */;
+			productReference = FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
@@ -830,8 +827,7 @@
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
 				421A8CBE2BFE5114003C7001 /* UserEntity.swift in Sources */,
-				FF1238F92D26990700F48732 /* Battery+.swift in Sources */,
-				425D7DB12D22BF7D00DB82A6 /* MockLocalStorageService.swift in Sources */,
+				FF1238F92D26990700F48732 /* BatteryCalculator.swift in Sources */,
 				421A8C692BFA3761003C7001 /* Date+.swift in Sources */,
 				550FDD162BFC3DE6007A6B42 /* UserInfoForSignUpView.swift in Sources */,
 				425B44232D1FD631001E23FA /* DomainConvertible.swift in Sources */,
@@ -865,7 +861,7 @@
 				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
 				4214DA1B2C03926F0096D48B /* ConnectionRequestsDTO.swift in Sources */,
 				FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */,
-				FF1238FA2D26990700F48732 /* Battery+.swift in Sources */,
+				FF1238FA2D26990700F48732 /* BatteryCalculator.swift in Sources */,
 				4214D9F62C03330F0096D48B /* Role.swift in Sources */,
 				4214DA152C0392230096D48B /* UserDTO.swift in Sources */,
 				FF3ECB752C003F0000E65D83 /* Icon.swift in Sources */,

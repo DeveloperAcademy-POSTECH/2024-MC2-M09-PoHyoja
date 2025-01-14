@@ -1,5 +1,5 @@
 //
-//  Battery+.swift
+//  BatteryCalculator.swift
 //  PicCharge
 //
 //  Created by 김도현 on 1/8/25.
@@ -34,7 +34,7 @@ struct BatteryCalculator {
         currentTime: Date = Date()
     ) -> Double {
         let timeElapsed = currentTime.timeIntervalSince(lastUploadDate)
-        let uploadCycleSeconds = TimeUnit.days(3).inSeconds //업로드 주기 변경 코드
+        let uploadCycleSeconds = TimeUnit.days(3).inSeconds
         
         return max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 0.0)
     }
