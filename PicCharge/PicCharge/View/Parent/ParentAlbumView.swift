@@ -82,7 +82,7 @@ struct ParentAlbumView: View {
         .toolbar {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 Button {
-                    navigationManager.push(to: .setting(role: .parent))
+                    navigationManager.push(to: .setting)
                 } label: {
                     Icon.setting
                 }

@@ -18,9 +18,6 @@ struct ParentAlbumDetailView: View {
     @State private var photo: Photo
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
-    @State private var isLiked: Bool = false
-    @State private var cancellable: AnyCancellable?
-    @State private var likeAnimationIDs: [UUID] = []
     
     private var photoForShare: PhotoShareDTO {
         return PhotoShareDTO(
@@ -34,67 +31,57 @@ struct ParentAlbumDetailView: View {
     }
     
     var body: some View {
-        ZStack {
-            Color.clear.ignoresSafeArea()
-            
-            VStack {
-                TabView(selection: $photo) {
-                    ForEach(photoVM.photos) { photo in
-                        SquareImage(data: photo.imgData)
-                            .zoomable(isZooming: $isZooming)
-                            .tag(photo)
-                            .padding(.bottom, 166)
-                    }
-                }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            }
-            
-            ForEach(likeAnimationIDs, id: \.self) { id in
-                LottieView(jsonName: "LikeAnimation", loopMode: .playOnce)
-                    .transition(.opacity)
-                    .opacity(0.5)
-                    .frame(width: 160, height: 240)
-                    .offset(y: 188) // iPhone 13 Pro Max, iPhone 15 Pro: 150
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                            likeAnimationIDs.removeAll { $0 == id }
-                        }
-                    }
-            }
-            
-            VStack {
-                Spacer()
-                
-                VStack(spacing: 8) {
+        TabView(selection: $photo) {
+            ForEach(photoVM.photos) { photo in
+                VStack {
+                    SquareImage(data: photo.imgData)
+                        .zoomable(isZooming: $isZooming)
+                        .padding(.top, 72)
+                    
                     Spacer()
-                    
-                    Button {
-                        photo.likeCount += 1
-                        likeAnimationIDs.append(UUID())
-                        self.resetTimer()
-                        HapticManager.instance.impact(style: .light)
-                    } label: {
-                        Icon.heart
-                            .font(.system(size: 50))
-                            .foregroundColor(.grpRed)
-                    }
-                    
-                    Text(" ")
-                        .font(.body)
-                        .fontWeight(.bold)
                 }
+                .tag(photo)
             }
-            .opacity(isZooming ? 0 : 1)
-            .padding(.bottom, 80)
+        }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .overlay {
+            if !isZooming {
+                HStack(spacing: 30) {
+                    IconBtn(Icon.loveReaction) {
+                        // TODO: - 카운트 연결
+                        HapticManager.instance.impact(style: .light)
+                    }
+                    .foregroundStyle(.pink)
+                    
+                    IconBtn(Icon.fireReaction) {
+                        // TODO: - 카운트 연결
+                        HapticManager.instance.impact(style: .light)
+                    }
+                    .foregroundStyle(.yellow)
+                    
+                    IconBtn(Icon.starReaction) {
+                        // TODO: - 카운트 연결
+                        HapticManager.instance.impact(style: .light)
+                    }
+                    .foregroundStyle(.teal)
+                    
+                    IconBtn(Icon.likeReaction) {
+                        // TODO: - 카운트 연결
+                        HapticManager.instance.impact(style: .light)
+                    }
+                    .foregroundStyle(.purple)
+                }
+                .padding(.top, 450)
+            }
         }
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(isZooming ? .hidden : .visible, for: .navigationBar)
         .toolbar {
             Menu {
-                ShareLink(
-                    item: photoForShare,
-                    preview: SharePreview(photoForShare.caption, image: photoForShare.image)
+                ShareLink(item: photoForShare,
+                          preview: SharePreview(photoForShare.caption,
+                                                image: photoForShare.image)
                 ) {
                     Icon.share
                     Text("공유하기")
@@ -140,9 +127,6 @@ struct ParentAlbumDetailView: View {
             }
         }
         .onDisappear {
-            guard let cancellable else { return }
-            
-            cancellable.cancel()
             Task.detached(priority: .background) {
                 // TODO: - 좋아요 개수 업데이트 로직 추가
             }
@@ -156,22 +140,12 @@ struct ParentAlbumDetailView: View {
             self.photo = newValue[index]
         }
     }
-    
-    private func resetTimer() {
-        cancellable?.cancel()
-        
-        cancellable = Just(())
-            .delay(for: .seconds(2), scheduler: RunLoop.main)
-            .sink {
-                Task.detached(priority: .background) {
-                    // TODO: - 좋아요 개수 업데이트 로직 추가
-                }
-            }
-    }
 }
 
 #Preview {
-    ParentAlbumDetailView(photo: Photo.mock)
-        .injectDIContainer()
-        .preferredColorScheme(.dark)
+    NavigationStack {
+        ParentAlbumDetailView(photo: Photo.mock)
+            .injectDIContainer()
+            .preferredColorScheme(.dark)
+    }
 }

@@ -13,34 +13,29 @@ struct ChildTabView: View {
     
     var body: some View {
         TabView(selection: $tab) {
-            Group {
-                ChildMainView()
-                    .tabItem {
-                        Icon.heartBolt
-                        Text("Main")
-                    }
-                    .tag(1)
-                
-                ChildAlbumView()
-                    .tabItem {
-                        Icon.album
-                        Text("Album")
-                    }
-                    .tag(2)
-                
-                SettingView(myRole: .child)
-                    .tabItem {
-                        Icon.setting
-                        Text("My")
-                    }
-                    .background(.bgPrimary)
-                    .tag(3)
-            }
-            .toolbarBackground(.bgPrimary, for: .tabBar)
-            .toolbarBackground(.visible, for: .tabBar)
+            ChildMainView()
+                .tabItem {
+                    Icon.heartBolt
+                    Text("Main")
+                }
+                .tag(1)
+            
+            ChildAlbumView()
+                .tabItem {
+                    Icon.album
+                    Text("Album")
+                }
+                .tag(2)
+            
+            SettingView()
+                .tabItem {
+                    Icon.setting
+                    Text("My")
+                }
+                .background(.bgPrimary)
+                .tag(3)
         }
-        .navigationBarBackButtonHidden()
-        .navigationBarTitleDisplayMode(.large)
+        .transition(.opacity.animation(.easeInOut(duration: 1)))
     }
 }
 

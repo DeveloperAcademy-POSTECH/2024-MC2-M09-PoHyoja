@@ -51,7 +51,7 @@ extension Photo {
             uploadDate: .now.addingTimeInterval(Double($0) * 3600),
             imgData: UIImage(resource: .logoLarge).pngData()!,
             urlString: "https://picsum.photos/200",
-            likeCount: 0,
+            likeCount: $0,
             sharedWith: []
         )
     }
