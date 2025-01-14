@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ChildSelectGalleryView: UIViewControllerRepresentable {
     @Environment(NavigationManager.self) var navigationManager
-    @Binding var selectedImageData: Data?
+    @Binding var selectedImgData: Data?
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
@@ -46,7 +46,7 @@ struct ChildSelectGalleryView: UIViewControllerRepresentable {
                 print("이미지 크롭, 압축 실패")
                 return
             }
-            parentGalleryPicker.selectedImageData = croppedImage.jpegData(compressionQuality: 0.2)
+            parentGalleryPicker.selectedImgData = croppedImage.jpegData(compressionQuality: 0.2)
         }
 
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {            
@@ -56,7 +56,7 @@ struct ChildSelectGalleryView: UIViewControllerRepresentable {
 }
 
 #Preview {
-    ChildSelectGalleryView(selectedImageData: .constant(nil))
+    ChildSelectGalleryView(selectedImgData: .constant(nil))
         .environment(NavigationManager())
 }
 

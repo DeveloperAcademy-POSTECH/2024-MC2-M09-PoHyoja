@@ -14,50 +14,47 @@ enum PathType: Hashable {
     
     // MARK: - 자식
     case childCamera
-    case childSendCamera(imageData: Data)
+    case childSendCamera(imgData: Data)
     case childSendGallery
-    case childAlbumDetail(photo: PhotoEntity)
+    case childAlbumDetail(photo: Photo)
     
     // MARK: - 부모
-    case parentAlbum(user: UserEntity)
-    case parentAlbumDetail(photo: PhotoEntity)
+    case parentAlbum
+    case parentAlbumDetail(photo: Photo)
     
     // MARK: - Setting
-    case setting(role: Role)
-    case settingTermsOfUse
+    case setting
 }
 
 extension PathType {
     @ViewBuilder
     func NavigatingView() -> some View {
         switch self {
-        // MARK: - 초기 설정
+            // MARK: - 초기 설정
         case .signUp:
             UserInfoForSignUpView()
         case .selectRole(let name, let email, let password):
             SelectRoleForSignUpView(name: name, email: email, password: password)
             
-        // MARK: - 자식
+            // MARK: - 자식
         case .childCamera:
             ChildCameraView()
-        case .childSendCamera(let imageData):
-            ChildSendCameraView(imageData: imageData)
+        case .childSendCamera(let imgData):
+            ChildSendCameraView(imgData: imgData)
         case .childSendGallery:
             ChildSendGalleryView()
         case .childAlbumDetail(let photo):
             ChildAlbumDetailView(photo: photo)
             
-        // MARK: - 부모
-        case .parentAlbum(let user):
-            ParentAlbumView(user: user)
+            // MARK: - 부모
+        case .parentAlbum:
+            ParentAlbumView()
         case .parentAlbumDetail(let photo):
             ParentAlbumDetailView(photo: photo)
             
-        // MARK: - Setting
-        case .setting(let role):
-            SettingView(myRole: role)
-        case .settingTermsOfUse:
-            SettingTermsOfUseView()
+            // MARK: - Setting
+        case .setting:
+            SettingView()
         }
     }
 }

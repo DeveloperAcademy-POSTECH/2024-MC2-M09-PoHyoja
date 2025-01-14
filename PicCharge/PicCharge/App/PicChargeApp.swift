@@ -11,7 +11,7 @@ import SwiftData
 @main
 struct PicChargeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    
+
     let container: ModelContainer
     
     init() {
@@ -26,6 +26,7 @@ struct PicChargeApp: App {
         WindowGroup {
             AppNavigationView()
                 .injectDIContainer()
+                .globalAlert()
                 .preferredColorScheme(.dark)
         }
         .modelContainer(container)

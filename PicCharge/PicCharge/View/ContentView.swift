@@ -10,55 +10,43 @@ import SwiftData
 import FirebaseAuth
 import WidgetKit
 
-enum UserState {
+enum UserState: Equatable {
     case checkNeeded
     case notConnected
-    case connectedChild
-    case connectedParent
+    case connected(Role)
     case notExist
 }
 
 struct ContentView: View {
     @Environment(NavigationManager.self) var navigationManager
+    @Environment(UserViewModel.self) var userVM
+    @Environment(PhotoViewModel.self) var photoVM
+    
+    // TODO: - 제거
     @Environment(\.modelContext) var modelContext
-    
     @Query var userForSwiftDatas: [UserEntity]
-    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoEntity]
-    
-    @State private var isAppearing: Bool = true
-    @State private var isFirstLoad = true
-    @State private var buggungEnd = false
-    
-    var user: UserEntity {
-        userForSwiftDatas.first ?? UserEntity(name: "", role: .child, email: "")
-    }
+    @State private var buggungEnd = false // TODO: - 제거
     
     var body: some View {
         Group {
             switch navigationManager.userState {
             case .notExist:
                 LoginView()
+                
             case .notConnected:
-                ConnectUserView(user: user)
-            case .connectedChild:
-                ChildTabView(user: user) {
-                    await syncPhotoData()
-                }
-                    .transition(.opacity.animation(.easeInOut(duration: 1)))
-                    .onAppear {
-                        withAnimation {
-                            isAppearing = false
-                        }
-                    }
-            case .connectedParent:
-                ParentAlbumView(user: user)
+                ConnectUserView(user: UserEntity(userVM.user!))
+                
+            case .connected(let role) where role == .parent:
+                ParentAlbumView()
+                
+            case .connected(let role) where role == .child:
+                ChildTabView()
+                
             default:
                 if buggungEnd {
                     BuggungEndView()
-                        .transition(.opacity.animation(.easeInOut(duration: 1)))
                 } else {
                     BuggungLoadingView()
-                        .transition(.opacity.animation(.easeInOut(duration: 1)))
                         .onAppear {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                 withAnimation {
@@ -69,12 +57,8 @@ struct ContentView: View {
                 }
             }
         }
-        .transition(.opacity)
         .task {
-            if isFirstLoad {
-                await startProcess()
-                isFirstLoad = false
-            }
+            await startProcess()
         }
     }
 }
@@ -82,25 +66,25 @@ struct ContentView: View {
 extension ContentView {
     private func startProcess() async {
         let startTime = Date()
+        let state = checkLoginStatus()
         
-        Task {
-            let state = checkLoginStatus()
+        if case .connected = state {
             
-            switch state {
-            case .connectedChild, .connectedParent:
-                await syncPhotoData()
-                WidgetCenter.shared.reloadAllTimelines()
-            default:
-                break
+            do {
+                try await photoVM.syncPhoto(of: userVM.user?.name ?? "자식")
+            } catch {
+                GlobalAlert.shared.show(message: "동기화 실패")
             }
             
-            let elapsedTime = Date().timeIntervalSince(startTime)
-            let delay = max(0, 2.5 - elapsedTime)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                withAnimation {
-                    navigationManager.userState = state
-                }
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+        
+        let elapsedTime = Date().timeIntervalSince(startTime)
+        let delay = max(0, 2.5 - elapsedTime)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            withAnimation {
+                navigationManager.userState = state
             }
         }
     }
@@ -136,70 +120,7 @@ extension ContentView {
         print("uploadCycle: \(swiftDataUser.uploadCycle ?? 0)")
         
         // 역할에 따라 적절한 뷰로 이동
-        switch swiftDataUser.role {
-        case .child:
-            print("유저정보 확인: child 역할")
-            return .connectedChild
-        case .parent:
-            print("유저정보 확인: parent 역할")
-            return .connectedParent
-        }
-    }
-    
-    private func syncPhotoData() async {
-        var updateCount = 0
-        var addCount = 0
-        var deleteCount = 0
-        
-        guard let swiftDataUser = userForSwiftDatas.first else {
-            print("로컬에 유저 데이터 없음")
-            return
-        }
-        
-        do {
-            let photos = try await FirestoreService.shared.fetchPhotos(userName: swiftDataUser.name)
-            var photoIds = Set<UUID>()
-            
-            for photo in photos {
-                
-                guard let photoIdString = photo.id,
-                      let photoId = UUID(uuidString: photoIdString)
-                else {
-                    print("유효하지 않은 ID: \(String(describing: photo.id))")
-                    continue
-                }
-                
-                photoIds.insert(photoId)
-                
-                if let existingPhoto = photoForSwiftDatas.first(where: { $0.id == photoId }) {
-                    if existingPhoto.likeCount != photo.likeCount {
-                        updateCount += 1
-                        existingPhoto.likeCount = photo.likeCount
-                    }
-                } else {
-                    addCount += 1
-                    let newPhotoForSwiftData = try await FirestoreService.shared.fetchPhotoForSwiftDataByPhoto(photo: photo)
-                    modelContext.insert(newPhotoForSwiftData)
-                }
-            }
-            
-            for photoForSwiftData in photoForSwiftDatas {
-                if !photoIds.contains(photoForSwiftData.id) {
-                    deleteCount += 1
-                    modelContext.delete(photoForSwiftData)
-                }
-            }
-            
-            try modelContext.save()
-            
-            print("총\(photos.count) 개의 이미지")
-            print("\(updateCount + addCount + deleteCount) 개의 이미지 동기화함")
-            print("\(updateCount) 개의 사진 업데이트됨")
-            print("\(addCount) 개의 사진 추가됨")
-            print("\(deleteCount) 개의 사진 삭제됨")
-            
-        } catch {
-            print("사진 데이터 동기화 실패: \(error)")
-        }
+        print("유저정보 확인: \(swiftDataUser.role) 역할")
+        return .connected(swiftDataUser.role)
     }
 }

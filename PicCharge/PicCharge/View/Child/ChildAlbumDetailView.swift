@@ -11,35 +11,80 @@ import WidgetKit
 
 struct ChildAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(\.modelContext) var modelContext
+    @Environment(PhotoViewModel.self) var photoVM
 
-    @State private var photoForSwiftDatas: [PhotoEntity] = []
-    @State private var photo: PhotoEntity
+    @State private var photo: Photo
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     
+    var loveCount: Int { 12 }
+    var fireCount: Int { 34 }
+    var starCount: Int { 56 }
+    var likeCount: Int { 78 }
+    
     private var photoForShare: PhotoShareDTO {
-        PhotoShareDTO(imgData: photo.imgData, uploadDate: photo.uploadDate)
+        return PhotoShareDTO(
+            imgData: photo.imgData ?? Data(),
+            uploadDate: photo.uploadDate
+        )
     }
     
-    init(photo: PhotoEntity) {
+    init(photo: Photo) {
         self.photo = photo
     }
     
     var body: some View {
-        ZStack {
-            Color.clear.ignoresSafeArea()
-            
-            VStack {
-                TabView(selection: $photo) {
-                    ForEach(photoForSwiftDatas) { photo in
-                        ImageView(image: photo.imgData)
-                            .zoomable(isZooming: $isZooming)
-                            .tag(photo)
-                            .padding(.bottom, 166)
-                    }
+        TabView(selection: $photo) {
+            ForEach(photoVM.photos) { photo in
+                VStack {
+                    SquareImage(data: photo.imgData)
+                        .zoomable(isZooming: $isZooming)
+                        .padding(.top, 72)
+                    
+                    Spacer()
                 }
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .tag(photo)
+            }
+        }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .overlay {
+            if !isZooming {
+                HStack {
+                    Spacer()
+                    
+                    VStack(spacing: 6) {
+                        Icon.loveReaction.font(.system(size: 36))
+                        Text("\(loveCount)")
+                    }
+                    .foregroundStyle(.pink)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 6) {
+                        Icon.fireReaction.font(.system(size: 36))
+                        Text("\(fireCount)")
+                    }
+                    .foregroundStyle(.yellow)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 6) {
+                        Icon.starReaction.font(.system(size: 36))
+                        Text("\(starCount)")
+                    }
+                    .foregroundStyle(.teal)
+                    
+                    Spacer()
+                    
+                    VStack(spacing: 6) {
+                        Icon.likeReaction.font(.system(size: 36))
+                        Text("\(likeCount)")
+                    }
+                    .foregroundStyle(.purple)
+                    
+                    Spacer()
+                }
+                .padding(.top, 450)
             }
         }
         .navigationTitle(photo.uploadDate.toKR())
@@ -47,21 +92,20 @@ struct ChildAlbumDetailView: View {
         .toolbar(isZooming ? .hidden : .visible, for: .navigationBar)
         .toolbar {
             Menu {
-                ShareLink(
-                    item: photoForShare,
-                    preview: SharePreview(photoForShare.caption, image: photoForShare.image)
+                ShareLink(item: photoForShare,
+                          preview: SharePreview(photoForShare.caption,
+                                                image: photoForShare.image)
                 ) {
                     Icon.share
                     Text("공유하기")
                 }
                 
                 Button(role: .destructive) {
-                    self.isShowingDeleteSheet = true
+                    isShowingDeleteSheet = true
                 } label: {
                     Icon.trash
                     Text("삭제하기")
                 }
-                
             } label: {
                 Icon.menu
             }
@@ -71,52 +115,43 @@ struct ChildAlbumDetailView: View {
             isPresented: $isShowingDeleteSheet,
             titleVisibility: .visible
         ) {
-            VStack {
-                Button("삭제하기", role: .destructive) {
-                    // MARK: - 로컬 사진 삭제 처리
-                    modelContext.delete(photo)
-                    
-                    // MARK: - 서버 사진 삭제 처리
-                    Task {
-                        await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
+            Button("삭제하기", role: .destructive) {
+                Task.detached {
+                    do {
+                        // 1. 사진 삭제
+                        try await photoVM.deletePhoto(photo)
+                        // 2. 위젯 리로드
+                        WidgetCenter.shared.reloadAllTimelines()
+                        // 3. 남은 Photo 없다면 이전 화면으로
+                        await MainActor.run {
+                            if photoVM.photos.isEmpty {
+                                navigationManager.pop()
+                            }
+                        }
+                    } catch {
+                        // 4. 에러 처리
+                        await GlobalAlert.shared.show(message: error.localizedDescription)
                     }
-                    
-                    WidgetCenter.shared.reloadAllTimelines()
-                    
-                    navigationManager.pop()
                 }
-                Button("Cancel", role: .cancel) {}
             }
+            
+            Button("Cancel", role: .cancel) {}
         }
-        .task {
-            photoForSwiftDatas = await getPhotos()
-        }
-    }
-    
-    func getPhotos() async -> [PhotoEntity] {
-        let descriptor = FetchDescriptor<PhotoEntity>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
-        return (try? modelContext.fetch(descriptor)) ?? []
-    }
-}
+        .onChange(of: photoVM.photos) { oldValue, newValue in
+            // 현재 보고 있는 photo 업데이트
+            guard let index = oldValue.firstIndex(of: photo),
+                  0..<newValue.count ~= index
+            else { return }
 
-extension ChildAlbumDetailView {
-    struct ImageView: View {
-        let image: Data
-        
-        var body: some View {
-            if let uiImg = UIImage(data: image) {
-                Image(uiImage: uiImg)
-                    .resizable()
-                    .aspectRatio(1, contentMode: .fit)
-            } else {
-                Color.bgGray
-                    .aspectRatio(1, contentMode: .fit)
-            }
+            self.photo = newValue[index]
         }
     }
 }
 
 #Preview {
-    ChildAlbumDetailView(photo: PhotoEntity(uploadBy: "", sharedWith: [], imgData: UIImage(systemName: "camera")!.pngData()!))
-        .environment(NavigationManager())
+    NavigationStack {
+        ChildAlbumDetailView(photo: Photo.mocks.first!)
+            .injectDIContainer()
+            .preferredColorScheme(.dark)
+    }
 }

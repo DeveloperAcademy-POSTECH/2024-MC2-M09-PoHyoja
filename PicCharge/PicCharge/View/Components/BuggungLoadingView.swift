@@ -8,37 +8,15 @@
 import SwiftUI
 
 struct BuggungLoadingView: View {
-    @Environment(NavigationManager.self) var navigationManager
     var body: some View {
-        ZStack {
-            VStack {
-                LinearGradient(
-                    gradient: Gradient(colors: [Color.bgGreen, Color.bgGreen.opacity(0)]),
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-                .frame(height: 320)
-                
-                Spacer()
-            }
-            .ignoresSafeArea()
-            VStack {
-                LottieView(jsonName: "BuggungLoading", loopMode: .loop)
-                    .frame(width: 200, height: 200)
-            }
-        }
-        .ignoresSafeArea()
-        .navigationBarBackButtonHidden(true)
-        .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                navigationManager.popToRoot()
-            }
-        }
+        LottieView(jsonName: "BuggungLoading", loopMode: .loop)
+            .frame(width: 200, height: 200)
+            .bgGradient()
+            .transition(.opacity.animation(.easeInOut(duration: 1)))
     }
 }
 
 #Preview {
     BuggungLoadingView()
-        .environment(NavigationManager())
         .preferredColorScheme(.dark)
 }
