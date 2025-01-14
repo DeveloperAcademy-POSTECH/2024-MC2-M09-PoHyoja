@@ -151,7 +151,7 @@ private extension LoginView {
             if user.connectedTo.isEmpty {
                 navigationManager.userState = .notConnected
             } else {
-                navigationManager.userState = (user.role == .child) ? .connectedChild : .connectedParent
+                navigationManager.userState = .connected(user.role)
             }
         } catch {
             do {

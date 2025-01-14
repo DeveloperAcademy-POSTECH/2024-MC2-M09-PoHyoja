@@ -10,11 +10,10 @@ import SwiftData
 import FirebaseAuth
 import WidgetKit
 
-enum UserState {
+enum UserState: Equatable {
     case checkNeeded
     case notConnected
-    case connectedChild
-    case connectedParent
+    case connected(Role)
     case notExist
 }
 
@@ -26,21 +25,23 @@ struct ContentView: View {
     // TODO: - 제거
     @Environment(\.modelContext) var modelContext
     @Query var userForSwiftDatas: [UserEntity]
-    
-    @State private var isFirstLoad = true
-    @State private var buggungEnd = false
+    @State private var buggungEnd = false // TODO: - 제거
     
     var body: some View {
         Group {
             switch navigationManager.userState {
             case .notExist:
                 LoginView()
+                
             case .notConnected:
                 ConnectUserView(user: UserEntity(userVM.user!))
-            case .connectedChild:
-                ChildTabView()
-            case .connectedParent:
+                
+            case .connected(let role) where role == .parent:
                 ParentAlbumView()
+                
+            case .connected(let role) where role == .child:
+                ChildTabView()
+                
             default:
                 if buggungEnd {
                     BuggungEndView()
@@ -57,10 +58,7 @@ struct ContentView: View {
             }
         }
         .task {
-            if isFirstLoad {
-                await startProcess()
-                isFirstLoad = false
-            }
+            await startProcess()
         }
     }
 }
@@ -68,25 +66,25 @@ struct ContentView: View {
 extension ContentView {
     private func startProcess() async {
         let startTime = Date()
+        let state = checkLoginStatus()
         
-        Task {
-            let state = checkLoginStatus()
+        if case .connected = state {
             
-            switch state {
-            case .connectedChild, .connectedParent:
-                await photoVM.syncPhoto(of: userVM.user?.name ?? "자식")
-                WidgetCenter.shared.reloadAllTimelines()
-            default:
-                break
+            do {
+                try await photoVM.syncPhoto(of: userVM.user?.name ?? "자식")
+            } catch {
+                GlobalAlert.shared.show(message: "동기화 실패")
             }
             
-            let elapsedTime = Date().timeIntervalSince(startTime)
-            let delay = max(0, 2.5 - elapsedTime)
-            
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                withAnimation {
-                    navigationManager.userState = state
-                }
+            WidgetCenter.shared.reloadAllTimelines()
+        }
+        
+        let elapsedTime = Date().timeIntervalSince(startTime)
+        let delay = max(0, 2.5 - elapsedTime)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            withAnimation {
+                navigationManager.userState = state
             }
         }
     }
@@ -122,13 +120,7 @@ extension ContentView {
         print("uploadCycle: \(swiftDataUser.uploadCycle ?? 0)")
         
         // 역할에 따라 적절한 뷰로 이동
-        switch swiftDataUser.role {
-        case .child:
-            print("유저정보 확인: child 역할")
-            return .connectedChild
-        case .parent:
-            print("유저정보 확인: parent 역할")
-            return .connectedParent
-        }
+        print("유저정보 확인: \(swiftDataUser.role) 역할")
+        return .connected(swiftDataUser.role)
     }
 }
