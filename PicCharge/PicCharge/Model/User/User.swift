@@ -28,3 +28,7 @@ struct User {
         self.uploadCycle = uploadCycle
     }
 }
+
+extension User {
+    var isConnected: Bool { !connectedTo.isEmpty }
+}

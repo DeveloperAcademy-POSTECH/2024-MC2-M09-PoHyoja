@@ -148,11 +148,11 @@ private extension LoginView {
                 uploadCycle: user.uploadCycle
             )
             modelContext.insert(localUser)
-            if user.connectedTo.isEmpty {
-                navigationManager.userState = .notConnected
-            } else {
-                navigationManager.userState = .connected(user.role)
-            }
+//            if user.connectedTo.isEmpty {
+//                navigationManager.userState = .notConnected
+//            } else {
+//                navigationManager.userState = .connected(user.role)
+//            }
         } catch {
             do {
                 try Auth.auth().signOut()

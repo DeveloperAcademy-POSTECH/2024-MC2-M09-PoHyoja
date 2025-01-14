@@ -22,32 +22,19 @@ struct ConnectUserView: View {
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     
-    init(user: UserEntity) {
-        self.user = user
+    init() {
+        self.user = UserEntity(name: "", role: .child, email: "")
     }
     
     var body: some View {
         Group {
             if isConnected {
-                if buggungEnd {
-                    BuggungEndView()
-                        .transition(.opacity.animation(.easeInOut(duration: 1)))
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                                navigationManager.userState = .connected(user.role)
-                            }
+                BuggungLoadingView()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+//                                navigationManager.userState = .connected(user.role)
                         }
-                } else {
-                    BuggungLoadingView()
-                        .transition(.opacity.animation(.easeInOut(duration: 1)))
-                        .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-                                withAnimation {
-                                    buggungEnd = true
-                                }
-                            }
-                        }
-                }
+                    }
             } else {
                 if let requestFromMe = requestFromMe {
                     WaitingView(request: requestFromMe)

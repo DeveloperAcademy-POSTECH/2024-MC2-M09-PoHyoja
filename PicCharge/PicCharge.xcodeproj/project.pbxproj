@@ -97,7 +97,6 @@
 		42CF708B2D2D4C7B0054F244 /* PersistenceStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70892D2D4C7B0054F244 /* PersistenceStack.swift */; };
 		5151CB8A2BFEE41300AF792F /* LikeAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = 5151CB892BFEE41300AF792F /* LikeAnimation.json */; };
 		516978322C00CDEF00168164 /* BuggungEnd.json in Resources */ = {isa = PBXBuildFile; fileRef = 516978312C00CDEF00168164 /* BuggungEnd.json */; };
-		516978342C01B51800168164 /* BuggungEndView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 516978332C01B51800168164 /* BuggungEndView.swift */; };
 		5172EE5D2CB66BDD001B128E /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5172EE5C2CB66BCF001B128E /* Header.swift */; };
 		518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */; };
 		518752092C00A98800005AF8 /* BuggungLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 518752082C00A98800005AF8 /* BuggungLoading.json */; };
@@ -226,7 +225,6 @@
 		42CF70892D2D4C7B0054F244 /* PersistenceStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStack.swift; sourceTree = "<group>"; };
 		5151CB892BFEE41300AF792F /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
 		516978312C00CDEF00168164 /* BuggungEnd.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungEnd.json; sourceTree = "<group>"; };
-		516978332C01B51800168164 /* BuggungEndView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungEndView.swift; sourceTree = "<group>"; };
 		5172EE5C2CB66BCF001B128E /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungLoadingView.swift; sourceTree = "<group>"; };
 		518752082C00A98800005AF8 /* BuggungLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungLoading.json; sourceTree = "<group>"; };
@@ -455,7 +453,6 @@
 				425AF6C02D34363B0056B97E /* IconBtn.swift */,
 				E33AFF632BFC389800BFB665 /* ChildLoadingView.swift */,
 				518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */,
-				516978332C01B51800168164 /* BuggungEndView.swift */,
 				E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */,
 				42141E182D2ECFD200E2609A /* SquareImage.swift */,
 			);
@@ -827,7 +824,6 @@
 				550FDD162BFC3DE6007A6B42 /* UserInfoForSignUpView.swift in Sources */,
 				425B44232D1FD631001E23FA /* DomainConvertible.swift in Sources */,
 				E33AFF6C2BFC3ACA00BFB665 /* LottieView.swift in Sources */,
-				516978342C01B51800168164 /* BuggungEndView.swift in Sources */,
 				428046742BF5DDD30097EB0B /* ChildTabView.swift in Sources */,
 				425B442E2D1FEAAA001E23FA /* PhotoViewModel.swift in Sources */,
 				E33AFF642BFC389800BFB665 /* ChildLoadingView.swift in Sources */,

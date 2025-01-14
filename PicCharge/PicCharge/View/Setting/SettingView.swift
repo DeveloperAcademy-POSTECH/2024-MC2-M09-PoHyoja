@@ -98,7 +98,8 @@ struct SettingView: View {
                 Button("로그아웃", role: .destructive) {
                     do {
                         try logout()
-                        navigationManager.userState = .notExist
+                        // TODO: - 수정
+//                        navigationManager.userState = .notExist
                         navigationManager.popToRoot()
                     } catch {
                         GlobalAlert.shared.show(message: error.localizedDescription)
@@ -129,7 +130,8 @@ struct SettingView: View {
                     //TODO: 현재는 탈퇴하기 눌러도 로그아웃 처리, 추후 탈퇴기능 논의
                     do {
                         try logout()
-                        navigationManager.userState = .notExist
+                        // TODO: - 수정
+//                        navigationManager.userState = .notExist
                         navigationManager.popToRoot()
                     } catch {
                         GlobalAlert.shared.show(message: error.localizedDescription)
