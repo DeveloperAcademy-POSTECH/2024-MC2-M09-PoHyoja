@@ -14,7 +14,7 @@ struct DIContainerModifier: ViewModifier {
     
     init() {
         remoteStorageService = FireStoreRepository(fireStore: .firestore(), storage: .storage())
-        localStorageService = SwiftDataRepository()
+        localStorageService = SwiftDataRepository(isMemoryOnly: true)
     }
     
     func body(content: Content) -> some View {

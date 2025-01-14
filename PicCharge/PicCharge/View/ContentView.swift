@@ -24,7 +24,7 @@ struct ContentView: View {
                 switch userVM.state {
                     
                 case .notExist:
-                    LoginView()
+                    SelectLoginTypeView()
                     
                 case .notConnected:
                     ConnectUserView()

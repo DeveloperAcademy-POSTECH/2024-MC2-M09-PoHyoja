@@ -102,7 +102,10 @@ extension PhotoViewModel {
             print("\(photosToAdd.count) 개의 사진 추가됨")
             print("\(photosToDelete.count) 개의 사진 삭제됨")
             
-            photos = await localStorageService.fetchPhotos()
+            let photos = await localStorageService.fetchPhotos()
+            await MainActor.run {
+                self.photos = photos
+            }
             
         } catch {
             await GlobalAlert.shared.show(message: "동기화 실패")

@@ -74,4 +74,42 @@ final class UserViewModel {
             self.state = .connected(user.role)
         }
     }
+    
+    func signIn(with email: String, password: String) async {
+        do {
+            // 1. Auth 이메일 로그인
+            _ = try await Auth.auth().signIn(withEmail: email, password: password)
+            
+            // 2. 원격 이메일 유저 확인
+            guard let user = try await remoteStorageService.fetchUserByEmail(email) else {
+                
+                // 3. 발견되지 않을 시 로그아웃
+                try Auth.auth().signOut()
+                return
+            }
+            
+            // 3. 로컬 유저 저장
+            try await localStorageService.addUser(user)
+            
+            // 4. VM State 업데이트
+            await MainActor.run {
+                self.user = user
+                self.state = user.isConnected ? .connected(user.role) : .notConnected
+            }
+            
+        } catch let error as AuthErrorCode {
+            switch error.code {
+            case .invalidEmail, .wrongPassword:
+                await GlobalAlert.shared.show(message: "이메일과 비밀번호를 확인해주세요!")
+            
+            case .invalidCredential:
+                await GlobalAlert.shared.show(message: "존재하지 않는 이메일입니다.")
+                
+            default:
+                await GlobalAlert.shared.show(message: "\(error.localizedDescription)")
+            }
+        } catch {
+            await GlobalAlert.shared.show(message: "\(error.localizedDescription)")
+        }
+    }
 }
