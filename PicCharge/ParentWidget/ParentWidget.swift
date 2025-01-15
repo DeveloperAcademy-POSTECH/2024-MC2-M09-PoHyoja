@@ -17,7 +17,8 @@ struct ParentProvider: AppIntentTimelineProvider {
         case notExist
     }
     
-    let container: ModelContainer
+    let localStorageRepository: LocalStorageService
+    let remoteStorageRepository: RemoteStorageService
     
     func placeholder(in context: Context) -> ParentEntry {
         ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
@@ -27,16 +28,16 @@ struct ParentProvider: AppIntentTimelineProvider {
         let entry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
         
         do {
-            guard let user = await getUserForSwiftData() else {
+            guard let user = await getLocalUser() else {
                 return entry
             }
             
-            var photos: [PhotoDTO_V0] = []
-            photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
-            photos.sort { $0.uploadDate < $1.uploadDate }
+            var photos: [Photo] = []
+            photos = try await remoteStorageRepository.fetchPhotos(user.name)
             
-            if let lastPhoto = photos.last {
-                let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
+            if let urlString = photos.last?.urlString {
+                let imgData = try await remoteStorageRepository.downloadPhotoData(of: urlString)
+
                 
                 if let image = UIImage(data: imgData) {
                     return ParentEntry(date: Date(), image: image)
@@ -53,16 +54,15 @@ struct ParentProvider: AppIntentTimelineProvider {
         var entry: ParentEntry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
         
         do {
-            guard let user = await getUserForSwiftData() else {
+            guard let user = await getLocalUser() else {
                 return Timeline(entries: [entry], policy: .atEnd)
             }
             
-            var photos: [PhotoDTO_V0] = []
-            photos = try await FirestoreService.shared.fetchPhotos(userName: user.name)
-            photos.sort { $0.uploadDate < $1.uploadDate }
+            var photos: [Photo] = []
+            photos = try await remoteStorageRepository.fetchPhotos(user.name)
             
-            if let lastPhoto = photos.last {
-                let imgData = try await FirestoreService.shared.fetchPhotoData(urlString: lastPhoto.urlString)
+            if let urlString = photos.first?.urlString {
+                let imgData = try await remoteStorageRepository.downloadPhotoData(of: urlString)
                 
                 if let image = UIImage(data: imgData) {
                     entry = ParentEntry(date: Date(), image: image)
@@ -77,12 +77,8 @@ struct ParentProvider: AppIntentTimelineProvider {
         return Timeline(entries: [entry], policy: .atEnd)
     }
     
-    @MainActor func getUserForSwiftData() -> UserEntity? {
-        let descriptor = FetchDescriptor<UserEntity>()
-        
-        let user = (try? container.mainContext.fetch(descriptor))?.first ?? nil
-        
-        return user
+    func getLocalUser() async -> User? {
+        await localStorageRepository.fetchUser()
     }
 }
 
@@ -112,25 +108,24 @@ struct ParentWidgetView : View {
 
 struct ParentWidget: Widget {
     let kind: String = "ParentWidget"
-    var container: ModelContainer
+    let localStorageRepository: LocalStorageService
+    let remoteStorageRepository: RemoteStorageService
     
     init() {
         let filePath = Bundle.main.path(forResource: "../../GoogleService-Info", ofType: "plist")!
         let options = FirebaseOptions(contentsOfFile: filePath)
         FirebaseApp.configure(options: options!)
         
-        do {
-            container = try ModelContainer(for: UserEntity.self, PhotoEntity.self)
-        } catch {
-            fatalError("Failed to configure SwiftData container.")
-        }
+        localStorageRepository = SwiftDataRepository()
+        remoteStorageRepository = FireStoreRepository(fireStore: .firestore(), storage: .storage())
     }
     
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
             kind: kind,
             intent: ConfigurationAppIntent.self,
-            provider: ParentProvider(container: container)
+            provider: ParentProvider(localStorageRepository: localStorageRepository,
+                                     remoteStorageRepository: remoteStorageRepository)
         ) {
             ParentWidgetView(entry: $0)
                 .containerBackground(.fill.tertiary, for: .widget)

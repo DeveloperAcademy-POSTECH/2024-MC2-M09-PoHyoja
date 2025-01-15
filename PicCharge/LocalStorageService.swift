@@ -30,6 +30,8 @@ protocol LocalStorageService {
     /// - Returns: 저장된 사진들의 목록 (`[Photo]`)
     func fetchPhotos() async -> [Photo]
     
+    func fetchLatestPhoto() async -> Photo?
+    
     /// 로컬 스토리지에 저장된 모든 사진 데이터를 가져옵니다.
     /// - Parameter option: 정렬 기준 파라미터
     /// - Parameter order: 정렬 순서
