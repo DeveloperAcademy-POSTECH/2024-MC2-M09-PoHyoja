@@ -1,5 +1,5 @@
 //
-//  SelectLoginTypeView.swift
+//  MainLoginView.swift
 //  PicCharge
 //
 //  Created by 남유성 on 1/15/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SelectLoginTypeView: View {
+struct MainLoginView: View {
     @Environment(NavigationManager.self) var navigationManager
     
     var body: some View {
@@ -34,7 +34,7 @@ struct SelectLoginTypeView: View {
                 Spacer()
                 
                 FilledBtn(text: "이메일로 시작하기") {
-                    navigationManager.push(to: .loginByEmail)
+                    navigationManager.push(to: .emailLogin)
                 }
             }
             .padding(.horizontal, 16)
@@ -44,7 +44,7 @@ struct SelectLoginTypeView: View {
 }
 
 #Preview {
-    SelectLoginTypeView()
+    MainLoginView()
         .injectDIContainer()
         .preferredColorScheme(.dark)
 }

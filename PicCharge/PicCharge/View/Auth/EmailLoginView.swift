@@ -1,5 +1,5 @@
 //
-//  LoginView.swift
+//  EmailLoginView.swift
 //  PicCharge
 //
 //  Created by 남유성 on 5/16/24.
@@ -8,13 +8,13 @@
 import SwiftUI
 import Firebase
 
-extension LoginView {
+extension EmailLoginView {
     enum Field: Hashable {
         case email, password
     }
 }
 
-struct LoginView: View {
+struct EmailLoginView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(UserViewModel.self) var userVM
 
@@ -63,7 +63,7 @@ struct LoginView: View {
                 }
                 
                 Button {
-                    navigationManager.push(to: .signUp)
+                    navigationManager.push(to: .signUpEmailPw)
                 } label: {
                     HStack {
                         Text("아이디가 없다면?")
@@ -103,7 +103,7 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    EmailLoginView()
         .injectDIContainer()
         .preferredColorScheme(.dark)
 }

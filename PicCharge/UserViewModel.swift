@@ -112,4 +112,46 @@ final class UserViewModel {
             await GlobalAlert.shared.show(message: "\(error.localizedDescription)")
         }
     }
+    
+    func checkNameAvailable(name: String) async -> Bool {
+        do {
+            // 1. 기존 유저 존재 여부 확인
+            if let _ = try await remoteStorageService.fetchUserByName(name) {
+                await GlobalAlert.shared.show(message: "이미 존재하는 이름입니다.")
+                return false
+            }
+            
+            return true
+            
+        } catch {
+            await GlobalAlert.shared.show(message: "\(error.localizedDescription)")
+        }
+        
+        return false
+    }
+    
+    func checkEmailAvailable(email: String) async -> Bool {
+        do {
+            // 1. 기존 유저 존재 여부 확인
+            if let _ = try await remoteStorageService.fetchUserByEmail(email) {
+                await GlobalAlert.shared.show(message: "이미 존재하는 이메일입니다.")
+                return false
+            }
+            
+            return true
+            
+        } catch {
+            await GlobalAlert.shared.show(message: "\(error.localizedDescription)")
+        }
+        
+        return false
+    }
+    
+    func signUp(name: String, email: String, password: String, role: Role) async throws {
+        _ = try await Auth.auth().createUser(withEmail: email, password: password)
+        
+        let user = User(name: name, role: role, email: email, connectedTo: [])
+        
+        try await remoteStorageService.addUser(user)
+    }
 }

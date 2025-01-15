@@ -11,17 +11,20 @@ struct FilledBtn: View {
     @Binding var isActive: Bool
     @Binding var isLoading: Bool
     let text: String
+    let height: CGFloat
     let action: () -> Void
 
     init(
         text: String,
         isActive: Binding<Bool> = .constant(true),
         isLoading: Binding<Bool> = .constant(false),
+        height: CGFloat = 54,
         action: @escaping () -> Void
     ) {
         self.text = text
         self._isActive = isActive
         self._isLoading = isLoading
+        self.height = height
         self.action = action
     }
 
@@ -44,7 +47,7 @@ struct FilledBtn: View {
                 Spacer()
             }
         }
-        .frame(height: 54)
+        .frame(height: height)
         .background(isActive ? Color.green : Color.gray)
         .animation(.default, value: isActive)
         .animation(.default, value: isLoading)
