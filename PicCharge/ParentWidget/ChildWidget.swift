@@ -18,13 +18,14 @@ struct ChildProvider: AppIntentTimelineProvider {
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ChildEntry {
         let currentTime = Date()
-        let uploadCycle = (await getUploadCycle() ?? 3) * 24 // 목표로 설정한 시간
-        let lastUploadDate = await getLastUploadedDate() ?? Date() // 사진을 보낸 시간
-        let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
-        let uploadCycleSeconds = Double(uploadCycle * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
+        let uploadCycle = await getUploadCycle() ?? 3
+        let lastUploadDate = await getLastUploadedDate() ?? Date()
         
-        // 배터리 백분율 계산, 1프로 이하는 1로 고정
-        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
+        let currentPercentage = BatteryCalculator.calculateBatteryPercentage(
+            lastUploadDate: lastUploadDate,
+            uploadCycle: uploadCycle,
+            currentTime: currentTime
+        )
         
         return ChildEntry(date: currentTime, configuration: configuration, batteryPercentage: currentPercentage, lastUploadedDate: lastUploadDate)
     }
@@ -32,19 +33,28 @@ struct ChildProvider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ChildEntry> {
         var entries: [ChildEntry] = []
         
-        let uploadCycle = (await getUploadCycle() ?? 3) * 24 // 목표로 설정한 시간
-        let lastUploadDate = await getLastUploadedDate() ?? Date() // 사진을 보낸 시간
+        let uploadCycle = await getUploadCycle() ?? 3
+        let lastUploadDate = await getLastUploadedDate() ?? Date()
         
-        // 근사값이라 targetTime에 어떤 값이 오더라도 배터리가 0이하가 될 수 있게 +1을 해줌
-        for hourOffset in 0..<(uploadCycle + 1) {
-            let percentageDropPerTime = 100.0 / Double(uploadCycle) // 배터리 줄어드는 % 계산
-            let currentPercentage = max(100.0 - (percentageDropPerTime * Double(hourOffset % (uploadCycle + 1))), 0) // 현재 남은 배터리
-            let elapsedTime = Calendar.current.date(byAdding: ChildWidgetOption.timeUnit, value: hourOffset, to: lastUploadDate)! // 사진을 보낸 시간으로부터 경과된 시간
+        for timeOffset in 0..<12 {
+            let elapsedTime = Calendar.current.date(byAdding: .minute, value: timeOffset * 5, to: .now)!
             
-            let entry = ChildEntry(date: elapsedTime, configuration: configuration, batteryPercentage: currentPercentage, lastUploadedDate: lastUploadDate)
+            let currentPercentage = BatteryCalculator.calculateBatteryPercentage(
+                lastUploadDate: lastUploadDate,
+                uploadCycle: uploadCycle,
+                currentTime: elapsedTime
+            )
+            
+            let entry = ChildEntry(
+                date: elapsedTime,
+                configuration: configuration,
+                batteryPercentage: currentPercentage,
+                lastUploadedDate: lastUploadDate
+            )
             entries.append(entry)
         }
-        return Timeline(entries: entries, policy: .atEnd)
+        
+        return Timeline(entries: entries, policy: .after(.now.addingTimeInterval(300)))
     }
     
     @MainActor func getLastUploadedDate() -> Date? {

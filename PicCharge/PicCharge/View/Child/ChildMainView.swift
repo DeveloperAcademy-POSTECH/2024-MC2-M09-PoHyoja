@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import WidgetKit
 
 struct ChildMainView: View {
     
@@ -123,6 +124,7 @@ struct ChildMainView: View {
         .bgGradient()
         .onAppear {
             startTimer()
+            WidgetCenter.shared.reloadAllTimelines()
             isGaugeAnimating = true
         }
         .onDisappear {
@@ -145,19 +147,16 @@ struct ChildMainView: View {
     
     // TODO: - 뉴런 로직 통합
     /// 배터리 상태를 계산하는 함수 입니다.
-    /// let uploadCycleSeconds = Double(uploadCycle * 숫자) 를 활용해 시간 단위를 계산할 수 있습니다.
     func updateBatteryStatus() {
         guard let lastUploadDate = photoVM.photos.first?.uploadDate else {
             batteryPercent = 100
             return
         }
         
-        let currentTime = Date()
-        let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
-        let uploadCycleSeconds = Double(uploadCycle * 24 * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
-        
-        // 배터리 백분율 계산, 1프로 이하는 1로 고정
-        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
+        let currentPercentage = BatteryCalculator.calculateBatteryPercentage(
+            lastUploadDate: lastUploadDate,
+            uploadCycle: uploadCycle
+        )
         
         batteryPercent = round(currentPercentage)
     

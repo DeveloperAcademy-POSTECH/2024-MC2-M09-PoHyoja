@@ -86,7 +86,6 @@ struct ParentProvider: AppIntentTimelineProvider {
     }
 }
 
-
 struct ParentEntry: TimelineEntry {
     let date: Date
     let image: UIImage
