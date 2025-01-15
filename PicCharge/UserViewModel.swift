@@ -18,7 +18,7 @@ final class UserViewModel {
     }
     
     private(set) var user: User?
-    private(set) var state: State = .checkNeeded
+    var state: State = .checkNeeded
     
     @ObservationIgnored
     private let localStorageService: LocalStorageService
@@ -153,5 +153,26 @@ final class UserViewModel {
         let user = User(name: name, role: role, email: email, connectedTo: [])
         
         try await remoteStorageService.addUser(user)
+    }
+}
+
+extension UserViewModel {
+    func addConnections(with otherUser: User) async throws {
+        guard let user else { return }
+        
+        try await remoteStorageService.updateConnections(of: user, with: [otherUser.name])
+        try await remoteStorageService.updateConnections(of: otherUser, with: [user.name])
+        
+        try await addLocalConnections(with: otherUser.name)
+        
+        await MainActor.run { self.user?.connectedTo += [otherUser.name] }
+    }
+    
+    func addLocalConnections(with userName: String) async throws {
+        guard let user else { return }
+        
+        try await localStorageService.addConnection(of: user, with: [])
+        
+        await MainActor.run { self.user?.connectedTo += [userName] }
     }
 }

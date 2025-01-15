@@ -39,6 +39,12 @@ extension SwiftDataRepository {
         try userStorage.create(userEntity)
     }
     
+    func addConnection(of user: User, with connectedTo: [String]) async throws {
+        let userEntity = UserEntity(user)
+        userEntity.connectedTo += connectedTo
+        try userStorage.update(userEntity)
+    }
+    
     func deleteUser(_ name: String) async throws {
         try userStorage.delete(where: #Predicate { $0.name == name })
     }

@@ -123,6 +123,40 @@ extension FireStoreRepository {
         }
     }
     
+    func updateConnections(of user: User, with connectedTo: [String]) async throws {
+        
+        // 1. FireStore 이메일 일치 여부 세팅
+        let document = db.collection(userCollection)
+            .whereField("email", isEqualTo: user.email)
+        
+        // 2. 유저 데이터 가져오기
+        guard let userDocuments = try? await document.getDocuments().documents else {
+            throw ServiceError.invalidQuery
+        }
+        
+        // 3. 데이터에서 유저 정보 변환 [유저정보] -> 유저정보
+        guard let userDocument = userDocuments.first else {
+            throw ServiceError.userNotExists
+        }
+        
+        // 4. 유저 Id 확인
+        guard let userId = try? userDocument.data(as: UserDTO.self).id else {
+            throw ServiceError.invalidUserDTOFormat
+        }
+       
+        do {
+            // 5. 유저 연결 업데이트
+            try await db.collection(userCollection)
+                .document(userId)
+                .updateData([
+                    "connectedTo" : user.connectedTo + connectedTo
+                ])
+            
+        } catch {
+            throw ServiceError.updateUserFailed(error: error.localizedDescription)
+        }
+    }
+    
     func deleteUser(_ user: User) async throws {
         
         // 1. FireStore 이메일 일치 여부 세팅

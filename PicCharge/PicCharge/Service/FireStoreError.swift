@@ -22,6 +22,7 @@ enum FireStoreError: Error, Equatable {
     case invalidPhotoDTOFormat
     
     case addUserFailed(error: String)
+    case updateUserFailed(error: String)
     case deleteUserFailed(error: String)
     
     case uploadPhotoFailed(error: String)
@@ -67,6 +68,8 @@ extension FireStoreError: LocalizedError {
         case .deleteUserFailed(let error):
             return "유저 삭제에 실패했습니다. Error: \(error)"
         case .addUserFailed(let error):
+            return "유저 생성에 실패했습니다. Error: \(error)"
+        case .updateUserFailed(let error):
             return "유저 생성에 실패했습니다. Error: \(error)"
         }
     }

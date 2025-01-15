@@ -31,6 +31,8 @@ protocol RemoteStorageService {
     /// - Throws: 저장 과정에서 오류 발생 시 예외를 던짐
     func addUser(_ user: User) async throws
     
+    func updateConnections(of userName: User, with connectedTo: [String]) async throws
+    
     /// 원격 스토리지에서 유저 정보를 삭제합니다.
     /// - Parameter user: 삭제할 유저 정보
     /// - Throws: 삭제 과정에서 오류 발생 시 예외를 던짐

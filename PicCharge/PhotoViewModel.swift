@@ -9,7 +9,7 @@ import SwiftUI
 
 @Observable
 final class PhotoViewModel {
-    private(set) var photos: [Photo] = Photo.mocks
+    private(set) var photos: [Photo] = []
     
     @ObservationIgnored
     private let localStorageService: LocalStorageService
