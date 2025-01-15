@@ -82,87 +82,111 @@ struct ChildWidgetEntryView : View {
     var entry: ChildProvider.Entry
     
     var body: some View {
-        if entry.batteryPercentage > 0 {
-            HStack {
-                VStack {
-                    HStack {
-                        Icon.heartBolt
-                        Text("픽-챠! 배터리")
+        VStack {
+            if entry.batteryPercentage > 0 {
+                HStack {
+                    VStack(spacing: -15) {
+                        HStack(spacing: 5) {
+                            Icon.heartBolt
+                            Text("배터리")
+                            
+                            Spacer()
+                        }
+                        .font(.system(size:15, weight: .semibold))
+                        .foregroundColor(.accent)
+                        .padding(.bottom, -3)
                         
                         Spacer()
-                    }
-                    .font(.title3.weight(.bold))
-                    .foregroundColor(.green)
-                    
-                    Spacer()
-                    
-                    VStack {
-                        HStack {
-                            Text("\(entry.batteryPercentage, specifier: "%.0f")%")
-                                .font(.system(size: 36, weight: .bold))
-                                .foregroundStyle(Color.txtPrimaryDark)
+                        
+                        VStack {
+                            HStack {
+                                Text("\(entry.batteryPercentage, specifier: "%.0f")%")
+                                    .font(.system(size: 36, weight: .bold))
+                                    .foregroundStyle(Color.txtPrimaryDark)
+                                
+                                Text("남았어요")
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundStyle(.txtVibrantTertiary)
+                                    .opacity(0.8)
+                                    .offset(y: 4)
+                                
+                                Spacer()
+                            }
                             
-                            Text("남았어요")
-                                .font(.system(size: 20, weight: .bold))
-                                .foregroundStyle(.txtVibrantTertiary)
-                                .opacity(0.8)
-                                .offset(y: 4)
+                            HStack {
+                                Text("사진 보낸 지 \(entry.lastUploadedDate.timeIntervalKRString()) 됐어요")
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundStyle(.txtAAA8A9)
+                                
+                                Spacer()
+                            }
                             
-                            Spacer()
+                            HStack {
+                                Button(intent: GoToChargeIntent()) {
+                                    HStack(spacing: 5) {
+                                        Image(systemName: "bolt.circle.fill")
+                                        Text("충전하러가기")
+                                    }
+                                    .font(.system(size: 13, weight: .bold))
+                                    .foregroundStyle(Color.white)
+                                    .frame(width: 225, height: 30)
+                                    .background(entry.batteryPercentage <= 10 ? Color(red: 0.875, green: 0.157, blue: 0) : .accent)
+                                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                                }
+                                .buttonStyle(.plain)
+                                .allowsHitTesting(false)
+                                
+                                Spacer()
+                            }
                         }
-                        HStack {
-                            Text("사진 보낸 지 \(entry.lastUploadedDate.timeIntervalKRString()) 됐어요")
-                                .font(.body.weight(.bold))
-                                .foregroundStyle(.txtAAA8A9)
-                            
-                            Spacer()
-                        }
                     }
-                }
-                
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(
-                            Color.bgGray3.shadow(
-                                .inner(
-                                    color: Color.white.opacity(0.25),
-                                    radius: 7.5,
-                                    x: 4,
-                                    y: 4
+                    
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(
+                                Color.bgGray3.shadow(
+                                    .inner(
+                                        color: Color.white.opacity(0.25),
+                                        radius: 7.5,
+                                        x: 4,
+                                        y: 4
+                                    )
                                 )
                             )
-                        )
-                        .stroke(.gray, lineWidth: 1)
+                            .stroke(.gray, lineWidth: 1)
+                            .frame(width: 67, height: 120, alignment: .bottom)
+                        
+                        VStack {
+                            
+                            Spacer()
+                            
+                            Color.clear.batteryShadow(color: Color.wgBattery(percent: entry.batteryPercentage * 0.9))
+                                .frame(width: 59, height: (entry.batteryPercentage * 1.15 * 0.8) + 20, alignment: .bottom)
+                        }
+                        .padding(.vertical, 4)
                         .frame(width: 67, height: 120, alignment: .bottom)
-                    
-                    VStack {
-                        
-                        Spacer()
-                        
-                        Color.clear.batteryShadow(color: Color.wgBattery(percent: entry.batteryPercentage * 0.9))
-                            .frame(width: 59, height: (entry.batteryPercentage * 1.15 * 0.8) + 20, alignment: .bottom)
                     }
-                    .padding(.vertical, 4)
-                    .frame(width: 67, height: 120, alignment: .bottom)
                 }
-            }
-            .padding()
-            .background(Color.bgSecondaryElevated)
-        } else {
-            ZStack {
-                Color.bgSecondaryElevated.ignoresSafeArea()
+                .padding()
+                .background(Color.bgSecondaryElevated)
                 
-                VStack(alignment: .leading){
-                    HStack(alignment: .center) {
-                        Text("아들아")
+            } else {
+                ZStack {
+                    Color.bgSecondaryElevated.ignoresSafeArea()
+                    
+                    VStack(alignment: .leading){
+                        HStack(alignment: .center) {
+                            Text("아들아")
+                        }
+                        .padding(.bottom, 1)
+                        Text("잘 지내니? 보고 싶다.")
                     }
-                    .padding(.bottom, 1)
-                    Text("잘 지내니? 보고 싶다.")
+                    .font(.system(size: 32, weight: .bold))
+                    .foregroundStyle(.txtPrimaryDark)
                 }
-                .font(.system(size: 32, weight: .bold))
-                .foregroundStyle(.txtPrimaryDark)
             }
         }
+        .background(Color.bgSecondaryElevated)
     }
 }
 

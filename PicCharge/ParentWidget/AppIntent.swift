@@ -12,3 +12,11 @@ struct ConfigurationAppIntent: WidgetConfigurationIntent {
     static var title: LocalizedStringResource = "Configuration"
     static var description = IntentDescription("This is an example widget.")
 }
+
+struct GoToChargeIntent: AppIntent {
+    static var title: LocalizedStringResource = "충전하러가기"
+    
+    func perform() async throws -> some IntentResult {
+        return .result()
+    }
+}
