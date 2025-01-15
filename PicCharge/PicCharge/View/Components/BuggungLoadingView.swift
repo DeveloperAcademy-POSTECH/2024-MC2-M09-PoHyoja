@@ -8,11 +8,27 @@
 import SwiftUI
 
 struct BuggungLoadingView: View {
+    @State private var isLoading = true
+    
     var body: some View {
-        LottieView(jsonName: "BuggungLoading", loopMode: .loop)
-            .frame(width: 200, height: 200)
-            .bgGradient()
-            .transition(.opacity.animation(.easeInOut(duration: 1)))
+        Group {
+            if isLoading {
+                LottieView(jsonName: "BuggungLoading", loopMode: .loop)
+                    .frame(width: 200, height: 200)
+                    .offset(y: -12)
+                
+            } else {
+                LottieView(jsonName: "BuggungEnd", loopMode: .playOnce)
+                    .ignoresSafeArea()
+            }
+        }
+        .transition(.opacity.animation(.easeInOut(duration: 1)))
+        .bgGradient()
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.isLoading = false
+            }
+        }
     }
 }
 

@@ -24,7 +24,11 @@ struct User {
         self.name = name
         self.role = role
         self.email = email
-        self.connectedTo = connectedTo + [name]
+        self.connectedTo = connectedTo
         self.uploadCycle = uploadCycle
     }
+}
+
+extension User {
+    var isConnected: Bool { !connectedTo.isEmpty }
 }

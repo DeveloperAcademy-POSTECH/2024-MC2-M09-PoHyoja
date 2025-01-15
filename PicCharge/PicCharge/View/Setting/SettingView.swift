@@ -13,8 +13,6 @@ struct SettingView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(PhotoViewModel.self) var photoVM
     @Environment(UserViewModel.self) var userVM
-    @Environment(\.modelContext) var modelContext
-    @Query var userForSwiftDatas: [UserEntity]
     
     @State private var isShowingLogoutActionSheet = false
     @State private var isShowingWithdrawActionSheet = false
@@ -29,7 +27,7 @@ struct SettingView: View {
                     HStack{
                         VStack(alignment: .leading) {
                             Text("내 계정")
-                            Text(userForSwiftDatas.first?.name ?? "없음")
+                            Text(userVM.user?.name ?? "없음")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -41,7 +39,7 @@ struct SettingView: View {
                     HStack {
                         VStack(alignment: .leading) {
                             Text("연결된 계정")
-                            Text(userForSwiftDatas.first?.connectedTo[0] ?? "없음")
+                            Text(userVM.user?.connectedTo[0] ?? "없음")
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
                         }
@@ -96,12 +94,13 @@ struct SettingView: View {
         ) {
             VStack {
                 Button("로그아웃", role: .destructive) {
-                    do {
-                        try logout()
-                        navigationManager.userState = .notExist
-                        navigationManager.popToRoot()
-                    } catch {
-                        GlobalAlert.shared.show(message: error.localizedDescription)
+                    Task.detached {
+                        do {
+                            try await userVM.logOut()
+                            await MainActor.run { navigationManager.popToRoot() }
+                        } catch {
+                            await GlobalAlert.shared.show(message: error.localizedDescription)
+                        }
                     }
                 }
                 
@@ -126,13 +125,15 @@ struct SettingView: View {
                 message: Text("탈퇴 후에는 모든 기록이 사라집니다."),
                 primaryButton:  .cancel(Text("취소")),
                 secondaryButton: .destructive(Text("탈퇴하기")) {
-                    //TODO: 현재는 탈퇴하기 눌러도 로그아웃 처리, 추후 탈퇴기능 논의
-                    do {
-                        try logout()
-                        navigationManager.userState = .notExist
-                        navigationManager.popToRoot()
-                    } catch {
-                        GlobalAlert.shared.show(message: error.localizedDescription)
+                    Task.detached {
+                        do {
+                            try await userVM.signOut()
+                            await MainActor.run {
+                                navigationManager.popToRoot()
+                            }
+                        } catch {
+                            await GlobalAlert.shared.show(message: error.localizedDescription)
+                        }
                     }
                 }
             )
@@ -148,46 +149,6 @@ extension SettingView {
         }
         
         UIApplication.shared.open(url)
-    }
-}
-
-extension SettingView {
-    private func logout() throws {
-        try Auth.auth().signOut()
-        
-        print("-- 로컬 데이터 삭제 --")
-        try deleteLocalData()
-    }
-    
-    private func deleteUser() throws {
-        guard Auth.auth().currentUser != nil else {
-            throw FirestoreServiceError.userNotFound
-        }
-        
-        try deleteLocalData()
-        
-        // TODO: 파이어베이스 서버에서 유저 정보 삭제
-        
-        // TODO: 로컬에서 유저 정보 삭제
-        // try await user.delete()
-        
-        // TODO: alert 로직으로 성공 실패 표시
-    }
-    
-    private func deleteLocalData() throws {
-        print("-- 로컬 데이터 삭제 --")
-        for userForSwiftData in self.userForSwiftDatas {
-            modelContext.delete(userForSwiftData)
-            print("\(userForSwiftData.name) 유저 삭제")
-        }
-        
-        Task.detached {
-            do {
-                try await photoVM.deleteAllLocal()
-            } catch {
-                // 로컬 사진 삭제 실패는 무시
-            }
-        }
     }
 }
 

@@ -12,16 +12,6 @@ import SwiftData
 struct PicChargeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
-    let container: ModelContainer
-    
-    init() {
-        do {
-            container = try ModelContainer(for: UserEntity.self, PhotoEntity.self)
-        } catch {
-            fatalError("Failed to configure SwiftData container.")
-        }
-    }
-    
     var body: some Scene {
         WindowGroup {
             AppNavigationView()
@@ -29,6 +19,5 @@ struct PicChargeApp: App {
                 .globalAlert()
                 .preferredColorScheme(.dark)
         }
-        .modelContainer(container)
     }
 }
