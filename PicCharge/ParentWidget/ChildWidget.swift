@@ -134,6 +134,7 @@ struct ChildWidgetEntryView : View {
                                     .clipShape(RoundedRectangle(cornerRadius: 16))
                                 }
                                 .buttonStyle(.plain)
+                                .allowsHitTesting(false)
                                 
                                 Spacer()
                             }
