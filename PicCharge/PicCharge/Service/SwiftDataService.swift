@@ -33,13 +33,16 @@ extension SwiftDataService {
     }
     
     func read(predicate: Predicate<T>? = nil,
-              sortDescriptors: SortDescriptor<T>...) throws -> [T] {
+              sortDescriptors: SortDescriptor<T>...,
+              fetchLimit: Int? = nil) throws -> [T] {
         let context = ModelContext(container)
         
-        let fetchDescriptor = FetchDescriptor<T>(
+        var fetchDescriptor = FetchDescriptor<T>(
             predicate: predicate,
             sortBy: sortDescriptors
         )
+        
+        if let fetchLimit { fetchDescriptor.fetchLimit = fetchLimit }
         
         return try context.fetch(fetchDescriptor)
     }

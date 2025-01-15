@@ -10,7 +10,7 @@ import WidgetKit
 import SwiftData
 
 struct ChildProvider: AppIntentTimelineProvider {
-    let container: ModelContainer
+    let localStorageRepository: LocalStorageService
     
     func placeholder(in context: Context) -> ChildEntry {
         ChildEntry(date: Date(), configuration: ConfigurationAppIntent(), batteryPercentage: 90, lastUploadedDate: Date())
@@ -18,8 +18,8 @@ struct ChildProvider: AppIntentTimelineProvider {
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ChildEntry {
         let currentTime = Date()
-        let uploadCycle = await getUploadCycle() ?? 3
-        let lastUploadDate = await getLastUploadedDate() ?? Date()
+        let uploadCycle = await getUploadCycle()
+        let lastUploadDate = await getLatestUploadedDate()
         
         let currentPercentage = BatteryCalculator.calculateBatteryPercentage(
             lastUploadDate: lastUploadDate,
@@ -33,8 +33,8 @@ struct ChildProvider: AppIntentTimelineProvider {
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ChildEntry> {
         var entries: [ChildEntry] = []
         
-        let uploadCycle = await getUploadCycle() ?? 3
-        let lastUploadDate = await getLastUploadedDate() ?? Date()
+        let uploadCycle = await getUploadCycle()
+        let lastUploadDate = await getLatestUploadedDate()
         
         for timeOffset in 0..<12 {
             let elapsedTime = Calendar.current.date(byAdding: .minute, value: timeOffset * 5, to: .now)!
@@ -57,17 +57,12 @@ struct ChildProvider: AppIntentTimelineProvider {
         return Timeline(entries: entries, policy: .after(.now.addingTimeInterval(300)))
     }
     
-    @MainActor func getLastUploadedDate() -> Date? {
-        var descriptor = FetchDescriptor<PhotoEntity>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
-        descriptor.fetchLimit = 1
-        let date = (try? container.mainContext.fetch(descriptor))?.first?.uploadDate ?? nil
-        return date
+    private func getLatestUploadedDate() async -> Date {
+        await localStorageRepository.fetchLatestPhoto()?.uploadDate ?? .now
     }
     
-    @MainActor func getUploadCycle() -> Int? {
-        let descriptor = FetchDescriptor<UserEntity>()
-        let uploadCycle = (try? container.mainContext.fetch(descriptor))?.last?.uploadCycle ?? nil
-        return uploadCycle
+    private func getUploadCycle() async -> Int {
+        await localStorageRepository.fetchUser()?.uploadCycle ?? 3
     }
 }
 
@@ -192,22 +187,17 @@ struct ChildWidgetEntryView : View {
 
 struct ChildWidget: Widget {
     let kind: String = "ChildWidget"
-    var container: ModelContainer
+    let localStorageRepository: LocalStorageService
     
     init() {
-        do {
-            container = try ModelContainer(for: UserEntity.self,
-                                           PhotoEntity.self)
-        } catch {
-            fatalError("Failed to configure SwiftData container.")
-        }
+        localStorageRepository = SwiftDataRepository()
     }
     
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
             kind: kind,
             intent: ConfigurationAppIntent.self,
-            provider: ChildProvider(container: container)
+            provider: ChildProvider(localStorageRepository: localStorageRepository)
         ) {
             ChildWidgetEntryView(entry: $0)
                 .containerBackground(.fill.tertiary, for: .widget)
