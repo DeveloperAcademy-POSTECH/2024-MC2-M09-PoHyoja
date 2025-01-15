@@ -74,9 +74,7 @@ extension PhotoViewModel {
             let photosToUpdate = Array(localSet.intersection(remoteSet))
                 .filter { localItem in
                     guard let remoteItem = remoteSet.first(where: { $0.id == localItem.id }) else { return false }
-                    
-                    return false
-                    //                    return localItem.likeCount != remoteItem.likeCount
+                    return localItem.reaction != remoteItem.reaction
                 }
             
             try await localStorageService.updatePhotos(photosToUpdate)
@@ -84,10 +82,22 @@ extension PhotoViewModel {
             // (2) 추가할 항목: 원격에만 있는 데이터
             var photosToAdd = Array(remoteSet.subtracting(localSet))
             
-            for i in 0..<photosToAdd.count {
-                guard let urlString = photosToAdd[i].urlString else { continue }
+            // 병렬 다운로드
+            await withTaskGroup(of: (Int, Data?).self) { group in
+                for (index, photo) in photosToAdd.enumerated() {
+                    guard let urlString = photo.urlString else { continue }
+                    
+                    group.addTask { [self] in
+                        let data = try? await remoteStorageService.downloadPhotoData(of: urlString)
+                        return (index, data)
+                    }
+                }
                 
-                photosToAdd[i].imgData = try await remoteStorageService.downloadPhotoData(of: urlString)
+                for await (index, data) in group {
+                    if let data = data {
+                        photosToAdd[index].imgData = data
+                    }
+                }
             }
             
             try await localStorageService.addPhotos(photosToAdd)
@@ -96,12 +106,13 @@ extension PhotoViewModel {
             let photosToDelete = Array(localSet.subtracting(remoteSet))
             try await localStorageService.deletePhotos(photosToDelete.map { $0.id })
             
-            print("총\(remoteData.count) 개의 이미지")
+            print("총 \(remoteData.count) 개의 이미지")
             print("\(photosToUpdate.count + photosToAdd.count + photosToDelete.count) 개의 이미지 동기화함")
             print("\(photosToUpdate.count) 개의 사진 업데이트됨")
             print("\(photosToAdd.count) 개의 사진 추가됨")
             print("\(photosToDelete.count) 개의 사진 삭제됨")
             
+            // 최종적으로 로컬 데이터를 가져와 UI 업데이트
             let photos = await localStorageService.fetchPhotos()
             await MainActor.run {
                 self.photos = photos

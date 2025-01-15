@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Reaction {
+struct Reaction: Equatable {
     var love: Int
     var fire: Int
     var star: Int
