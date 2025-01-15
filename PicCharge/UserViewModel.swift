@@ -154,6 +154,26 @@ final class UserViewModel {
         
         try await remoteStorageService.addUser(user)
     }
+    
+    func logOut() async throws {
+        guard let user else { return }
+        
+        try Auth.auth().signOut()
+        try await localStorageService.deleteUser(user.name)
+        try await localStorageService.deleteAllPhotos()
+        
+        print("-- 로컬 데이터 삭제 --")
+        
+        await MainActor.run {
+            self.user = nil
+            self.state = .notExist
+        }
+    }
+    
+    func signOut() async throws {
+        //TODO: 현재는 탈퇴하기 눌러도 로그아웃 처리, 추후 탈퇴기능 논의
+        try await logOut()
+    }
 }
 
 extension UserViewModel {
