@@ -80,12 +80,3 @@ struct ContentView: View {
     }
 }
 
-extension URL {
-    var queryItems: [String: String]? {
-        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
-              let queryItems = components.queryItems else {
-            return nil
-        }
-        return Dictionary(uniqueKeysWithValues: queryItems.map { ($0.name, $0.value ?? "") })
-    }
-}
