@@ -10,6 +10,7 @@ import SwiftData
 import WidgetKit
 
 struct ContentView: View {
+    @Environment(NavigationManager.self) var navigationManager
     @Environment(UserViewModel.self) var userVM
     @Environment(PhotoViewModel.self) var photoVM
     
@@ -45,6 +46,23 @@ struct ContentView: View {
                 withAnimation { isLoading = false }
             }
         }
+        .onOpenURL { url in
+            guard url.scheme == "widget" else { return }
+            
+            if let route = url.queryItems?["route"] {
+                switch route {
+                case "gallery":
+                    Task {
+                        await userVM.checkUserState()
+                        if userVM.state == .connected(.child) && navigationManager.path.isEmpty {
+                            navigationManager.push(to: .childSendGallery)
+                        }
+                    }
+                default:
+                    print("Unknown deeplink: \(url)")
+                }
+            }
+        }
         .task {
             // 1. 유저 Auth 상태 체크
             await userVM.checkUserState()
@@ -59,5 +77,15 @@ struct ContentView: View {
             // 4. 위젯 리로드
             WidgetCenter.shared.reloadAllTimelines()
         }
+    }
+}
+
+extension URL {
+    var queryItems: [String: String]? {
+        guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+              let queryItems = components.queryItems else {
+            return nil
+        }
+        return Dictionary(uniqueKeysWithValues: queryItems.map { ($0.name, $0.value ?? "") })
     }
 }
