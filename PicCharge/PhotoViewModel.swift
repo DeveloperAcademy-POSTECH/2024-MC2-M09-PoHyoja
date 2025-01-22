@@ -71,33 +71,36 @@ extension PhotoViewModel {
         guard let userName else { return }
         
         do {
-            let remoteData = try await remoteStorageService.fetchPhotos(userName)
-            let localData = await localStorageService.fetchPhotos()
+            // 원격 및 로컬 데이터 가져오기
+            async let remoteData = remoteStorageService.fetchPhotos(userName)
+            async let localData = localStorageService.fetchPhotos()
+                    
+            let remotePhotos = try await remoteData
+            let localPhotos = await localData
             
-            let remoteSet = Set(remoteData)
-            let localSet = Set(localData)
+            // remoteSet과 localSet을 ID 기반 딕셔너리로 변환
+            let remoteMap = Dictionary(uniqueKeysWithValues: remotePhotos.map { ($0.id, $0) })
+            let localMap = Dictionary(uniqueKeysWithValues: localPhotos.map { ($0.id, $0) })
             
-            // (1) 업데이트할 항목: 동일한 ID를 가진 항목 중 데이터가 다른 항목
-            let photosToUpdate = Array(localSet.intersection(remoteSet))
-                .filter { localItem in
-                    guard let remoteItem = remoteSet.first(where: { $0.id == localItem.id }) else { return false }
-                    return localItem.reaction != remoteItem.reaction
-                }
+            // (1) 업데이트할 항목: 동일한 ID를 가진 항목 중 reaction이 다른 항목
+            let photosToUpdate = localMap.filter { remoteMap[$0]?.reaction != $1.reaction }.map { $0.value }
+            
+            // (2) 추가할 항목: remoteMap에만 존재하는 항목
+            let photosToAdd = remoteMap.filter { !localMap.keys.contains($0.key) }.map { $0.value }
+                    
+            // (3) 삭제할 항목: localMap에만 존재하는 항목
+            let photoIdsToDelete = localMap.filter { !remoteMap.keys.contains($0.key) }.map { $0.key }
+            
+            // 동일 Context 직렬 처리
             try await localStorageService.updatePhotos(photosToUpdate)
-            
-            // (2) 추가할 항목: 원격에만 있는 데이터
-            let photosToAdd = Array(remoteSet.subtracting(localSet))
             try await localStorageService.addPhotos(photosToAdd)
+            try await localStorageService.deletePhotos(photoIdsToDelete)
             
-            // (3) 삭제할 항목: 로컬에만 있는 데이터
-            let photosToDelete = Array(localSet.subtracting(remoteSet))
-            try await localStorageService.deletePhotos(photosToDelete.map { $0.id })
-            
-            print("총 \(remoteData.count) 개의 이미지")
-            print("\(photosToUpdate.count + photosToAdd.count + photosToDelete.count) 개의 이미지 동기화함")
+            print("총 \(remotePhotos.count) 개의 이미지")
+            print("\(photosToUpdate.count + photosToAdd.count + photoIdsToDelete.count) 개의 이미지 동기화함")
             print("\(photosToUpdate.count) 개의 사진 업데이트됨")
             print("\(photosToAdd.count) 개의 사진 추가됨")
-            print("\(photosToDelete.count) 개의 사진 삭제됨")
+            print("\(photoIdsToDelete.count) 개의 사진 삭제됨")
             
             // 최종적으로 로컬 데이터를 가져와 UI 업데이트
             let photos = await localStorageService.fetchPhotos()
