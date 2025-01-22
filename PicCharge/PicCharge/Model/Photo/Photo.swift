@@ -47,7 +47,6 @@ extension Photo {
     }
 }
 
-#if DEBUG
 import UIKit
 
 extension Photo {
@@ -73,7 +72,6 @@ extension Photo {
         sharedWith: []
     )
 }
-#endif
 
 enum PhotoSortOption {
     case uploadDate
