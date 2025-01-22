@@ -117,7 +117,7 @@ struct ChildWidgetEntryView : View {
                             }
                             
                             HStack {
-                                Button(intent: GoToChargeIntent()) {
+                                Link(destination: URL(string: getPercentEcododedString("widget://deeplink?route=gallery"))!) {
                                     HStack(spacing: 5) {
                                         Image(systemName: "bolt.circle.fill")
                                         Text("충전하러가기")
@@ -128,8 +128,6 @@ struct ChildWidgetEntryView : View {
                                     .background(entry.batteryPercentage <= 10 ? Color(red: 0.875, green: 0.157, blue: 0) : .accent)
                                     .clipShape(RoundedRectangle(cornerRadius: 16))
                                 }
-                                .buttonStyle(.plain)
-                                .allowsHitTesting(false)
                                 
                                 Spacer()
                             }
@@ -182,6 +180,10 @@ struct ChildWidgetEntryView : View {
             }
         }
         .background(Color.bgSecondaryElevated)
+    }
+    
+    private func getPercentEcododedString(_ string: String) -> String {
+        string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
     }
 }
 
