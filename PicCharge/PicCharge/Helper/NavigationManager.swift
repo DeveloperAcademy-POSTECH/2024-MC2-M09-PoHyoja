@@ -9,79 +9,73 @@ import SwiftUI
 
 enum PathType: Hashable {
     // MARK: - 초기 설정
-    case signUp
-    case selectRole(name: String, email: String, password: String)
+    case mainLogin
+    case emailLogin
+    case signUpEmailPw
+    case signUpName(email: String, password: String)
+    case signUpRole(name: String, email: String, password: String)
     
     // MARK: - 자식
     case childCamera
-    case childSendCamera(imageData: Data)
+    case childSendCamera(imgData: Data)
     case childSendGallery
-    case childAlbumDetail(photo: PhotoEntity)
+    case childAlbumDetail(photo: Photo)
     
     // MARK: - 부모
-    case parentAlbum(user: UserEntity)
-    case parentAlbumDetail(photo: PhotoEntity)
+    case parentAlbum
+    case parentAlbumDetail(photo: Photo)
     
     // MARK: - Setting
-    case setting(role: Role)
-    case settingTermsOfUse
+    case setting
 }
 
 extension PathType {
     @ViewBuilder
     func NavigatingView() -> some View {
         switch self {
-        // MARK: - 초기 설정
-        case .signUp:
-            UserInfoForSignUpView()
-        case .selectRole(let name, let email, let password):
-            SelectRoleForSignUpView(name: name, email: email, password: password)
+            // MARK: - 초기 설정
+        case .mainLogin:
+            MainLoginView()
+        case .emailLogin:
+            EmailLoginView()
+        case .signUpEmailPw:
+            SignUpEmailPasswordView()
+        case .signUpName(let email, let password):
+            SignUpNameView(email: email, password: password)
+        case .signUpRole(let name, let email, let password):
+            SignUpRoleView(name: name, email: email, password: password)
             
-        // MARK: - 자식
+            // MARK: - 자식
         case .childCamera:
             ChildCameraView()
-        case .childSendCamera(let imageData):
-            ChildSendCameraView(imageData: imageData)
+        case .childSendCamera(let imgData):
+            ChildSendCameraView(imgData: imgData)
         case .childSendGallery:
             ChildSendGalleryView()
         case .childAlbumDetail(let photo):
             ChildAlbumDetailView(photo: photo)
             
-        // MARK: - 부모
-        case .parentAlbum(let user):
-            ParentAlbumView(user: user)
+            // MARK: - 부모
+        case .parentAlbum:
+            ParentAlbumView()
         case .parentAlbumDetail(let photo):
             ParentAlbumDetailView(photo: photo)
             
-        // MARK: - Setting
-        case .setting(let role):
-            SettingView(myRole: role)
-        case .settingTermsOfUse:
-            SettingTermsOfUseView()
+            // MARK: - Setting
+        case .setting:
+            SettingView()
         }
     }
 }
 
 @Observable
 class NavigationManager {
-    var path: [PathType]
-    var userState: UserState {
-        willSet {
-            prevUserState = userState
-        }
-    }
-    @ObservationIgnored var prevUserState: UserState
-    
     static let shared = NavigationManager()
     
-    init(
-        path: [PathType] = [],
-        userState: UserState = .checkNeeded,
-        prevUserState: UserState = .checkNeeded
-    ) {
+    var path: [PathType]
+    
+    init(path: [PathType] = []) {
         self.path = path
-        self.userState = userState
-        self.prevUserState = userState
     }
 }
 
@@ -101,10 +95,6 @@ extension NavigationManager {
     func pop(to pathType: PathType) {
         guard let lastIndex = path.lastIndex(of: pathType) else { return }
         path.removeLast(path.count - (lastIndex + 1))
-    }
-    
-    func isPrevState(_ state: UserState) -> Bool {
-        return state == prevUserState
     }
 }
 

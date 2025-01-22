@@ -13,8 +13,8 @@ struct DIContainerModifier: ViewModifier {
     let localStorageService: LocalStorageService
     
     init() {
-        remoteStorageService = MockRemoteStorageServiceImpl()
-        localStorageService = MockLocalStorageServiceImpl()
+        remoteStorageService = FireStoreRepository(fireStore: .firestore(), storage: .storage())
+        localStorageService = SwiftDataRepository()
     }
     
     func body(content: Content) -> some View {

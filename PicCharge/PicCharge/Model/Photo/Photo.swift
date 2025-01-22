@@ -7,12 +7,74 @@
 
 import Foundation
 
-struct Photo {
+struct Reaction {
+    var love: Int
+    var fire: Int
+    var star: Int
+    var like: Int
+}
+
+struct Photo: Hashable, Identifiable {
     let id: UUID
     var uploadBy: String
     var uploadDate: Date
     var imgData: Data?
     var urlString: String?
-    var likeCount: Int
+    var reaction: Reaction
     var sharedWith: [String]
+}
+
+extension Photo {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+    
+    static func == (lhs: Photo, rhs: Photo) -> Bool {
+        return lhs.id == rhs.id
+    }
+}
+
+extension Photo {
+    init(of user: User, imgData: Data) {
+        self.init(
+            id: UUID(),
+            uploadBy: user.name,
+            uploadDate: .now,
+            imgData: imgData,
+            reaction: .init(love: 0, fire: 0, star: 0, like: 0),
+            sharedWith: user.connectedTo + [user.name]
+        )
+    }
+}
+
+#if DEBUG
+import UIKit
+
+extension Photo {
+    static let mocks: [Photo] = Array(1...4).map {
+        return Photo(
+            id: UUID(),
+            uploadBy: "Mock \($0)",
+            uploadDate: .now.addingTimeInterval(Double($0) * 3600),
+            imgData: UIImage(resource: .logoLarge).pngData()!,
+            urlString: "https://picsum.photos/200",
+            reaction: .init(love: 0, fire: 0, star: 0, like: 0),
+            sharedWith: []
+        )
+    }
+    
+    static let mock: Photo = Photo(
+        id: UUID(),
+        uploadBy: "Mock",
+        uploadDate: .now.addingTimeInterval(Double.random(in: 0...10) * 3600),
+        imgData: UIImage(resource: .logoLarge).pngData()!,
+        urlString: "https://picsum.photos/200",
+        reaction: .init(love: 0, fire: 0, star: 0, like: 0),
+        sharedWith: []
+    )
+}
+#endif
+
+enum PhotoSortOption {
+    case uploadDate
 }

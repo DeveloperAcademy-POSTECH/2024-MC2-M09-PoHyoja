@@ -29,4 +29,9 @@ public enum Icon {
     static let refresh = Image(systemName: "arrow.clockwise")
     static let waitingPerson = Image(systemName: "person.badge.clock.fill")
     static let person = Image(systemName: "person.fill")
+    static let loveReaction = Image(systemName: "heart.circle.fill")
+    static let likeReaction = Image(systemName: "hand.thumbsup.circle.fill")
+    static let starReaction = Image(systemName: "star.circle.fill")
+    static let fireReaction = Image(systemName: "flame.circle.fill")
+    static let bolt = Image(systemName: "bolt.circle.fill")
 }
