@@ -74,7 +74,6 @@ extension PhotoViewModel {
             let remoteData = try await remoteStorageService.fetchPhotos(userName)
             let localData = await localStorageService.fetchPhotos()
             
-            // 3. 원격 데이터를 기준으로 로컬 데이터 업데이트
             let remoteSet = Set(remoteData)
             let localSet = Set(localData)
             
@@ -84,30 +83,10 @@ extension PhotoViewModel {
                     guard let remoteItem = remoteSet.first(where: { $0.id == localItem.id }) else { return false }
                     return localItem.reaction != remoteItem.reaction
                 }
-            
             try await localStorageService.updatePhotos(photosToUpdate)
             
             // (2) 추가할 항목: 원격에만 있는 데이터
-            var photosToAdd = Array(remoteSet.subtracting(localSet))
-            
-            // 병렬 다운로드
-            await withTaskGroup(of: (Int, Data?).self) { group in
-                for (index, photo) in photosToAdd.enumerated() {
-                    guard let urlString = photo.urlString else { continue }
-                    
-                    group.addTask { [self] in
-                        let data = try? await remoteStorageService.downloadPhotoData(of: urlString)
-                        return (index, data)
-                    }
-                }
-                
-                for await (index, data) in group {
-                    if let data = data {
-                        photosToAdd[index].imgData = data
-                    }
-                }
-            }
-            
+            let photosToAdd = Array(remoteSet.subtracting(localSet))
             try await localStorageService.addPhotos(photosToAdd)
             
             // (3) 삭제할 항목: 로컬에만 있는 데이터
@@ -122,6 +101,7 @@ extension PhotoViewModel {
             
             // 최종적으로 로컬 데이터를 가져와 UI 업데이트
             let photos = await localStorageService.fetchPhotos()
+            
             await MainActor.run {
                 self.photos = photos
             }

@@ -37,7 +37,7 @@ struct ParentAlbumView: View {
                                 Spacer()
                             }
                             
-                            SquareImage(data: mainPhoto.imgData)
+                            AsyncSquareImage(photo: mainPhoto)
                                 .cornerRadius(10.0)
                                 .onTapGesture {
                                     navigationManager.push(to: .parentAlbumDetail(photo: mainPhoto))
@@ -58,7 +58,7 @@ struct ParentAlbumView: View {
                         
                         LazyVGrid(columns: columnLayout, spacing: 3) {
                             ForEach(photoVM.photos.dropFirst()) { photo in
-                                SquareImage(data: photo.imgData)
+                                AsyncSquareImage(photo: photo)
                                     .onTapGesture {
                                         navigationManager.push(to: .parentAlbumDetail(photo: photo))
                                     }

@@ -13,7 +13,7 @@ struct PhotoShareDTO: Transferable {
     }
     
     init(imgData: Data, uploadDate: Date) {
-        self.image = Image(uiImage: UIImage(data: imgData)!)
+        self.image = Image(uiImage: UIImage(data: imgData) ?? UIImage(resource: .child))
         self.caption = "\(uploadDate.toKR()) 자식사진"
     }
 

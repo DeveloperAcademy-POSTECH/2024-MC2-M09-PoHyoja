@@ -37,7 +37,7 @@ struct ChildAlbumDetailView: View {
         TabView(selection: $photo) {
             ForEach(photoVM.photos) { photo in
                 VStack {
-                    SquareImage(data: photo.imgData)
+                    AsyncSquareImage(photo: photo)
                         .zoomable(isZooming: $isZooming)
                         .padding(.top, 72)
                     
