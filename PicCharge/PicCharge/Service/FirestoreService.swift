@@ -249,7 +249,7 @@ class FirestoreService {
             let downloadURL = try await storageRef.downloadURL()
             
             // Firestore에 저장할 메타데이터 생성
-            let photo = PhotoDTO_V0(from: photoForSwiftData, urlString: downloadURL.absoluteString)
+            let photo = PhotoDTO(from: photoForSwiftData, urlString: downloadURL.absoluteString)
             
             // Firestore에 메타데이터 저장
             try db.collection("photos").document(photoID).setData(from: photo)
@@ -258,18 +258,18 @@ class FirestoreService {
         }
     }
     
-    func fetchPhotos(userName: String) async throws -> [PhotoDTO_V0] {
+    func fetchPhotos(userName: String) async throws -> [PhotoDTO] {
         let snapshot = try await db.collection("photos")
             .whereField("sharedWith", arrayContains: userName)
             .getDocuments()
         
         return try snapshot.documents.compactMap { document in
-            try document.data(as: PhotoDTO_V0.self)
+            try document.data(as: PhotoDTO.self)
         }
     }
     
     // Photo의 정보로 Firebase Storage에서 이미지 데이터를 받아와서 PhotoForSwiftData 로 변경
-    func fetchPhotoForSwiftDataByPhoto(photo: PhotoDTO_V0) async throws -> PhotoEntity {
+    func fetchPhotoForSwiftDataByPhoto(photo: PhotoDTO) async throws -> PhotoEntity {
         let imgData = try await fetchPhotoData(urlString: photo.urlString)
         
         return PhotoEntity(from: photo, imgData: imgData)
@@ -300,7 +300,7 @@ class FirestoreService {
         // Firestore에서 사진 데이터 가져오기
         do {
             let documentSnapshot = try await photoRef.getDocument()
-            let photo = try documentSnapshot.data(as: PhotoDTO_V0.self)
+            let photo = try documentSnapshot.data(as: PhotoDTO.self)
             
             
             // Firebase Storage에서 이미지 삭제

@@ -7,135 +7,122 @@
 
 import SwiftUI
 import SwiftData
-import WidgetKit
 
 struct ChildMainView: View {
-    
-    // TODO: - 뉴런 로직 통합
-    enum GaugeFloat: CGFloat {
+    enum CGCircleGaugeFloat: CGFloat {
         case bottom = 0.525 // 배터리 0 퍼센트
         case top = 0.975 // 배터리 100 퍼센트
         
         func add(for percent: Double) -> CGFloat {
-            self.rawValue + ((GaugeFloat.top.rawValue - GaugeFloat.bottom.rawValue) / 100.0) * percent
+            self.rawValue + ((CGCircleGaugeFloat.top.rawValue - CGCircleGaugeFloat.bottom.rawValue) / 100.0) * percent
         }
     }
     
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(UserViewModel.self) var userVM
-    @Environment(PhotoViewModel.self) var photoVM
-
+    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photos: [PhotoEntity]
+    @Bindable var user: UserEntity
     @State private var batteryPercent: Double = 0
     @State private var isGaugeAnimating: Bool = false
+    @State private var infoPage: Int = 1
     @State private var timer: Timer?
     
-    var uploadCycle: Int { userVM.user?.uploadCycle ?? 3 }
-    var lastUploadDate: Date { photoVM.photos.first?.uploadDate ?? .now }
-    var loveCount: Int { 12 } // TODO: - 데이터 연결
-    var fireCount: Int { 34 } // TODO: - 데이터 연결
-    var starCount: Int { 56 } // TODO: - 데이터 연결
-    var likeCount: Int { 78 } // TODO: - 데이터 연결
-    var totalUploadCount: Int { photoVM.photos.count }
+    var uploadCycle: Int {
+        user.uploadCycle ?? 3
+    }
+    
+    var totalLikeCount: Int {
+        return photos.reduce(0) { $0 + $1.likeCount }
+    }
+    
+    var totalUploadCount: Int {
+        return photos.count
+    }
+    
+    init(user: UserEntity) {
+        self.user = user
+    }
     
     var body: some View {
-        ScrollView {
+        ZStack {
+            VStack {
+                LinearGradient(
+                    gradient: Gradient(colors: [Color.bgGreen, Color.bgGreen.opacity(0)]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .frame(height: 320)
+                
+                Spacer()
+            }
+            .ignoresSafeArea()
+            
             VStack(spacing: 12) {
-                Header("픽-챠!")
+                TitleView(title: "픽-챠")
                 
-                // MARK: - 배터리 퍼센트
-                Section(icon: Icon.heartBolt, title: "배터리") {
-                    BatteryGauge(percent: batteryPercent, date: lastUploadDate)
+                Divider()
+                    .padding(.bottom, 10)
+                
+                HStack(spacing: 12) {
+                    Button {
+                        navigationManager.push(to: .childSendGallery)
+                    } label: {
+                        NavigationButtonLabel(
+                            for: "사진 올리기",
+                            Icon: Icon.addPhoto,
+                            bgColor: .bgGray
+                        )
+                    }
                     
-                    HStack(spacing: 12) {
-                        UploadBtn("사진 찍기", icon: Icon.bolt, bgColor: .bgGray3) {
-                            navigationManager.push(to: .childCamera)
-                        }
-                        
-                        UploadBtn("사진 올리기", icon: Icon.bolt, bgColor: .accent) {
-                            navigationManager.push(to: .childSendGallery)
-                        }
+                    Button {
+                        navigationManager.push(to: .childCamera)
+                    } label: {
+                        NavigationButtonLabel(
+                            for: "사진 찍기",
+                            Icon: Icon.camera,
+                            bgColor: .accent
+                        )
                     }
                 }
-                .foregroundStyle(.accent)
+                .padding(.horizontal, 16)
                 
-                // MARK: - 목표
-                Section(icon: Icon.goal, title: "목표") {
-                    Text("마지막으로 보낸지 \(lastUploadDate.timeIntervalKRString()) 됐어요")
-                        .foregroundStyle(.txtPrimaryDark)
-                        .font(.title2.weight(.bold))
-                    
-                    Text("\(uploadCycle)일에 1장 보내기")
-                        .foregroundStyle(.txt838386)
-                        .font(.body.weight(.bold))
-                }
-                .foregroundStyle(.grpTeal)
-                
-                // MARK: - 누적 업로드 수
-                Section(icon: Icon.upload, title: "누적 업로드 수") {
-                    Text("\(photoVM.photos.count)장")
-                        .foregroundStyle(.txtPrimaryDark)
-                        .font(.title2.weight(.bold))
-                }
-                .foregroundStyle(.grpOrange)
-                
-                // MARK: - 누적 반응 수
-                Section(icon: Icon.heart, title: "누적 반응 수") {
-                    HStack {
-                        Spacer()
-                        
-                        VStack(spacing: 6) {
-                            Icon.loveReaction.font(.system(size: 32))
-                            Text("\(loveCount)")
+                TabView(selection: $infoPage) {
+                    Group {
+                        VStack {
+                            BatteryPageView(percent: batteryPercent, date: photos.first?.uploadDate ?? Date())
+
+                            Spacer()
                         }
-                        .foregroundStyle(.pink)
+                        .tag(1)
                         
-                        Spacer()
-                        
-                        VStack(spacing: 6) {
-                            Icon.fireReaction.font(.system(size: 32))
-                            Text("\(fireCount)")
+                        VStack {
+                            GoalPageView()
+                            Spacer()
+                            
                         }
-                        .foregroundStyle(.yellow)
-                        
-                        Spacer()
-                        
-                        VStack(spacing: 6) {
-                            Icon.starReaction.font(.system(size: 32))
-                            Text("\(starCount)")
-                        }
-                        .foregroundStyle(.teal)
-                        
-                        Spacer()
-                        
-                        VStack(spacing: 6) {
-                            Icon.likeReaction.font(.system(size: 32))
-                            Text("\(likeCount)")
-                        }
-                        .foregroundStyle(.purple)
-                        
-                        Spacer()
+                        .tag(2)
                     }
-                    .padding(8)
+                    .padding(.horizontal, 16)
                 }
-                .foregroundStyle(.grpRed)
+                .frame(height: 300)
+                .indexViewStyle(PageIndexViewStyle(backgroundDisplayMode: .never))
+                .tabViewStyle(.page(indexDisplayMode: .always))
+                .onTapGesture {
+                    withAnimation {
+                        infoPage = infoPage == 1 ? 2 : 1
+                    }
+                }
+                
+                Spacer()
             }
         }
-        .scrollBounceBehavior(.basedOnSize)
-        .bgGradient()
         .onAppear {
             startTimer()
-            WidgetCenter.shared.reloadAllTimelines()
-            isGaugeAnimating = true
-        }
-        .onDisappear {
-            // TODO: - withoutAnimation 처리
-            isGaugeAnimating = false
         }
     }
     
     func startTimer() {
         updateBatteryStatus()
-        timer = Timer.scheduledTimer(withTimeInterval: 300, repeats: true) { _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             updateBatteryStatus()
         }
     }
@@ -145,20 +132,26 @@ struct ChildMainView: View {
         timer = nil
     }
     
-    // TODO: - 뉴런 로직 통합
     /// 배터리 상태를 계산하는 함수 입니다.
+    /// let uploadCycleSeconds = Double(uploadCycle * 숫자) 를 활용해 시간 단위를 계산할 수 있습니다.
     func updateBatteryStatus() {
-        guard let lastUploadDate = photoVM.photos.first?.uploadDate else {
-            batteryPercent = 100
+        guard let lastUploadDate = photos.first?.uploadDate else {
+            withAnimation {
+                batteryPercent = 100
+            }
             return
         }
         
-        let currentPercentage = BatteryCalculator.calculateBatteryPercentage(
-            lastUploadDate: lastUploadDate,
-            uploadCycle: uploadCycle
-        )
+        let currentTime = Date()
+        let timeElapsed = currentTime.timeIntervalSince(lastUploadDate) // 경과 시간(초)
+        let uploadCycleSeconds = Double(uploadCycle * 24 * 3600) // uploadCycle을 시간 단위로, N일 지나면 0%
         
-        batteryPercent = round(currentPercentage)
+        // 배터리 백분율 계산, 1프로 이하는 1로 고정
+        let currentPercentage = max(100.0 - (100 * timeElapsed / uploadCycleSeconds), 1.0)
+        
+        withAnimation {
+            batteryPercent = round(currentPercentage)
+        }
     
         if currentPercentage <= 0 {
             stopTimer()
@@ -166,37 +159,100 @@ struct ChildMainView: View {
     }
 
     @ViewBuilder
-    func BatteryGauge(percent: Double, date lastUploaded: Date) -> some View {
-        ZStack(alignment: .top) {
-            VStack(spacing: 8) {
-                Text("\(Int(percent))%")
-                    .font(.largeTitle.weight(.bold))
-                    .foregroundStyle(.txtPrimaryDark)
-                    .offset(x: 2) // 시각적 보정으로 좌측으로 2px 이동
+    func BatteryPageView(percent: Double, date lastUploaded: Date) -> some View {
+        ZStack {
+            VStack {
+                HStack {
+                    IconLabel(Icon: Icon.heartBolt, label: "배터리")
+                        .foregroundStyle(.accent)
+                    
+                    Spacer()
+                }
                 
-                Text("남았어요")
-                    .font(.title3.weight(.bold))
-                    .foregroundStyle(.txtVibrantTertiary)
+                Spacer()
+                
+                VStack(spacing: 0) {
+                    Text("\(Int(percent <= 1 ? 0 : percent))%")
+                        .font(.largeTitle.weight(.bold))
+                        .foregroundStyle(.txtPrimaryDark)
+                        .padding(.bottom, 8)
+                        .offset(x: 2) // 시각적 보정으로 좌측으로 2px 이동
+                    
+                    Text("남았어요")
+                        .font(.title3.weight(.bold))
+                        .foregroundStyle(.txtVibrantTertiary)
+                        .padding(.bottom, 16)
+                    
+                    Text("마지막으로 보낸지 \(lastUploaded.timeIntervalKRString()) 됐어요")
+                        .font(.body.weight(.bold))
+                        .foregroundStyle(.txtVibrantSecondary)
+                        .padding(.bottom, 21)
+                }
             }
-            .padding(.top, 66)
+            .padding(11)
+            .frame(height: 267)
+            .background(Color.bgSecondaryElevated)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             
-            BatteryGaugeBar(percent: percent)
+            BatteryGaugeBarView(percent: percent)
+                .onAppear {
+                    print("퍼센트: \(percent)")
+                }
         }
-        .frame(maxWidth: .infinity)
-        .frame(height: 144)
     }
     
+    @ViewBuilder
+    func GoalPageView() -> some View {
+        VStack(spacing: 11) {
+            InfoView(
+                Icon: Icon.goal,
+                label: "목표",
+                content: "\(uploadCycle)일에 1장 보내기",
+                tintColor: .grpTeal
+            )
+            .frame(height: 112)
+            
+            HStack(spacing: 11) {
+                InfoView(
+                    Icon: Icon.heart,
+                    label: "누적 좋아요 수",
+                    content: "\(totalLikeCount)개",
+                    tintColor: .grpRed
+                )
+                InfoView(
+                    Icon: Icon.upload,
+                    label: "누적 업로드 수",
+                    content: "\(totalUploadCount)장",
+                    tintColor: .grpOrange
+                )
+            }
+            .frame(height: 128)
+        }
+        .padding(8)
+        .frame(height: 272)
+        .background(Color.bgPrimaryElevated)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
     
     @ViewBuilder
-    func BatteryGaugeBar(percent: Double) -> some View {
+    func BatteryGaugeBarView(percent: Double) -> some View {
         ZStack {
             // 뒤쪽 배경 게이지
             Circle()
-                .trim(from: GaugeFloat.bottom.rawValue, to: GaugeFloat.top.rawValue)
+                .trim(from: CGCircleGaugeFloat.bottom.rawValue, to: CGCircleGaugeFloat.top.rawValue)
                 .stroke(
-                    Color.bgGray6
-                        .shadow(.inner(color: Color.bgPrimary, radius: 2, x: 0, y: 2)),
-                    style: StrokeStyle(lineWidth: 24, lineCap: .round)
+                    Color.bgGray6.shadow(
+                        .inner(
+                            color: Color.bgPrimary,
+                            radius: 2,
+                            x: 0,
+                            y: 2
+                        )
+                    ),
+                    style: StrokeStyle(
+                        lineWidth: 24,
+                        lineCap: .round
+                    )
                 )
                 .frame(width: 210, height: 210)
                 .offset(y: 52)
@@ -204,89 +260,107 @@ struct ChildMainView: View {
             // 실제 배터리 게이지
             Circle()
                 .trim(
-                    from: GaugeFloat.bottom.rawValue,
+                    from: CGCircleGaugeFloat.bottom.rawValue,
                     to: isGaugeAnimating
-                        ? GaugeFloat.bottom.add(for: percent)
-                        : GaugeFloat.bottom.rawValue
+                        ? CGCircleGaugeFloat.bottom.add(for: percent)
+                        : CGCircleGaugeFloat.bottom.rawValue
                 )
                 .stroke(
-                    Color.battery(percent: percent)
-                        .shadow(.inner(color: Color.white.opacity(0.25), radius: 4, x: 0, y: 4)),
-                    style: StrokeStyle(lineWidth: 24, lineCap: .round)
+                    Color.battery(percent: percent).shadow(
+                        .inner(
+                            color: Color.white.opacity(0.25),
+                            radius: 4,
+                            x: 0,
+                            y: 4
+                        )
+                    ),
+                    style: StrokeStyle(
+                        lineWidth: 24,
+                        lineCap: .round
+                    )
                 )
-                .shadow(color: Color.wgBattery(percent: percent), radius: CGFloat(8), x: CGFloat(0), y: CGFloat(4))
+                .shadow(
+                    color: Color.wgBattery(percent: percent),
+                    radius: CGFloat(8),
+                    x: CGFloat(0),
+                    y: CGFloat(4)
+                )
                 .frame(width: 210, height: 210)
                 .offset(y: 52)
-                .animation(.easeInOut(duration: 0.5), value: isGaugeAnimating)
+                .onAppear {
+                    withAnimation(.easeOut(duration: 0.5)) {
+                        self.isGaugeAnimating = true
+                    }
+                }
+                .onDisappear {
+                    self.isGaugeAnimating = false
+                }
         }
-        .frame(width: 234, height: 144)
     }
     
     @ViewBuilder
-    func UploadBtn(_ text: String,
-                   icon: Image,
-                   bgColor: Color,
-                   action: @escaping () -> Void) -> some View {
-        
-        Button {
-            action()
-        } label: {
-            HStack(spacing: 5) {
-                Spacer()
-                icon
-                Text(text)
+    func InfoView(
+        Icon: Image,
+        label: String,
+        content: String,
+        tintColor: Color
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 16) {
+            IconLabel(Icon: Icon, label: label)
+                .foregroundStyle(tintColor)
+            
+            HStack {
+                Text(content)
+                    .font(.title.weight(.bold))
                 Spacer()
             }
-            .font(.body.weight(.black))
-            .foregroundStyle(.txtPrimaryDark)
-            .frame(height: 44)
-            .background(bgColor)
-            .clipShape(RoundedRectangle(cornerRadius: 40))
+            
+            Spacer()
         }
+        .foregroundStyle(.txtPrimaryDark)
+        .padding(11)
+        .background(Color.bgSecondaryElevated)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
-}
-
-extension ChildMainView {
-    struct Section<Content>: View where Content: View {
-        var icon: Image
-        var title: String
-        let content: () -> Content
-        
-        init(icon: Image, title: String, @ViewBuilder content: @escaping () -> Content) {
-            self.icon = icon
-            self.title = title
-            self.content = content
-        }
-        
-        var body: some View {
-            VStack(alignment: .leading, spacing: 11) {
-                HStack(spacing: 4) {
-                    icon
-                    Text(title)
-                        .font(.subheadline.weight(.bold))
-                    
-                    Spacer()
-                }
+    
+    @ViewBuilder
+    func IconLabel(Icon: Image, label: String) -> some View {
+        HStack(spacing: 4) {
+            Icon
+            Text(label)
                 .font(.subheadline.weight(.bold))
-                
-                content()
-            }
-            .padding(11)
-            .background(.ultraThinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .overlay(
-                RoundedRectangle(cornerRadius: 16)
-                    .strokeBorder(Color.white.opacity(0.1), lineWidth: 1)
-            )
-            .padding(.horizontal, 16)
         }
+        .font(.subheadline.weight(.bold))
+    }
+    
+    @ViewBuilder
+    func NavigationButtonLabel(
+        for text: String,
+        Icon: Image,
+        bgColor: Color
+    ) -> some View {
+        VStack(alignment: .leading) {
+            Icon
+                .font(.title.weight(.bold))
+            Spacer()
+            HStack {
+                Spacer()
+                Text(text)
+                    .font(.headline.weight(.bold))
+            }
+        }
+        .foregroundStyle(.txtPrimaryDark)
+        .padding(11)
+        .frame(height: 100)
+        .background(bgColor)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }
 
 #Preview {
     NavigationStack {
-        ChildMainView()
-            .injectDIContainer()
+        ChildMainView(user: UserEntity(name: "", role: .child, email: ""))
+            .environment(NavigationManager())
             .preferredColorScheme(.dark)
     }
 }

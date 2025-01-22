@@ -16,32 +16,26 @@ final class UserEntity {
     var connectedTo: [String]
     var uploadCycle: Int?
     
+//    @Relationship(deleteRule: .cascade) var photos: [PhotoForSwiftData]
+    
     init(
         name: String,
         role: Role,
         email: String,
         connectedTo: [String] = [],
         uploadCycle: Int? = nil
+//        photos: [PhotoForSwiftData] = []
     ) {
         self.name = name
         self.role = role
         self.email = email
         self.connectedTo = connectedTo
         self.uploadCycle = uploadCycle
+//        self.photos = photos
     }
 }
 
 extension UserEntity: DomainConvertible {
-    convenience init(_ domain: User) {
-        self.init(
-            name: domain.name,
-            role: domain.role,
-            email: domain.email,
-            connectedTo: domain.connectedTo,
-            uploadCycle: domain.uploadCycle
-        )
-    }
-    
     func toDomain() -> User {
         User(
             name: name,

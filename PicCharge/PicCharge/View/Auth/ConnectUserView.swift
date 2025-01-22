@@ -10,7 +10,8 @@ import SwiftData
 
 struct ConnectUserView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(UserViewModel.self) var userVM
+
+    @Bindable var user: UserEntity
     
     @State private var requestToMe: ConnectionRequestsDTO? = nil
     @State private var requestFromMe: ConnectionRequestsDTO? = nil
@@ -21,17 +22,32 @@ struct ConnectUserView: View {
     @State private var isShowingAlert = false
     @State private var alertMessage = ""
     
-    private var userName: String { userVM.user?.name ?? "" }
-        
+    init(user: UserEntity) {
+        self.user = user
+    }
+    
     var body: some View {
         Group {
             if isConnected {
-                BuggungLoadingView()
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-                            userVM.state = .connected(userVM.user!.role)
+                if buggungEnd {
+                    BuggungEndView()
+                        .transition(.opacity.animation(.easeInOut(duration: 1)))
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                navigationManager.userState = (user.role == .child) ? .connectedChild : .connectedParent
+                            }
                         }
-                    }
+                } else {
+                    BuggungLoadingView()
+                        .transition(.opacity.animation(.easeInOut(duration: 1)))
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                                withAnimation {
+                                    buggungEnd = true
+                                }
+                            }
+                        }
+                }
             } else {
                 if let requestFromMe = requestFromMe {
                     WaitingView(request: requestFromMe)
@@ -46,9 +62,9 @@ struct ConnectUserView: View {
         }
         .task {
             if let _ = await fetchWaitingRequest() {
-                listenRequest(from: userName)
+                listenRequest(from: user.name)
             } else {
-                listenRequest(to: userName)
+                listenRequest(to: user.name)
             }
         }
         .onDisappear {
@@ -68,7 +84,7 @@ struct ConnectUserView: View {
                 Button {
                     Task {
                         isNetworking = true
-                        listenRequest(to: userName)
+                        listenRequest(to: user.name)
                         await rejectConnectionRequest(request: request)
                         isNetworking = false
                     }
@@ -94,7 +110,7 @@ struct ConnectUserView: View {
                 Button {
                     Task {
                         isNetworking = true
-                        await acceptConnectionRequest(currentUserName: userName, request: request)
+                        await acceptConnectionRequest(currentUserName: user.name, request: request)
                         isConnected = true
                         isNetworking = false
                     }
@@ -127,7 +143,7 @@ struct ConnectUserView: View {
                     .padding(.bottom, 8)
                 
                 VStack {
-                    Text("\(userName)님!")
+                    Text("\(user.name)님!")
                     Text("\(request.from)님에게서")
                     Text("연결 요청이 왔습니다")
                 }
@@ -149,7 +165,7 @@ struct ConnectUserView: View {
                 .padding(.bottom, 8)
             
             VStack {
-                Text("\(userName)님!")
+                Text("\(user.name)님!")
                 Text("\(request.to)님에게")
                 Text("연결 요청 되었습니다")
             }
@@ -166,7 +182,7 @@ struct ConnectUserView: View {
     @ViewBuilder
     func SearchNameView() -> some View {
         VStack(alignment: .leading) {
-            Text("\(userName)님, 가족의 이름을 알려주세요")
+            Text("\(user.name)님, 가족의 이름을 알려주세요")
                 .font(.title2.bold())
                 .foregroundStyle(.txtPrimaryDark)
                 .padding(.top, 40)
@@ -186,8 +202,8 @@ struct ConnectUserView: View {
             Button {
                 Task {
                     isNetworking = true
-                    listenRequest(from: userName)
-                    await sendConnectionRequest(currentUserName: userName, otherUserName: nameInput)
+                    listenRequest(from: user.name)
+                    await sendConnectionRequest(currentUserName: user.name, otherUserName: nameInput)
                     isNetworking = false
                 }
             } label: {
@@ -224,7 +240,7 @@ extension ConnectUserView {
                 return
             }
             
-            try await FirestoreService.shared.addConnectRequests(currentUserName: userName, otherUserName: otherUserName)
+            try await FirestoreService.shared.addConnectRequests(currentUserName: user.name, otherUserName: otherUserName)
             
         } catch {
             print("연결 요청을 전송하는데 실패했습니다: \(error.localizedDescription)")
@@ -253,7 +269,21 @@ extension ConnectUserView {
             
             print("연결된 유저: \(String(describing: otherUser.name))")
             
-            try await userVM.addConnections(with: otherUser.toDomain())
+            // 파이어베이스의 상대방 (요청 보낸) User 정보도 업데이트
+            otherUser.connectedTo.append(user.name)
+            try await FirestoreService.shared.updateUserConnections(user: otherUser)
+            
+            // 본인의 로컬의 User의 connectedTo 업데이트
+            
+            user.connectedTo.append(otherUser.name)
+            
+            // 파이어베이스의 본인 User 정보 업데이트
+            guard var firebaseUser = await FirestoreService.shared.fetchUserByName(name: user.name) else {
+                print("서버에서 \(user.name): \(user.email)의 정보를 가져오지 못했습니다.")
+                return
+            }
+            firebaseUser.connectedTo.append(otherUser.name)
+            try await FirestoreService.shared.updateUserConnections(user: firebaseUser)
             
             print("연결 요청이 승인되었습니다.")
         } catch {
@@ -284,7 +314,7 @@ extension ConnectUserView {
     private func fetchWaitingRequest() async -> ConnectionRequestsDTO? {
         do {
             // 기다리는 요청 찾기
-            let waitingRequests = try await FirestoreService.shared.fetchConnectionRequests(userName: userName)
+            let waitingRequests = try await FirestoreService.shared.fetchConnectionRequests(userName: user.name)
         
             // 가장 최신 연결 요청 찾기, 없으면 반환
             guard let recentRequest = waitingRequests.max(by: { $0.requestDate < $1.requestDate }) else {
@@ -324,10 +354,8 @@ extension ConnectUserView {
                 case .pending:
                     requestFromMe = recentRequest
                 case .accepted:
-                    Task {
-                        try await userVM.addLocalConnections(with: recentRequest.to)
-                        isConnected = true
-                    }
+                    self.user.connectedTo.append(recentRequest.to)
+                    isConnected = true
                 case .rejected:
                     requestFromMe = nil
                     listenRequest(to: user)

@@ -11,8 +11,11 @@ import WidgetKit
 
 struct ChildAlbumView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(UserViewModel.self) var userVM
-    @Environment(PhotoViewModel.self) var photoVM
+    @Environment(\.modelContext) var modelContext
+    
+    @Query(sort: \PhotoEntity.uploadDate, order: .reverse) var photoForSwiftDatas: [PhotoEntity]
+    @Bindable var user: UserEntity
+    var didRefresh: () async -> Void
     
     //geometryReader로 3등분
     let columnLayout = [
@@ -23,9 +26,14 @@ struct ChildAlbumView: View {
     
     var body: some View {
         Group {
-            if let mainPhoto = photoVM.photos.first {
+            if let first = photoForSwiftDatas.first {
                 ScrollView {
-                    Header("앨범")
+                    VStack(spacing: 12) {
+                        TitleView(title: "앨범")
+                        
+                        Divider()
+                            .padding(.bottom, 10)
+                    }
                     
                     VStack(spacing: 8) {
                         VStack(alignment: .leading, spacing: 8) {
@@ -36,14 +44,20 @@ struct ChildAlbumView: View {
                                 Spacer()
                             }
                             
-                            SquareImage(data: mainPhoto.imgData)
-                                .cornerRadius(10.0)
-                                .onTapGesture {
-                                    navigationManager.push(to: .childAlbumDetail(photo: mainPhoto))
-                                }
+                            if let uiImage = UIImage(data: first.imgData) {
+                                Image(uiImage: uiImage)
+                                    .resizable()
+                                    .aspectRatio(1, contentMode: .fill)
+                                    .clipped()
+                                    .cornerRadius(10.0)
+                                    .onTapGesture {
+                                        navigationManager.push(to: .childAlbumDetail(photo: first))
+                                    }
+                            }
                             
-                            Text(mainPhoto.uploadDate.toKR())
+                            Text(first.uploadDate.toKR())
                                 .font(.subheadline)
+                            
                             
                             Divider()
                                 .padding(.vertical, 8)
@@ -55,12 +69,16 @@ struct ChildAlbumView: View {
                         .padding(.horizontal, 16)
                         
                         LazyVGrid(columns: columnLayout, spacing: 3) {
-                            ForEach(photoVM.photos.dropFirst()) { photo in
-                                SquareImage(data: photo.imgData)
-                                    .onTapGesture {
-                                        navigationManager.push(to: .childAlbumDetail(photo: photo)
-                                        )
-                                    }
+                            ForEach(photoForSwiftDatas.dropFirst()) { photo in
+                                if let uiImage = UIImage(data: photo.imgData) {
+                                    Image(uiImage: uiImage)
+                                        .resizable()
+                                        .aspectRatio(1, contentMode: .fill)
+                                        .clipped()
+                                        .onTapGesture {
+                                            navigationManager.push(to: .childAlbumDetail(photo: photo))
+                                        }
+                                }
                             }
                         }
                     }
@@ -77,7 +95,7 @@ struct ChildAlbumView: View {
         }
         .refreshable {
             Task {
-                try await photoVM.syncPhoto(of: userVM.user?.name ?? "자식")
+                await didRefresh()
                 WidgetCenter.shared.reloadAllTimelines()
             }
         }
@@ -86,8 +104,12 @@ struct ChildAlbumView: View {
 
 #Preview {
     NavigationStack {
-        ChildAlbumView()
-            .injectDIContainer()
-            .preferredColorScheme(.dark)
+        ChildAlbumView(
+            user: UserEntity(name: "", role: .child, email: ""),
+            didRefresh: {}
+        )
+        .environment(NavigationManager())
+        .preferredColorScheme(.dark)
+        .navigationTitle("앨범")
     }
 }

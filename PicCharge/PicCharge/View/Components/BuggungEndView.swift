@@ -1,17 +1,16 @@
 //
-//  LoadingView.swift
+//  BuggungEndView.swift
 //  PicCharge
 //
-//  Created by 김병훈 on 5/21/24.
+//  Created by Woowon Kang on 5/25/24.
 //
 
 import SwiftUI
 
-struct ChildLoadingView: View {
+struct BuggungEndView: View {
     @Environment(NavigationManager.self) var navigationManager
-    
     var body: some View {
-        ZStack{
+        ZStack {
             VStack {
                 LinearGradient(
                     gradient: Gradient(colors: [Color.bgGreen, Color.bgGreen.opacity(0)]),
@@ -24,19 +23,21 @@ struct ChildLoadingView: View {
             }
             .ignoresSafeArea()
             VStack {
-                LottieView(jsonName: "BatteryLoading", loopMode: .loop)
-                    .frame(width: 200, height: 200)  // Adjust the frame size as needed
+                LottieView(jsonName: "BuggungEnd", loopMode: .playOnce)
             }
         }
+        .ignoresSafeArea()
         .navigationBarBackButtonHidden(true)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 navigationManager.popToRoot()
             }
         }
     }
 }
-#Preview {
-    ChildLoadingView()
-}
 
+#Preview {
+    BuggungEndView()
+        .environment(NavigationManager())
+        .preferredColorScheme(.dark)
+}

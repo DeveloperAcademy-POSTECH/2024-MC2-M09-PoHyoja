@@ -12,76 +12,86 @@ import WidgetKit
 
 struct ParentAlbumDetailView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(UserViewModel.self) var userVM
-    @Environment(PhotoViewModel.self) var photoVM
+    @Environment(\.modelContext) var modelContext
     
-    @State private var photo: Photo
+    @State private var photoForSwiftDatas: [PhotoEntity] = []
+    @State private var photo: PhotoEntity
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
+    @State private var isLiked: Bool = false
+    @State private var cancellable: AnyCancellable?
+    @State private var likeAnimationIDs: [UUID] = []
     
     private var photoForShare: PhotoShareDTO {
-        return PhotoShareDTO(
-            imgData: photo.imgData ?? Data(),
-            uploadDate: photo.uploadDate
-        )
+        PhotoShareDTO(imgData: photo.imgData, uploadDate: photo.uploadDate)
     }
     
-    init(photo: Photo) {
+    init(photo: PhotoEntity) {
         self.photo = photo
     }
     
     var body: some View {
-        TabView(selection: $photo) {
-            ForEach(photoVM.photos) { photo in
-                VStack {
-                    SquareImage(data: photo.imgData)
-                        .zoomable(isZooming: $isZooming)
-                        .padding(.top, 72)
-                    
+        ZStack {
+            Color.clear.ignoresSafeArea()
+            
+            VStack {
+                TabView(selection: $photo) {
+                    ForEach(photoForSwiftDatas) { photo in
+                        ImageView(image: photo.imgData)
+                            .zoomable(isZooming: $isZooming)
+                            .tag(photo)
+                            .padding(.bottom, 166)
+                    }
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+            }
+            
+            ForEach(likeAnimationIDs, id: \.self) { id in
+                LottieView(jsonName: "LikeAnimation", loopMode: .playOnce)
+                    .transition(.opacity)
+                    .opacity(0.5)
+                    .frame(width: 160, height: 240)
+                    .offset(y: 188) // iPhone 13 Pro Max, iPhone 15 Pro: 150
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                            likeAnimationIDs.removeAll { $0 == id }
+                        }
+                    }
+            }
+            
+            VStack {
+                Spacer()
+                
+                VStack(spacing: 8) {
                     Spacer()
+                    
+                    Button {
+                        photo.likeCount += 1
+                        likeAnimationIDs.append(UUID())
+                        self.resetTimer()
+                        HapticManager.instance.impact(style: .light)
+                    } label: {
+                        Icon.heart
+                            .font(.system(size: 50))
+                            .foregroundColor(.grpRed)
+                    }
+                    
+                    Text(" ")
+                        .font(.body)
+                        .fontWeight(.bold)
                 }
-                .tag(photo)
             }
-        }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-        .overlay {
-            if !isZooming {
-                HStack(spacing: 30) {
-                    IconBtn(Icon.loveReaction) {
-                        // TODO: - 카운트 연결
-                        HapticManager.instance.impact(style: .light)
-                    }
-                    .foregroundStyle(.pink)
-                    
-                    IconBtn(Icon.fireReaction) {
-                        // TODO: - 카운트 연결
-                        HapticManager.instance.impact(style: .light)
-                    }
-                    .foregroundStyle(.yellow)
-                    
-                    IconBtn(Icon.starReaction) {
-                        // TODO: - 카운트 연결
-                        HapticManager.instance.impact(style: .light)
-                    }
-                    .foregroundStyle(.teal)
-                    
-                    IconBtn(Icon.likeReaction) {
-                        // TODO: - 카운트 연결
-                        HapticManager.instance.impact(style: .light)
-                    }
-                    .foregroundStyle(.purple)
-                }
-                .padding(.top, 450)
-            }
+            .opacity(isZooming ? 0 : 1)
+            .padding(.bottom, 80)
         }
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(isZooming ? .hidden : .visible, for: .navigationBar)
         .toolbar {
             Menu {
-                ShareLink(item: photoForShare,
-                          preview: SharePreview(photoForShare.caption,
-                                                image: photoForShare.image)
+                ShareLink(
+                    item: photoForShare,
+                    preview: SharePreview(photoForShare.caption, image: photoForShare.image)
                 ) {
                     Icon.share
                     Text("공유하기")
@@ -105,47 +115,73 @@ struct ParentAlbumDetailView: View {
         ) {
             VStack {
                 Button("삭제하기", role: .destructive) {
-                    Task.detached {
-                        do {
-                            // 1. 사진 삭제
-                            try await photoVM.deletePhoto(photo)
-                            // 2. 위젯 리로드
-                            WidgetCenter.shared.reloadAllTimelines()
-                            // 3. 남은 Photo 없다면 이전 화면으로
-                            await MainActor.run {
-                                if photoVM.photos.isEmpty {
-                                    navigationManager.pop()
-                                }
-                            }
-                        } catch {
-                            // 4. 에러 처리
-                            await GlobalAlert.shared.show(message: error.localizedDescription)
-                        }
+                    // MARK: - 로컬 사진 삭제 처리
+                    modelContext.delete(photo)
+                    
+                    // MARK: - 서버 사진 삭제 처리
+                    Task {
+                        await FirestoreService.shared.deletePhoto(photoId: photo.id.uuidString)
                     }
+                    
+                    WidgetCenter.shared.reloadAllTimelines()
+                    
+                    navigationManager.pop()
                 }
                 Button("Cancel", role: .cancel) {}
             }
         }
+        .task {
+            photoForSwiftDatas = await getPhotos()
+        }
         .onDisappear {
+            guard let cancellable else { return }
+            
+            cancellable.cancel()
             Task.detached(priority: .background) {
-                // TODO: - 좋아요 개수 업데이트 로직 추가
+                try await FirestoreService.shared.updatePhoto(photoForSwiftData: photo)
             }
         }
-        .onChange(of: photoVM.photos) { oldValue, newValue in
-            // 현재 보고 있는 photo 업데이트
-            guard let index = oldValue.firstIndex(of: photo),
-                  0..<newValue.count ~= index
-            else { return }
+    }
+    
+    private func resetTimer() {
+        cancellable?.cancel()
+        
+        cancellable = Just(())
+            .delay(for: .seconds(2), scheduler: RunLoop.main)
+            .sink {
+                Task.detached(priority: .background) {
+                    try await FirestoreService.shared.updatePhoto(photoForSwiftData: photo)
+                }
+            }
+    }
+    
+    func getPhotos() async -> [PhotoEntity] {
+        let descriptor = FetchDescriptor<PhotoEntity>(sortBy: [SortDescriptor(\.uploadDate, order: .reverse)])
+        return (try? modelContext.fetch(descriptor)) ?? []
+    }
+}
 
-            self.photo = newValue[index]
+extension ParentAlbumDetailView {
+    struct ImageView: View {
+        let image: Data
+        
+        var body: some View {
+            if let uiImg = UIImage(data: image) {
+                Image(uiImage: uiImg)
+                    .resizable()
+                    .aspectRatio(1, contentMode: .fit)
+            } else {
+                Color.bgGray
+                    .aspectRatio(1, contentMode: .fit)
+            }
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        ParentAlbumDetailView(photo: Photo.mock)
-            .injectDIContainer()
-            .preferredColorScheme(.dark)
-    }
+    ParentAlbumDetailView(
+        photo: PhotoEntity(uploadBy: "", sharedWith: [], imgData: UIImage(systemName: "camera")!.pngData()!)
+    )
+    .environment(NavigationManager())
+    .preferredColorScheme(.dark)
 }

@@ -11,11 +11,10 @@ import WidgetKit
 
 struct ChildSendGalleryView: View {
     @Environment(NavigationManager.self) var navigationManager
-    @Environment(UserViewModel.self) var userVM
-    @Environment(PhotoViewModel.self) var photoVM
+    @Environment(\.modelContext) var modelContext
+    @Query var userForSwiftDatas: [UserEntity]
 
-    @State private var selectedImgData: Data?
-    @State private var isFirstLoad: Bool = true
+    @State private var selectedImageData: Data?
     @State private var isPresented: Bool = false
     @State private var isChildLoadingView: Bool = false
     
@@ -28,7 +27,7 @@ struct ChildSendGalleryView: View {
                     Spacer()
                     
                     Group {
-                        if let imgData = selectedImgData,
+                        if let imgData = selectedImageData,
                            let uiImage = UIImage(data: imgData)
                         {
                             Image(uiImage: uiImage)
@@ -75,52 +74,41 @@ struct ChildSendGalleryView: View {
                     .foregroundStyle(.txtPrimaryDark)
                     
                     Button("사진 보내기") {
+                        guard let imageData = selectedImageData else { return }
+                        guard let user = userForSwiftDatas.first else {
+                            print("UserForSwiftData 에서 정보 불러오기 실패")
+                            return
+                        }
+                        var newConnectedTo = user.connectedTo
+                        newConnectedTo.append(user.name)
+                        let photoForSwiftData = PhotoEntity(uploadBy: user.name, sharedWith: newConnectedTo, imgData: imageData)
+                        
+                        // MARK: - 로컬에 이미지 저장
+                        modelContext.insert(photoForSwiftData)
+                        
+                        // MARK: - 사진 전송 로직 imageData: Data를 서버로 전송
+                        Task {
+                            await FirestoreService.shared.uploadPhoto(userName: user.name, photoForSwiftData: photoForSwiftData)
+                        }
                         isChildLoadingView = true
                         
-                        Task.detached {
-                            do {
-                                // 1. 사진 업로드
-                                try await uploadPhoto()
-                                // 2. 위젯 리로드
-                                WidgetCenter.shared.reloadAllTimelines()
-                                // 3. 화면 이동
-                                await MainActor.run { navigationManager.popToRoot() }
-                            } catch {
-                                // 4. 에러 처리
-                                await MainActor.run { isChildLoadingView = false }
-                                await GlobalAlert.shared.show(message: error.localizedDescription)
-                            }
-                        }
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                 }
             }
             .sheet(isPresented: $isPresented) {
-                ChildSelectGalleryView(selectedImgData: $selectedImgData)
+                ChildSelectGalleryView(selectedImageData: $selectedImageData)
                     .ignoresSafeArea()
             }
             .onAppear {
-                // TODO: - isChildLoadingView 변경되더라도 1번만 호출되도록 수정
-                if isFirstLoad {
-                    isPresented = true
-                    isFirstLoad.toggle()
-                }
+                isPresented = true
             }
         }
     }
 }
 
-extension ChildSendGalleryView {
-    func uploadPhoto() async throws {
-        guard let user = userVM.user,
-              let imgData = selectedImgData
-        else { return }
-        
-        try await photoVM.uploadPhoto(of: user, imgData: imgData)
-    }
-}
-
 #Preview {
     ChildSendGalleryView()
-        .injectDIContainer()
+        .environment(NavigationManager())
         .preferredColorScheme(.dark)
 }
