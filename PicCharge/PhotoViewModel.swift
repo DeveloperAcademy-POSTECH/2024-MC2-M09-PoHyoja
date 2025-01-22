@@ -59,6 +59,14 @@ extension PhotoViewModel {
         }
     }
     
+    func downloadPhoto(of urlString: String) async throws -> Data {
+        try await remoteStorageService.downloadPhotoData(of: urlString)
+    }
+    
+    func savePhotoAtLocal(photo: Photo) async throws {
+        try await localStorageService.updatePhoto(photo)
+    }
+    
     func syncPhoto(of userName: String?) async {
         guard let userName else { return }
         

@@ -53,6 +53,8 @@ protocol LocalStorageService {
     /// - Throws: 저장 과정에서 오류 발생 시 예외를 던짐
     func updatePhotos(_ photos: [Photo]) async throws
     
+    func updatePhoto(_ photo: Photo) async throws
+    
     /// 로컬 스토리지에서 일치하는 ID의 사진을 삭제합니다.
     /// - Parameter photoId: 삭제할 사진의 ID
     /// - Throws: 삭제 과정에서 오류 발생 시 예외를 던짐

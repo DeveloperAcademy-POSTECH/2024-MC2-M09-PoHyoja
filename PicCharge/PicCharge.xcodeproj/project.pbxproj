@@ -12,6 +12,7 @@
 		420E48F22D36E5C0008944A4 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E48F12D36E5C0008944A4 /* String+.swift */; };
 		420E48F32D36E5C0008944A4 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E48F12D36E5C0008944A4 /* String+.swift */; };
 		420E48FB2D376D66008944A4 /* SignUpEmailPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E48FA2D376D66008944A4 /* SignUpEmailPasswordView.swift */; };
+		420E492A2D4134DA008944A4 /* AsyncSquareImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E49292D4134DA008944A4 /* AsyncSquareImage.swift */; };
 		42141E192D2ECFD200E2609A /* SquareImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42141E182D2ECFD200E2609A /* SquareImage.swift */; };
 		4214D9EE2C0330260096D48B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 4214D9ED2C0330260096D48B /* FirebaseFirestore */; };
 		4214D9F02C0330260096D48B /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4214D9EF2C0330260096D48B /* FirebaseFirestoreSwift */; };
@@ -177,6 +178,7 @@
 		420E48ED2D36C56A008944A4 /* FilledBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledBtn.swift; sourceTree = "<group>"; };
 		420E48F12D36E5C0008944A4 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		420E48FA2D376D66008944A4 /* SignUpEmailPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpEmailPasswordView.swift; sourceTree = "<group>"; };
+		420E49292D4134DA008944A4 /* AsyncSquareImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSquareImage.swift; sourceTree = "<group>"; };
 		42141E182D2ECFD200E2609A /* SquareImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SquareImage.swift; sourceTree = "<group>"; };
 		4214D9FD2C0387D40096D48B /* ChildWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildWidget.swift; sourceTree = "<group>"; };
 		4214D9FF2C0387F20096D48B /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
@@ -471,6 +473,7 @@
 				518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */,
 				E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */,
 				42141E182D2ECFD200E2609A /* SquareImage.swift */,
+				420E49292D4134DA008944A4 /* AsyncSquareImage.swift */,
 				420E48ED2D36C56A008944A4 /* FilledBtn.swift */,
 			);
 			path = Components;
@@ -828,6 +831,7 @@
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
 				425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */,
 				4214DA172C0392310096D48B /* PhotoDTO_V0.swift in Sources */,
+				420E492A2D4134DA008944A4 /* AsyncSquareImage.swift in Sources */,
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
 				4214DA212C0393830096D48B /* AppDelgate.swift in Sources */,
 				42CF6FDC2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */,
