@@ -43,7 +43,7 @@ struct AsyncSquareImage: View {
                 }
             }
             
-            try await photoVM.savePhotoAtLocal(photo: photo)
+            try await photoVM.updateLocal(of: photo)
             
         } catch {
             print("Error loading image: \(error)")

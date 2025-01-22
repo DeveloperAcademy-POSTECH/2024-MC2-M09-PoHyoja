@@ -27,46 +27,16 @@ final class PhotoViewModel {
 }
 
 extension PhotoViewModel {    
-    func uploadPhoto(of user: User, imgData: Data) async throws {
-        
-        let photo = Photo(of: user, imgData: imgData)
-        
-        // 1. 원격 사진 데이터 업로드
-        let urlString = try await remoteStorageService.uploadPhotoData(of: user.name, photo: photo)
-        
-        do {
-            // 2. 원격 사진 정보 저장
-            try await remoteStorageService.addPhoto(photo, urlString: urlString)
-            
-            // 3. UI에 최신순 데이터 추가
-            await MainActor.run { photos.insert(photo, at: 0) }
-            
-        } catch {
-            
-            // 2-1. 원격 사진 정보 저장 실패 시 - 업로드한 Data 삭제
-            try await remoteStorageService.deletePhotoData(of: urlString)
-            
-            throw error
-        }
-        
-        do {
-            // 4. 로컬 저장
-            try await localStorageService.addPhoto(photo)
-            
-        } catch {
-            // 로컬 저장 에러는 무시
-            // (SOT - 원격) : 원격 성공, 로컬 실패 시에는 UI 복구 -> sync에서 해결!
-        }
-    }
-    
-    func downloadPhoto(of urlString: String) async throws -> Data {
-        try await remoteStorageService.downloadPhotoData(of: urlString)
-    }
-    
-    func savePhotoAtLocal(photo: Photo) async throws {
-        try await localStorageService.updatePhoto(photo)
-    }
-    
+    /// 로컬과 원격 저장소에 저장된 사진 데이터를 동기화합니다.
+    ///
+    /// 1. 현재 원격, 로컬 데이터를 Fetch합니다.
+    /// 2. 원격에서 reaction이 업데이트 된 Photo를 확인합니다.
+    /// 3. 원격에서 새로 추가된 Photo를 확인합니다.
+    /// 4. 원격에서 삭제된 Photo를 확인합니다.
+    /// 5. 변경된 2,3,4 Photo 데이터를 로컬에 저장합니다.
+    /// 6. 로컬 데이터를 다시 fetch합니다.
+    ///
+    /// - Parameter userName: 유저의 이름
     func syncPhoto(of userName: String?) async {
         guard let userName else { return }
         
@@ -113,7 +83,56 @@ extension PhotoViewModel {
             await GlobalAlert.shared.show(message: "동기화 실패")
         }
     }
+
+    /// 원격 저장소에 사진을 업로드합니다.
+    /// - Parameters:
+    ///   - user: 업로드하는 유저 정보
+    ///   - imgData: 업로드할 사진 데이터
+    func uploadPhoto(of user: User, imgData: Data) async throws {
+        
+        let photo = Photo(of: user, imgData: imgData)
+        
+        // 1. 원격 사진 데이터 업로드
+        let urlString = try await remoteStorageService.uploadPhotoData(of: user.name, photo: photo)
+        
+        do {
+            // 2. 원격 사진 정보 저장
+            try await remoteStorageService.addPhoto(photo, urlString: urlString)
+            
+            // 3. UI에 최신순 데이터 추가
+            await MainActor.run { photos.insert(photo, at: 0) }
+            
+        } catch {
+            
+            // 2-1. 원격 사진 정보 저장 실패 시 - 업로드한 Data 삭제
+            try await remoteStorageService.deletePhotoData(of: urlString)
+            
+            throw error
+        }
+        
+        do {
+            // 4. 로컬 저장
+            try await localStorageService.addPhoto(photo)
+            
+        } catch {
+            // 로컬 저장 에러는 무시
+            // (SOT - 원격) : 원격 성공, 로컬 실패 시에는 UI 복구 -> sync에서 해결!
+        }
+    }
     
+    /// 원격 저장소에 저장된 사진을 다운로드합니다.
+    /// - Parameter urlString: urlString
+    /// - Returns: 사진 Data
+    func downloadPhoto(of urlString: String) async throws -> Data {
+        try await remoteStorageService.downloadPhotoData(of: urlString)
+    }
+    
+    /// 로컬 사진을 업데이트 합니다.
+    /// - Parameter photo: 업데이트할 사진 데이터
+    func updateLocal(of photo: Photo) async throws {
+        try await localStorageService.updatePhoto(photo)
+    }
+
     /// 해당 사진을 삭제합니다.
     ///
     /// 1. photos에서 우선 사진을 삭제해 UI에 반영합니다.
@@ -121,7 +140,7 @@ extension PhotoViewModel {
     /// 3. 에러 발생 시 삭제한 UI를 복구합니다.
     ///
     /// - Parameter photo: 삭제할 photo
-    func deletePhoto(_ photo: Photo) async throws {
+    func delete(_ photo: Photo) async throws {
         
         guard let idx = photos.firstIndex(where: { $0.id == photo.id }) else { return }
         
@@ -144,6 +163,7 @@ extension PhotoViewModel {
         }
     }
     
+    /// 모든 로컬 사진을 삭제합니다.
     func deleteAllLocal() async throws {
         try await localStorageService.deleteAllPhotos()
     }
