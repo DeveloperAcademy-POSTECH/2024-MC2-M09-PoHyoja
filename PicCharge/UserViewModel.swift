@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import AuthenticationServices
+import CryptoKit
 import FirebaseAuth
 
 @Observable
@@ -19,6 +21,7 @@ final class UserViewModel {
     
     private(set) var user: User?
     var state: State = .checkNeeded
+    private(set) var nounce: String = ""
     
     @ObservationIgnored
     private let localStorageService: LocalStorageService
@@ -174,6 +177,8 @@ final class UserViewModel {
         //TODO: 현재는 탈퇴하기 눌러도 로그아웃 처리, 추후 탈퇴기능 논의
         try await logOut()
     }
+    
+    
 }
 
 extension UserViewModel {
@@ -194,5 +199,98 @@ extension UserViewModel {
         try await localStorageService.addConnection(of: user, with: [])
         
         await MainActor.run { self.user?.connectedTo += [userName] }
+    }
+}
+
+// Apple Login에 필요한 기능 구현
+extension UserViewModel {
+
+    // Apple 로그인 시작
+    func configureAppleSignInRequest(_ request: ASAuthorizationAppleIDRequest) {
+        self.nounce = randomNonceString()
+        request.requestedScopes = [.email, .fullName]
+        request.nonce = sha256(nounce)
+    }
+    
+    // Nonce 생성
+    func randomNonceString(length: Int = 32) -> String {
+        let charset: [Character] =
+            Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+        var result = ""
+        var remainingLength = length
+
+        while remainingLength > 0 {
+            let randoms: [UInt8] = (0 ..< 16).map { _ in
+                var random: UInt8 = 0
+                let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+                if errorCode != errSecSuccess {
+                    fatalError("Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)")
+                }
+                return random
+            }
+
+            randoms.forEach { random in
+                if remainingLength == 0 { return }
+                if random < charset.count {
+                    result.append(charset[Int(random)])
+                    remainingLength -= 1
+                }
+            }
+        }
+
+        return result
+    }
+
+    // SHA256 해싱
+    func sha256(_ input: String) -> String {
+        let inputData = Data(input.utf8)
+        let hashedData = SHA256.hash(data: inputData)
+        return hashedData.compactMap { String(format: "%02x", $0) }.joined()
+    }
+    
+    func processAppleSignInResult(_ result: Result<ASAuthorization, Error>) async {
+        switch result {
+        case .success(let authorization):
+            if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                do {
+                    try await performFirebaseSignIn(with: credential) // Apple Credential로 Firebase 인증 처리
+                } catch {
+                    print("Apple Sign-In 처리 실패: \(error.localizedDescription)")
+                }
+            } else {
+                print("Apple Sign-In 실패: Credential 변환 실패")
+            }
+        case .failure(let error):
+            print("Apple Sign-In 에러: \(error.localizedDescription)")
+        }
+    }
+
+    // Apple Credential을 사용해 Firebase 인증 처리
+    func performFirebaseSignIn(with credential: ASAuthorizationAppleIDCredential) async throws {
+        // 1. Apple에서 제공한 identityToken을 가져와 Firebase 인증에 사용
+        guard let identityToken = credential.identityToken,
+              let tokenString = String(data: identityToken, encoding: .utf8) else {
+            throw NSError(domain: "AuthError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid token"])
+        }
+
+        // 2. Firebase 인증을 위한 Credential 생성
+        let firebaseCredential = OAuthProvider.credential(
+            withProviderID: "apple.com",
+            idToken: tokenString,
+            rawNonce: nounce
+        )
+
+        do {
+            // 3. Firebase 인증 요청
+            let authResult = try await Auth.auth().signIn(with: firebaseCredential)
+
+            // 4. Firebase 인증 성공 시 사용자 정보 디버깅 출력
+            print("Firebase Auth 성공: \(authResult.user.email ?? "Unknown email")")
+
+            // TODO: Firestore에서 사용자 정보 확인 및 로컬 데이터 저장 추가 가능
+        } catch {
+            print("Firebase Auth 실패: \(error.localizedDescription)")
+            throw error
+        }
     }
 }
