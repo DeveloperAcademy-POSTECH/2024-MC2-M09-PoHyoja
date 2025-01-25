@@ -98,10 +98,23 @@ struct SignUpRoleView: View {
                 
                 Task.detached {
                     do {
-                        try await userVM.signUp(name: name, email: email, password: password, role: selectedRole)
-                        
-                        await MainActor.run { navigationManager.pop(to: .emailLogin) }
-                        
+                        if password == "" {
+                            // 애플 회원가입
+                            try await userVM.signUpWithApple(name: name, email: email, role: selectedRole)
+                            
+                            // 애플 회원가입 완료 후 홈 화면으로 이동
+                            await MainActor.run {
+                                navigationManager.popToRoot()
+                            }
+                        } else {
+                            // 이메일 회원가입
+                            try await userVM.signUp(name: name, email: email, password: password, role: selectedRole)
+                            
+                            // 이메일 회원가입 완료 후 로그인 화면으로 이동
+                            await MainActor.run {
+                                navigationManager.pop(to: .emailLogin)
+                            }
+                        }
                     } catch {
                         await GlobalAlert.shared.show(message: email.description)
                     }

@@ -10,6 +10,7 @@ import AuthenticationServices
 
 struct AppleLoginBtn: View {
     @Environment(UserViewModel.self) var userVM
+    @Environment(NavigationManager.self) var navigationManager
     
     var body: some View {
         SignInWithAppleButton(
@@ -19,7 +20,15 @@ struct AppleLoginBtn: View {
             },
             onCompletion: { result in
                 Task {
-                    await userVM.processAppleSignInResult(result) // 결과 처리 간소화
+                    if let email = await userVM.processAppleSignInResult(result) {
+                        // SignUpNameView로 이메일과 더미 비밀번호 전달
+                        navigationManager.push(to: .signUpName(
+                            email: email,
+                            password: ""
+                        ))
+                    } else {
+                        print("Apple 로그인 실패 또는 취소됨")
+                    }
                 }
             }
         )

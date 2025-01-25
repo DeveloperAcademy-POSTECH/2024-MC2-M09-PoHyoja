@@ -27,7 +27,6 @@ struct MainLoginView: View {
                     .frame(width: 188)
                 
                 Spacer()
-                Spacer()
             }
             
             VStack {
