@@ -116,6 +116,64 @@ final class UserViewModel {
         }
     }
     
+    func signInWithApple() async {
+        do {
+             // 1. 현재 Firebase Auth 사용자가 존재하는지 확인
+             guard let currentUser = Auth.auth().currentUser else {
+                 // 아직 Apple Credential로 인증되지 않았거나
+                 // Apple 로그인 프로세스가 완료되지 않은 상황
+                 print("애플 로그인: 현재 사용자가 존재하지 않음 (Auth)")
+                 return
+             }
+             
+             // 2. 이메일 가져오기
+             let email = currentUser.email ?? "No email"
+             print("애플 로그인 이메일: \(email)")
+
+             // 3. Firestore에서 사용자 정보 확인
+             guard let user = try await remoteStorageService.fetchUserByEmail(email) else {
+                 // Firestore에 사용자 정보가 없다면 -> 회원가입(이름/역할 설정)이 안 된 상태
+                 // 애플 로그인만 완료된 상태이므로, 로컬 정보 저장 없이 로그아웃 or 추가 흐름
+                 print("애플 로그인: Firestore에 사용자 정보 없음. 회원가입 필요")
+                 
+                 // 원한다면 로그아웃
+                 try Auth.auth().signOut()
+                 return
+             }
+            
+             try await localStorageService.addUser(user)
+             
+             // 4. VM State 업데이트
+             await MainActor.run {
+                 self.user = user
+                 self.state = user.isConnected ? .connected(user.role) : .notConnected
+             }
+             
+             print("애플 로그인: Firestore 사용자 정보 확인 완료. State 업데이트.")
+
+         } catch let error as NSError {
+             // Apple 로그인 / Firebase Auth 에러 처리
+             print("애플 로그인 실패: \(error.localizedDescription)")
+             
+             // 추가적인 에러 분기 (AuthErrorCode) 필요하다면
+             if let authError = AuthErrorCode.Code(rawValue: error.code) {
+                 switch authError {
+                 case .invalidEmail:
+                     await GlobalAlert.shared.show(message: "이메일 형식이 올바르지 않습니다.")
+                 case .wrongPassword:
+                     await GlobalAlert.shared.show(message: "비밀번호가 맞지 않습니다.")
+                 case .userDisabled:
+                     await GlobalAlert.shared.show(message: "사용할 수 없는 계정입니다.")
+                 default:
+                     await GlobalAlert.shared.show(message: "애플 로그인 에러: \(error.localizedDescription)")
+                 }
+             } else {
+                 // Firestore 관련 에러 등
+                 await GlobalAlert.shared.show(message: "애플 로그인 에러: \(error.localizedDescription)")
+             }
+         }
+    }
+    
     func checkNameAvailable(name: String) async -> Bool {
         do {
             // 1. 기존 유저 존재 여부 확인
@@ -151,14 +209,7 @@ final class UserViewModel {
     }
     
     func signUp(name: String, email: String, password: String, role: Role) async throws {
-        //_ = try await Auth.auth().createUser(withEmail: email, password: password)
-        do {
-            _ = try await Auth.auth().createUser(withEmail: email, password: password)
-            print("Firebase Auth 사용자 생성 성공: \(email)")
-        } catch let error as NSError {
-            print("Firebase Auth 에러 - 코드: \(error.code), 메시지: \(error.localizedDescription)")
-            throw error
-        }
+        _ = try await Auth.auth().createUser(withEmail: email, password: password)
         
         let user = User(name: name, role: role, email: email, connectedTo: [])
         
@@ -168,6 +219,12 @@ final class UserViewModel {
     func signUpWithApple(name: String, email: String, role: Role) async throws {
         // Firebase Auth에는 이미 계정이 있으므로 Firestore에만 저장
         let user = User(name: name, role: role, email: email, connectedTo: [])
+        
+        await MainActor.run {
+            self.user = user
+            self.state = .notConnected
+        }
+        
         try await remoteStorageService.addUser(user)
         
         print("애플 회원가입(추가 정보) 완료 - \(email)")
