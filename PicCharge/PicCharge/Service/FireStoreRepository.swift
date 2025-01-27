@@ -216,6 +216,25 @@ extension FireStoreRepository {
         group.wait()
     }
     
+    
+    func fetchLatestPhoto(_ userName: String) async -> Photo? {
+        // 1. 유저 네임 check
+        guard !userName.isEmpty else { return nil }
+        
+        let document = db.collection(photoCollection)
+            .whereField("sharedWith", arrayContains: userName)
+            .order(by: "uploadDate", descending: true)
+            .limit(to: 1)
+        
+        // 2. FireStore에서 자료 가져오기
+        guard let documents = try? await document.getDocuments().documents else {
+            return nil
+        }
+        
+        // 3. DTO -> Domain으로 변환
+        return try? documents.first?.data(as: PhotoDTO_V1.self).toDomain()
+    }
+    
     func fetchPhotos(_ userName: String) async throws -> [Photo] {
         do {
             return try await _fetchPhotos(userName)
