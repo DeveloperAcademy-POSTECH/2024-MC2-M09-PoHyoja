@@ -8,9 +8,11 @@
 import SwiftUI
 import WidgetKit
 import SwiftData
+import FirebaseCore
 
 struct ChildProvider: AppIntentTimelineProvider {
     let localStorageRepository: LocalStorageService
+    let remoteStorageRepository: RemoteStorageService
     
     func placeholder(in context: Context) -> ChildEntry {
         ChildEntry(date: Date(), configuration: ConfigurationAppIntent(), batteryPercentage: 90, lastUploadedDate: Date())
@@ -58,7 +60,9 @@ struct ChildProvider: AppIntentTimelineProvider {
     }
     
     private func getLatestUploadedDate() async -> Date {
-        await localStorageRepository.fetchLatestPhoto()?.uploadDate ?? .now
+        guard let user = await localStorageRepository.fetchUser() else { return .now }
+        
+        return await remoteStorageRepository.fetchLatestPhoto(user.name)?.uploadDate ?? .now
     }
     
     private func getUploadCycle() async -> Int {
@@ -117,7 +121,7 @@ struct ChildWidgetEntryView : View {
                             }
                             
                             HStack {
-                                Button(intent: GoToChargeIntent()) {
+                                Link(destination: URL(string: getPercentEcododedString("widget://deeplink?route=gallery"))!) {
                                     HStack(spacing: 5) {
                                         Image(systemName: "bolt.circle.fill")
                                         Text("충전하러가기")
@@ -128,8 +132,6 @@ struct ChildWidgetEntryView : View {
                                     .background(entry.batteryPercentage <= 10 ? Color(red: 0.875, green: 0.157, blue: 0) : .accent)
                                     .clipShape(RoundedRectangle(cornerRadius: 16))
                                 }
-                                .buttonStyle(.plain)
-                                .allowsHitTesting(false)
                                 
                                 Spacer()
                             }
@@ -183,21 +185,34 @@ struct ChildWidgetEntryView : View {
         }
         .background(Color.bgSecondaryElevated)
     }
+    
+    private func getPercentEcododedString(_ string: String) -> String {
+        string.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+    }
 }
 
 struct ChildWidget: Widget {
     let kind: String = "ChildWidget"
     let localStorageRepository: LocalStorageService
+    let remoteStorageRepository: RemoteStorageService
     
     init() {
+        let filePath = Bundle.main.path(forResource: "../../GoogleService-Info", ofType: "plist")!
+        let options = FirebaseOptions(contentsOfFile: filePath)
+        FirebaseApp.configure(options: options!)
+        
         localStorageRepository = SwiftDataRepository()
+        remoteStorageRepository = FireStoreRepository(fireStore: .firestore(), storage: .storage())
     }
     
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
             kind: kind,
             intent: ConfigurationAppIntent.self,
-            provider: ChildProvider(localStorageRepository: localStorageRepository)
+            provider: ChildProvider(
+                localStorageRepository: localStorageRepository,
+                remoteStorageRepository: remoteStorageRepository
+            )
         ) {
             ChildWidgetEntryView(entry: $0)
                 .containerBackground(.fill.tertiary, for: .widget)

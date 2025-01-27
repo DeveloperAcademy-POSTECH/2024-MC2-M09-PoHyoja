@@ -52,13 +52,6 @@ extension SwiftDataRepository {
 
 // MARK: - Photo Entity
 extension SwiftDataRepository {
-    func fetchLatestPhoto() async -> Photo? {
-        try? photoStorage
-            .read(sortDescriptors: PhotoSortDescriptor.build(.uploadDate, order: .reverse), fetchLimit: 1)
-            .first?
-            .toDomain()
-    }
-    
     func fetchPhotos() async -> [Photo] {
         await fetchPhotos(for: .uploadDate, .reverse)
     }

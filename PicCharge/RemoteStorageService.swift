@@ -38,6 +38,8 @@ protocol RemoteStorageService {
     /// - Throws: 삭제 과정에서 오류 발생 시 예외를 던짐
     func deleteUser(_ user: User) async throws
     
+    func fetchLatestPhoto(_ userName: String) async -> Photo?
+    
     /// 유저 이름을 통해 사진 데이터를 가져옵니다.
     /// - Parameter userName: 사진을 가져올 유저 이름
     /// - Returns: 해당 유저의 사진 목록 (`[Photo]`)

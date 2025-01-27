@@ -10,7 +10,6 @@ import WidgetKit
 import FirebaseCore
 import SwiftData
 
-
 // MARK: - 부모 위젯
 struct ParentProvider: AppIntentTimelineProvider {
     enum SwiftDataError: Error {
@@ -32,12 +31,10 @@ struct ParentProvider: AppIntentTimelineProvider {
                 return entry
             }
             
-            var photos: [Photo] = []
-            photos = try await remoteStorageRepository.fetchPhotos(user.name)
+            let photo = await remoteStorageRepository.fetchLatestPhoto(user.name)
             
-            if let urlString = photos.last?.urlString {
+            if let urlString = photo?.urlString {
                 let imgData = try await remoteStorageRepository.downloadPhotoData(of: urlString)
-
                 
                 if let image = UIImage(data: imgData) {
                     return ParentEntry(date: Date(), image: image)
@@ -58,10 +55,9 @@ struct ParentProvider: AppIntentTimelineProvider {
                 return Timeline(entries: [entry], policy: .atEnd)
             }
             
-            var photos: [Photo] = []
-            photos = try await remoteStorageRepository.fetchPhotos(user.name)
+            let photo = await remoteStorageRepository.fetchLatestPhoto(user.name)
             
-            if let urlString = photos.first?.urlString {
+            if let urlString = photo?.urlString {
                 let imgData = try await remoteStorageRepository.downloadPhotoData(of: urlString)
                 
                 if let image = UIImage(data: imgData) {
