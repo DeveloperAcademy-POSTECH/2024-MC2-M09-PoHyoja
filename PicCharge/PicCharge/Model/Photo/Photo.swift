@@ -5,13 +5,35 @@
 //  Created by 남유성 on 12/28/24.
 //
 
-import Foundation
+import SwiftUI
 
 struct Reaction: Equatable {
     var love: Int
     var fire: Int
     var star: Int
     var like: Int
+    
+    enum Kind {
+        case love, fire, star, like
+        
+        var icon: Image {
+            switch self {
+            case .love: return Icon.loveReaction
+            case .fire: return Icon.fireReaction
+            case .star: return Icon.starReaction
+            case .like: return Icon.likeReaction
+            }
+        }
+    }
+    
+    mutating func increment(for kind: Kind) {
+        switch kind {
+        case .love: self.love += 1
+        case .fire: self.fire += 1
+        case .star: self.star += 1
+        case .like: self.like += 1
+        }
+    }
 }
 
 @Observable

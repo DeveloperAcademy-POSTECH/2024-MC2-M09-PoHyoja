@@ -48,41 +48,18 @@ struct ParentAlbumDetailView: View {
                 .tag(photo)
             }
         }
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .overlay {
             if !isZooming {
                 HStack(spacing: 30) {
-                    IconBtn(Icon.loveReaction) {
-                        photo.reaction.love += 1
-                        reactionPublisher.send(photo)
-                        HapticManager.instance.impact(style: .light)
-                    }
-                    .foregroundStyle(.pink)
-                    
-                    IconBtn(Icon.fireReaction) {
-                        photo.reaction.fire += 1
-                        reactionPublisher.send(photo)
-                        HapticManager.instance.impact(style: .light)
-                    }
-                    .foregroundStyle(.yellow)
-                    
-                    IconBtn(Icon.starReaction) {
-                        photo.reaction.star += 1
-                        reactionPublisher.send(photo)
-                        HapticManager.instance.impact(style: .light)
-                    }
-                    .foregroundStyle(.teal)
-                    
-                    IconBtn(Icon.likeReaction) {
-                        photo.reaction.like += 1
-                        reactionPublisher.send(photo)
-                        HapticManager.instance.impact(style: .light)
-                    }
-                    .foregroundStyle(.purple)
+                    ReactionButton(for: .love, color: .pink)
+                    ReactionButton(for: .fire, color: .yellow)
+                    ReactionButton(for: .star, color: .teal)
+                    ReactionButton(for: .like, color: .purple)
                 }
                 .padding(.top, 450)
             }
         }
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
         .navigationTitle(photo.uploadDate.toKR())
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(isZooming ? .hidden : .visible, for: .navigationBar)
@@ -145,7 +122,16 @@ struct ParentAlbumDetailView: View {
         }
     }
     
-    
+    @ViewBuilder
+    private func ReactionButton(for reaction: Reaction.Kind, color: Color) -> some View {
+        
+        IconBtn(reaction.icon) {
+            photo.reaction.increment(for: reaction)
+            reactionPublisher.send(photo)
+            HapticManager.instance.impact(style: .light)
+        }
+        .foregroundStyle(color)
+    }
 }
 
 #Preview {
