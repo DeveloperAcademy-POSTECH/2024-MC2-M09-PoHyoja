@@ -31,10 +31,10 @@ struct ChildMainView: View {
     
     var uploadCycle: Int { userVM.user?.uploadCycle ?? 3 }
     var lastUploadDate: Date { photoVM.photos.first?.uploadDate ?? .now }
-    var loveCount: Int { 12 } // TODO: - 데이터 연결
-    var fireCount: Int { 34 } // TODO: - 데이터 연결
-    var starCount: Int { 56 } // TODO: - 데이터 연결
-    var likeCount: Int { 78 } // TODO: - 데이터 연결
+    var loveCount: Int { photoVM.photos.map { $0.reaction.love }.reduce(0, +) }
+    var fireCount: Int { photoVM.photos.map { $0.reaction.fire }.reduce(0, +) }
+    var starCount: Int { photoVM.photos.map { $0.reaction.star }.reduce(0, +) }
+    var likeCount: Int { photoVM.photos.map { $0.reaction.like }.reduce(0, +) }
     var totalUploadCount: Int { photoVM.photos.count }
     
     var body: some View {
