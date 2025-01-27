@@ -37,7 +37,7 @@ struct ChildAlbumDetailView: View {
         TabView(selection: $photo) {
             ForEach(photoVM.photos) { photo in
                 VStack {
-                    SquareImage(data: photo.imgData)
+                    AsyncSquareImage(photo: photo)
                         .zoomable(isZooming: $isZooming)
                         .padding(.top, 72)
                     
@@ -119,7 +119,7 @@ struct ChildAlbumDetailView: View {
                 Task.detached {
                     do {
                         // 1. 사진 삭제
-                        try await photoVM.deletePhoto(photo)
+                        try await photoVM.delete(photo)
                         // 2. 위젯 리로드
                         WidgetCenter.shared.reloadAllTimelines()
                         // 3. 남은 Photo 없다면 이전 화면으로

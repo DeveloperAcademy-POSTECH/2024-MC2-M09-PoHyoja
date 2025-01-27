@@ -78,6 +78,10 @@ extension SwiftDataRepository {
         try photoStorage.create(photos.map { PhotoEntity($0) })
     }
     
+    func updatePhoto(_ photo: Photo) async throws {
+        try photoStorage.update(PhotoEntity(photo))
+    }
+    
     func updatePhotos(_ photos: [Photo]) async throws {
         try photoStorage.update(photos.map { PhotoEntity($0) })
     }

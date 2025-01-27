@@ -27,6 +27,67 @@ final class PhotoViewModel {
 }
 
 extension PhotoViewModel {    
+    /// 로컬과 원격 저장소에 저장된 사진 데이터를 동기화합니다.
+    ///
+    /// 1. 현재 원격, 로컬 데이터를 Fetch합니다.
+    /// 2. 원격에서 reaction이 업데이트 된 Photo를 확인합니다.
+    /// 3. 원격에서 새로 추가된 Photo를 확인합니다.
+    /// 4. 원격에서 삭제된 Photo를 확인합니다.
+    /// 5. 변경된 2,3,4 Photo 데이터를 로컬에 저장합니다.
+    /// 6. 로컬 데이터를 다시 fetch합니다.
+    ///
+    /// - Parameter userName: 유저의 이름
+    func syncPhoto(of userName: String?) async {
+        guard let userName else { return }
+        
+        do {
+            // 원격 및 로컬 데이터 가져오기
+            async let remoteData = remoteStorageService.fetchPhotos(userName)
+            async let localData = localStorageService.fetchPhotos()
+                    
+            let remotePhotos = try await remoteData
+            let localPhotos = await localData
+            
+            // remoteSet과 localSet을 ID 기반 딕셔너리로 변환
+            let remoteMap = Dictionary(uniqueKeysWithValues: remotePhotos.map { ($0.id, $0) })
+            let localMap = Dictionary(uniqueKeysWithValues: localPhotos.map { ($0.id, $0) })
+            
+            // (1) 업데이트할 항목: 동일한 ID를 가진 항목 중 reaction이 다른 항목
+            let photosToUpdate = localMap.filter { remoteMap[$0]?.reaction != $1.reaction }.map { $0.value }
+            
+            // (2) 추가할 항목: remoteMap에만 존재하는 항목
+            let photosToAdd = remoteMap.filter { !localMap.keys.contains($0.key) }.map { $0.value }
+                    
+            // (3) 삭제할 항목: localMap에만 존재하는 항목
+            let photoIdsToDelete = localMap.filter { !remoteMap.keys.contains($0.key) }.map { $0.key }
+            
+            // 동일 Context 직렬 처리
+            try await localStorageService.updatePhotos(photosToUpdate)
+            try await localStorageService.addPhotos(photosToAdd)
+            try await localStorageService.deletePhotos(photoIdsToDelete)
+            
+            print("총 \(remotePhotos.count) 개의 이미지")
+            print("\(photosToUpdate.count + photosToAdd.count + photoIdsToDelete.count) 개의 이미지 동기화함")
+            print("\(photosToUpdate.count) 개의 사진 업데이트됨")
+            print("\(photosToAdd.count) 개의 사진 추가됨")
+            print("\(photoIdsToDelete.count) 개의 사진 삭제됨")
+            
+            // 최종적으로 로컬 데이터를 가져와 UI 업데이트
+            let photos = await localStorageService.fetchPhotos()
+            
+            await MainActor.run {
+                self.photos = photos
+            }
+            
+        } catch {
+            await GlobalAlert.shared.show(message: "동기화 실패")
+        }
+    }
+
+    /// 원격 저장소에 사진을 업로드합니다.
+    /// - Parameters:
+    ///   - user: 업로드하는 유저 정보
+    ///   - imgData: 업로드할 사진 데이터
     func uploadPhoto(of user: User, imgData: Data) async throws {
         
         let photo = Photo(of: user, imgData: imgData)
@@ -59,59 +120,19 @@ extension PhotoViewModel {
         }
     }
     
-    func syncPhoto(of userName: String?) async {
-        guard let userName else { return }
-        
-        do {
-            let remoteData = try await remoteStorageService.fetchPhotos(userName)
-            let localData = await localStorageService.fetchPhotos()
-            
-            // 3. 원격 데이터를 기준으로 로컬 데이터 업데이트
-            let remoteSet = Set(remoteData)
-            let localSet = Set(localData)
-            
-            // (1) 업데이트할 항목: 동일한 ID를 가진 항목 중 데이터가 다른 항목
-            let photosToUpdate = Array(localSet.intersection(remoteSet))
-                .filter { localItem in
-                    guard let remoteItem = remoteSet.first(where: { $0.id == localItem.id }) else { return false }
-                    
-                    return false
-                    //                    return localItem.likeCount != remoteItem.likeCount
-                }
-            
-            try await localStorageService.updatePhotos(photosToUpdate)
-            
-            // (2) 추가할 항목: 원격에만 있는 데이터
-            var photosToAdd = Array(remoteSet.subtracting(localSet))
-            
-            for i in 0..<photosToAdd.count {
-                guard let urlString = photosToAdd[i].urlString else { continue }
-                
-                photosToAdd[i].imgData = try await remoteStorageService.downloadPhotoData(of: urlString)
-            }
-            
-            try await localStorageService.addPhotos(photosToAdd)
-            
-            // (3) 삭제할 항목: 로컬에만 있는 데이터
-            let photosToDelete = Array(localSet.subtracting(remoteSet))
-            try await localStorageService.deletePhotos(photosToDelete.map { $0.id })
-            
-            print("총\(remoteData.count) 개의 이미지")
-            print("\(photosToUpdate.count + photosToAdd.count + photosToDelete.count) 개의 이미지 동기화함")
-            print("\(photosToUpdate.count) 개의 사진 업데이트됨")
-            print("\(photosToAdd.count) 개의 사진 추가됨")
-            print("\(photosToDelete.count) 개의 사진 삭제됨")
-            
-            let photos = await localStorageService.fetchPhotos()
-            await MainActor.run {
-                self.photos = photos
-            }
-            
-        } catch {
-            await GlobalAlert.shared.show(message: "동기화 실패")
-        }
+    /// 원격 저장소에 저장된 사진을 다운로드합니다.
+    /// - Parameter urlString: urlString
+    /// - Returns: 사진 Data
+    func downloadPhoto(of urlString: String) async throws -> Data {
+        try await remoteStorageService.downloadPhotoData(of: urlString)
     }
     
+    /// 로컬 사진을 업데이트 합니다.
+    /// - Parameter photo: 업데이트할 사진 데이터
+    func updateLocal(of photo: Photo) async throws {
+        try await localStorageService.updatePhoto(photo)
+    }
+
     /// 해당 사진을 삭제합니다.
     ///
     /// 1. photos에서 우선 사진을 삭제해 UI에 반영합니다.
@@ -119,7 +140,7 @@ extension PhotoViewModel {
     /// 3. 에러 발생 시 삭제한 UI를 복구합니다.
     ///
     /// - Parameter photo: 삭제할 photo
-    func deletePhoto(_ photo: Photo) async throws {
+    func delete(_ photo: Photo) async throws {
         
         guard let idx = photos.firstIndex(where: { $0.id == photo.id }) else { return }
         
@@ -142,6 +163,7 @@ extension PhotoViewModel {
         }
     }
     
+    /// 모든 로컬 사진을 삭제합니다.
     func deleteAllLocal() async throws {
         try await localStorageService.deleteAllPhotos()
     }

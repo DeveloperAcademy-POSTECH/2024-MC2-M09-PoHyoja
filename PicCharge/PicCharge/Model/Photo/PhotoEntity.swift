@@ -13,6 +13,7 @@ final class PhotoEntity {
     @Attribute(.unique) var id: UUID
     var uploadBy: String // 유저 닉네임
     var uploadDate: Date // 업로드 날짜
+    var urlString: String?
     var loveCount: Int // 좋아요 개수
     var fireCount: Int // 좋아요 개수
     var starCount: Int // 좋아요 개수
@@ -25,6 +26,7 @@ final class PhotoEntity {
         id: UUID = UUID(),
         uploadBy: String,
         uploadDate: Date = Date(),
+        urlString: String?,
         loveCount: Int = 0,
         fireCount: Int = 0,
         starCount: Int = 0,
@@ -35,6 +37,7 @@ final class PhotoEntity {
         self.id = id
         self.uploadBy = uploadBy
         self.uploadDate = uploadDate
+        self.urlString = urlString
         self.loveCount = loveCount
         self.fireCount = fireCount
         self.starCount = starCount
@@ -49,6 +52,7 @@ final class PhotoEntity {
             id: UUID(uuidString: photo.id ?? UUID().uuidString) ?? UUID(),
             uploadBy: photo.uploadBy,
             uploadDate: photo.uploadDate,
+            urlString: photo.urlString,
             loveCount: 0,
             fireCount: 0,
             starCount: 0,
@@ -75,6 +79,7 @@ extension PhotoEntity: DomainConvertible {
             id: domain.id,
             uploadBy: domain.uploadBy,
             uploadDate: domain.uploadDate,
+            urlString: domain.urlString,
             loveCount: domain.reaction.love,
             fireCount: domain.reaction.fire,
             starCount: domain.reaction.star,
@@ -90,6 +95,7 @@ extension PhotoEntity: DomainConvertible {
             uploadBy: uploadBy,
             uploadDate: uploadDate,
             imgData: imgData,
+            urlString: urlString,
             reaction: .init(
                 love: loveCount,
                 fire: fireCount,
