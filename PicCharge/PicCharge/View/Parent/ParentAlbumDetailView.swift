@@ -19,6 +19,8 @@ struct ParentAlbumDetailView: View {
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     
+    private let reactionPublisher = PassthroughSubject<Photo, Never>()
+    
     private var photoForShare: PhotoShareDTO {
         return PhotoShareDTO(
             imgData: photo.imgData ?? Data(),
@@ -31,6 +33,9 @@ struct ParentAlbumDetailView: View {
     }
     
     var body: some View {
+        let reactionDebounce = reactionPublisher
+            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+        
         TabView(selection: $photo) {
             ForEach(photoVM.photos) { photo in
                 VStack {
@@ -48,25 +53,29 @@ struct ParentAlbumDetailView: View {
             if !isZooming {
                 HStack(spacing: 30) {
                     IconBtn(Icon.loveReaction) {
-                        // TODO: - 카운트 연결
+                        photo.reaction.love += 1
+                        reactionPublisher.send(photo)
                         HapticManager.instance.impact(style: .light)
                     }
                     .foregroundStyle(.pink)
                     
                     IconBtn(Icon.fireReaction) {
-                        // TODO: - 카운트 연결
+                        photo.reaction.fire += 1
+                        reactionPublisher.send(photo)
                         HapticManager.instance.impact(style: .light)
                     }
                     .foregroundStyle(.yellow)
                     
                     IconBtn(Icon.starReaction) {
-                        // TODO: - 카운트 연결
+                        photo.reaction.star += 1
+                        reactionPublisher.send(photo)
                         HapticManager.instance.impact(style: .light)
                     }
                     .foregroundStyle(.teal)
                     
                     IconBtn(Icon.likeReaction) {
-                        // TODO: - 카운트 연결
+                        photo.reaction.like += 1
+                        reactionPublisher.send(photo)
                         HapticManager.instance.impact(style: .light)
                     }
                     .foregroundStyle(.purple)
@@ -103,43 +112,40 @@ struct ParentAlbumDetailView: View {
             isPresented: $isShowingDeleteSheet,
             titleVisibility: .visible
         ) {
-            VStack {
-                Button("삭제하기", role: .destructive) {
-                    Task.detached {
-                        do {
-                            // 1. 사진 삭제
-                            try await photoVM.delete(photo)
-                            // 2. 위젯 리로드
-                            WidgetCenter.shared.reloadAllTimelines()
-                            // 3. 남은 Photo 없다면 이전 화면으로
-                            await MainActor.run {
-                                if photoVM.photos.isEmpty {
-                                    navigationManager.pop()
-                                }
-                            }
-                        } catch {
-                            // 4. 에러 처리
-                            await GlobalAlert.shared.show(message: error.localizedDescription)
-                        }
-                    }
-                }
-                Button("Cancel", role: .cancel) {}
-            }
-        }
-        .onDisappear {
-            Task.detached(priority: .background) {
-                // TODO: - 좋아요 개수 업데이트 로직 추가
-            }
+            Button("삭제하기", role: .destructive) { Task.detached { await deletePhoto() } }
+            Button("Cancel", role: .cancel) {}
         }
         .onChange(of: photoVM.photos) { oldValue, newValue in
             // 현재 보고 있는 photo 업데이트
             guard let index = oldValue.firstIndex(of: photo),
                   0..<newValue.count ~= index
             else { return }
-
+            
             self.photo = newValue[index]
         }
+        .onReceive(reactionDebounce) { photo in
+            Task.detached { await photoVM.updatePhoto(photo) }
+        }
     }
+    
+    private func deletePhoto() async {
+        do {
+            // 1. 사진 삭제
+            try await photoVM.delete(photo)
+            // 2. 위젯 리로드
+            WidgetCenter.shared.reloadAllTimelines()
+            // 3. 남은 Photo 없다면 이전 화면으로
+            await MainActor.run {
+                if photoVM.photos.isEmpty { navigationManager.pop() }
+            }
+            
+        } catch {
+            // 4. 에러 처리
+            GlobalAlert.shared.show(message: error.localizedDescription)
+        }
+    }
+    
+    
 }
 
 #Preview {

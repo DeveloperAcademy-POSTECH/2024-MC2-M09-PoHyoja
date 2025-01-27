@@ -9,7 +9,7 @@ import SwiftUI
 
 @Observable
 final class PhotoViewModel {
-    private(set) var photos: [Photo] = []
+    var photos: [Photo] = []
     
     @ObservationIgnored
     private let localStorageService: LocalStorageService
@@ -166,5 +166,18 @@ extension PhotoViewModel {
     /// 모든 로컬 사진을 삭제합니다.
     func deleteAllLocal() async throws {
         try await localStorageService.deleteAllPhotos()
+    }
+    
+    func updatePhoto(_ photo: Photo) async {
+        guard let targetPhoto = photos.first(where: { $0.id == photo.id }) else { return }
+        let originalReaction = targetPhoto.reaction
+        
+        do {
+            await MainActor.run { targetPhoto.reaction = photo.reaction }
+            try await remoteStorageService.updatePhoto(photo)
+            try await localStorageService.updatePhoto(photo)
+        } catch {
+            await MainActor.run { targetPhoto.reaction = originalReaction }
+        }
     }
 }
