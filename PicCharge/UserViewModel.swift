@@ -40,6 +40,7 @@ final class UserViewModel {
     func checkUserState() async {
         // 1. Local User 확인
         guard let user = await localStorageService.fetchUser() else {
+            print("[checkUserState] 로컬 유저 없음 → state = .notExist")
             await MainActor.run { self.state = .notExist }
             return
         }
@@ -61,9 +62,9 @@ final class UserViewModel {
                 self.user = user
                 self.state = .notConnected
             }
+            print("부모자식 연결 안됨: \(self.state)")
             return
         }
-        
         print("--swiftDataUser 정보--")
         print("name: \(user.name)")
         print("role: \(user.role)")
@@ -140,7 +141,6 @@ final class UserViewModel {
                  try Auth.auth().signOut()
                  return
              }
-            
              try await localStorageService.addUser(user)
              
              // 4. VM State 업데이트
@@ -160,8 +160,6 @@ final class UserViewModel {
                  switch authError {
                  case .invalidEmail:
                      await GlobalAlert.shared.show(message: "이메일 형식이 올바르지 않습니다.")
-                 case .wrongPassword:
-                     await GlobalAlert.shared.show(message: "비밀번호가 맞지 않습니다.")
                  case .userDisabled:
                      await GlobalAlert.shared.show(message: "사용할 수 없는 계정입니다.")
                  default:
@@ -220,14 +218,13 @@ final class UserViewModel {
         // Firebase Auth에는 이미 계정이 있으므로 Firestore에만 저장
         let user = User(name: name, role: role, email: email, connectedTo: [])
         
+        try await remoteStorageService.addUser(user)
+        try await localStorageService.addUser(user)
+        
         await MainActor.run {
             self.user = user
             self.state = .notConnected
         }
-        
-        try await remoteStorageService.addUser(user)
-        
-        print("애플 회원가입(추가 정보) 완료 - \(email)")
     }
     
     func logOut() async throws {
@@ -319,53 +316,52 @@ extension UserViewModel {
         return hashedData.compactMap { String(format: "%02x", $0) }.joined()
     }
     
-    func processAppleSignInResult(_ result: Result<ASAuthorization, Error>) async -> String? {
-        switch result {
-        case .success(let authorization):
-            if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
-                do {
-                    // Firebase 인증 후 이메일 반환
-                    let email = try await performFirebaseSignIn(with: credential)
-                    return email
-                } catch {
-                    print("Apple Sign-In 처리 실패: \(error.localizedDescription)")
+    func processAppleSignInResult(_ result: Result<ASAuthorization, Error>) async -> (Bool, String)? {
+            switch result {
+            case .success(let authorization):
+                if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
+                    do {
+                        let (isNewUser, email) = try await performAppleFirebaseSignIn(credential: credential)
+                        return (isNewUser, email)
+                    } catch {
+                        print("Apple Sign-In 처리 실패: \(error.localizedDescription)")
+                        return nil
+                    }
+                } else {
+                    print("Apple Sign-In 실패: Credential 변환 실패")
                     return nil
                 }
-            } else {
-                print("Apple Sign-In 실패: Credential 변환 실패")
+            case .failure(let error):
+                print("Apple Sign-In 에러: \(error.localizedDescription)")
                 return nil
             }
-        case .failure(let error):
-            print("Apple Sign-In 에러: \(error.localizedDescription)")
-            return nil
         }
-    }
-
-    // Apple Credential을 사용해 Firebase 인증 처리
-    func performFirebaseSignIn(with credential: ASAuthorizationAppleIDCredential) async throws -> String {
-        // 1. Apple에서 제공한 identityToken을 가져와 Firebase 인증에 사용
+    
+    private func performAppleFirebaseSignIn(credential: ASAuthorizationAppleIDCredential) async throws -> (Bool, String) {
         guard let identityToken = credential.identityToken,
               let tokenString = String(data: identityToken, encoding: .utf8) else {
             throw NSError(domain: "AuthError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid token"])
         }
-
-        // 2. Firebase 인증을 위한 Credential 생성
+        
         let firebaseCredential = OAuthProvider.credential(
             withProviderID: "apple.com",
             idToken: tokenString,
             rawNonce: nounce
         )
-
-        do {
-            let authResult = try await Auth.auth().signIn(with: firebaseCredential)
-            guard let email = authResult.user.email else {
-                throw NSError(domain: "AuthError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Email not found in Firebase Auth result"])
-            }
-            print("Firebase Auth 성공: \(email)")
-            return email
-        } catch {
-            print("Firebase Auth 실패: \(error.localizedDescription)")
-            throw error
+        
+        let authResult = try await Auth.auth().signIn(with: firebaseCredential)
+        
+        guard let email = authResult.user.email else {
+            throw NSError(domain: "AuthError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Missing email"])
+        }
+        
+        // Firestore 조회
+        if let _ = try await remoteStorageService.fetchUserByEmail(email) {
+            // 기존 유저
+            return (false, email)
+        } else {
+            // 새 유저
+            return (true, email)
         }
     }
 }

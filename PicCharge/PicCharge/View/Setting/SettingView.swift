@@ -123,7 +123,7 @@ struct SettingView: View {
             Alert(
                 title: Text("정말 탈퇴하시겠습니까?"),
                 message: Text("탈퇴 후에는 모든 기록이 사라집니다."),
-                primaryButton:  .cancel(Text("취소")),
+                primaryButton: .cancel(Text("취소")),
                 secondaryButton: .destructive(Text("탈퇴하기")) {
                     Task.detached {
                         do {

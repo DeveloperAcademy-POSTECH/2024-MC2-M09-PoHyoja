@@ -20,12 +20,19 @@ struct AppleLoginBtn: View {
             },
             onCompletion: { result in
                 Task {
-                    if let email = await userVM.processAppleSignInResult(result) {
-                        // SignUpNameView로 이메일과 더미 비밀번호 전달
-                        navigationManager.push(to: .signUpName(
-                            email: email,
-                            password: ""
-                        ))
+                    if let (isNewUser, email) = await userVM.processAppleSignInResult(result) {
+                        if isNewUser {
+                            // 새 사용자 => 회원가입 플로우
+                            print("Apple 회원가입, 이름입력하러 가자")
+                            navigationManager.push(to: .signUpName(
+                                email: email,
+                                password: "" // 애플 회원가입용
+                            ))
+                        } else {
+                            // 기존 사용자 => 홈 화면
+                            await userVM.signInWithApple()
+                            navigationManager.popToRoot()
+                        }
                     } else {
                         print("Apple 로그인 실패 또는 취소됨")
                     }

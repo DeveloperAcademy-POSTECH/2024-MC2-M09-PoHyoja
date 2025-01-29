@@ -101,7 +101,6 @@ struct SignUpRoleView: View {
                             print("Apple Login 중 회원가입 누름")
                             // 애플 회원가입
                             try await userVM.signUpWithApple(name: name, email: email, role: selectedRole)
-                            await userVM.signInWithApple()
                             
                             // 애플 회원가입 완료 후 홈 화면으로 이동
                             await MainActor.run {
