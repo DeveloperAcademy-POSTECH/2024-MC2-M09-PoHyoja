@@ -9,15 +9,17 @@ import SwiftUI
 
 @Observable
 final class PhotoViewModel {
-    var photos: [Photo] = []
+    var photos: [Photo]
     
     @ObservationIgnored private let localRepository: LocalRepository
     @ObservationIgnored private let remoteRepository: RemoteRepository
     
     init(
+        photos: [Photo] = [],
         localRepository: LocalRepository,
         remoteRepository: RemoteRepository
     ) {
+        self.photos = photos
         self.localRepository = localRepository
         self.remoteRepository = remoteRepository
     }
@@ -48,6 +50,9 @@ extension PhotoViewModel {
             // remoteSet과 localSet을 ID 기반 딕셔너리로 변환
             let remoteMap = Dictionary(uniqueKeysWithValues: remotePhotos.map { ($0.id, $0) })
             let localMap = Dictionary(uniqueKeysWithValues: localPhotos.map { ($0.id, $0) })
+            
+            print(remoteMap)
+            print(localMap)
             
             // (1) 업데이트할 항목: 동일한 ID를 가진 항목 중 reaction이 다른 항목
             let photosToUpdate = remoteMap.filter { localMap[$0]?.reaction != $1.reaction }.map { $0.value }

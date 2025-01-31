@@ -47,6 +47,11 @@
 		421A8CBE2BFE5114003C7001 /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CBD2BFE5114003C7001 /* UserEntity.swift */; };
 		421A8CC02BFE516C003C7001 /* PhotoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CBF2BFE516C003C7001 /* PhotoEntity.swift */; };
 		421A8CC42BFF63A5003C7001 /* SignUpRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CC32BFF63A5003C7001 /* SignUpRoleView.swift */; };
+		4234BDCF2D4CC56600830C37 /* MockRemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDCE2D4CC56600830C37 /* MockRemoteRepository.swift */; };
+		4234BDD12D4CC7D000830C37 /* MockLocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDD02D4CC7D000830C37 /* MockLocalRepository.swift */; };
+		4234BDD32D4CCE2B00830C37 /* Photo+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDD22D4CCE2B00830C37 /* Photo+Mock.swift */; };
+		4234BDD52D4CCF0600830C37 /* User+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDD42D4CCF0600830C37 /* User+Mock.swift */; };
+		4234BDD72D4CD3FE00830C37 /* PreviewDIContainerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDD62D4CD3FE00830C37 /* PreviewDIContainerModifier.swift */; };
 		4256DC3A2C0716C600FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
 		4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
 		425AF6AF2D32852E0056B97E /* GlobalAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6AE2D32852E0056B97E /* GlobalAlert.swift */; };
@@ -198,6 +203,11 @@
 		421A8CBD2BFE5114003C7001 /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
 		421A8CBF2BFE516C003C7001 /* PhotoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEntity.swift; sourceTree = "<group>"; };
 		421A8CC32BFF63A5003C7001 /* SignUpRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRoleView.swift; sourceTree = "<group>"; };
+		4234BDCE2D4CC56600830C37 /* MockRemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteRepository.swift; sourceTree = "<group>"; };
+		4234BDD02D4CC7D000830C37 /* MockLocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalRepository.swift; sourceTree = "<group>"; };
+		4234BDD22D4CCE2B00830C37 /* Photo+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+Mock.swift"; sourceTree = "<group>"; };
+		4234BDD42D4CCF0600830C37 /* User+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Mock.swift"; sourceTree = "<group>"; };
+		4234BDD62D4CD3FE00830C37 /* PreviewDIContainerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDIContainerModifier.swift; sourceTree = "<group>"; };
 		4256DC392C0716C600FC3541 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		425AF6AE2D32852E0056B97E /* GlobalAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAlert.swift; sourceTree = "<group>"; };
 		425AF6B02D328DA90056B97E /* GlobalAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAlertModifier.swift; sourceTree = "<group>"; };
@@ -554,6 +564,11 @@
 			isa = PBXGroup;
 			children = (
 				55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */,
+				4234BDD62D4CD3FE00830C37 /* PreviewDIContainerModifier.swift */,
+				4234BDCE2D4CC56600830C37 /* MockRemoteRepository.swift */,
+				4234BDD02D4CC7D000830C37 /* MockLocalRepository.swift */,
+				4234BDD22D4CCE2B00830C37 /* Photo+Mock.swift */,
+				4234BDD42D4CCF0600830C37 /* User+Mock.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -794,6 +809,7 @@
 				51B1CED62D4203EA00AA5FEA /* AppleLoginBtn.swift in Sources */,
 				425AF6C42D34557D0056B97E /* URL.swift in Sources */,
 				420E48FB2D376D66008944A4 /* SignUpEmailPasswordView.swift in Sources */,
+				4234BDD72D4CD3FE00830C37 /* PreviewDIContainerModifier.swift in Sources */,
 				FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */,
 				428046782BF5DE830097EB0B /* ChildCameraView.swift in Sources */,
 				552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */,
@@ -815,8 +831,10 @@
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
 				42CF70402D2556070054F244 /* DefaultRemoteRepository.swift in Sources */,
 				4214DA292C0436CC0096D48B /* HapticManager.swift in Sources */,
+				4234BDD12D4CC7D000830C37 /* MockLocalRepository.swift in Sources */,
 				42CF708B2D2D4C7B0054F244 /* PersistenceStack.swift in Sources */,
 				518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */,
+				4234BDD32D4CCE2B00830C37 /* Photo+Mock.swift in Sources */,
 				425AF6C72D345B4C0056B97E /* Utils.swift in Sources */,
 				5172EE5D2CB66BDD001B128E /* Header.swift in Sources */,
 				421A8CAF2BFDC2DE003C7001 /* PhotoShareDTO.swift in Sources */,
@@ -834,6 +852,7 @@
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
 				425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */,
+				4234BDD52D4CCF0600830C37 /* User+Mock.swift in Sources */,
 				4214DA172C0392310096D48B /* PhotoDTO_V0.swift in Sources */,
 				420E492A2D4134DA008944A4 /* AsyncSquareImage.swift in Sources */,
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
@@ -846,6 +865,7 @@
 				421A8CB12BFDC9E7003C7001 /* ZoomableModifier.swift in Sources */,
 				425AF6B12D328DA90056B97E /* GlobalAlertModifier.swift in Sources */,
 				4214DA002C0387F20096D48B /* UIImage+.swift in Sources */,
+				4234BDCF2D4CC56600830C37 /* MockRemoteRepository.swift in Sources */,
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
 				421A8CBE2BFE5114003C7001 /* UserEntity.swift in Sources */,

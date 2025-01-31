@@ -27,9 +27,11 @@ final class UserViewModel {
     @ObservationIgnored private var nounce: String = ""
     
     init(
+        user: User? = nil,
         localRepository: LocalRepository,
         remoteRepository: RemoteRepository
     ) {
+        self.user = user
         self.localRepository = localRepository
         self.remoteRepository = remoteRepository
     }

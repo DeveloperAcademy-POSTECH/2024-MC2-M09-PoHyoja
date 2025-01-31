@@ -150,7 +150,7 @@ struct ChildAlbumDetailView: View {
 
 #Preview {
     NavigationStack {
-        ChildAlbumDetailView(photo: Photo.mocks.first!)
+        ChildAlbumDetailView(photo: Photo.withDataMock1)
             .injectDIContainer()
             .preferredColorScheme(.dark)
     }

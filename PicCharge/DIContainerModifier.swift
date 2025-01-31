@@ -19,6 +19,7 @@ struct DIContainerModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
+            .globalAlert()
             .environment(
                 NavigationManager()
             )
