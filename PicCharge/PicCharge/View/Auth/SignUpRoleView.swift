@@ -106,6 +106,7 @@ struct SignUpRoleView: View {
                             await MainActor.run {
                                 navigationManager.popToRoot()
                             }
+                            
                         } else {
                             // 이메일 회원가입
                             try await userVM.signUp(name: name, email: email, password: password, role: selectedRole)
@@ -116,7 +117,7 @@ struct SignUpRoleView: View {
                             }
                         }
                     } catch {
-                        await GlobalAlert.shared.show(message: email.description)
+                        await GlobalAlert.shared.show(message: error.localizedDescription)
                     }
                     await MainActor.run { isLoading = false }
                 }
@@ -130,8 +131,14 @@ struct SignUpRoleView: View {
     }
 }
 
-#Preview {
+#Preview("유저 생성 성공") {
     SignUpRoleView(name: "", email: "", password: "")
-        .injectDIContainer()
+        .injectPreviewDIContainer(user: nil, photos: [], response: .success)
+        .preferredColorScheme(.dark)
+}
+
+#Preview("유저 생성 에러") {
+    SignUpRoleView(name: "", email: "", password: "")
+        .injectPreviewDIContainer(user: nil, photos: [], response: .error)
         .preferredColorScheme(.dark)
 }

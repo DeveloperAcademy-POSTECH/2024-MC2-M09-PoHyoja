@@ -85,8 +85,22 @@ extension ChildSendCameraView {
     }
 }
 
-#Preview {
+#Preview("사진 업로드 성공") {
     ChildSendCameraView(imgData: UIImage(resource: .logoLarge).pngData()!)
-        .injectDIContainer()
+        .injectPreviewDIContainer(
+            user: .childMock,
+            photos: [],
+            response: .success
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("사진 업로드 실패") {
+    ChildSendCameraView(imgData: UIImage(resource: .logoLarge).pngData()!)
+        .injectPreviewDIContainer(
+            user: .childMock,
+            photos: [],
+            response: .error
+        )
         .preferredColorScheme(.dark)
 }

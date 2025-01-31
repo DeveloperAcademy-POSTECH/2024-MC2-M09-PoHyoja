@@ -11,8 +11,8 @@ import SwiftData
 import FirebaseCore
 
 struct ChildProvider: AppIntentTimelineProvider {
-    let localStorageRepository: LocalStorageService
-    let remoteStorageRepository: RemoteStorageService
+    let localRepository: LocalRepository
+    let remoteRepository: RemoteRepository
     
     func placeholder(in context: Context) -> ChildEntry {
         ChildEntry(date: Date(), configuration: ConfigurationAppIntent(), batteryPercentage: 90, lastUploadedDate: Date())
@@ -60,13 +60,13 @@ struct ChildProvider: AppIntentTimelineProvider {
     }
     
     private func getLatestUploadedDate() async -> Date {
-        guard let user = await localStorageRepository.fetchUser() else { return .now }
+        guard let user = await localRepository.fetchUser() else { return .now }
         
-        return await remoteStorageRepository.fetchLatestPhoto(user.name)?.uploadDate ?? .now
+        return await remoteRepository.fetchLatestPhoto(user.name)?.uploadDate ?? .now
     }
     
     private func getUploadCycle() async -> Int {
-        await localStorageRepository.fetchUser()?.uploadCycle ?? 3
+        await localRepository.fetchUser()?.uploadCycle ?? 3
     }
 }
 
@@ -193,16 +193,16 @@ struct ChildWidgetEntryView : View {
 
 struct ChildWidget: Widget {
     let kind: String = "ChildWidget"
-    let localStorageRepository: LocalStorageService
-    let remoteStorageRepository: RemoteStorageService
+    let localRepository: LocalRepository
+    let remoteRepository: RemoteRepository
     
     init() {
         let filePath = Bundle.main.path(forResource: "../../GoogleService-Info", ofType: "plist")!
         let options = FirebaseOptions(contentsOfFile: filePath)
         FirebaseApp.configure(options: options!)
         
-        localStorageRepository = SwiftDataRepository()
-        remoteStorageRepository = FireStoreRepository(fireStore: .firestore(), storage: .storage())
+        localRepository = DefaultLocalRepository()
+        remoteRepository = DefaultRemoteRepository()
     }
     
     var body: some WidgetConfiguration {
@@ -210,8 +210,8 @@ struct ChildWidget: Widget {
             kind: kind,
             intent: ConfigurationAppIntent.self,
             provider: ChildProvider(
-                localStorageRepository: localStorageRepository,
-                remoteStorageRepository: remoteStorageRepository
+                localRepository: localRepository,
+                remoteRepository: remoteRepository
             )
         ) {
             ChildWidgetEntryView(entry: $0)

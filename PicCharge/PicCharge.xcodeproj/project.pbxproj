@@ -12,8 +12,8 @@
 		420E48F22D36E5C0008944A4 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E48F12D36E5C0008944A4 /* String+.swift */; };
 		420E48F32D36E5C0008944A4 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E48F12D36E5C0008944A4 /* String+.swift */; };
 		420E48FB2D376D66008944A4 /* SignUpEmailPasswordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E48FA2D376D66008944A4 /* SignUpEmailPasswordView.swift */; };
-		420E492A2D4134DA008944A4 /* AsyncSquareImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E49292D4134DA008944A4 /* AsyncSquareImage.swift */; };
 		420E491A2D3EB99D008944A4 /* URL+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E49192D3EB99D008944A4 /* URL+.swift */; };
+		420E492A2D4134DA008944A4 /* AsyncSquareImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 420E49292D4134DA008944A4 /* AsyncSquareImage.swift */; };
 		4214D9EE2C0330260096D48B /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 4214D9ED2C0330260096D48B /* FirebaseFirestore */; };
 		4214D9F02C0330260096D48B /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4214D9EF2C0330260096D48B /* FirebaseFirestoreSwift */; };
 		4214D9F22C0330260096D48B /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 4214D9F12C0330260096D48B /* FirebaseStorage */; };
@@ -47,6 +47,11 @@
 		421A8CBE2BFE5114003C7001 /* UserEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CBD2BFE5114003C7001 /* UserEntity.swift */; };
 		421A8CC02BFE516C003C7001 /* PhotoEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CBF2BFE516C003C7001 /* PhotoEntity.swift */; };
 		421A8CC42BFF63A5003C7001 /* SignUpRoleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421A8CC32BFF63A5003C7001 /* SignUpRoleView.swift */; };
+		4234BDCF2D4CC56600830C37 /* MockRemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDCE2D4CC56600830C37 /* MockRemoteRepository.swift */; };
+		4234BDD12D4CC7D000830C37 /* MockLocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDD02D4CC7D000830C37 /* MockLocalRepository.swift */; };
+		4234BDD32D4CCE2B00830C37 /* Photo+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDD22D4CCE2B00830C37 /* Photo+Mock.swift */; };
+		4234BDD52D4CCF0600830C37 /* User+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDD42D4CCF0600830C37 /* User+Mock.swift */; };
+		4234BDD72D4CD3FE00830C37 /* PreviewDIContainerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4234BDD62D4CD3FE00830C37 /* PreviewDIContainerModifier.swift */; };
 		4256DC3A2C0716C600FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
 		4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4256DC392C0716C600FC3541 /* Int+.swift */; };
 		425AF6AF2D32852E0056B97E /* GlobalAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425AF6AE2D32852E0056B97E /* GlobalAlert.swift */; };
@@ -66,8 +71,8 @@
 		425B44212D1FD430001E23FA /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B441F2D1FD430001E23FA /* Photo.swift */; };
 		425B44232D1FD631001E23FA /* DomainConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44222D1FD631001E23FA /* DomainConvertible.swift */; };
 		425B44242D1FD631001E23FA /* DomainConvertible.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44222D1FD631001E23FA /* DomainConvertible.swift */; };
-		425B44262D1FDAF5001E23FA /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44252D1FDAF5001E23FA /* LocalStorageService.swift */; };
-		425B44282D1FDB09001E23FA /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44272D1FDB09001E23FA /* RemoteStorageService.swift */; };
+		425B44262D1FDAF5001E23FA /* LocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44252D1FDAF5001E23FA /* LocalRepository.swift */; };
+		425B44282D1FDB09001E23FA /* RemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44272D1FDB09001E23FA /* RemoteRepository.swift */; };
 		425B442A2D1FE6C4001E23FA /* UserConnectingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44292D1FE6C4001E23FA /* UserConnectingService.swift */; };
 		425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B442B2D1FEA02001E23FA /* UserViewModel.swift */; };
 		425B442E2D1FEAAA001E23FA /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */; };
@@ -87,14 +92,14 @@
 		428046882BF5E00A0097EB0B /* ParentAlbumDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046872BF5E00A0097EB0B /* ParentAlbumDetailView.swift */; };
 		4280468A2BF5E0170097EB0B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 428046892BF5E0170097EB0B /* SettingView.swift */; };
 		4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */; };
-		42CF6FD32D22EF3C0054F244 /* SwiftDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */; };
-		42CF6FD42D22EF3C0054F244 /* SwiftDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */; };
-		42CF6FDC2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */; };
-		42CF6FDD2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */; };
-		42CF70252D22FD2D0054F244 /* LocalStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44252D1FDAF5001E23FA /* LocalStorageService.swift */; };
-		42CF70402D2556070054F244 /* FireStoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF703F2D2556070054F244 /* FireStoreRepository.swift */; };
-		42CF70412D2556070054F244 /* FireStoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF703F2D2556070054F244 /* FireStoreRepository.swift */; };
-		42CF70422D2560350054F244 /* RemoteStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44272D1FDB09001E23FA /* RemoteStorageService.swift */; };
+		42CF6FD32D22EF3C0054F244 /* EntityDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FD22D22EF3C0054F244 /* EntityDataSource.swift */; };
+		42CF6FD42D22EF3C0054F244 /* EntityDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FD22D22EF3C0054F244 /* EntityDataSource.swift */; };
+		42CF6FDC2D22F1D40054F244 /* DefaultLocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FDB2D22F1D40054F244 /* DefaultLocalRepository.swift */; };
+		42CF6FDD2D22F1D40054F244 /* DefaultLocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF6FDB2D22F1D40054F244 /* DefaultLocalRepository.swift */; };
+		42CF70252D22FD2D0054F244 /* LocalRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44252D1FDAF5001E23FA /* LocalRepository.swift */; };
+		42CF70402D2556070054F244 /* DefaultRemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF703F2D2556070054F244 /* DefaultRemoteRepository.swift */; };
+		42CF70412D2556070054F244 /* DefaultRemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF703F2D2556070054F244 /* DefaultRemoteRepository.swift */; };
+		42CF70422D2560350054F244 /* RemoteRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 425B44272D1FDB09001E23FA /* RemoteRepository.swift */; };
 		42CF70722D28569D0054F244 /* FireStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70712D28569D0054F244 /* FireStoreError.swift */; };
 		42CF70732D28569D0054F244 /* FireStoreError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70712D28569D0054F244 /* FireStoreError.swift */; };
 		42CF708A2D2D4C7B0054F244 /* PersistenceStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 42CF70892D2D4C7B0054F244 /* PersistenceStack.swift */; };
@@ -179,8 +184,8 @@
 		420E48ED2D36C56A008944A4 /* FilledBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilledBtn.swift; sourceTree = "<group>"; };
 		420E48F12D36E5C0008944A4 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		420E48FA2D376D66008944A4 /* SignUpEmailPasswordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpEmailPasswordView.swift; sourceTree = "<group>"; };
-		420E49292D4134DA008944A4 /* AsyncSquareImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSquareImage.swift; sourceTree = "<group>"; };
 		420E49192D3EB99D008944A4 /* URL+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+.swift"; sourceTree = "<group>"; };
+		420E49292D4134DA008944A4 /* AsyncSquareImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncSquareImage.swift; sourceTree = "<group>"; };
 		4214D9FD2C0387D40096D48B /* ChildWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChildWidget.swift; sourceTree = "<group>"; };
 		4214D9FF2C0387F20096D48B /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		4214DA132C0392080096D48B /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
@@ -198,6 +203,11 @@
 		421A8CBD2BFE5114003C7001 /* UserEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserEntity.swift; sourceTree = "<group>"; };
 		421A8CBF2BFE516C003C7001 /* PhotoEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoEntity.swift; sourceTree = "<group>"; };
 		421A8CC32BFF63A5003C7001 /* SignUpRoleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpRoleView.swift; sourceTree = "<group>"; };
+		4234BDCE2D4CC56600830C37 /* MockRemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockRemoteRepository.swift; sourceTree = "<group>"; };
+		4234BDD02D4CC7D000830C37 /* MockLocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLocalRepository.swift; sourceTree = "<group>"; };
+		4234BDD22D4CCE2B00830C37 /* Photo+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+Mock.swift"; sourceTree = "<group>"; };
+		4234BDD42D4CCF0600830C37 /* User+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User+Mock.swift"; sourceTree = "<group>"; };
+		4234BDD62D4CD3FE00830C37 /* PreviewDIContainerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewDIContainerModifier.swift; sourceTree = "<group>"; };
 		4256DC392C0716C600FC3541 /* Int+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+.swift"; sourceTree = "<group>"; };
 		425AF6AE2D32852E0056B97E /* GlobalAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAlert.swift; sourceTree = "<group>"; };
 		425AF6B02D328DA90056B97E /* GlobalAlertModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAlertModifier.swift; sourceTree = "<group>"; };
@@ -209,8 +219,8 @@
 		425B441C2D1FD2D2001E23FA /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		425B441F2D1FD430001E23FA /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		425B44222D1FD631001E23FA /* DomainConvertible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainConvertible.swift; sourceTree = "<group>"; };
-		425B44252D1FDAF5001E23FA /* LocalStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageService.swift; sourceTree = "<group>"; };
-		425B44272D1FDB09001E23FA /* RemoteStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteStorageService.swift; sourceTree = "<group>"; };
+		425B44252D1FDAF5001E23FA /* LocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalRepository.swift; sourceTree = "<group>"; };
+		425B44272D1FDB09001E23FA /* RemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteRepository.swift; sourceTree = "<group>"; };
 		425B44292D1FE6C4001E23FA /* UserConnectingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserConnectingService.swift; sourceTree = "<group>"; };
 		425B442B2D1FEA02001E23FA /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
@@ -230,10 +240,10 @@
 		428046872BF5E00A0097EB0B /* ParentAlbumDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentAlbumDetailView.swift; sourceTree = "<group>"; };
 		428046892BF5E0170097EB0B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		4280468D2BF5E1AE0097EB0B /* NavigationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationManager.swift; sourceTree = "<group>"; };
-		42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataService.swift; sourceTree = "<group>"; };
-		42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftDataRepository.swift; sourceTree = "<group>"; };
+		42CF6FD22D22EF3C0054F244 /* EntityDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityDataSource.swift; sourceTree = "<group>"; };
+		42CF6FDB2D22F1D40054F244 /* DefaultLocalRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultLocalRepository.swift; sourceTree = "<group>"; };
 		42CF702A2D2302040054F244 /* PicChargeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PicChargeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		42CF703F2D2556070054F244 /* FireStoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreRepository.swift; sourceTree = "<group>"; };
+		42CF703F2D2556070054F244 /* DefaultRemoteRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRemoteRepository.swift; sourceTree = "<group>"; };
 		42CF70712D28569D0054F244 /* FireStoreError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireStoreError.swift; sourceTree = "<group>"; };
 		42CF70892D2D4C7B0054F244 /* PersistenceStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStack.swift; sourceTree = "<group>"; };
 		5151CB892BFEE41300AF792F /* LikeAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = LikeAnimation.json; sourceTree = "<group>"; };
@@ -515,8 +525,8 @@
 				425B442D2D1FEAAA001E23FA /* PhotoViewModel.swift */,
 				425B442B2D1FEA02001E23FA /* UserViewModel.swift */,
 				425B44292D1FE6C4001E23FA /* UserConnectingService.swift */,
-				425B44252D1FDAF5001E23FA /* LocalStorageService.swift */,
-				425B44272D1FDB09001E23FA /* RemoteStorageService.swift */,
+				425B44252D1FDAF5001E23FA /* LocalRepository.swift */,
+				425B44272D1FDB09001E23FA /* RemoteRepository.swift */,
 				55B5E3622BF5A13E00E413C6 /* PicCharge */,
 				FF7315702BF907690074D7AA /* ParentWidget */,
 				42CF702B2D2302040054F244 /* PicChargeTests */,
@@ -554,6 +564,11 @@
 			isa = PBXGroup;
 			children = (
 				55B5E36A2BF5A13F00E413C6 /* Preview Assets.xcassets */,
+				4234BDD62D4CD3FE00830C37 /* PreviewDIContainerModifier.swift */,
+				4234BDCE2D4CC56600830C37 /* MockRemoteRepository.swift */,
+				4234BDD02D4CC7D000830C37 /* MockLocalRepository.swift */,
+				4234BDD22D4CCE2B00830C37 /* Photo+Mock.swift */,
+				4234BDD42D4CCF0600830C37 /* User+Mock.swift */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -563,10 +578,10 @@
 			children = (
 				552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */,
 				552E24E42BF9D79700E5CF24 /* FirestoreServiceError.swift */,
-				42CF703F2D2556070054F244 /* FireStoreRepository.swift */,
+				42CF703F2D2556070054F244 /* DefaultRemoteRepository.swift */,
 				42CF70712D28569D0054F244 /* FireStoreError.swift */,
-				42CF6FDB2D22F1D40054F244 /* SwiftDataRepository.swift */,
-				42CF6FD22D22EF3C0054F244 /* SwiftDataService.swift */,
+				42CF6FDB2D22F1D40054F244 /* DefaultLocalRepository.swift */,
+				42CF6FD22D22EF3C0054F244 /* EntityDataSource.swift */,
 				42CF70892D2D4C7B0054F244 /* PersistenceStack.swift */,
 			);
 			path = Service;
@@ -788,16 +803,17 @@
 			files = (
 				421A8CC42BFF63A5003C7001 /* SignUpRoleView.swift in Sources */,
 				42CF70732D28569D0054F244 /* FireStoreError.swift in Sources */,
-				42CF6FD32D22EF3C0054F244 /* SwiftDataService.swift in Sources */,
+				42CF6FD32D22EF3C0054F244 /* EntityDataSource.swift in Sources */,
 				428046842BF5DFA50097EB0B /* ChildAlbumDetailView.swift in Sources */,
 				4214DA1A2C0392610096D48B /* ConnectionRequestsDTO.swift in Sources */,
 				51B1CED62D4203EA00AA5FEA /* AppleLoginBtn.swift in Sources */,
 				425AF6C42D34557D0056B97E /* URL.swift in Sources */,
 				420E48FB2D376D66008944A4 /* SignUpEmailPasswordView.swift in Sources */,
+				4234BDD72D4CD3FE00830C37 /* PreviewDIContainerModifier.swift in Sources */,
 				FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */,
 				428046782BF5DE830097EB0B /* ChildCameraView.swift in Sources */,
 				552E24E52BF9D79700E5CF24 /* FirestoreServiceError.swift in Sources */,
-				425B44282D1FDB09001E23FA /* RemoteStorageService.swift in Sources */,
+				425B44282D1FDB09001E23FA /* RemoteRepository.swift in Sources */,
 				4280467A2BF5DEBA0097EB0B /* ChildSendCameraView.swift in Sources */,
 				425AF6BE2D340F420056B97E /* BgGradientModifier.swift in Sources */,
 				420E48EC2D36C40F008944A4 /* MainLoginView.swift in Sources */,
@@ -813,10 +829,12 @@
 				425AF6C12D34363B0056B97E /* IconBtn.swift in Sources */,
 				425B44212D1FD430001E23FA /* Photo.swift in Sources */,
 				4280468E2BF5E1AE0097EB0B /* NavigationManager.swift in Sources */,
-				42CF70402D2556070054F244 /* FireStoreRepository.swift in Sources */,
+				42CF70402D2556070054F244 /* DefaultRemoteRepository.swift in Sources */,
 				4214DA292C0436CC0096D48B /* HapticManager.swift in Sources */,
+				4234BDD12D4CC7D000830C37 /* MockLocalRepository.swift in Sources */,
 				42CF708B2D2D4C7B0054F244 /* PersistenceStack.swift in Sources */,
 				518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */,
+				4234BDD32D4CCE2B00830C37 /* Photo+Mock.swift in Sources */,
 				425AF6C72D345B4C0056B97E /* Utils.swift in Sources */,
 				5172EE5D2CB66BDD001B128E /* Header.swift in Sources */,
 				421A8CAF2BFDC2DE003C7001 /* PhotoShareDTO.swift in Sources */,
@@ -824,7 +842,7 @@
 				420E491A2D3EB99D008944A4 /* URL+.swift in Sources */,
 				421A8CC02BFE516C003C7001 /* PhotoEntity.swift in Sources */,
 				425B441E2D1FD2D2001E23FA /* User.swift in Sources */,
-				425B44262D1FDAF5001E23FA /* LocalStorageService.swift in Sources */,
+				425B44262D1FDAF5001E23FA /* LocalRepository.swift in Sources */,
 				425AF6C92D35011D0056B97E /* PhotoDTO_V1.swift in Sources */,
 				FFA8CC2D2C01AB3C007428F8 /* WidgetOption.swift in Sources */,
 				425B44302D1FEF96001E23FA /* DIContainerModifier.swift in Sources */,
@@ -834,11 +852,12 @@
 				55B5E3662BF5A13E00E413C6 /* ContentView.swift in Sources */,
 				55B5E3642BF5A13E00E413C6 /* PicChargeApp.swift in Sources */,
 				425B442C2D1FEA02001E23FA /* UserViewModel.swift in Sources */,
+				4234BDD52D4CCF0600830C37 /* User+Mock.swift in Sources */,
 				4214DA172C0392310096D48B /* PhotoDTO_V0.swift in Sources */,
 				420E492A2D4134DA008944A4 /* AsyncSquareImage.swift in Sources */,
 				4280467C2BF5DEF40097EB0B /* ChildSelectGalleryView.swift in Sources */,
 				4214DA212C0393830096D48B /* AppDelgate.swift in Sources */,
-				42CF6FDC2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */,
+				42CF6FDC2D22F1D40054F244 /* DefaultLocalRepository.swift in Sources */,
 				51E239DA2BF636920051943D /* Role.swift in Sources */,
 				4214DA142C0392080096D48B /* UserDTO.swift in Sources */,
 				425B442A2D1FE6C4001E23FA /* UserConnectingService.swift in Sources */,
@@ -846,6 +865,7 @@
 				421A8CB12BFDC9E7003C7001 /* ZoomableModifier.swift in Sources */,
 				425AF6B12D328DA90056B97E /* GlobalAlertModifier.swift in Sources */,
 				4214DA002C0387F20096D48B /* UIImage+.swift in Sources */,
+				4234BDCF2D4CC56600830C37 /* MockRemoteRepository.swift in Sources */,
 				428046822BF5DF790097EB0B /* ChildAlbumView.swift in Sources */,
 				421A8C642BF8FA69003C7001 /* Icon.swift in Sources */,
 				421A8CBE2BFE5114003C7001 /* UserEntity.swift in Sources */,
@@ -875,11 +895,11 @@
 				FF3ECB762C003F0300E65D83 /* Color+.swift in Sources */,
 				425AF6C32D34557D0056B97E /* URL.swift in Sources */,
 				FFA8CC2E2C01AC83007428F8 /* WidgetOption.swift in Sources */,
-				42CF70422D2560350054F244 /* RemoteStorageService.swift in Sources */,
+				42CF70422D2560350054F244 /* RemoteRepository.swift in Sources */,
 				425AF6C62D345B4C0056B97E /* Utils.swift in Sources */,
-				42CF6FD42D22EF3C0054F244 /* SwiftDataService.swift in Sources */,
+				42CF6FD42D22EF3C0054F244 /* EntityDataSource.swift in Sources */,
 				425AF6BF2D340F420056B97E /* BgGradientModifier.swift in Sources */,
-				42CF70252D22FD2D0054F244 /* LocalStorageService.swift in Sources */,
+				42CF70252D22FD2D0054F244 /* LocalRepository.swift in Sources */,
 				FF7315722BF907690074D7AA /* ParentWidgetBundle.swift in Sources */,
 				4214DA1B2C03926F0096D48B /* ConnectionRequestsDTO.swift in Sources */,
 				FF7315742BF907690074D7AA /* ParentWidget.swift in Sources */,
@@ -894,8 +914,8 @@
 				4256DC3B2C0717EB00FC3541 /* Int+.swift in Sources */,
 				FF7315762BF907690074D7AA /* AppIntent.swift in Sources */,
 				4214D9F52C0332F10096D48B /* FirestoreService.swift in Sources */,
-				42CF70412D2556070054F244 /* FireStoreRepository.swift in Sources */,
-				42CF6FDD2D22F1D40054F244 /* SwiftDataRepository.swift in Sources */,
+				42CF70412D2556070054F244 /* DefaultRemoteRepository.swift in Sources */,
+				42CF6FDD2D22F1D40054F244 /* DefaultLocalRepository.swift in Sources */,
 				4214DA022C0388800096D48B /* ChildWidget.swift in Sources */,
 				4214D9F82C0333160096D48B /* PhotoEntity.swift in Sources */,
 				4214DA1E2C0392DC0096D48B /* PhotoShareDTO.swift in Sources */,

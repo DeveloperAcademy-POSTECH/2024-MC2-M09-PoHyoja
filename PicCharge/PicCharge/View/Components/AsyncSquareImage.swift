@@ -52,8 +52,9 @@ struct AsyncSquareImage: View {
 }
 
 #Preview {
-    AsyncSquareImage(photo: .dataInLocal)
-        .injectDIContainer()
-    AsyncSquareImage(photo: .dataInRemote)
-        .injectDIContainer()
+    AsyncSquareImage(photo: .onlyUrlMock1)
+        .injectPreviewDIContainer(user: .childMock, photos: [.onlyUrlMock1])
+    
+    AsyncSquareImage(photo: .withDataMock1)
+        .injectPreviewDIContainer(user: .childMock, photos: [.withDataMock1])
 }

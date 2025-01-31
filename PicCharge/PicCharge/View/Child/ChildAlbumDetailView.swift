@@ -148,10 +148,26 @@ struct ChildAlbumDetailView: View {
     }
 }
 
-#Preview {
+#Preview("Remote 삭제 성공") {
     NavigationStack {
-        ChildAlbumDetailView(photo: Photo.mocks.first!)
-            .injectDIContainer()
+        ChildAlbumDetailView(photo: Photo.withDataMock1)
+            .injectPreviewDIContainer(
+                user: .childMock,
+                photos: [.withDataMock1, .withDataMock2, .withDataMock3],
+                response: .success
+            )
+            .preferredColorScheme(.dark)
+    }
+}
+
+#Preview("Remote 삭제 에러") {
+    NavigationStack {
+        ChildAlbumDetailView(photo: Photo.withDataMock1)
+            .injectPreviewDIContainer(
+                user: .childMock,
+                photos: [.withDataMock1, .withDataMock2, .withDataMock3],
+                response: .error
+            )
             .preferredColorScheme(.dark)
     }
 }
