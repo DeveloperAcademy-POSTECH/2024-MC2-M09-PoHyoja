@@ -255,18 +255,14 @@ extension UserViewModel {
         
         try await remoteStorageService.updateConnections(of: user, with: [otherUser.name])
         try await remoteStorageService.updateConnections(of: otherUser, with: [user.name])
-        
         try await addLocalConnections(with: otherUser.name)
-        
-        await MainActor.run { self.user?.connectedTo += [otherUser.name] }
     }
     
-    func addLocalConnections(with userName: String) async throws {
+    func addLocalConnections(with otherUserName: String) async throws {
         guard let user else { return }
         
-        try await localStorageService.addConnection(of: user, with: [])
-        
-        await MainActor.run { self.user?.connectedTo += [userName] }
+        try await localStorageService.addConnection(of: user, with: [otherUserName])
+        await MainActor.run { self.user?.connectedTo += [otherUserName] }
     }
 }
 
