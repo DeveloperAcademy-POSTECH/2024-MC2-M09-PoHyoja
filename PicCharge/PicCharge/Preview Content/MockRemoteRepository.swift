@@ -9,7 +9,6 @@ import UIKit
 
 enum MockResponseType {
     case success
-    case empty
     case error
 }
 
@@ -31,8 +30,7 @@ final class MockRemoteRepository: RemoteRepository {
         switch response {
         case .success:
             return users.first { $0.email == email }
-        case .empty:
-            return nil
+            
         case .error:
             throw FireStoreError.userNotExists
         }
@@ -42,8 +40,7 @@ final class MockRemoteRepository: RemoteRepository {
         switch response {
         case .success:
             return users.first { $0.name == name }
-        case .empty:
-            return nil
+            
         case .error:
             throw FireStoreError.userNotExists
         }
@@ -53,8 +50,7 @@ final class MockRemoteRepository: RemoteRepository {
         switch response {
         case .success:
             return users.contains { $0.name == name }
-        case .empty:
-            return false
+        
         case .error:
             throw FireStoreError.userNotExists
         }
@@ -64,7 +60,7 @@ final class MockRemoteRepository: RemoteRepository {
         switch response {
         case .success:
             users.append(user)
-        case .empty, .error:
+        case .error:
             throw FireStoreError.addUserFailed(error: "Failed To add Mock User")
         }
     }
@@ -76,7 +72,7 @@ final class MockRemoteRepository: RemoteRepository {
                 users[index].connectedTo = connectedTo
             }
             
-        case .empty, .error:
+        case .error:
             throw FireStoreError.updateUserFailed(error: "Failed To update Mock Connections")
         }
     }
@@ -85,7 +81,8 @@ final class MockRemoteRepository: RemoteRepository {
         switch response {
         case .success:
             users.removeAll { $0.name == user.name }
-        case .empty, .error:
+        
+        case .error:
             throw FireStoreError.deleteUserFailed(error: "Failed to delete Mock user")
         }
     }
@@ -98,7 +95,7 @@ final class MockRemoteRepository: RemoteRepository {
                 .sorted(by: { $0.uploadDate > $1.uploadDate })
                 .first
         
-        case .empty, .error:
+        case .error:
             return nil
         }
     }
@@ -107,8 +104,7 @@ final class MockRemoteRepository: RemoteRepository {
         switch response {
         case .success:
             return photos.filter { $0.sharedWith.contains(userName) }
-        case .empty:
-            return []
+        
         case .error:
             throw FireStoreError.noPhotoData
         }
@@ -121,7 +117,7 @@ final class MockRemoteRepository: RemoteRepository {
             newPhoto.urlString = urlString
             photos.append(newPhoto)
             
-        case .empty, .error:
+        case .error:
             throw FireStoreError.addUserFailed(error: "Failed to add Mock Photo")
         }
     }
@@ -131,7 +127,7 @@ final class MockRemoteRepository: RemoteRepository {
         case .success:
             return "https://mockstorage.com/\(photo.id.uuidString)"
             
-        case .empty, .error:
+        case .error:
             throw FireStoreError.uploadPhotoFailed(error: "Failed to upload Mock Photo")
         }
     }
@@ -141,7 +137,7 @@ final class MockRemoteRepository: RemoteRepository {
         case .success:
             return UIImage(resource: .child).pngData()!
             
-        case .empty, .error:
+        case .error:
             throw FireStoreError.downloadPhotoFailed(error: "Failed to download Mock Photo Data")
         }
     }
@@ -151,7 +147,7 @@ final class MockRemoteRepository: RemoteRepository {
         case .success:
             photos.removeAll { $0.urlString == urlString }
             
-        case .empty, .error:
+        case .error:
             throw FireStoreError.deletePhotoFailed(error: "Failed to delete Mock Photo data")
         }
     }
@@ -163,7 +159,7 @@ final class MockRemoteRepository: RemoteRepository {
                 photos[index] = photo
             }
             
-        case .empty, .error:
+        case .error:
             throw FireStoreError.updatePhotoFailed(error: "Failed to update Mock Photo")
         }
     }
@@ -173,7 +169,7 @@ final class MockRemoteRepository: RemoteRepository {
         case .success:
             photos.removeAll { $0.id == photoId }
             
-        case .empty, .error:
+        case .error:
             throw FireStoreError.deletePhotoFailed(error: "Failed to delete Mock Photo")
         }
     }

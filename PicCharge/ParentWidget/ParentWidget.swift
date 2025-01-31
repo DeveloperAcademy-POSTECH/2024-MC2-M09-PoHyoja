@@ -108,7 +108,11 @@ struct ParentWidget: Widget {
         let options = FirebaseOptions(contentsOfFile: filePath)
         FirebaseApp.configure(options: options!)
         
+#if DEBUG
+        localRepository = DefaultLocalRepository(isMemoryOnly: true)
+#else
         localRepository = DefaultLocalRepository()
+#endif
         remoteRepository = DefaultRemoteRepository()
     }
     
