@@ -21,7 +21,9 @@ final class UserViewModel {
     
     private(set) var user: User?
     var state: State = .checkNeeded
-    private(set) var nounce: String = ""
+    
+    @ObservationIgnored
+    private var nounce: String = ""
     
     @ObservationIgnored
     private let localStorageService: LocalStorageService
