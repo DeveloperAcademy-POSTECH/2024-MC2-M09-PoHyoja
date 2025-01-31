@@ -208,7 +208,6 @@ struct ConnectUserView: View {
         .padding(.horizontal, 16)
     }
     
-    
 }
 
 
@@ -232,7 +231,6 @@ extension ConnectUserView {
             return
         }
     }
-    
     
     private func acceptConnectionRequest(currentUserName: String, request: ConnectionRequestsDTO) async {
         do {

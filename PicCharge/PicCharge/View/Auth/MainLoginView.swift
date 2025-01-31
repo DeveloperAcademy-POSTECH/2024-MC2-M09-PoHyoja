@@ -27,7 +27,6 @@ struct MainLoginView: View {
                     .frame(width: 188)
                 
                 Spacer()
-                Spacer()
             }
             
             VStack {
@@ -36,6 +35,7 @@ struct MainLoginView: View {
                 FilledBtn(text: "이메일로 시작하기") {
                     navigationManager.push(to: .emailLogin)
                 }
+                AppleLoginBtn()
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 16)

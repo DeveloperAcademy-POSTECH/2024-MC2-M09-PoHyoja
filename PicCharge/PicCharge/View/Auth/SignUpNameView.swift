@@ -37,7 +37,6 @@ struct SignUpNameView: View {
                     .background(.bgPrimaryElevated)
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 
-            
             Spacer()
             
             FilledBtn(text: "다음 단계",

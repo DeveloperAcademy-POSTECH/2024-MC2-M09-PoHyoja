@@ -104,6 +104,7 @@
 		5172EE5D2CB66BDD001B128E /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5172EE5C2CB66BCF001B128E /* Header.swift */; };
 		518752072C00A8CE00005AF8 /* BuggungLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */; };
 		518752092C00A98800005AF8 /* BuggungLoading.json in Resources */ = {isa = PBXBuildFile; fileRef = 518752082C00A98800005AF8 /* BuggungLoading.json */; };
+		51B1CED62D4203EA00AA5FEA /* AppleLoginBtn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51B1CED52D4203EA00AA5FEA /* AppleLoginBtn.swift */; };
 		51E239DA2BF636920051943D /* Role.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51E239D92BF636920051943D /* Role.swift */; };
 		550FDD162BFC3DE6007A6B42 /* SignUpNameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 550FDD152BFC3DE6007A6B42 /* SignUpNameView.swift */; };
 		552E24E32BF9CB7500E5CF24 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 552E24E22BF9CB7500E5CF24 /* FirestoreService.swift */; };
@@ -240,6 +241,7 @@
 		5172EE5C2CB66BCF001B128E /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		518752062C00A8CE00005AF8 /* BuggungLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuggungLoadingView.swift; sourceTree = "<group>"; };
 		518752082C00A98800005AF8 /* BuggungLoading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = BuggungLoading.json; sourceTree = "<group>"; };
+		51B1CED52D4203EA00AA5FEA /* AppleLoginBtn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleLoginBtn.swift; sourceTree = "<group>"; };
 		51E239D92BF636920051943D /* Role.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Role.swift; sourceTree = "<group>"; };
 		550FDD152BFC3DE6007A6B42 /* SignUpNameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpNameView.swift; sourceTree = "<group>"; };
 		550FDD172BFC48DF007A6B42 /* PicCharge.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PicCharge.entitlements; sourceTree = "<group>"; };
@@ -475,6 +477,7 @@
 				E33AFF6B2BFC3ACA00BFB665 /* LottieView.swift */,
 				420E49292D4134DA008944A4 /* AsyncSquareImage.swift */,
 				420E48ED2D36C56A008944A4 /* FilledBtn.swift */,
+				51B1CED52D4203EA00AA5FEA /* AppleLoginBtn.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -788,6 +791,7 @@
 				42CF6FD32D22EF3C0054F244 /* SwiftDataService.swift in Sources */,
 				428046842BF5DFA50097EB0B /* ChildAlbumDetailView.swift in Sources */,
 				4214DA1A2C0392610096D48B /* ConnectionRequestsDTO.swift in Sources */,
+				51B1CED62D4203EA00AA5FEA /* AppleLoginBtn.swift in Sources */,
 				425AF6C42D34557D0056B97E /* URL.swift in Sources */,
 				420E48FB2D376D66008944A4 /* SignUpEmailPasswordView.swift in Sources */,
 				FFD221B02BFB8433009735E4 /* UserDefault+.swift in Sources */,
