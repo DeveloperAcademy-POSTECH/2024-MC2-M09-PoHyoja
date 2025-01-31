@@ -10,24 +10,19 @@ import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseStorage
 
-class FireStoreRepository: RemoteStorageService {
+class DefaultRemoteRepository: RemoteRepository {
     
     typealias ServiceError = FireStoreError
     
-    private let db: Firestore
-    private let storage: Storage
-    
-    init(fireStore: Firestore, storage: Storage) {
-        self.db = fireStore
-        self.storage = storage
-    }
+    private let db = Firestore.firestore()
+    private let storage = Storage.storage()
     
     var userCollection: String { "users" }
     var photoCollection: String { "photos" }
     var folder: String { "photos" }
 }
 
-extension FireStoreRepository {
+extension DefaultRemoteRepository {
     func fetchUserByEmail(_ email: String) async throws -> User? {
         
         // 1. FireStore 이메일 일치 여부 세팅
@@ -190,7 +185,7 @@ extension FireStoreRepository {
     }
 }
 
-extension FireStoreRepository {
+extension DefaultRemoteRepository {
     private func migrationPhoto(_ userName: String) async throws {
         
         let document = db.collection(photoCollection)

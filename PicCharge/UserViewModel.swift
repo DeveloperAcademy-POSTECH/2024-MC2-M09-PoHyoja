@@ -22,26 +22,21 @@ final class UserViewModel {
     private(set) var user: User?
     var state: State = .checkNeeded
     
-    @ObservationIgnored
-    private var nounce: String = ""
-    
-    @ObservationIgnored
-    private let localStorageService: LocalStorageService
-    
-    @ObservationIgnored
-    private let remoteStorageService: RemoteStorageService
+    @ObservationIgnored private let localRepository: LocalRepository
+    @ObservationIgnored private let remoteRepository: RemoteRepository
+    @ObservationIgnored private var nounce: String = ""
     
     init(
-        localStorageService: LocalStorageService,
-        remoteStorageService: RemoteStorageService
+        localRepository: LocalRepository,
+        remoteRepository: RemoteRepository
     ) {
-        self.localStorageService = localStorageService
-        self.remoteStorageService = remoteStorageService
+        self.localRepository = localRepository
+        self.remoteRepository = remoteRepository
     }
     
     func checkUserState() async {
         // 1. Local User 확인
-        guard let user = await localStorageService.fetchUser() else {
+        guard let user = await localRepository.fetchUser() else {
             print("[checkUserState] 로컬 유저 없음 → state = .notExist")
             await MainActor.run { self.state = .notExist }
             return
@@ -52,7 +47,7 @@ final class UserViewModel {
             
             // 2-1. Auth 미로그인 시 로컬 유저 정보 삭제
             // 에러 발생 여부 무시 - Auth 미인증 시 다시 막힘!
-            try? await localStorageService.deleteUser(user.name)
+            try? await localRepository.deleteUser(user.name)
 
             await MainActor.run { self.state = .notExist }
             return
@@ -87,7 +82,7 @@ final class UserViewModel {
             _ = try await Auth.auth().signIn(withEmail: email, password: password)
             
             // 2. 원격 이메일 유저 확인
-            guard let user = try await remoteStorageService.fetchUserByEmail(email) else {
+            guard let user = try await remoteRepository.fetchUserByEmail(email) else {
                 
                 // 3. 발견되지 않을 시 로그아웃
                 try Auth.auth().signOut()
@@ -95,7 +90,7 @@ final class UserViewModel {
             }
             
             // 3. 로컬 유저 저장
-            try await localStorageService.addUser(user)
+            try await localRepository.addUser(user)
             
             // 4. VM State 업데이트
             await MainActor.run {
@@ -134,7 +129,7 @@ final class UserViewModel {
              print("애플 로그인 이메일: \(email)")
 
              // 3. Firestore에서 사용자 정보 확인
-             guard let user = try await remoteStorageService.fetchUserByEmail(email) else {
+             guard let user = try await remoteRepository.fetchUserByEmail(email) else {
                  // Firestore에 사용자 정보가 없다면 -> 회원가입(이름/역할 설정)이 안 된 상태
                  // 애플 로그인만 완료된 상태이므로, 로컬 정보 저장 없이 로그아웃 or 추가 흐름
                  print("애플 로그인: Firestore에 사용자 정보 없음. 회원가입 필요")
@@ -143,7 +138,7 @@ final class UserViewModel {
                  try Auth.auth().signOut()
                  return
              }
-             try await localStorageService.addUser(user)
+             try await localRepository.addUser(user)
              
              // 4. VM State 업데이트
              await MainActor.run {
@@ -177,7 +172,7 @@ final class UserViewModel {
     func checkNameAvailable(name: String) async -> Bool {
         do {
             // 1. 기존 유저 존재 여부 확인
-            if let _ = try await remoteStorageService.fetchUserByName(name) {
+            if let _ = try await remoteRepository.fetchUserByName(name) {
                 await GlobalAlert.shared.show(message: "이미 존재하는 이름입니다.")
                 return false
             }
@@ -194,7 +189,7 @@ final class UserViewModel {
     func checkEmailAvailable(email: String) async -> Bool {
         do {
             // 1. 기존 유저 존재 여부 확인
-            if let _ = try await remoteStorageService.fetchUserByEmail(email) {
+            if let _ = try await remoteRepository.fetchUserByEmail(email) {
                 await GlobalAlert.shared.show(message: "이미 존재하는 이메일입니다.")
                 return false
             }
@@ -213,15 +208,15 @@ final class UserViewModel {
         
         let user = User(name: name, role: role, email: email, connectedTo: [])
         
-        try await remoteStorageService.addUser(user)
+        try await remoteRepository.addUser(user)
     }
     
     func signUpWithApple(name: String, email: String, role: Role) async throws {
         // Firebase Auth에는 이미 계정이 있으므로 Firestore에만 저장
         let user = User(name: name, role: role, email: email, connectedTo: [])
         
-        try await remoteStorageService.addUser(user)
-        try await localStorageService.addUser(user)
+        try await remoteRepository.addUser(user)
+        try await localRepository.addUser(user)
         
         await MainActor.run {
             self.user = user
@@ -233,8 +228,8 @@ final class UserViewModel {
         guard let user else { return }
         
         try Auth.auth().signOut()
-        try await localStorageService.deleteUser(user.name)
-        try await localStorageService.deleteAllPhotos()
+        try await localRepository.deleteUser(user.name)
+        try await localRepository.deleteAllPhotos()
         
         print("-- 로컬 데이터 삭제 --")
         
@@ -255,15 +250,15 @@ extension UserViewModel {
     func addConnections(with otherUser: User) async throws {
         guard let user else { return }
         
-        try await remoteStorageService.updateConnections(of: user, with: [otherUser.name])
-        try await remoteStorageService.updateConnections(of: otherUser, with: [user.name])
+        try await remoteRepository.updateConnections(of: user, with: [otherUser.name])
+        try await remoteRepository.updateConnections(of: otherUser, with: [user.name])
         try await addLocalConnections(with: otherUser.name)
     }
     
     func addLocalConnections(with otherUserName: String) async throws {
         guard let user else { return }
         
-        try await localStorageService.addConnection(of: user, with: [otherUserName])
+        try await localRepository.addConnection(of: user, with: [otherUserName])
         await MainActor.run { self.user?.connectedTo += [otherUserName] }
     }
 }
@@ -354,7 +349,7 @@ extension UserViewModel {
         }
         
         // Firestore 조회
-        if let _ = try await remoteStorageService.fetchUserByEmail(email) {
+        if let _ = try await remoteRepository.fetchUserByEmail(email) {
             // 기존 유저
             return (false, email)
         } else {

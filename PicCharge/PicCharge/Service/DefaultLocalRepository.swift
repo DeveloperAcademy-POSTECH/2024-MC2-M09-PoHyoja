@@ -1,5 +1,5 @@
 //
-//  SwiftDataRepository.swift
+//  DefaultLocalRepository.swift
 //  PicCharge
 //
 //  Created by 남유성 on 12/31/24.
@@ -8,24 +8,24 @@
 import Foundation
 import SwiftData
 
-final class SwiftDataRepository: LocalStorageService {
+final class DefaultLocalRepository: LocalRepository {
     
-    private let userStorage: SwiftDataService<UserEntity>
-    private let photoStorage: SwiftDataService<PhotoEntity>
+    private let userDataSource: EntityDataSource<UserEntity>
+    private let photoDataSource: EntityDataSource<PhotoEntity>
 
     init(isMemoryOnly: Bool = false) {
         let persistanceStack = PersistenceStack(isMemoryOnly: isMemoryOnly)
         
-        self.userStorage = SwiftDataService<UserEntity>(container: persistanceStack.container)
-        self.photoStorage = SwiftDataService<PhotoEntity>(container: persistanceStack.container)
+        self.userDataSource = EntityDataSource<UserEntity>(container: persistanceStack.container)
+        self.photoDataSource = EntityDataSource<PhotoEntity>(container: persistanceStack.container)
     }
 }
 
 // MARK: - User Entity
-extension SwiftDataRepository {
+extension DefaultLocalRepository {
     func fetchUser() async -> User? {
         do {
-            let userEntity: [UserEntity] = try userStorage.read()
+            let userEntity: [UserEntity] = try userDataSource.read()
             
             return userEntity.first?.toDomain()
         } catch {
@@ -36,29 +36,29 @@ extension SwiftDataRepository {
     func addUser(_ user: User) async throws {
         let userEntity = UserEntity(user)
         
-        try userStorage.create(userEntity)
+        try userDataSource.create(userEntity)
     }
     
     func addConnection(of user: User, with connectedTo: [String]) async throws {
         let userEntity = UserEntity(user)
         userEntity.connectedTo += connectedTo
-        try userStorage.update(userEntity)
+        try userDataSource.update(userEntity)
     }
     
     func deleteUser(_ name: String) async throws {
-        try userStorage.delete(where: #Predicate { $0.name == name })
+        try userDataSource.delete(where: #Predicate { $0.name == name })
     }
 }
 
 // MARK: - Photo Entity
-extension SwiftDataRepository {
+extension DefaultLocalRepository {
     func fetchPhotos() async -> [Photo] {
         await fetchPhotos(for: .uploadDate, .reverse)
     }
     
     func fetchPhotos(for option: PhotoSortOption, _ order: SortOrder) async -> [Photo] {
         do {
-            let photoEntities: [PhotoEntity] = try photoStorage.read(
+            let photoEntities: [PhotoEntity] = try photoDataSource.read(
                 sortDescriptors: PhotoSortDescriptor.build(option, order: order)
             )
             
@@ -71,39 +71,39 @@ extension SwiftDataRepository {
     func addPhoto(_ photo: Photo) async throws {
         let photoEntity = PhotoEntity(photo)
         
-        try photoStorage.create(photoEntity)
+        try photoDataSource.create(photoEntity)
     }
     
     func addPhotos(_ photos: [Photo]) async throws {
-        try photoStorage.create(photos.map { PhotoEntity($0) })
+        try photoDataSource.create(photos.map { PhotoEntity($0) })
     }
     
     func updatePhoto(_ photo: Photo) async throws {
-        try photoStorage.update(PhotoEntity(photo))
+        try photoDataSource.update(PhotoEntity(photo))
     }
     
     func updatePhotos(_ photos: [Photo]) async throws {
-        try photoStorage.update(photos.map { PhotoEntity($0) })
+        try photoDataSource.update(photos.map { PhotoEntity($0) })
     }
     
     func deletePhoto(_ photoId: UUID) async throws {
-        try photoStorage.delete(where: #Predicate { $0.id == photoId })
+        try photoDataSource.delete(where: #Predicate { $0.id == photoId })
     }
     
     func deletePhotos(_ photoIds: [UUID]) async throws {
         let photoSet = Set(photoIds)
         
-        try photoStorage.delete(where: #Predicate { item in
+        try photoDataSource.delete(where: #Predicate { item in
             photoSet.contains(item.id)
         })
     }
     
     func deleteAllPhotos() async throws {
-        try photoStorage.deleteAll()
+        try photoDataSource.deleteAll()
     }
 }
 
-extension SwiftDataRepository {
+extension DefaultLocalRepository {
     struct PhotoSortDescriptor {
         static func build(_ option: PhotoSortOption = .uploadDate,
                           order: SortOrder = .reverse) -> SortDescriptor<PhotoEntity> {

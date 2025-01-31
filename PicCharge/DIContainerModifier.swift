@@ -9,12 +9,12 @@ import SwiftUI
 
 struct DIContainerModifier: ViewModifier {
     
-    let remoteStorageService: RemoteStorageService
-    let localStorageService: LocalStorageService
+    let remoteRepository: RemoteRepository
+    let localRepository: LocalRepository
     
     init() {
-        remoteStorageService = FireStoreRepository(fireStore: .firestore(), storage: .storage())
-        localStorageService = SwiftDataRepository()
+        remoteRepository = DefaultRemoteRepository()
+        localRepository = DefaultLocalRepository()
     }
     
     func body(content: Content) -> some View {
@@ -24,14 +24,14 @@ struct DIContainerModifier: ViewModifier {
             )
             .environment(
                 UserViewModel(
-                    localStorageService: localStorageService,
-                    remoteStorageService: remoteStorageService
+                    localRepository: localRepository,
+                    remoteRepository: remoteRepository
                 )
             )
             .environment(
                 PhotoViewModel(
-                    localStorageService: localStorageService,
-                    remoteStorageService: remoteStorageService
+                    localRepository: localRepository,
+                    remoteRepository: remoteRepository
                 )
             )
     }

@@ -1,5 +1,5 @@
 //
-//  SwiftDataService.swift
+//  EntityDataSource.swift
 //  PicCharge
 //
 //  Created by 남유성 on 12/31/24.
@@ -8,7 +8,7 @@
 import Foundation
 import SwiftData
 
-final class SwiftDataService<T: PersistentModel> {
+final class EntityDataSource<T: PersistentModel> {
     
     private var container: ModelContainer
     
@@ -17,7 +17,7 @@ final class SwiftDataService<T: PersistentModel> {
     }
 }
 
-extension SwiftDataService {
+extension EntityDataSource {
     func create(_ item: T) throws {
         let context = ModelContext(container)
         context.insert(item)

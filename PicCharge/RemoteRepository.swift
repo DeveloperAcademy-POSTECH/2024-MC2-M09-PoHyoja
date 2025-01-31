@@ -1,5 +1,5 @@
 //
-//  RemoteStorageService.swift
+//  RemoteRepository.swift
 //  PicCharge
 //
 //  Created by 남유성 on 12/28/24.
@@ -8,7 +8,7 @@
 import Foundation
 
 /// 원격 스토리지 서비스 프로토콜
-protocol RemoteStorageService {
+protocol RemoteRepository {
     
     /// 이메일로 유저를 가져옵니다.
     /// - Parameter email: 검색할 유저의 이메일
