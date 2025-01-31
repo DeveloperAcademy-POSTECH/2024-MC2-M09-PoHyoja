@@ -121,7 +121,7 @@ extension ChildSendGalleryView {
 
 #Preview("사진 업로드 성공") {
     ChildSendGalleryView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: [],
             response: .success
@@ -131,7 +131,7 @@ extension ChildSendGalleryView {
 
 #Preview("사진 업로드 실패") {
     ChildSendGalleryView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: [],
             response: .error

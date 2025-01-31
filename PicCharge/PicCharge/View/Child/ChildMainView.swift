@@ -285,18 +285,18 @@ extension ChildMainView {
 
 #Preview("1일전 업로드") {
     ChildMainView()
-        .injectPreviewSetting(user: .childMock, photos: [.oneDayAgo])
+        .injectPreviewDIContainer(user: .childMock, photos: [.oneDayAgo])
         .preferredColorScheme(.dark)
 }
 
 #Preview("2일전 업로드") {
     ChildMainView()
-        .injectPreviewSetting(user: .childMock, photos: [.twoDayAgo])
+        .injectPreviewDIContainer(user: .childMock, photos: [.twoDayAgo])
         .preferredColorScheme(.dark)
 }
 
 #Preview("일주일 전 업로드") {
     ChildMainView()
-        .injectPreviewSetting(user: .childMock, photos: [.oneWeekAgo])
+        .injectPreviewDIContainer(user: .childMock, photos: [.oneWeekAgo])
         .preferredColorScheme(.dark)
 }

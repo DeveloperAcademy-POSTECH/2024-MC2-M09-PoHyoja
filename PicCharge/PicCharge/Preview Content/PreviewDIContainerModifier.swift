@@ -50,10 +50,11 @@ struct PreviewDIContainerModifier: ViewModifier {
 }
 
 extension View {
-    func injectPreviewSetting(user: User,
-                              localPhotos: [Photo],
-                              remotePhotos: [Photo],
-                              response: MockResponseType = .success) -> some View {
+    
+    func injectPreviewDIContainer(user: User,
+                                  localPhotos: [Photo],
+                                  remotePhotos: [Photo],
+                                  response: MockResponseType = .success) -> some View {
         
         modifier(PreviewDIContainerModifier(
             user: user,
@@ -66,9 +67,9 @@ extension View {
         ))
     }
     
-    func injectPreviewSetting(user: User?,
-                              photos: [Photo] = [],
-                              response: MockResponseType = .success) -> some View {
+    func injectPreviewDIContainer(user: User?,
+                                  photos: [Photo] = [],
+                                  response: MockResponseType = .success) -> some View {
         
         modifier(PreviewDIContainerModifier(
             user: user,

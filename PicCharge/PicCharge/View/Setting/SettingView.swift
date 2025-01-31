@@ -154,6 +154,6 @@ extension SettingView {
 
 #Preview {
     SettingView()
-        .injectPreviewSetting(user: .childMock)
+        .injectPreviewDIContainer(user: .childMock)
         .preferredColorScheme(.dark)
 }

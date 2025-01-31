@@ -48,7 +48,7 @@ struct AppleLoginBtn: View {
 #Preview(traits: .sizeThatFitsLayout) {
     VStack {
         AppleLoginBtn()
-            .injectPreviewSetting(user: nil)
+            .injectPreviewDIContainer(user: nil)
     }
     .preferredColorScheme(.dark)
 }

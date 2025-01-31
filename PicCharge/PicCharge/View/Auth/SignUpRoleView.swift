@@ -133,12 +133,12 @@ struct SignUpRoleView: View {
 
 #Preview("유저 생성 성공") {
     SignUpRoleView(name: "", email: "", password: "")
-        .injectPreviewSetting(user: nil, photos: [], response: .success)
+        .injectPreviewDIContainer(user: nil, photos: [], response: .success)
         .preferredColorScheme(.dark)
 }
 
 #Preview("유저 생성 에러") {
     SignUpRoleView(name: "", email: "", password: "")
-        .injectPreviewSetting(user: nil, photos: [], response: .error)
+        .injectPreviewDIContainer(user: nil, photos: [], response: .error)
         .preferredColorScheme(.dark)
 }

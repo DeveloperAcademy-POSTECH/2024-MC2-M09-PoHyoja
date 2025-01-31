@@ -137,7 +137,7 @@ struct ParentAlbumDetailView: View {
 #Preview {
     NavigationStack {
         ParentAlbumDetailView(photo: .withDataMock1)
-            .injectPreviewSetting(
+            .injectPreviewDIContainer(
                 user: .parentMock,
                 photos: [.withDataMock1, .withDataMock2, .withDataMock3],
                 response: .success

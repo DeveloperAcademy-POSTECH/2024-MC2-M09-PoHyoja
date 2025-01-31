@@ -86,7 +86,7 @@ struct ChildAlbumView: View {
 
 #Preview("사진 동기화 성공") {
     ChildAlbumView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             localPhotos: [.withDataMock1, .withDataMock2],
             remotePhotos: [.withDataMock1, .withDataMock2, .withDataMock3],
@@ -97,7 +97,7 @@ struct ChildAlbumView: View {
 
 #Preview("사진 동기화 에러") {
     ChildAlbumView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             localPhotos: [.withDataMock1, .withDataMock2],
             remotePhotos: [.withDataMock1, .withDataMock2, .withDataMock3],
@@ -108,7 +108,7 @@ struct ChildAlbumView: View {
 
 #Preview("사진 빈 데이터") {
     ChildAlbumView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: []
         )

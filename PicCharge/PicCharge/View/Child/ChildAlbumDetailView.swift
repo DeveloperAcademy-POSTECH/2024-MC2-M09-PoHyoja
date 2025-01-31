@@ -151,7 +151,7 @@ struct ChildAlbumDetailView: View {
 #Preview("Remote 삭제 성공") {
     NavigationStack {
         ChildAlbumDetailView(photo: Photo.withDataMock1)
-            .injectPreviewSetting(
+            .injectPreviewDIContainer(
                 user: .childMock,
                 photos: [.withDataMock1, .withDataMock2, .withDataMock3],
                 response: .success
@@ -163,7 +163,7 @@ struct ChildAlbumDetailView: View {
 #Preview("Remote 삭제 에러") {
     NavigationStack {
         ChildAlbumDetailView(photo: Photo.withDataMock1)
-            .injectPreviewSetting(
+            .injectPreviewDIContainer(
                 user: .childMock,
                 photos: [.withDataMock1, .withDataMock2, .withDataMock3],
                 response: .error

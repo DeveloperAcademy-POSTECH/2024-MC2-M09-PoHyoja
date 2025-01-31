@@ -104,6 +104,6 @@ struct EmailLoginView: View {
 
 #Preview {
     EmailLoginView()
-        .injectPreviewSetting(user: nil)
+        .injectPreviewDIContainer(user: nil)
         .preferredColorScheme(.dark)
 }

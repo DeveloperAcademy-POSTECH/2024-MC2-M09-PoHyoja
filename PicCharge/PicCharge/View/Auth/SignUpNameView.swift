@@ -70,12 +70,12 @@ struct SignUpNameView: View {
 
 #Preview("이름 설정 성공") {
     SignUpNameView(email: "", password: "")
-        .injectPreviewSetting(user: nil, response: .success)
+        .injectPreviewDIContainer(user: nil, response: .success)
         .preferredColorScheme(.dark)
 }
 
 #Preview("이름 설정 실패") {
     SignUpNameView(email: "", password: "")
-        .injectPreviewSetting(user: nil, response: .error)
+        .injectPreviewDIContainer(user: nil, response: .error)
         .preferredColorScheme(.dark)
 }

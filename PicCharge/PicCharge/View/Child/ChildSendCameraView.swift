@@ -87,7 +87,7 @@ extension ChildSendCameraView {
 
 #Preview("사진 업로드 성공") {
     ChildSendCameraView(imgData: UIImage(resource: .logoLarge).pngData()!)
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: [],
             response: .success
@@ -97,7 +97,7 @@ extension ChildSendCameraView {
 
 #Preview("사진 업로드 실패") {
     ChildSendCameraView(imgData: UIImage(resource: .logoLarge).pngData()!)
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: [],
             response: .error

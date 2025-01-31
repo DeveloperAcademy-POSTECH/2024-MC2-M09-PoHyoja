@@ -41,7 +41,7 @@ struct ChildTabView: View {
 
 #Preview("사진 동기화 성공") {
     ChildTabView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             localPhotos: [.withDataMock1],
             remotePhotos: [.withDataMock1, .withDataMock2, .withDataMock3],
@@ -52,7 +52,7 @@ struct ChildTabView: View {
 
 #Preview("사진 동기화 실패") {
     ChildTabView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             localPhotos: [.withDataMock1],
             remotePhotos: [.withDataMock1, .withDataMock2, .withDataMock3],
@@ -63,7 +63,7 @@ struct ChildTabView: View {
 
 #Preview("사진 데이터 없음") {
     ChildTabView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: []
         )
@@ -72,7 +72,7 @@ struct ChildTabView: View {
 
 #Preview("일주일 전 업로드") {
     ChildTabView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: [.oneWeekAgo]
         )
@@ -81,7 +81,7 @@ struct ChildTabView: View {
 
 #Preview("2일 전 업로드") {
     ChildTabView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: [.twoDayAgo]
         )
@@ -90,7 +90,7 @@ struct ChildTabView: View {
 
 #Preview("1일 전 업로드") {
     ChildTabView()
-        .injectPreviewSetting(
+        .injectPreviewDIContainer(
             user: .childMock,
             photos: [.oneDayAgo]
         )
