@@ -115,6 +115,6 @@ struct SignUpEmailPasswordView: View {
 
 #Preview {
     SignUpEmailPasswordView()
-        .injectDIContainer()
+        .injectPreviewSetting(user: nil)
         .preferredColorScheme(.dark)
 }

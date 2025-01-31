@@ -153,9 +153,7 @@ extension SettingView {
 }
 
 #Preview {
-    NavigationStack {
-        SettingView()
-            .injectDIContainer()
-            .preferredColorScheme(.dark)
-    }
+    SettingView()
+        .injectPreviewSetting(user: .childMock)
+        .preferredColorScheme(.dark)
 }

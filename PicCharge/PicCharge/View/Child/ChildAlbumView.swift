@@ -77,17 +77,40 @@ struct ChildAlbumView: View {
         }
         .refreshable {
             Task {
-                try await photoVM.syncPhoto(of: userVM.user?.name)
+                await photoVM.syncPhoto(of: userVM.user?.name)
                 WidgetCenter.shared.reloadAllTimelines()
             }
         }
     }
 }
 
-#Preview {
-    NavigationStack {
-        ChildAlbumView()
-            .injectDIContainer()
-            .preferredColorScheme(.dark)
-    }
+#Preview("사진 동기화 성공") {
+    ChildAlbumView()
+        .injectPreviewSetting(
+            user: .childMock,
+            localPhotos: [.withDataMock1, .withDataMock2],
+            remotePhotos: [.withDataMock1, .withDataMock2, .withDataMock3],
+            response: .success
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("사진 동기화 에러") {
+    ChildAlbumView()
+        .injectPreviewSetting(
+            user: .childMock,
+            localPhotos: [.withDataMock1, .withDataMock2],
+            remotePhotos: [.withDataMock1, .withDataMock2, .withDataMock3],
+            response: .error
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("사진 빈 데이터") {
+    ChildAlbumView()
+        .injectPreviewSetting(
+            user: .childMock,
+            photos: []
+        )
+        .preferredColorScheme(.dark)
 }

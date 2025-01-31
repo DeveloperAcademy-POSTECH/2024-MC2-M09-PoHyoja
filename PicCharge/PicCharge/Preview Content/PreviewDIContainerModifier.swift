@@ -50,16 +50,32 @@ struct PreviewDIContainerModifier: ViewModifier {
 }
 
 extension View {
-    func injectPreviewDIContainer(user: User,
-                                  photos: [Photo],
-                                  response: MockResponseType = .success) -> some View {
+    func injectPreviewSetting(user: User,
+                              localPhotos: [Photo],
+                              remotePhotos: [Photo],
+                              response: MockResponseType = .success) -> some View {
+        
+        modifier(PreviewDIContainerModifier(
+            user: user,
+            photos: localPhotos,
+            localRepository: MockLocalRepository(user: user, photos: localPhotos),
+            remoteRepository: MockRemoteRepository(
+                users: [user],
+                photos: remotePhotos,
+                response: response)
+        ))
+    }
+    
+    func injectPreviewSetting(user: User?,
+                              photos: [Photo] = [],
+                              response: MockResponseType = .success) -> some View {
         
         modifier(PreviewDIContainerModifier(
             user: user,
             photos: photos,
             localRepository: MockLocalRepository(user: user, photos: photos),
             remoteRepository: MockRemoteRepository(
-                users: [user],
+                users: user == nil ? [] : [user!],
                 photos: photos,
                 response: response)
         ))

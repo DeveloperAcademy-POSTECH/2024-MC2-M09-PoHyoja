@@ -51,9 +51,6 @@ extension PhotoViewModel {
             let remoteMap = Dictionary(uniqueKeysWithValues: remotePhotos.map { ($0.id, $0) })
             let localMap = Dictionary(uniqueKeysWithValues: localPhotos.map { ($0.id, $0) })
             
-            print(remoteMap)
-            print(localMap)
-            
             // (1) 업데이트할 항목: 동일한 ID를 가진 항목 중 reaction이 다른 항목
             let photosToUpdate = remoteMap.filter { localMap[$0]?.reaction != $1.reaction }.map { $0.value }
             

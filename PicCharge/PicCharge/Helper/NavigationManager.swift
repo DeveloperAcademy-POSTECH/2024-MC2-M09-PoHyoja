@@ -85,7 +85,7 @@ extension NavigationManager {
     }
     
     func pop() {
-        path.removeLast()
+        _ = path.popLast()
     }
     
     func popToRoot() {

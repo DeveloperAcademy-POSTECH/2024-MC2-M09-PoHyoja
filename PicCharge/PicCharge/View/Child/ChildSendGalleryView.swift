@@ -119,8 +119,22 @@ extension ChildSendGalleryView {
     }
 }
 
-#Preview {
+#Preview("사진 업로드 성공") {
     ChildSendGalleryView()
-        .injectDIContainer()
+        .injectPreviewSetting(
+            user: .childMock,
+            photos: [],
+            response: .success
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("사진 업로드 실패") {
+    ChildSendGalleryView()
+        .injectPreviewSetting(
+            user: .childMock,
+            photos: [],
+            response: .error
+        )
         .preferredColorScheme(.dark)
 }

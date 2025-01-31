@@ -39,10 +39,60 @@ struct ChildTabView: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        ChildTabView()
-            .injectDIContainer()
-            .preferredColorScheme(.dark)
-    }
+#Preview("사진 동기화 성공") {
+    ChildTabView()
+        .injectPreviewSetting(
+            user: .childMock,
+            localPhotos: [.withDataMock1],
+            remotePhotos: [.withDataMock1, .withDataMock2, .withDataMock3],
+            response: .success
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("사진 동기화 실패") {
+    ChildTabView()
+        .injectPreviewSetting(
+            user: .childMock,
+            localPhotos: [.withDataMock1],
+            remotePhotos: [.withDataMock1, .withDataMock2, .withDataMock3],
+            response: .error
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("사진 데이터 없음") {
+    ChildTabView()
+        .injectPreviewSetting(
+            user: .childMock,
+            photos: []
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("일주일 전 업로드") {
+    ChildTabView()
+        .injectPreviewSetting(
+            user: .childMock,
+            photos: [.oneWeekAgo]
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("2일 전 업로드") {
+    ChildTabView()
+        .injectPreviewSetting(
+            user: .childMock,
+            photos: [.twoDayAgo]
+        )
+        .preferredColorScheme(.dark)
+}
+
+#Preview("1일 전 업로드") {
+    ChildTabView()
+        .injectPreviewSetting(
+            user: .childMock,
+            photos: [.oneDayAgo]
+        )
+        .preferredColorScheme(.dark)
 }

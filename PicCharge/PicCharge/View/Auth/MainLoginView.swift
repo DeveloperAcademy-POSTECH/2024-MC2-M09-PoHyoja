@@ -45,6 +45,6 @@ struct MainLoginView: View {
 
 #Preview {
     MainLoginView()
-        .injectDIContainer()
+        .environment(NavigationManager())
         .preferredColorScheme(.dark)
 }
