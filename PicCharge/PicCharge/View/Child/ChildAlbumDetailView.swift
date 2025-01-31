@@ -17,10 +17,10 @@ struct ChildAlbumDetailView: View {
     @State private var isShowingDeleteSheet: Bool = false
     @State private var isZooming: Bool = false
     
-    var loveCount: Int { 12 }
-    var fireCount: Int { 34 }
-    var starCount: Int { 56 }
-    var likeCount: Int { 78 }
+    var loveCount: Int { photo.reaction.love }
+    var fireCount: Int { photo.reaction.fire }
+    var starCount: Int { photo.reaction.star }
+    var likeCount: Int { photo.reaction.like }
     
     private var photoForShare: PhotoShareDTO {
         return PhotoShareDTO(
