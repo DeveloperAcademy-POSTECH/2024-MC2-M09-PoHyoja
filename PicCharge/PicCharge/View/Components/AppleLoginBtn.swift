@@ -20,13 +20,14 @@ struct AppleLoginBtn: View {
             },
             onCompletion: { result in
                 Task {
-                    if let (isNewUser, email) = await userVM.processAppleSignInResult(result) {
+                    if let (isNewUser, email, fullName) = await userVM.processAppleSignInResult(result) {
                         if isNewUser {
                             // 새 사용자 => 회원가입 플로우
                             print("Apple 회원가입, 이름입력하러 가자")
                             navigationManager.push(to: .signUpName(
                                 email: email,
-                                password: "" // 애플 회원가입용
+                                password: "",
+                                name: fullName
                             ))
                         } else {
                             // 기존 사용자 => 홈 화면

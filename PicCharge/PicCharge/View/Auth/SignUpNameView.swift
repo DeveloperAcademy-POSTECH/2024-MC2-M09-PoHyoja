@@ -12,15 +12,16 @@ struct SignUpNameView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(UserViewModel.self) var userVM
 
-    @State private var name: String = ""
+    @State private var name: String
     @State private var isLoading: Bool = false
     
     private let email: String
     private let password: String
     
-    init(email: String, password: String) {
+    init(email: String, password: String, name: String = "") {
         self.email = email
         self.password = password
+        _name = State(initialValue: name)
     }
     
     var body: some View {
