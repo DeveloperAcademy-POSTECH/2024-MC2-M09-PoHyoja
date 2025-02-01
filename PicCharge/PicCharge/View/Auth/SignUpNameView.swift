@@ -65,6 +65,15 @@ struct SignUpNameView: View {
         .padding(.bottom, 16)
         .navigationTitle("이름 설정")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            // 현재 로그인한 사용자가 Apple 로그인인지 확인
+            let isAppleUser = Auth.auth().currentUser?.providerData.contains(where: { $0.providerID == "apple.com" }) ?? false
+            
+            if isAppleUser && name.isEmpty {
+                let appleName = userVM.tempAppleFullName.isEmpty ? "사용자" : userVM.tempAppleFullName
+                name = appleName
+            }
+        }
     }
 }
 
