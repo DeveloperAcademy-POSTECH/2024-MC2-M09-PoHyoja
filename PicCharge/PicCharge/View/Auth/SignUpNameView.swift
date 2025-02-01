@@ -12,15 +12,16 @@ struct SignUpNameView: View {
     @Environment(NavigationManager.self) var navigationManager
     @Environment(UserViewModel.self) var userVM
 
-    @State private var name: String = ""
+    @State private var name: String
     @State private var isLoading: Bool = false
     
     private let email: String
     private let password: String
     
-    init(email: String, password: String) {
+    init(email: String, password: String, name: String = "") {
         self.email = email
         self.password = password
+        _name = State(initialValue: name)
     }
     
     var body: some View {
@@ -65,15 +66,6 @@ struct SignUpNameView: View {
         .padding(.bottom, 16)
         .navigationTitle("이름 설정")
         .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            // 현재 로그인한 사용자가 Apple 로그인인지 확인
-            let isAppleUser = Auth.auth().currentUser?.providerData.contains(where: { $0.providerID == "apple.com" }) ?? false
-            
-            if isAppleUser && name.isEmpty {
-                let appleName = userVM.tempAppleFullName.isEmpty ? "사용자" : userVM.tempAppleFullName
-                name = appleName
-            }
-        }
     }
 }
 

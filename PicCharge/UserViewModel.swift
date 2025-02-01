@@ -31,8 +31,6 @@ final class UserViewModel {
     @ObservationIgnored
     private let remoteStorageService: RemoteStorageService
     
-    @ObservationIgnored var tempAppleFullName: String = ""
-    
     init(
         localStorageService: LocalStorageService,
         remoteStorageService: RemoteStorageService
@@ -316,17 +314,14 @@ extension UserViewModel {
         return hashedData.compactMap { String(format: "%02x", $0) }.joined()
     }
     
-    func processAppleSignInResult(_ result: Result<ASAuthorization, Error>) async -> (Bool, String)? {
+    func processAppleSignInResult(_ result: Result<ASAuthorization, Error>) async -> (Bool, String, String)? {
             switch result {
             case .success(let authorization):
                 if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
                     do {
                         let (isNewUser, email, fullName) = try await performAppleFirebaseSignIn(credential: credential)
-                        await MainActor.run {
-                            self.tempAppleFullName = fullName.isEmpty ? "사용자" : fullName
-                            print("[DEBUG] Apple Sign-In tempAppleFullName 저장: \(self.tempAppleFullName)")
-                        }
-                        return (isNewUser, email)
+                        print("[DEBUG] Apple Sign-In: \(isNewUser ? "신규 유저" : "기존 유저"), 이메일: \(email), 이름: \(fullName)")
+                        return (isNewUser, email, fullName)
                     } catch {
                         print("Apple Sign-In 처리 실패: \(error.localizedDescription)")
                         return nil

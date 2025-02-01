@@ -12,7 +12,7 @@ enum PathType: Hashable {
     case mainLogin
     case emailLogin
     case signUpEmailPw
-    case signUpName(email: String, password: String)
+    case signUpName(email: String, password: String, name: String)
     case signUpRole(name: String, email: String, password: String)
     
     // MARK: - 자식
@@ -40,8 +40,8 @@ extension PathType {
             EmailLoginView()
         case .signUpEmailPw:
             SignUpEmailPasswordView()
-        case .signUpName(let email, let password):
-            SignUpNameView(email: email, password: password)
+        case .signUpName(let email, let password, let name):
+            SignUpNameView(email: email, password: password, name: name)
         case .signUpRole(let name, let email, let password):
             SignUpRoleView(name: name, email: email, password: password)
             
