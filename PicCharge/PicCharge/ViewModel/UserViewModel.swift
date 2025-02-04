@@ -311,13 +311,14 @@ extension UserViewModel {
         return hashedData.compactMap { String(format: "%02x", $0) }.joined()
     }
     
-    func processAppleSignInResult(_ result: Result<ASAuthorization, Error>) async -> (Bool, String)? {
+    func processAppleSignInResult(_ result: Result<ASAuthorization, Error>) async -> (Bool, String, String)? {
             switch result {
             case .success(let authorization):
                 if let credential = authorization.credential as? ASAuthorizationAppleIDCredential {
                     do {
-                        let (isNewUser, email) = try await performAppleFirebaseSignIn(credential: credential)
-                        return (isNewUser, email)
+                        let (isNewUser, email, fullName) = try await performAppleFirebaseSignIn(credential: credential)
+                        print("[DEBUG] Apple Sign-In: \(isNewUser ? "신규 유저" : "기존 유저"), 이메일: \(email), 이름: \(fullName)")
+                        return (isNewUser, email, fullName)
                     } catch {
                         print("Apple Sign-In 처리 실패: \(error.localizedDescription)")
                         return nil
@@ -332,7 +333,7 @@ extension UserViewModel {
             }
         }
     
-    private func performAppleFirebaseSignIn(credential: ASAuthorizationAppleIDCredential) async throws -> (Bool, String) {
+    private func performAppleFirebaseSignIn(credential: ASAuthorizationAppleIDCredential) async throws -> (Bool, String, String) {
         guard let identityToken = credential.identityToken,
               let tokenString = String(data: identityToken, encoding: .utf8) else {
             throw NSError(domain: "AuthError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid token"])
@@ -350,13 +351,16 @@ extension UserViewModel {
             throw NSError(domain: "AuthError", code: -1, userInfo: [NSLocalizedDescriptionKey: "Missing email"])
         }
         
-        // Firestore 조회
-        if let _ = try await remoteRepository.fetchUserByEmail(email) {
-            // 기존 유저
-            return (false, email)
+        let fullName = credential.fullName?.formatted() ?? ""
+        
+        // 5. Firestore 조회하여 기존 유저 여부 판단
+        if let existingUser = try await remoteRepository.fetchUserByEmail(email) {
+            // 기존 유저 → Firestore에서 저장된 이름 가져오기
+            let storedName = existingUser.name
+            return (false, email, storedName)
         } else {
-            // 새 유저
-            return (true, email)
+            // 신규 유저 → fullName 저장 필요
+            return (true, email, fullName)
         }
     }
 }

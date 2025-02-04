@@ -94,7 +94,7 @@ struct SignUpEmailPasswordView: View {
                         isLoading = false
                         
                         if isAvailable {
-                            navigationManager.push(to: .signUpName(email: email, password: password))
+                            navigationManager.push(to: .signUpName(email: email, password: password, name: ""))
                         } else {
                             email = ""
                             password = ""
