@@ -12,12 +12,8 @@ import SwiftData
 
 // MARK: - 부모 위젯
 struct ParentProvider: AppIntentTimelineProvider {
-    enum SwiftDataError: Error {
-        case notExist
-    }
-    
-    let localStorageRepository: LocalStorageService
-    let remoteStorageRepository: RemoteStorageService
+    let localRepository: LocalRepository
+    let remoteRepository: RemoteRepository
     
     func placeholder(in context: Context) -> ParentEntry {
         ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
@@ -31,10 +27,10 @@ struct ParentProvider: AppIntentTimelineProvider {
                 return entry
             }
             
-            let photo = await remoteStorageRepository.fetchLatestPhoto(user.name)
+            let photo = await remoteRepository.fetchLatestPhoto(user.name)
             
             if let urlString = photo?.urlString {
-                let imgData = try await remoteStorageRepository.downloadPhotoData(of: urlString)
+                let imgData = try await remoteRepository.downloadPhotoData(of: urlString)
                 
                 if let image = UIImage(data: imgData) {
                     return ParentEntry(date: Date(), image: image)
@@ -55,10 +51,10 @@ struct ParentProvider: AppIntentTimelineProvider {
                 return Timeline(entries: [entry], policy: .atEnd)
             }
             
-            let photo = await remoteStorageRepository.fetchLatestPhoto(user.name)
+            let photo = await remoteRepository.fetchLatestPhoto(user.name)
             
             if let urlString = photo?.urlString {
-                let imgData = try await remoteStorageRepository.downloadPhotoData(of: urlString)
+                let imgData = try await remoteRepository.downloadPhotoData(of: urlString)
                 
                 if let image = UIImage(data: imgData) {
                     entry = ParentEntry(date: Date(), image: image)
@@ -74,7 +70,7 @@ struct ParentProvider: AppIntentTimelineProvider {
     }
     
     func getLocalUser() async -> User? {
-        await localStorageRepository.fetchUser()
+        await localRepository.fetchUser()
     }
 }
 
@@ -104,24 +100,28 @@ struct ParentWidgetView : View {
 
 struct ParentWidget: Widget {
     let kind: String = "ParentWidget"
-    let localStorageRepository: LocalStorageService
-    let remoteStorageRepository: RemoteStorageService
+    let localRepository: LocalRepository
+    let remoteRepository: RemoteRepository
     
     init() {
         let filePath = Bundle.main.path(forResource: "../../GoogleService-Info", ofType: "plist")!
         let options = FirebaseOptions(contentsOfFile: filePath)
         FirebaseApp.configure(options: options!)
         
-        localStorageRepository = SwiftDataRepository()
-        remoteStorageRepository = FireStoreRepository(fireStore: .firestore(), storage: .storage())
+#if DEBUG
+        localRepository = DefaultLocalRepository(isMemoryOnly: true)
+#else
+        localRepository = DefaultLocalRepository()
+#endif
+        remoteRepository = DefaultRemoteRepository()
     }
     
     var body: some WidgetConfiguration {
         AppIntentConfiguration(
             kind: kind,
             intent: ConfigurationAppIntent.self,
-            provider: ParentProvider(localStorageRepository: localStorageRepository,
-                                     remoteStorageRepository: remoteStorageRepository)
+            provider: ParentProvider(localRepository: localRepository,
+                                     remoteRepository: remoteRepository)
         ) {
             ParentWidgetView(entry: $0)
                 .containerBackground(.fill.tertiary, for: .widget)

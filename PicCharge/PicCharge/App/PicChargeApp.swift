@@ -16,7 +16,6 @@ struct PicChargeApp: App {
         WindowGroup {
             AppNavigationView()
                 .injectDIContainer()
-                .globalAlert()
                 .preferredColorScheme(.dark)
         }
     }
