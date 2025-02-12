@@ -10,11 +10,14 @@ import SwiftUI
 struct AsyncSquareImage: View {
     @Environment(PhotoViewModel.self) var photoVM
     @State private var uiImage: UIImage?
-    private let photo: Photo
-    private var photoId: String { photo.id.uuidString }
     
-    init(photo: Photo) {
+    private let photo: Photo
+    private let size: CGSize
+    private var photoId: String { photo.id.uuidString + "_\(size.width)"}
+    
+    init(photo: Photo, size: CGSize = .main) {
         self.photo = photo
+        self.size = size
     }
     
     var body: some View {
@@ -44,7 +47,7 @@ struct AsyncSquareImage: View {
                 return
             }
 
-            if let downsampledImage = imgData.downsampling(to: CGSize(width: 300, height: 300)) {
+            if let downsampledImage = imgData.downsampling(to: size) {
                 await MainActor.run { self.uiImage = downsampledImage }
                 await ImageCache.shared.insertImage(downsampledImage, for: photoId)
             }
@@ -69,9 +72,9 @@ struct AsyncSquareImage: View {
 }
 
 #Preview {
-    AsyncSquareImage(photo: .onlyUrlMock1)
+    AsyncSquareImage(photo: .onlyUrlMock1, size: .main)
         .injectPreviewDIContainer(user: .childMock, photos: [.onlyUrlMock1])
     
-    AsyncSquareImage(photo: .withDataMock1)
+    AsyncSquareImage(photo: .withDataMock1, size: .main)
         .injectPreviewDIContainer(user: .childMock, photos: [.withDataMock1])
 }

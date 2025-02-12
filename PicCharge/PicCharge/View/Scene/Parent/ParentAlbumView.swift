@@ -58,7 +58,7 @@ struct ParentAlbumView: View {
                         
                         LazyVGrid(columns: columnLayout, spacing: 3) {
                             ForEach(photoVM.photos.dropFirst()) { photo in
-                                AsyncThumbnail(photo: photo)
+                                AsyncSquareImage(photo: photo, size: .thumb)
                                     .onTapGesture {
                                         navigationManager.push(to: .parentAlbumDetail(photo: photo))
                                     }
@@ -68,11 +68,8 @@ struct ParentAlbumView: View {
                     
                 }
             } else {
-                GeometryReader { geometry in
-                    ScrollView {
-                        Text("아직 업로드된 사진이 없어요.")
-                            .frame(width: geometry.size.width, height: geometry.size.height)
-                    }
+                ScrollView {
+                    Text("아직 업로드된 사진이 없어요.")
                 }
             }
         }

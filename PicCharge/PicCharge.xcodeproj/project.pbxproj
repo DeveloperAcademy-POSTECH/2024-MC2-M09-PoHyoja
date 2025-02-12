@@ -106,6 +106,7 @@
 				Global/CommonModifiers/BatteryShadowModifier.swift,
 				Global/CommonModifiers/BgGradientModifier.swift,
 				Global/CommonModifiers/ZoomableModifier.swift,
+				"Global/Extensions/CGSize+.swift",
 				"Global/Extensions/Color+.swift",
 				"Global/Extensions/Date+.swift",
 				"Global/Extensions/Int+.swift",
