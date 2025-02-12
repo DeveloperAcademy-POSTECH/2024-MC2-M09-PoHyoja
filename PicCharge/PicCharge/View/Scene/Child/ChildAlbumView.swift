@@ -56,7 +56,7 @@ struct ChildAlbumView: View {
                         
                         LazyVGrid(columns: columnLayout, spacing: 3) {
                             ForEach(photoVM.photos.dropFirst()) { photo in
-                                AsyncSquareImage(photo: photo)
+                                AsyncThumbnail(photo: photo)
                                     .onTapGesture {
                                         navigationManager.push(to: .childAlbumDetail(photo: photo)
                                         )

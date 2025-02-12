@@ -47,7 +47,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.appex in Embed Foundation Extensions */,
+				FF73157C2BF9076A0074D7AA /* ParentWidgetExtension.Dev.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,7 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				55B5E3602BF5A13E00E413C6 /* PicCharge.app */,
-				FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */,
+				FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */,
 				42CF702A2D2302040054F244 /* PicChargeTests.xctest */,
 			);
 			name = Products;
@@ -281,7 +281,7 @@
 				4214D9F32C0330260096D48B /* FirebaseStorageCombine-Community */,
 			);
 			productName = ParentWidgetExtension;
-			productReference = FF73156A2BF907690074D7AA /* ParentWidgetExtension.appex */;
+			productReference = FF73156A2BF907690074D7AA /* ParentWidgetExtension.Dev.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
