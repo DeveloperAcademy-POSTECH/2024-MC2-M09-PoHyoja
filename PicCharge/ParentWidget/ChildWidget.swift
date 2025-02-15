@@ -82,7 +82,6 @@ struct ChildWidgetEntryView : View {
     
     var body: some View {
         VStack {
-            if entry.batteryPercentage > 0 {
                 HStack {
                     VStack(spacing: -15) {
                         HStack(spacing: 5) {
@@ -92,24 +91,34 @@ struct ChildWidgetEntryView : View {
                             Spacer()
                         }
                         .font(.system(size:15, weight: .semibold))
-                        .foregroundColor(.accent)
+                        .foregroundStyle(.accent)
                         .padding(.bottom, -3)
                         
                         Spacer()
                         
                         VStack {
-                            HStack {
-                                Text("\(entry.batteryPercentage, specifier: "%.0f")%")
-                                    .font(.system(size: 36, weight: .bold))
-                                    .foregroundStyle(Color.txtPrimaryDark)
-                                
-                                Text("남았어요")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundStyle(.txtVibrantTertiary)
-                                    .opacity(0.8)
-                                    .offset(y: 4)
-                                
-                                Spacer()
+                            if entry.batteryPercentage <= 0 {
+                                HStack {
+                                    Text("배터리가 없어요")
+                                        .font(.system(size: 24, weight: .bold))
+                                        .foregroundStyle(Color.txtPrimaryDark)
+                                        .padding(.bottom, 8)
+                                    Spacer()
+                                }
+                            } else {
+                                HStack {
+                                    Text("\(entry.batteryPercentage, specifier: "%.0f")%")
+                                        .font(.system(size: 36, weight: .bold))
+                                        .foregroundStyle(Color.txtPrimaryDark)
+                                    
+                                    Text("남았어요")
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundStyle(.txtVibrantTertiary)
+                                        .opacity(0.8)
+                                        .offset(y: 4)
+                                    
+                                    Spacer()
+                                }
                             }
                             
                             HStack {
@@ -153,35 +162,26 @@ struct ChildWidgetEntryView : View {
                             .stroke(.gray, lineWidth: 1)
                             .frame(width: 67, height: 120, alignment: .bottom)
                         
-                        VStack {
-                            
-                            Spacer()
-                            
-                            Color.clear.batteryShadow(color: Color.wgBattery(percent: entry.batteryPercentage * 0.9))
-                                .frame(width: 59, height: (entry.batteryPercentage * 1.15 * 0.8) + 20, alignment: .bottom)
+                        if entry.batteryPercentage <= 0 {
+                            Image(systemName: "bolt.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .foregroundStyle(.white)
+                                .frame(width: 37, height: 37)
+                        } else {
+                            VStack {
+                                Spacer()
+                                Color.clear.batteryShadow(color: Color.wgBattery(percent: entry.batteryPercentage * 0.9))
+                                    .frame(width: 59, height: (entry.batteryPercentage * 1.15 * 0.8) + 20, alignment: .bottom)
+                            }
+                            .padding(.vertical, 4)
+                            .frame(width: 67, height: 120, alignment: .bottom)
                         }
-                        .padding(.vertical, 4)
-                        .frame(width: 67, height: 120, alignment: .bottom)
                     }
                 }
                 .padding()
                 .background(Color.bgSecondaryElevated)
                 
-            } else {
-                ZStack {
-                    Color.bgSecondaryElevated.ignoresSafeArea()
-                    
-                    VStack(alignment: .leading){
-                        HStack(alignment: .center) {
-                            Text("아들아")
-                        }
-                        .padding(.bottom, 1)
-                        Text("잘 지내니? 보고 싶다.")
-                    }
-                    .font(.system(size: 32, weight: .bold))
-                    .foregroundStyle(.txtPrimaryDark)
-                }
-            }
         }
         .background(Color.bgSecondaryElevated)
     }
