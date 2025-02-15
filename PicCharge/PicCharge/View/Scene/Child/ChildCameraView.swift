@@ -30,7 +30,7 @@ struct ChildCameraView: View {
                         }
                         .font(.system(size: 17))
                         .fontWeight(.semibold)
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .padding()
                     }
                     Spacer()
@@ -42,7 +42,7 @@ struct ChildCameraView: View {
                         Icon.switchCam
                             .font(.system(size: 17))
                             .fontWeight(.semibold)
-                            .foregroundColor(.white)
+                            .foregroundStyle(.white)
                             .padding()
                     }
                 }
