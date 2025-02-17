@@ -9,11 +9,16 @@ import UIKit
 
 extension UIImage {
     func resized(toWidth width: CGFloat, isOpaque: Bool = true) -> UIImage? {
-        let canvas = CGSize(width: width, height: CGFloat(ceil(width/size.width * size.height)))
-        let format = imageRendererFormat
+        let scaleFactor = width / size.width
+        let newHeight = size.height * scaleFactor
+        let canvas = CGSize(width: width, height: newHeight)
+        
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = max(self.scale, UIScreen.main.scale)
         format.opaque = isOpaque
-        return UIGraphicsImageRenderer(size: canvas, format: format).image {
-            _ in draw(in: CGRect(origin: .zero, size: canvas))
+        
+        return UIGraphicsImageRenderer(size: canvas, format: format).image { _ in
+            self.draw(in: CGRect(origin: .zero, size: canvas))
         }
     }
 }

@@ -117,6 +117,7 @@
 				Global/Utils/BatteryCalculator.swift,
 				Global/Utils/Utils.swift,
 				"ImageProcessing/CGSize+.swift",
+				"ImageProcessing/Data+Downsampling.swift",
 				Model/DomainConvertible.swift,
 				Model/Photo.swift,
 				Model/Role.swift,

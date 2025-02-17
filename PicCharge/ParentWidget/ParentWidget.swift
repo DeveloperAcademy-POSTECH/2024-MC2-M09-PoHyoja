@@ -16,65 +16,58 @@ struct ParentProvider: AppIntentTimelineProvider {
     let remoteRepository: RemoteRepository
     
     func placeholder(in context: Context) -> ParentEntry {
-        ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+        .default
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ParentEntry {
-        let entry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+        guard let imgData = await fetchImgData() else { return .default }
         
-        do {
-            guard let user = await getLocalUser() else {
-                return entry
-            }
-            
-            let photo = await remoteRepository.fetchLatestPhoto(user.name)
-            
-            if let urlString = photo?.urlString {
-                let imgData = try await remoteRepository.downloadPhotoData(of: urlString)
-                
-                if let image = UIImage(data: imgData) {
-                    return ParentEntry(date: Date(), image: image)
-                }
-            }
-        } catch {
-            return entry
-        }
+        let entry = buildEntry(imgData: imgData, in: context.family)
         
         return entry
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ParentEntry> {
-        var entry: ParentEntry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
-        
-        do {
-            guard let user = await getLocalUser() else {
-                return Timeline(entries: [entry], policy: .atEnd)
-            }
-            
-            let photo = await remoteRepository.fetchLatestPhoto(user.name)
-            
-            if let urlString = photo?.urlString {
-                let imgData = try await remoteRepository.downloadPhotoData(of: urlString)
-                
-                if let image = UIImage(data: imgData) {
-                    entry = ParentEntry(date: Date(), image: image)
-                }
-            }
-            
-        } catch {
-            print("위젯 에러!")
-            return Timeline(entries: [entry], policy: .atEnd)
+        guard let imgData = await fetchImgData() else {
+            return Timeline(entries: [.default], policy: .atEnd)
         }
+        
+        let entry = buildEntry(imgData: imgData, in: context.family)
         
         return Timeline(entries: [entry], policy: .atEnd)
     }
     
-    func getLocalUser() async -> User? {
-        await localRepository.fetchUser()
+    private func buildEntry(imgData: Data, in widgetFamily: WidgetFamily) -> ParentEntry {
+        let imageSize: CGSize
+        
+        switch widgetFamily {
+        case .systemLarge: imageSize = .widget_main
+        case .systemSmall: imageSize = .widget_thumb
+        default:
+            return .default
+        }
+        
+        if let image = imgData.downsampling(to: imageSize) {
+            return ParentEntry(date: .now, image: image)
+        }
+        
+        return .default
+    }
+
+    private func fetchImgData() async -> Data? {
+        guard let user = await localRepository.fetchUser() else { return nil }
+        
+        let photo = await remoteRepository.fetchLatestPhoto(user.name)
+
+        guard let urlString = photo?.urlString else { return nil }
+        
+        return try? await remoteRepository.downloadPhotoData(of: urlString)
     }
 }
 
 struct ParentEntry: TimelineEntry {
+    static let `default` = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+    
     let date: Date
     let image: UIImage
 }
@@ -83,17 +76,11 @@ struct ParentWidgetView : View {
     var entry: ParentProvider.Entry
     
     var body: some View {
-        GeometryReader { geometry in
-            RoundedRectangle(cornerRadius: 21)
-                .fill(Color.clear)
-                .overlay(
-                    Image(uiImage: entry.image.resized(toWidth: geometry.size.width, isOpaque: true)!)
-                        .resizable()
-                        .frame(width: geometry.size.width, height: geometry.size.height)
-                        .cornerRadius(21)
-                        .clipped()
-                )
-                .containerBackground(Color.clear, for: .widget)
+        GeometryReader { gr in
+            Image(uiImage: entry.image)
+                .resizable()
+                .frame(width: gr.size.width, height: gr.size.height)
+                .scaledToFit()
         }
     }
 }
@@ -108,11 +95,7 @@ struct ParentWidget: Widget {
         let options = FirebaseOptions(contentsOfFile: filePath)
         FirebaseApp.configure(options: options!)
         
-#if DEBUG
-        localRepository = DefaultLocalRepository(isMemoryOnly: true)
-#else
         localRepository = DefaultLocalRepository()
-#endif
         remoteRepository = DefaultRemoteRepository()
     }
     
