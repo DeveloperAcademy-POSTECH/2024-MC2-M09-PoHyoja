@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import StoreKit
 import FirebaseAuth
 
 struct SettingView: View {
@@ -54,6 +55,20 @@ struct SettingView: View {
                         Text("버전 정보")
                         Spacer()
                         Text("v\(Utils.getAppVersion())").foregroundStyle(.secondary)
+                    }
+                    
+                    Button {
+                        openWebsite(urlString: AppURL.appReview)
+                    } label: {
+                        HStack {
+                            Text("별점 선물하기")
+                            Spacer()
+                            HStack(spacing: 4) {
+                                ForEach(0..<5) { _ in
+                                    Icon.star.foregroundStyle(.yellow)
+                                }
+                            }
+                        }
                     }
 
                     Button("로그아웃") {

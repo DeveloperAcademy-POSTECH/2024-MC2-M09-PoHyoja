@@ -34,4 +34,5 @@ public enum Icon {
     static let starReaction = Image(systemName: "star.circle.fill")
     static let fireReaction = Image(systemName: "flame.circle.fill")
     static let bolt = Image(systemName: "bolt.circle.fill")
+    static let star = Image(systemName: "star.fill")
 }
