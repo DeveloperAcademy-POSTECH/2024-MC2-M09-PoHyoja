@@ -17,7 +17,6 @@ struct SettingView: View {
     
     @State private var isShowingLogoutActionSheet = false
     @State private var isShowingWithdrawActionSheet = false
-    @State private var isShowingWithdrawAlert = false
     
     var body: some View {
         VStack(spacing: 0) {
