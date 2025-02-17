@@ -57,6 +57,8 @@ struct SettingView: View {
                         Text("v\(Utils.getAppVersion())").foregroundStyle(.secondary)
                     }
                     
+                    Button("문의하기") { openWebsite(urlString: AppURL.emailSupport) }
+                    
                     Button {
                         openWebsite(urlString: AppURL.appReview)
                     } label: {
