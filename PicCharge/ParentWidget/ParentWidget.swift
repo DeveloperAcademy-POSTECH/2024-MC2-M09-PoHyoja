@@ -16,14 +16,14 @@ struct ParentProvider: AppIntentTimelineProvider {
     let remoteRepository: RemoteRepository
     
     func placeholder(in context: Context) -> ParentEntry {
-        ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+        ParentEntry.default
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ParentEntry {
-        let entry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+        let entry = ParentEntry.default
         
         do {
-            guard let user = await getLocalUser() else {
+            guard let user = await localRepository.fetchUser() else {
                 return entry
             }
             
@@ -32,8 +32,18 @@ struct ParentProvider: AppIntentTimelineProvider {
             if let urlString = photo?.urlString {
                 let imgData = try await remoteRepository.downloadPhotoData(of: urlString)
                 
-                if let image = UIImage(data: imgData) {
-                    return ParentEntry(date: Date(), image: image)
+                switch context.family {
+                case .systemLarge:
+                    if let image = imgData.downsampling(to: .widget_main) {
+                        return ParentEntry(date: .now, image: image)
+                    }
+                    
+                case .systemSmall:
+                    if let image = imgData.downsampling(to: .widget_thumb) {
+                        return ParentEntry(date: .now, image: image)
+                    }
+                    
+                default: break
                 }
             }
         } catch {
@@ -44,10 +54,10 @@ struct ParentProvider: AppIntentTimelineProvider {
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ParentEntry> {
-        var entry: ParentEntry = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+        var entry = ParentEntry.default
         
         do {
-            guard let user = await getLocalUser() else {
+            guard let user = await localRepository.fetchUser() else {
                 return Timeline(entries: [entry], policy: .atEnd)
             }
             
@@ -56,8 +66,18 @@ struct ParentProvider: AppIntentTimelineProvider {
             if let urlString = photo?.urlString {
                 let imgData = try await remoteRepository.downloadPhotoData(of: urlString)
                 
-                if let image = UIImage(data: imgData) {
-                    entry = ParentEntry(date: Date(), image: image)
+                switch context.family {
+                case .systemLarge:
+                    if let image = imgData.downsampling(to: .widget_main) {
+                        entry = ParentEntry(date: .now, image: image)
+                    }
+                    
+                case .systemSmall:
+                    if let image = imgData.downsampling(to: .widget_thumb) {
+                        entry = ParentEntry(date: .now, image: image)
+                    }  
+                    
+                default: break
                 }
             }
             
@@ -75,6 +95,8 @@ struct ParentProvider: AppIntentTimelineProvider {
 }
 
 struct ParentEntry: TimelineEntry {
+    static let `default` = ParentEntry(date: Date(), image: UIImage(named: "ParentWidgetPreview") ?? UIImage())
+    
     let date: Date
     let image: UIImage
 }
@@ -83,16 +105,11 @@ struct ParentWidgetView : View {
     var entry: ParentProvider.Entry
     
     var body: some View {
-        GeometryReader { geometry in
-            RoundedRectangle(cornerRadius: 21)
-                .fill(Color.clear)
-                .overlay(
-                    Image(uiImage: entry.image.resized(toWidth: geometry.size.width, isOpaque: true)!)
-                        .resizable()
-                        .cornerRadius(21)
-                        .clipped()
-                )
-                .containerBackground(Color.clear, for: .widget)
+        GeometryReader { gr in
+            Image(uiImage: entry.image)
+                .resizable()
+                .frame(width: gr.size.width, height: gr.size.height)
+                .scaledToFit()
         }
     }
 }
