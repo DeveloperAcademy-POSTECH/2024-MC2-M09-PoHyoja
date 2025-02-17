@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import StoreKit
 import FirebaseAuth
 
 struct SettingView: View {
@@ -16,7 +17,6 @@ struct SettingView: View {
     
     @State private var isShowingLogoutActionSheet = false
     @State private var isShowingWithdrawActionSheet = false
-    @State private var isShowingWithdrawAlert = false
     
     var body: some View {
         VStack(spacing: 0) {
@@ -55,15 +55,68 @@ struct SettingView: View {
                         Spacer()
                         Text("v\(Utils.getAppVersion())").foregroundStyle(.secondary)
                     }
-
-                    Button("로그아웃") {
-                        isShowingLogoutActionSheet = true
+                    
+                    Button("문의하기") { openWebsite(urlString: AppURL.emailSupport) }
+                    
+                    Button {
+                        openWebsite(urlString: AppURL.appReview)
+                    } label: {
+                        HStack {
+                            Text("별점 선물하기")
+                            Spacer()
+                            HStack(spacing: 4) {
+                                ForEach(0..<5) { _ in
+                                    Icon.star.foregroundStyle(.yellow)
+                                }
+                            }
+                        }
                     }
                     
-                    Button("회원탈퇴") {
-                        isShowingWithdrawActionSheet = true
-                    }
-                    .foregroundStyle(.grpRed)
+                    Button("로그아웃") { isShowingLogoutActionSheet = true }
+                        .confirmationDialog("로그아웃 하시겠습니까?",
+                                            isPresented: $isShowingLogoutActionSheet,
+                                            titleVisibility: .visible) {
+                            
+                            Button("로그아웃", role: .destructive) {
+                                Task.detached {
+                                    do {
+                                        try await userVM.logOut()
+                                        await MainActor.run { navigationManager.popToRoot() }
+                                    } catch {
+                                        await GlobalAlert.shared.show(message: error.localizedDescription)
+                                    }
+                                }
+                            }
+                            
+                            Button("취소", role: .cancel) {}
+                        }
+                    
+                    Button("회원탈퇴") { isShowingWithdrawActionSheet = true }
+                        .confirmationDialog("회원을 탈퇴하시겠습니까? \n 탈퇴하면 되돌릴 수 없고, 저희가 슬퍼요.",
+                                            isPresented: $isShowingWithdrawActionSheet,
+                                            titleVisibility: .visible) {
+                            
+                            Button("탈퇴하기", role: .destructive) {
+                                GlobalAlert.shared.show(title: "정말 탈퇴하시겠습니까?",
+                                                        message: "탈퇴 후에는 모든 기록이 사라집니다.",
+                                                        selection: "탈퇴하기") {
+                                    
+                                    Task.detached {
+                                        do {
+                                            try await userVM.signOut()
+                                            await MainActor.run {
+                                                navigationManager.popToRoot()
+                                            }
+                                        } catch {
+                                            await GlobalAlert.shared.show(message: error.localizedDescription)
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            Button("취소", role: .cancel) {}
+                        }
+                        .foregroundStyle(.grpRed)
                 }
                 .foregroundStyle(.txtPrimaryDark)
             }
@@ -75,6 +128,7 @@ struct SettingView: View {
                 } label: {
                     Text("이용 약관").underline()
                 }
+                
                 Text("|")
                 
                 Button {
@@ -86,57 +140,6 @@ struct SettingView: View {
             .font(.callout)
             .foregroundStyle(.txtVibrantTertiary)
             .padding(.bottom, 40)
-        }
-        .confirmationDialog(
-            "로그아웃 하시겠습니까?",
-            isPresented: $isShowingLogoutActionSheet,
-            titleVisibility: .visible
-        ) {
-            VStack {
-                Button("로그아웃", role: .destructive) {
-                    Task.detached {
-                        do {
-                            try await userVM.logOut()
-                            await MainActor.run { navigationManager.popToRoot() }
-                        } catch {
-                            await GlobalAlert.shared.show(message: error.localizedDescription)
-                        }
-                    }
-                }
-                
-                Button("취소", role: .cancel) {}
-            }
-        }
-        .confirmationDialog(
-            "회원을 탈퇴하시겠습니까? \n 탈퇴하면 되돌릴 수 없고, 저희가 슬퍼요.",
-            isPresented: $isShowingWithdrawActionSheet,
-            titleVisibility: .visible
-        ) {
-            VStack {
-                Button("탈퇴하기", role: .destructive) {
-                    isShowingWithdrawAlert = true
-                }
-                Button("취소", role: .cancel) {}
-            }
-        }
-        .alert(isPresented: $isShowingWithdrawAlert) {
-            Alert(
-                title: Text("정말 탈퇴하시겠습니까?"),
-                message: Text("탈퇴 후에는 모든 기록이 사라집니다."),
-                primaryButton: .cancel(Text("취소")),
-                secondaryButton: .destructive(Text("탈퇴하기")) {
-                    Task.detached {
-                        do {
-                            try await userVM.signOut()
-                            await MainActor.run {
-                                navigationManager.popToRoot()
-                            }
-                        } catch {
-                            await GlobalAlert.shared.show(message: error.localizedDescription)
-                        }
-                    }
-                }
-            )
         }
     }
 }
