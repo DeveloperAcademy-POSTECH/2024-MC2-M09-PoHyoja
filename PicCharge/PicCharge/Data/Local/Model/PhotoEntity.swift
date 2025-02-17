@@ -20,7 +20,7 @@ final class PhotoEntity {
     var likeCount: Int // 좋아요 개수
     var sharedWith: [String] // 공유 받는 유저의 닉네임
             
-    @Attribute(.externalStorage) var imgData: Data // 이미지 데이터
+    @Attribute(.externalStorage) var imgData: Data? // 이미지 데이터
     
     init(
         id: UUID = UUID(),
@@ -32,7 +32,7 @@ final class PhotoEntity {
         starCount: Int = 0,
         likeCount: Int = 0,
         sharedWith: [String],
-        imgData: Data
+        imgData: Data?
     ) {
         self.id = id
         self.uploadBy = uploadBy
@@ -44,22 +44,6 @@ final class PhotoEntity {
         self.likeCount = likeCount
         self.sharedWith = sharedWith
         self.imgData = imgData
-    }
-    
-    // TODO: - 제거
-    convenience init(from photo: PhotoDTO_V0, imgData: Data) {
-        self.init(
-            id: UUID(uuidString: photo.id ?? UUID().uuidString) ?? UUID(),
-            uploadBy: photo.uploadBy,
-            uploadDate: photo.uploadDate,
-            urlString: photo.urlString,
-            loveCount: 0,
-            fireCount: 0,
-            starCount: 0,
-            likeCount: photo.likeCount,
-            sharedWith: photo.sharedWith,
-            imgData: imgData
-        )
     }
 }
 
@@ -85,7 +69,7 @@ extension PhotoEntity: DomainConvertible {
             starCount: domain.reaction.star,
             likeCount: domain.reaction.like,
             sharedWith: domain.sharedWith,
-            imgData: domain.imgData ?? Data()
+            imgData: domain.imgData
         )
     }
     
