@@ -47,11 +47,11 @@ struct ChildMainView: View {
                     BatteryGauge(percent: batteryPercent, date: lastUploadDate)
                     
                     HStack(spacing: 12) {
-                        UploadBtn("사진 찍기", icon: Icon.bolt, bgColor: .bgGray3) {
+                        UploadBtn("사진 찍기", icon: Icon.camera, bgColor: .bgGray3) {
                             navigationManager.push(to: .childCamera)
                         }
                         
-                        UploadBtn("사진 올리기", icon: Icon.bolt, bgColor: .accent) {
+                        UploadBtn("사진 올리기", icon: Icon.addPhoto, bgColor: .accent) {
                             navigationManager.push(to: .childSendGallery)
                         }
                     }
@@ -237,7 +237,7 @@ struct ChildMainView: View {
                 Text(text)
                 Spacer()
             }
-            .font(.body.weight(.black))
+            .font(.body.weight(.semibold))
             .foregroundStyle(.txtPrimaryDark)
             .frame(height: 44)
             .background(bgColor)
