@@ -89,7 +89,6 @@ struct ParentWidgetView : View {
                 .overlay(
                     Image(uiImage: entry.image.resized(toWidth: geometry.size.width, isOpaque: true)!)
                         .resizable()
-                        .frame(width: geometry.size.width, height: geometry.size.height)
                         .cornerRadius(21)
                         .clipped()
                 )
@@ -108,11 +107,7 @@ struct ParentWidget: Widget {
         let options = FirebaseOptions(contentsOfFile: filePath)
         FirebaseApp.configure(options: options!)
         
-#if DEBUG
-        localRepository = DefaultLocalRepository(isMemoryOnly: true)
-#else
         localRepository = DefaultLocalRepository()
-#endif
         remoteRepository = DefaultRemoteRepository()
     }
     
