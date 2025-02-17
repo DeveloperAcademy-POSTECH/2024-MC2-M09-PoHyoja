@@ -16,81 +16,52 @@ struct ParentProvider: AppIntentTimelineProvider {
     let remoteRepository: RemoteRepository
     
     func placeholder(in context: Context) -> ParentEntry {
-        ParentEntry.default
+        .default
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> ParentEntry {
-        let entry = ParentEntry.default
+        guard let imgData = await fetchImgData() else { return .default }
         
-        do {
-            guard let user = await localRepository.fetchUser() else {
-                return entry
-            }
-            
-            let photo = await remoteRepository.fetchLatestPhoto(user.name)
-            
-            if let urlString = photo?.urlString {
-                let imgData = try await remoteRepository.downloadPhotoData(of: urlString)
-                
-                switch context.family {
-                case .systemLarge:
-                    if let image = imgData.downsampling(to: .widget_main) {
-                        return ParentEntry(date: .now, image: image)
-                    }
-                    
-                case .systemSmall:
-                    if let image = imgData.downsampling(to: .widget_thumb) {
-                        return ParentEntry(date: .now, image: image)
-                    }
-                    
-                default: break
-                }
-            }
-        } catch {
-            return entry
-        }
+        let entry = buildEntry(imgData: imgData, in: context.family)
         
         return entry
     }
     
     func timeline(for configuration: ConfigurationAppIntent, in context: Context) async -> Timeline<ParentEntry> {
-        var entry = ParentEntry.default
-        
-        do {
-            guard let user = await localRepository.fetchUser() else {
-                return Timeline(entries: [entry], policy: .atEnd)
-            }
-            
-            let photo = await remoteRepository.fetchLatestPhoto(user.name)
-            
-            if let urlString = photo?.urlString {
-                let imgData = try await remoteRepository.downloadPhotoData(of: urlString)
-                
-                switch context.family {
-                case .systemLarge:
-                    if let image = imgData.downsampling(to: .widget_main) {
-                        entry = ParentEntry(date: .now, image: image)
-                    }
-                    
-                case .systemSmall:
-                    if let image = imgData.downsampling(to: .widget_thumb) {
-                        entry = ParentEntry(date: .now, image: image)
-                    }  
-                    
-                default: break
-                }
-            }
-            
-        } catch {
-            print("위젯 에러!")
-            return Timeline(entries: [entry], policy: .atEnd)
+        guard let imgData = await fetchImgData() else {
+            return Timeline(entries: [.default], policy: .atEnd)
         }
+        
+        let entry = buildEntry(imgData: imgData, in: context.family)
         
         return Timeline(entries: [entry], policy: .atEnd)
     }
     
-    func getLocalUser() async -> User? {
-        await localRepository.fetchUser()
+    private func buildEntry(imgData: Data, in widgetFamily: WidgetFamily) -> ParentEntry {
+        let imageSize: CGSize
+        
+        switch widgetFamily {
+        case .systemLarge: imageSize = .widget_main
+        case .systemSmall: imageSize = .widget_thumb
+        default:
+            return .default
+        }
+        
+        if let image = imgData.downsampling(to: imageSize) {
+            return ParentEntry(date: .now, image: image)
+        }
+        
+        return .default
+    }
+
+    private func fetchImgData() async -> Data? {
+        guard let user = await localRepository.fetchUser() else { return nil }
+        
+        let photo = await remoteRepository.fetchLatestPhoto(user.name)
+
+        guard let urlString = photo?.urlString else { return nil }
+        
+        return try? await remoteRepository.downloadPhotoData(of: urlString)
     }
 }
 
