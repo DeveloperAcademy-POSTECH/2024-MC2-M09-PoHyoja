@@ -9,7 +9,7 @@ import SwiftUI
 
 struct AsyncSquareImage: View {
     @Environment(PhotoViewModel.self) var photoVM
-    @State private var uiImage: UIImage?
+    @State private var cache: (id: UUID, image: UIImage)?
     
     private let photo: Photo
     private let size: CGSize
@@ -21,12 +21,14 @@ struct AsyncSquareImage: View {
     }
     
     var body: some View {
-        if let uiImage {
-            Image(uiImage: uiImage)
+        if let cache, (cache.id == photo.id) {
+           
+            Image(uiImage: cache.image)
                 .resizable()
                 .aspectRatio(1, contentMode: .fit)
             
         } else {
+            
             Color.bgGray
                 .aspectRatio(1, contentMode: .fit)
                 .overlay { ProgressView() }
@@ -43,12 +45,12 @@ struct AsyncSquareImage: View {
     private func loadCache(imgData: Data) async {
         Task.detached {
             if let cachedImage = await ImageCache.shared.image(for: photoId) {
-                await MainActor.run { self.uiImage = cachedImage }
+                await MainActor.run { self.cache = (id: photo.id, image: cachedImage) }
                 return
             }
 
             if let downsampledImage = imgData.downsampling(to: size) {
-                await MainActor.run { self.uiImage = downsampledImage }
+                await MainActor.run { self.cache = (id: photo.id, image: downsampledImage) }
                 await ImageCache.shared.insertImage(downsampledImage, for: photoId)
             }
         }
@@ -60,7 +62,7 @@ struct AsyncSquareImage: View {
         do {
             let data = try await photoVM.downloadPhoto(of: urlString)
             
-            await MainActor.run { self.uiImage = UIImage(data: data) }
+            await MainActor.run { self.cache = (id: photo.id, image: UIImage(data: data)!) }
             
             self.photo.imgData = data
             try await photoVM.updateLocal(of: photo)
