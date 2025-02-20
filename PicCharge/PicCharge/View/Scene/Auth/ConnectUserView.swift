@@ -243,7 +243,7 @@ extension ConnectUserView {
             print("업데이트한 request: \(updatedRequest)")
             
             // 연결한 유저 정보 받아오기
-            guard var otherUser = await FirestoreService.shared.fetchUserByName(name: request.from) else {
+            guard let otherUser = await FirestoreService.shared.fetchUserByName(name: request.from) else {
                 alertMessage = "연결 요청한 유저를 찾을 수 없습니다."
                 isShowingAlert = true
                 return
