@@ -87,7 +87,7 @@ struct ParentAlbumView: View {
         }
         .refreshable {
             Task {
-                try await photoVM.syncPhoto(of: userVM.user?.name)
+                await photoVM.syncPhoto(of: userVM.user?.name)
                 WidgetCenter.shared.reloadAllTimelines()
             }
         }
