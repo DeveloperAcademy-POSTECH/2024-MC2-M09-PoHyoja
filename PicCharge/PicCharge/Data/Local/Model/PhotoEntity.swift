@@ -89,4 +89,14 @@ extension PhotoEntity: DomainConvertible {
             sharedWith: sharedWith
         )
     }
+    
+    func update(_ photo: Photo) {
+        self.likeCount = photo.reaction.like
+        self.loveCount = photo.reaction.love
+        self.starCount = photo.reaction.star
+        self.fireCount = photo.reaction.fire
+        self.urlString = photo.urlString
+        self.imgData = photo.imgData
+        self.sharedWith = photo.sharedWith
+    }
 }

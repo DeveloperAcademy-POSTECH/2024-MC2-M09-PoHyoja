@@ -79,4 +79,10 @@ final class MockLocalRepository: LocalRepository {
     func deleteAllPhotos() async throws {
         photos.removeAll()
     }
+    
+    func syncChanges(toUpdate: [Photo], toAdd: [Photo], toDelete: [UUID]) async throws {
+        try await updatePhotos(toUpdate)
+        try await addPhotos(toAdd)
+        try await deletePhotos(toDelete)
+    }
 }

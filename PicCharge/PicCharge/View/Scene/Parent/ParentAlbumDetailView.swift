@@ -101,7 +101,7 @@ struct ParentAlbumDetailView: View {
             self.photo = newValue[index]
         }
         .onReceive(reactionDebounce) { photo in
-            Task.detached { await photoVM.updatePhoto(photo) }
+            Task.detached { await photoVM.updatePhotoReaction(photo) }
         }
     }
     

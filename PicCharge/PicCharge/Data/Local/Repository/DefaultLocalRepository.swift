@@ -9,15 +9,15 @@ import Foundation
 import SwiftData
 
 final class DefaultLocalRepository: LocalRepository {
-    
+
     private let userDataSource: EntityDataSource<UserEntity>
     private let photoDataSource: EntityDataSource<PhotoEntity>
 
     init(isMemoryOnly: Bool = false) {
         let persistanceStack = PersistenceStack(isMemoryOnly: isMemoryOnly)
         
-        self.userDataSource = EntityDataSource<UserEntity>(container: persistanceStack.container)
-        self.photoDataSource = EntityDataSource<PhotoEntity>(container: persistanceStack.container)
+        self.userDataSource = EntityDataSource<UserEntity>(modelContainer: persistanceStack.container)
+        self.photoDataSource = EntityDataSource<PhotoEntity>(modelContainer: persistanceStack.container)
     }
 }
 
@@ -25,7 +25,7 @@ final class DefaultLocalRepository: LocalRepository {
 extension DefaultLocalRepository {
     func fetchUser() async -> User? {
         do {
-            let userEntity: [UserEntity] = try userDataSource.read()
+            let userEntity: [UserEntity] = try await userDataSource.fetch()
             
             return userEntity.first?.toDomain()
         } catch {
@@ -36,17 +36,18 @@ extension DefaultLocalRepository {
     func addUser(_ user: User) async throws {
         let userEntity = UserEntity(user)
         
-        try userDataSource.create(userEntity)
+        try await userDataSource.perform(.create([userEntity]))
     }
     
     func addConnection(of user: User, with connectedTo: [String]) async throws {
         let userEntity = UserEntity(user)
         userEntity.connectedTo += connectedTo
-        try userDataSource.update(userEntity)
+        
+        try await userDataSource.perform(.update([userEntity]))
     }
     
     func deleteUser(_ name: String) async throws {
-        try userDataSource.delete(where: #Predicate { $0.name == name })
+        try await userDataSource.perform(.delete(#Predicate { $0.name == name }))
     }
 }
 
@@ -58,7 +59,7 @@ extension DefaultLocalRepository {
     
     func fetchPhotos(for option: PhotoSortOption, _ order: SortOrder) async -> [Photo] {
         do {
-            let photoEntities: [PhotoEntity] = try photoDataSource.read(
+            let photoEntities: [PhotoEntity] = try await photoDataSource.fetch(
                 sortDescriptors: PhotoSortDescriptor.build(option, order: order)
             )
             
@@ -71,35 +72,50 @@ extension DefaultLocalRepository {
     func addPhoto(_ photo: Photo) async throws {
         let photoEntity = PhotoEntity(photo)
         
-        try photoDataSource.create(photoEntity)
+        try await photoDataSource.perform(.create([photoEntity]))
     }
     
     func addPhotos(_ photos: [Photo]) async throws {
-        try photoDataSource.create(photos.map { PhotoEntity($0) })
-    }
-    
-    func updatePhoto(_ photo: Photo) async throws {
-        try photoDataSource.update(PhotoEntity(photo))
+        let photoEntitys = photos.map { PhotoEntity($0) }
+        
+        try await photoDataSource.perform(.create(photoEntitys))
     }
     
     func updatePhotos(_ photos: [Photo]) async throws {
-        try photoDataSource.update(photos.map { PhotoEntity($0) })
+        let photoEntitys = photos.map { PhotoEntity($0) }
+        
+        try await photoDataSource.perform(.update(photoEntitys))
+    }
+    
+    func updatePhoto(_ photo: Photo) async throws {
+        try await photoDataSource.perform(.update([PhotoEntity(photo)]))
     }
     
     func deletePhoto(_ photoId: UUID) async throws {
-        try photoDataSource.delete(where: #Predicate { $0.id == photoId })
+        try await photoDataSource.perform(.delete(#Predicate { $0.id == photoId }))
     }
     
     func deletePhotos(_ photoIds: [UUID]) async throws {
         let photoSet = Set(photoIds)
         
-        try photoDataSource.delete(where: #Predicate { item in
-            photoSet.contains(item.id)
-        })
+        try await photoDataSource.perform(.delete(#Predicate { photoSet.contains($0.id) }))
     }
     
     func deleteAllPhotos() async throws {
-        try photoDataSource.deleteAll()
+        try await photoDataSource.perform(.deleteAll)
+    }
+    
+    func syncChanges(toUpdate: [Photo],
+                     toAdd: [Photo],
+                     toDelete: [UUID]) async throws {
+        
+        let toAddEntity = toAdd.map { PhotoEntity($0) }
+        let toUpdateEntity = toUpdate.map { PhotoEntity($0) }
+        let toDeleteEntityIds = Set(toDelete)
+        
+        try await photoDataSource.perform(.create(toAddEntity),
+                                          .update(toUpdateEntity),
+                                          .delete(#Predicate { toDeleteEntityIds.contains($0.id) }))
     }
 }
 

@@ -25,7 +25,7 @@ final class PhotoViewModel {
     }
 }
 
-extension PhotoViewModel {    
+extension PhotoViewModel {
     /// 로컬과 원격 저장소에 저장된 사진 데이터를 동기화합니다.
     ///
     /// 1. 현재 원격, 로컬 데이터를 Fetch합니다.
@@ -60,16 +60,10 @@ extension PhotoViewModel {
             // (3) 삭제할 항목: localMap에만 존재하는 항목
             let photoIdsToDelete = localMap.filter { !remoteMap.keys.contains($0.key) }.map { $0.key }
             
-            // 동일 Context 직렬 처리
-            try await localRepository.updatePhotos(photosToUpdate)
-            try await localRepository.addPhotos(photosToAdd)
-            try await localRepository.deletePhotos(photoIdsToDelete)
-            
-            print("총 \(remotePhotos.count) 개의 이미지")
-            print("\(photosToUpdate.count + photosToAdd.count + photoIdsToDelete.count) 개의 이미지 동기화함")
-            print("\(photosToUpdate.count) 개의 사진 업데이트됨")
-            print("\(photosToAdd.count) 개의 사진 추가됨")
-            print("\(photoIdsToDelete.count) 개의 사진 삭제됨")
+            // Batch Processing으로 Atomic하게 실행
+            try await localRepository.syncChanges(toUpdate: photosToUpdate,
+                                                  toAdd: photosToAdd,
+                                                  toDelete: photoIdsToDelete)
             
             // 최종적으로 로컬 데이터를 가져와 UI 업데이트
             let photos = await localRepository.fetchPhotos()
@@ -128,7 +122,7 @@ extension PhotoViewModel {
     
     /// 로컬 사진을 업데이트 합니다.
     /// - Parameter photo: 업데이트할 사진 데이터
-    func updateLocal(of photo: Photo) async throws {
+    func update(of photo: Photo) async throws {
         try await localRepository.updatePhoto(photo)
     }
 
@@ -167,7 +161,7 @@ extension PhotoViewModel {
         try await localRepository.deleteAllPhotos()
     }
     
-    func updatePhoto(_ photo: Photo) async {
+    func updatePhotoReaction(_ photo: Photo) async {
         guard let targetPhoto = photos.first(where: { $0.id == photo.id }) else { return }
         let originalReaction = targetPhoto.reaction
         

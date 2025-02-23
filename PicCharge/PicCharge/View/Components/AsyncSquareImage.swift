@@ -22,7 +22,6 @@ struct AsyncSquareImage: View {
     
     var body: some View {
         if let cache, (cache.id == photo.id) {
-           
             Image(uiImage: cache.image)
                 .resizable()
                 .aspectRatio(1, contentMode: .fit)
@@ -60,12 +59,18 @@ struct AsyncSquareImage: View {
         guard let urlString = photo.urlString else { return }
 
         do {
+            // Firebase에서 이미지 다운로드
             let data = try await photoVM.downloadPhoto(of: urlString)
+            let downSampledImage = data.downsampling(to: size)
             
-            await MainActor.run { self.cache = (id: photo.id, image: UIImage(data: data)!) }
+            await MainActor.run {
+                self.cache = (id: photo.id, image: downSampledImage!)
+            }
             
+            // 현재 ViewModel의 원본 사진 업데이트
             self.photo.imgData = data
-            try await photoVM.updateLocal(of: photo)
+            // 로컬 저장소에 원본 사진 저장
+            try await photoVM.update(of: photo)
             
         } catch {
             print("Error loading image: \(error)")
