@@ -27,6 +27,13 @@ enum PathType: Hashable {
     
     // MARK: - Setting
     case setting
+    
+    // MARK: - Temp 플로우
+    case tempSignUpName
+    case tempSelectFamily
+    case tempInvitationCodeInput
+    case tempCreateRoom
+    case tempJoinRoom
 }
 
 extension PathType {
@@ -64,6 +71,18 @@ extension PathType {
             // MARK: - Setting
         case .setting:
             SettingView()
+            
+            // MARK: - Temp 플로우
+        case .tempSignUpName:
+            TempSignUpNameView()
+        case .tempSelectFamily:
+            TempSelectFamilyView()
+        case .tempInvitationCodeInput:
+            TempInvitationCodeInputView()
+        case .tempCreateRoom:
+            TempCreateRoomView()
+        case .tempJoinRoom:
+            TempJoinRoomView()
         }
     }
 }

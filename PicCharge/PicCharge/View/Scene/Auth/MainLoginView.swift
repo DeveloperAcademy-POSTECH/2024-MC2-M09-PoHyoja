@@ -25,6 +25,9 @@ struct MainLoginView: View {
                     .resizable()
                     .aspectRatio(1, contentMode: .fit)
                     .frame(width: 188)
+                    .onTapGesture {
+                        navigationManager.push(to: .tempSignUpName)
+                    }
                 
                 Spacer()
             }
