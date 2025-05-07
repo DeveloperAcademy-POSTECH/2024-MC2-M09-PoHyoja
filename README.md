@@ -1,9 +1,12 @@
 ![image](https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/0d92ad80-e24a-4826-9b98-884bb9a9d37e)
 
+[<img width="220" src="https://github.com/user-attachments/assets/5b42d867-3372-4239-8c11-0408dd903983">](https://apps.apple.com/kr/app/piccharge-%ED%94%BD%EC%B1%A0/id6739777922)
+
 <div align=center> 
     <img src="https://img.shields.io/badge/swift-F05138?style=for-the-badge&logo=swift&logoColor=white">
     <img src="https://img.shields.io/badge/firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=white">
 </div>
+
 
 # <img width="35" src="https://github.com/DeveloperAcademy-POSTECH/2024-MC2-M09-PoHyoja/assets/77305722/2cc8b170-99ac-48e9-9f44-90bf2e3e143b"> 픽-챠 PicCharge
 
