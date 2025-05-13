@@ -55,6 +55,9 @@ final class UserViewModel {
             return
         }
         
+        // Firebase 인증 정보 디버깅
+        printFirebaseAuthInfo()
+        
         // 3. 부모 자식 연결 여부 확인
         guard !user.connectedTo.isEmpty else {
             await MainActor.run {
@@ -82,6 +85,9 @@ final class UserViewModel {
         do {
             // 1. Auth 이메일 로그인
             _ = try await Auth.auth().signIn(withEmail: email, password: password)
+            
+            // Firebase 인증 정보 디버깅
+            printFirebaseAuthInfo()
             
             // 2. 원격 이메일 유저 확인
             guard let user = try await remoteRepository.fetchUserByEmail(email) else {
@@ -120,11 +126,12 @@ final class UserViewModel {
         do {
              // 1. 현재 Firebase Auth 사용자가 존재하는지 확인
              guard let currentUser = Auth.auth().currentUser else {
-                 // 아직 Apple Credential로 인증되지 않았거나
-                 // Apple 로그인 프로세스가 완료되지 않은 상황
                  print("애플 로그인: 현재 사용자가 존재하지 않음 (Auth)")
                  return
              }
+             
+             // Firebase 인증 정보 디버깅
+             printFirebaseAuthInfo()
              
              // 2. 이메일 가져오기
              let email = currentUser.email ?? "No email"
@@ -361,6 +368,43 @@ extension UserViewModel {
         } else {
             // 신규 유저 → fullName 저장 필요
             return (true, email, fullName)
+        }
+    }
+}
+
+extension UserViewModel {
+    // Firebase 인증 정보 디버깅 (ID 토큰과 내부 페이로드만)
+    func printFirebaseAuthInfo() {
+        guard let currentUser = Auth.auth().currentUser else {
+            print("🔥 No user is signed in")
+            return
+        }
+
+        // 비동기 토큰 취득
+        currentUser.getIDToken { token, error in
+            if let error = error {
+                print("❌ Error getting ID token: \(error.localizedDescription)")
+                return
+            }
+            guard let token = token else {
+                print("❌ ID token is nil")
+                return
+            }
+
+            print("\n=== Firebase Auth ID Token ===")
+            print(token)
+            
+            // 토큰 내부 페이로드 디코딩 (base64)
+            let parts = token.components(separatedBy: ".")
+            if parts.count >= 2,
+               let payloadData = Data(base64Encoded: parts[1]),
+               let payloadString = String(data: payloadData, encoding: .utf8) {
+                print("\n--- Token Payload 내부 디코딩 정보 ---")
+                print(payloadString)
+            } else {
+                print("⚠️ Unable to decode token payload")
+            }
+            print("==============================\n")
         }
     }
 }
